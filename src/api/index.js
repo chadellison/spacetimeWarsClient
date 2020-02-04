@@ -1,5 +1,7 @@
 // api/index.js
-let socket = new WebSocket("ws://localhost:8080/ws");
+const WEBSOCKET_HOST = process.env.NODE_ENV === 'development' ? 'ws://localhost:8080/ws' : 'ws://pacman-server.herokuapp.com/'
+console.log(WEBSOCKET_HOST)
+let socket = new WebSocket(WEBSOCKET_HOST);
 
 let connect = cb => {
   console.log("connecting");
