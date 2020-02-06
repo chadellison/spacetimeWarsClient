@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import Layout from './components/Layout'
+import SvgBoard from './components/SvgBoard';
 
 const App = () => {
   return (
