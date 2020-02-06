@@ -59,7 +59,21 @@ class Layout extends React.Component {
 
   componentDidMount() {
     this.createGameSocket()
-  }
+    window.addEventListener('keydown', this.checkArrow)
+  };
+
+  checkArrow = (event) => {
+    const keyValue = event.keyCode
+    const left = 37
+    const up = 38
+    const right = 39
+    const down = 40
+
+    if (keyValue === left) this.setState({player: {...this.state.player, direction: 'left' }})
+    if (keyValue === right) this.setState({player: {...this.state.player, direction: 'right' }})
+    if (keyValue === up) this.setState({player: {...this.state.player, direction: 'top' }})
+    if (keyValue === down) this.setState({player: {...this.state.player, direction: 'bottom' }})
+  };
 
   handleGameData = response => {
     console.log(response, 'gameData response ...********')
@@ -90,22 +104,19 @@ class Layout extends React.Component {
     });
   };
 
-  updatePlayerScore = (score) => {
-    this.setState({
-      player: {...this.state.player, score: score}
-    });
-  };
+  updateGameState = (player, value) => {
+    let board = [...this.state.board]
+    board[player.x][player.y] = value
 
-  updateBoard = (x, y, value) => {
-    // this.setState({
-    //   board:
-    // });
-    this.state.board[x][y] = value
+    this.setState({
+      player: player,
+      board: board
+    })
   };
 
   render = () => {
     return (
-      <div className="layout">
+      <div className="layout" onKeyDown={this.onKeyPressed}>
         <SvgBoard/>
         <h2 onClick={this.sendGameEvent}>Pacman</h2>
         <div className='game'>
@@ -114,8 +125,7 @@ class Layout extends React.Component {
             board={this.state.board}
             player={this.state.player}
             updatePlayerCoordinates={this.updatePlayerCoordinates}
-            updatePlayerScore={this.updatePlayerScore}
-            updateBoard={this.updateBoard}
+            updateGameState={this.updateGameState}
           />
           </div>
       </div>
