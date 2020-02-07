@@ -32,14 +32,17 @@ class Canvas extends React.Component {
 
 const draw = (ctx, player) => {
   ctx.beginPath();
+  const x = player.location.x;
+  const y = player.location.y;
+  const radius = 25;
   if (player.direction === 'right') {
-    ctx.arc(player.location.x, player.location.y, 25, (Math.PI / 180) * player.mouthOpenValue, (Math.PI / 180) * (360 - player.mouthOpenValue));
+    ctx.arc(x, y, radius, (Math.PI / 180) * player.mouthOpenValue, (Math.PI / 180) * (360 - player.mouthOpenValue));
   } else if (player.direction === 'left') {
-    ctx.arc(player.location.x, player.location.y, 25, (Math.PI / 180) * (179 - player.mouthOpenValue), (Math.PI / 180) * (180 + player.mouthOpenValue), true);
+    ctx.arc(x, y, radius, (Math.PI / 180) * (179 - player.mouthOpenValue), (Math.PI / 180) * (180 + player.mouthOpenValue), true);
   } else if (player.direction === 'up') {
-    console.log('up')
+    ctx.arc(x, y, radius, (Math.PI / 180) * (269 - player.mouthOpenValue), (Math.PI / 180) * (270 + player.mouthOpenValue), true);
   } else if (player.direction === 'down') {
-    console.log('down')
+    ctx.arc(x, y, radius, (Math.PI / 180) * (89 - player.mouthOpenValue), (Math.PI / 180) * (90 + player.mouthOpenValue), true);
   }
 
   ctx.lineTo(player.location.x, player.location.y);
