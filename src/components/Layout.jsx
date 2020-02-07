@@ -59,13 +59,12 @@ class Layout extends React.Component {
         player.direction = 'down';
         player.location.y += 7;
       }
-
-      this.setState({player: player});
+      this.sendGameEvent({player: player})
     }
   };
 
   handleGameData = response => {
-    console.log(response, 'gameData response ...********')
+    this.setState({player: response.gameData.player});
   };
 
   createGameSocket() {
@@ -83,14 +82,14 @@ class Layout extends React.Component {
     this.setState({gameSocket: gameSocket})
   };
 
-  sendGameEvent = (e) => {
-    this.state.gameSocket.create('here is a game event from the client!')
+  sendGameEvent = (gameEvent) => {
+    this.state.gameSocket.create(gameEvent)
   };
 
   render = () => {
     return (
       <div className="layout" onKeyDown={this.onKeyPressed}>
-        <h2 onClick={this.sendGameEvent}>Pacman</h2>
+        <h2>Pacman</h2>
         <div className='game'>
           <Canvas player={this.state.player} />
         </div>
