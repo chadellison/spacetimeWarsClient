@@ -42,7 +42,7 @@ const draw = (ctx, player) => {
     console.log('down')
   }
 
-  ctx.lineTo(player.location.x, 50);
+  ctx.lineTo(player.location.x, player.location.y);
   ctx.fillStyle = '#FF0';
   ctx.fill();
 }
