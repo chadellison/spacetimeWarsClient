@@ -1,44 +1,8 @@
 import React from 'react';
 import { WEBSOCKET_HOST } from '../api';
-import Cable from 'actioncable'
-import Board from './Board'
-import Score from './Score'
-import SvgBoard from './SvgBoard';
+import Cable from 'actioncable';
+import Canvas from './Canvas';
 import '../styles/styles.css';
-
-let emptyBoard = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-    [1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1],
-    [1, 2, 1, 0, 0, 1, 2, 1, 0, 0, 0, 1, 2, 1, 1, 2, 1, 0, 0, 0, 1, 2, 1, 0, 0, 1, 2, 1],
-    [1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1],
-    [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-    [1, 2, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1],
-    [1, 2, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1],
-    [1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 1],
-    [1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1, 0, 0, 1, 1, 1, 2, 1, 1, 2, 1, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1],
-    [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0],
-    [1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1],
-    [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-    [1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1],
-    [1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1],
-    [1, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 1],
-    [1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1],
-    [1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1],
-    [1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 1],
-    [1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1],
-    [1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1],
-    [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-]
 
 class Layout extends React.Component {
   constructor(props) {
@@ -46,33 +10,44 @@ class Layout extends React.Component {
 
     this.state = {
       gameSocket: {},
-      board: emptyBoard.slice(0),
       player: {
         name: 'playerName: yoyo',
         score: 0,
-        direction: 'right',
-        x: 1,
-        y: 1
+        direction: 1,
+        location: {x: 1, y: 1},
+        mouthOpenValue: 40,
+        mouthPosition: -1,
       }
     }
   };
 
   componentDidMount() {
     this.createGameSocket()
-    window.addEventListener('keydown', this.checkArrow)
+    window.addEventListener('keydown', this.movePlayer)
   };
 
-  checkArrow = (event) => {
+  movePlayer = (event) => {
     const keyValue = event.keyCode
     const left = 37
     const up = 38
     const right = 39
     const down = 40
 
-    if (keyValue === left) this.setState({player: {...this.state.player, direction: 'left' }})
-    if (keyValue === right) this.setState({player: {...this.state.player, direction: 'right' }})
-    if (keyValue === up) this.setState({player: {...this.state.player, direction: 'top' }})
-    if (keyValue === down) this.setState({player: {...this.state.player, direction: 'bottom' }})
+    let player = {...this.state.player}
+    if (player.mouthOpenValue <= 0) {
+      player.mouthPosition = 1;
+    } else if (player.mouthOpenValue >= 40) {
+      player.mouthPosition = -1;
+    }
+
+    player.location.x += (7 * player.direction);
+
+    player.mouthOpenValue += (8 * player.mouthPosition);
+
+    if (keyValue === left) this.setState({player: {...player, direction: -1 }})
+    if (keyValue === right) this.setState({player: {...player, direction: 1 }})
+    if (keyValue === up) this.setState({player: {...player, direction: 1 }})
+    if (keyValue === down) this.setState({player: {...player, direction: -1 }})
   };
 
   handleGameData = response => {
@@ -98,36 +73,13 @@ class Layout extends React.Component {
     this.state.gameSocket.create('here is a game event from the client!')
   };
 
-  updatePlayerCoordinates = (x, y) => {
-    this.setState({
-      player: {...this.state.player, x: x, y: y}
-    });
-  };
-
-  updateGameState = (player, value) => {
-    let board = [...this.state.board]
-    board[player.x][player.y] = value
-
-    this.setState({
-      player: player,
-      board: board
-    })
-  };
-
   render = () => {
     return (
       <div className="layout" onKeyDown={this.onKeyPressed}>
-        <SvgBoard/>
         <h2 onClick={this.sendGameEvent}>Pacman</h2>
         <div className='game'>
-          <Score player={this.state.player} />
-          <Board
-            board={this.state.board}
-            player={this.state.player}
-            updatePlayerCoordinates={this.updatePlayerCoordinates}
-            updateGameState={this.updateGameState}
-          />
-          </div>
+          <Canvas player={this.state.player} />
+        </div>
       </div>
     );
   };
