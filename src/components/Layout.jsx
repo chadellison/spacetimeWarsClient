@@ -13,8 +13,8 @@ class Layout extends React.Component {
       player: {
         name: 'playerName: yoyo',
         score: 0,
-        direction: 1,
-        location: {x: 1, y: 1},
+        direction: '',
+        location: {x: 50, y: 50},
         mouthOpenValue: 40,
         mouthPosition: -1,
       }
@@ -33,21 +33,35 @@ class Layout extends React.Component {
     const right = 39
     const down = 40
 
-    let player = {...this.state.player}
-    if (player.mouthOpenValue <= 0) {
-      player.mouthPosition = 1;
-    } else if (player.mouthOpenValue >= 40) {
-      player.mouthPosition = -1;
+    if ([left, up, right, down].includes(keyValue)) {
+      let player = {...this.state.player}
+      if (player.mouthOpenValue <= 0) {
+        player.mouthPosition = 1;
+      } else if (player.mouthOpenValue >= 40) {
+        player.mouthPosition = -1;
+      }
+
+      player.mouthOpenValue += (8 * player.mouthPosition);
+
+      if (keyValue === left) {
+        player.direction = 'left';
+        player.location.x -= 7;
+      }
+      if (keyValue === right) {
+        player.direction = 'right';
+        player.location.x += 7;
+      }
+      if (keyValue === up) {
+        player.direction = 'up';
+        player.location.y -= 7;
+      }
+      if (keyValue === down) {
+        player.direction = 'down';
+        player.location.y += 7;
+      }
+
+      this.setState({player: player});
     }
-
-    player.location.x += (7 * player.direction);
-
-    player.mouthOpenValue += (8 * player.mouthPosition);
-
-    if (keyValue === left) this.setState({player: {...player, direction: -1 }})
-    if (keyValue === right) this.setState({player: {...player, direction: 1 }})
-    if (keyValue === up) this.setState({player: {...player, direction: 1 }})
-    if (keyValue === down) this.setState({player: {...player, direction: -1 }})
   };
 
   handleGameData = response => {
