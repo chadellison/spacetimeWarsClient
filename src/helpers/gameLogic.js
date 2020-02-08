@@ -1,4 +1,4 @@
-import {VELOCITY} from '../constants/settings.js';
+import {VELOCITY, SQUARE_DISTANCE} from '../constants/settings.js';
 
 export const handleDirection = (player) => {
   if (player.direction === 'left') {
@@ -41,4 +41,19 @@ export const handleWrap = (player, width, height) => {
   if (player.location.y <= 0) {
     player.location.y = height;
   }
+}
+
+export const findCollisionCoordinates = (player) => {
+  const {x, y} = player.location;
+  let xRadius = x - 20
+  let yRadius = y - 20;
+
+  while (xRadius % SQUARE_DISTANCE !== 0 ) {
+    xRadius += 1
+  };
+
+  while (yRadius % SQUARE_DISTANCE !== 0 ) {
+    yRadius += 1
+  };
+  return [xRadius, yRadius];
 }

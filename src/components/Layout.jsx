@@ -5,29 +5,33 @@ import Canvas from './Canvas';
 import '../styles/styles.css';
 import {KEY_MAP} from '../constants/keyMap.js';
 import {BOARD_WIDTH, BOARD_HEIGHT} from '../constants/settings.js';
+import {newBoard} from '../helpers/canvasHelper.js'
 import {
   handleDirection,
   handleMouthOpenAngle,
-  handleWrap
+  handleWrap,
+  findCollisionCoordinates
 } from '../helpers/gameLogic.js';
+
+const DEFAULT_STATE = {
+  gameSocket: {},
+  boardWidth: BOARD_WIDTH,
+  boardHeight: BOARD_HEIGHT,
+  board: newBoard(),
+  player: {
+    name: 'playerName: yoyo',
+    score: 0,
+    direction: '',
+    location: {x: 50, y: 50},
+    mouthOpenValue: 40,
+    mouthPosition: -1,
+  }
+};
 
 class Layout extends React.Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      gameSocket: {},
-      boardWidth: BOARD_WIDTH,
-      boardHeight: BOARD_HEIGHT,
-      player: {
-        name: 'playerName: yoyo',
-        score: 0,
-        direction: '',
-        location: {x: 50, y: 50},
-        mouthOpenValue: 40,
-        mouthPosition: -1,
-      }
-    }
+    this.state = DEFAULT_STATE
   };
 
   componentDidMount() {
@@ -68,8 +72,17 @@ class Layout extends React.Component {
     handleMouthOpenAngle(player)
     handleDirection(player)
     handleWrap(player, this.state.boardWidth, this.state.boardHeight);
+    const coordinates = findCollisionCoordinates(player);
+    this.handleCollision(coordinates, this.state.board);
     this.setState({player: player});
   };
+
+  handleCollision = (coordinates, board) => {
+    const key = coordinates[0] + ':' + coordinates[1];
+    if (board[key] === 1) {
+      this.setState({board: {...board, [key]: 0 }});
+    };
+  }
 
   handleGameData = response => {
     this.setState({player: response.gameData.player});
@@ -88,6 +101,7 @@ class Layout extends React.Component {
             player={this.state.player}
             height={this.state.boardHeight}
             width={this.state.boardWidth}
+            board={this.state.board}
           />
         </div>
       </div>
