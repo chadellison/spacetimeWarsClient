@@ -14,7 +14,8 @@ import {
   handleDirection,
   handleMouthOpenAngle,
   handleWrap,
-  findCollisionCoordinates
+  findCollisionCoordinates,
+  createPlayer
 } from '../helpers/gameLogic.js';
 
 const DEFAULT_STATE = {
@@ -22,14 +23,8 @@ const DEFAULT_STATE = {
   boardWidth: BOARD_WIDTH,
   boardHeight: BOARD_HEIGHT,
   board: newBoard(),
-  player: {
-    name: 'playerName: yoyo',
-    score: 0,
-    direction: '',
-    location: {x: -50, y: 35},
-    mouthOpenValue: 40,
-    mouthPosition: -1,
-  }
+  currentPlayerId: null,
+  players: []
 };
 
 class Layout extends React.Component {
@@ -40,8 +35,8 @@ class Layout extends React.Component {
 
   componentDidMount() {
     this.createGameSocket();
-    window.addEventListener('keydown', this.handleDirectionShift);
-    this.interval = setInterval(() => this.movePlayer(), ANAIMATION_FRAME_RATE);
+    window.addEventListener('keydown', this.handleKeyDown);
+    this.interval = setInterval(() => this.movePlayers(), ANAIMATION_FRAME_RATE);
   };
 
   componentWillUnmount() {
@@ -54,30 +49,42 @@ class Layout extends React.Component {
     {
       connected: () => {},
       received: (gameData) => this.handleGameData(gameData),
-      create: function(gameEvent) {
+      create: function(gameEventData) {
         this.perform('create', {
-          gameEvent: gameEvent
+          gameEventData: gameEventData
         });
-      }
+      },
     });
     this.setState({gameSocket: gameSocket})
   };
 
-  handleDirectionShift = (event) => {
+  handleKeyDown = (event) => {
     const keyCode = event.keyCode
-    if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== this.state.player.direction) {
-      const player = {...this.state.player, direction: KEY_MAP[keyCode]}
-      this.sendGameEvent({player: player})
-    };
+    if (this.state.currentPlayerId) {
+      const currentPlayer = this.state.players.filter((player) => player.id === this.state.currentPlayerId)[0];
+
+      if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.direction) {
+        this.sendGameEvent({playerId: this.state.currentPlayerId, gameEvent: KEY_MAP[keyCode]});
+      };
+    } else {
+      if (KEY_MAP[keyCode] === 'start') {
+        const newPlayerId = this.state.players.length + 1
+        this.sendGameEvent({playerId: newPlayerId, gameEvent: 'start'});
+        // use websocket id
+        this.setState({currentPlayerId: newPlayerId});
+      }
+    }
   }
 
-  movePlayer = () => {
-    let player = {...this.state.player}
-    handleMouthOpenAngle(player)
-    handleDirection(player)
-    handleWrap(player, this.state.boardWidth, this.state.boardHeight);
-    this.handleCollision(player, this.state.board);
-    this.setState({player: player});
+  movePlayers = () => {
+    let players = [...this.state.players];
+    players.forEach((player) => {
+      handleMouthOpenAngle(player)
+      handleDirection(player)
+      handleWrap(player, this.state.boardWidth, this.state.boardHeight);
+      this.handleCollision(player, this.state.board);
+    });
+    this.setState({players: players});
   };
 
   handleCollision = (player, board) => {
@@ -90,7 +97,28 @@ class Layout extends React.Component {
   }
 
   handleGameData = response => {
-    this.setState({player: response.gameData.player});
+    const {playerId, gameEvent} = response.gameData;
+    switch (gameEvent) {
+      case 'start':
+        const newPlayer = createPlayer(playerId);
+        this.setState({players: [...this.state.players, newPlayer]});
+        break;
+      case 'left':
+      case 'up':
+      case 'right':
+      case 'down':
+        const updatedPlayers = [...this.state.players].map((player) => {
+          if (player.id === playerId) {
+            player.direction = gameEvent;
+          };
+          return player;
+        });
+
+        this.setState({players: updatedPlayers});
+        break;
+      default:
+        console.log('NO MATCHING EVENTS');
+    }
   };
 
   sendGameEvent = (gameEvent) => {
@@ -98,13 +126,13 @@ class Layout extends React.Component {
   };
 
   render = () => {
-    const {player, boardHeight, boardWidth, board} = this.state;
+    const {players, boardHeight, boardWidth, board} = this.state;
     return (
-      <div className="layout" onKeyDown={this.handleDirectionShift}>
+      <div className="layout" onKeyDown={this.handleKeyDown}>
         <h2>Pacman</h2>
         <div className='game'>
           <Canvas
-            player={player}
+            players={players}
             height={boardHeight}
             width={boardWidth}
             board={board}

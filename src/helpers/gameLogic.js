@@ -1,4 +1,4 @@
-import {VELOCITY, SQUARE_DISTANCE} from '../constants/settings.js';
+import {VELOCITY, SQUARE_DISTANCE, START_LOCATION} from '../constants/settings.js';
 
 export const handleDirection = (player) => {
   if (player.direction === 'left') {
@@ -56,4 +56,16 @@ export const findCollisionCoordinates = (player) => {
     yRadius += 1
   };
   return [xRadius, yRadius];
+}
+
+export const createPlayer = (playerId) => {
+  return {
+    id: playerId,
+    name: 'joe bob',
+    score: 0,
+    direction: 'right',
+    location: START_LOCATION,
+    mouthOpenValue: 40,
+    mouthPosition: -1,
+  }
 }
