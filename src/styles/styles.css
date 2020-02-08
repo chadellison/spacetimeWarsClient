@@ -35,3 +35,8 @@ body {
   margin: 7.5px;
   box-shadow: 0px 5px 5px #1d1c1c;
 }
+
+.canvas {
+  background: black;
+  /* background: #151313; */
+}

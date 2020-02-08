@@ -3,8 +3,8 @@ import { WEBSOCKET_HOST } from '../api';
 import Cable from 'actioncable';
 import Canvas from './Canvas';
 import '../styles/styles.css';
-
-const KEY_MAP = { 37: 'left', 38: 'up', 39: 'right', 40: 'down' }
+import {KEY_MAP} from '../constants/keyMap.js';
+import {VELOCITY, BOARD_WIDTH, BOARD_HEIGHT} from '../constants/settings.js';
 
 class Layout extends React.Component {
   constructor(props) {
@@ -12,6 +12,8 @@ class Layout extends React.Component {
 
     this.state = {
       gameSocket: {},
+      boardWidth: BOARD_WIDTH,
+      boardHeight: BOARD_HEIGHT,
       player: {
         name: 'playerName: yoyo',
         score: 0,
@@ -26,7 +28,7 @@ class Layout extends React.Component {
   componentDidMount() {
     this.createGameSocket();
     window.addEventListener('keydown', this.handleDirectionShift);
-    this.interval = setInterval(() => this.movePlayer(), 40);
+    this.interval = setInterval(() => this.movePlayer(), 25);
   };
 
   componentWillUnmount() {
@@ -43,6 +45,28 @@ class Layout extends React.Component {
 
   movePlayer = () => {
     let player = {...this.state.player}
+    this.handleMouthOpenAngle(player)
+    this.handleDirection(player)
+    this.handleWrap(player);
+    this.setState({player: player});
+  };
+
+  handleDirection = (player) => {
+    if (player.direction === 'left') {
+      player.location.x -= VELOCITY;
+    }
+    if (player.direction === 'right') {
+      player.location.x += VELOCITY;
+    }
+    if (player.direction === 'up') {
+      player.location.y -= VELOCITY;
+    }
+    if (player.direction === 'down') {
+      player.location.y += VELOCITY;
+    }
+  }
+
+  handleMouthOpenAngle = (player) => {
     if (player.mouthOpenValue <= 0) {
       player.mouthPosition = 1;
     } else if (player.mouthOpenValue >= 40) {
@@ -50,21 +74,25 @@ class Layout extends React.Component {
     }
 
     player.mouthOpenValue += (8 * player.mouthPosition);
+  }
 
-    if (player.direction === 'left') {
-      player.location.x -= 7;
+  handleWrap = (player) => {
+    if (player.location.x >= this.state.boardWidth) {
+      player.location.x = 1;
     }
-    if (player.direction === 'right') {
-      player.location.x += 7;
+
+    if (player.location.x <= 0) {
+      player.location.x = this.state.boardWidth;
     }
-    if (player.direction === 'up') {
-      player.location.y -= 7;
+
+    if (player.location.y >= this.state.boardHeight) {
+      player.location.y = 1;
     }
-    if (player.direction === 'down') {
-      player.location.y += 7;
+
+    if (player.location.y <= 0) {
+      player.location.y = this.state.boardHeight;
     }
-    this.setState({player: player})
-  };
+  }
 
   handleGameData = response => {
     this.setState({player: response.gameData.player});
@@ -94,7 +122,11 @@ class Layout extends React.Component {
       <div className="layout" onKeyDown={this.handleDirectionShift}>
         <h2>Pacman</h2>
         <div className='game'>
-          <Canvas player={this.state.player} />
+          <Canvas
+            player={this.state.player}
+            height={this.state.boardHeight}
+            width={this.state.boardWidth}
+          />
         </div>
       </div>
     );
