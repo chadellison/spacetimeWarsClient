@@ -4,7 +4,12 @@ import Cable from 'actioncable';
 import Canvas from './Canvas';
 import '../styles/styles.css';
 import {KEY_MAP} from '../constants/keyMap.js';
-import {VELOCITY, BOARD_WIDTH, BOARD_HEIGHT} from '../constants/settings.js';
+import {BOARD_WIDTH, BOARD_HEIGHT} from '../constants/settings.js';
+import {
+  handleDirection,
+  handleMouthOpenAngle,
+  handleWrap
+} from '../helpers/gameLogic.js';
 
 class Layout extends React.Component {
   constructor(props) {
@@ -35,69 +40,6 @@ class Layout extends React.Component {
     clearInterval(this.interval);
   }
 
-  handleDirectionShift = (event) => {
-    const keyCode = event.keyCode
-    if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== this.state.player.direction) {
-      const player = {...this.state.player, direction: KEY_MAP[keyCode]}
-      this.sendGameEvent({player: player})
-    }
-  }
-
-  movePlayer = () => {
-    let player = {...this.state.player}
-    this.handleMouthOpenAngle(player)
-    this.handleDirection(player)
-    this.handleWrap(player);
-    this.setState({player: player});
-  };
-
-  handleDirection = (player) => {
-    if (player.direction === 'left') {
-      player.location.x -= VELOCITY;
-    }
-    if (player.direction === 'right') {
-      player.location.x += VELOCITY;
-    }
-    if (player.direction === 'up') {
-      player.location.y -= VELOCITY;
-    }
-    if (player.direction === 'down') {
-      player.location.y += VELOCITY;
-    }
-  }
-
-  handleMouthOpenAngle = (player) => {
-    if (player.mouthOpenValue <= 0) {
-      player.mouthPosition = 1;
-    } else if (player.mouthOpenValue >= 40) {
-      player.mouthPosition = -1;
-    }
-
-    player.mouthOpenValue += (8 * player.mouthPosition);
-  }
-
-  handleWrap = (player) => {
-    if (player.location.x >= this.state.boardWidth) {
-      player.location.x = 1;
-    }
-
-    if (player.location.x <= 0) {
-      player.location.x = this.state.boardWidth;
-    }
-
-    if (player.location.y >= this.state.boardHeight) {
-      player.location.y = 1;
-    }
-
-    if (player.location.y <= 0) {
-      player.location.y = this.state.boardHeight;
-    }
-  }
-
-  handleGameData = response => {
-    this.setState({player: response.gameData.player});
-  };
-
   createGameSocket() {
     let cable = Cable.createConsumer(WEBSOCKET_HOST)
     let gameSocket = cable.subscriptions.create({ channel: 'GameDataChannel' },
@@ -111,6 +53,26 @@ class Layout extends React.Component {
       }
     });
     this.setState({gameSocket: gameSocket})
+  };
+
+  handleDirectionShift = (event) => {
+    const keyCode = event.keyCode
+    if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== this.state.player.direction) {
+      const player = {...this.state.player, direction: KEY_MAP[keyCode]}
+      this.sendGameEvent({player: player})
+    }
+  }
+
+  movePlayer = () => {
+    let player = {...this.state.player}
+    handleMouthOpenAngle(player)
+    handleDirection(player)
+    handleWrap(player, this.state.boardWidth, this.state.boardHeight);
+    this.setState({player: player});
+  };
+
+  handleGameData = response => {
+    this.setState({player: response.gameData.player});
   };
 
   sendGameEvent = (gameEvent) => {
