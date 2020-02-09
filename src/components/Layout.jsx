@@ -54,7 +54,7 @@ class Layout extends React.Component {
           boardHeight: gameData.game.board.height,
           board: gameData.game.board.squares,
           players: allPlayers
-        })
+        });
     }).catch((error) => console.log('ERROR', error));
   }
 

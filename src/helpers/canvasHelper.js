@@ -32,7 +32,7 @@ export const drawBoard = (ctx, board) => {
       ctx.rect(coordinates[0], coordinates[1], 5, 5);
       ctx.fillStyle = '#e8da5a';
       ctx.fill();
-    }
+    };
   });
 };
 

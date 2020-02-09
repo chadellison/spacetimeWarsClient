@@ -61,8 +61,8 @@ export const findCollisionCoordinates = (player) => {
 export const createPlayer = (player) => {
   return {
     id: player.id,
-    name: 'joe bob',
-    score: 0,
+    name: player.name,
+    score: player.score,
     direction: player.direction,
     location: player.location,
     mouthOpenValue: 40,
