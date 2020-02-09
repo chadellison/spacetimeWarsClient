@@ -45,14 +45,17 @@ class Layout extends React.Component {
   }
 
   fetchPlayers() {
-    fetch(`${API_HOST}/api/v1/players`)
+    fetch(`${API_HOST}/api/v1/game`)
       .then((response) => response.json())
-      .then((jsonPlayers) => {
-        const allPlayers = jsonPlayers.map((player) => createPlayer(player));
-        this.setState({players: allPlayers})
-    }).catch((error) => {
-      console.log('ERROR', error)
-    });
+      .then((gameData) => {
+        const allPlayers = gameData.players.map((player) => createPlayer(player));
+        this.setState({
+          boardWidth: gameData.game.board.width,
+          boardHeight: gameData.game.board.height,
+          board: gameData.game.board.squares,
+          players: allPlayers
+        })
+    }).catch((error) => console.log('ERROR', error));
   }
 
   createGameSocket() {
@@ -73,13 +76,13 @@ class Layout extends React.Component {
 
   handleKeyDown = (event) => {
     const keyCode = event.keyCode
-    if (this.state.currentPlayerId) {
-      let playerLocations = {};
-      const currentPlayer = this.state.players.filter((player) => {
-        playerLocations[player.id] = player.location
-        return player.id === this.state.currentPlayerId
-      })[0];
+    let playerLocations = {};
+    const currentPlayer = this.state.players.filter((player) => {
+      playerLocations[player.id] = player.location
+      return player.id === this.state.currentPlayerId
+    })[0];
 
+    if (this.state.currentPlayerId) {
       if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.direction) {
         this.sendGameEvent({
           id: this.state.currentPlayerId,
@@ -93,6 +96,7 @@ class Layout extends React.Component {
         this.sendGameEvent({
           id: newPlayerId,
           gameEvent: 'start',
+          playerLocations: playerLocations
         });
         // use websocket id
         this.setState({currentPlayerId: newPlayerId});
