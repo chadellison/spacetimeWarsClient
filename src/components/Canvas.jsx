@@ -17,7 +17,9 @@ class Canvas extends React.Component {
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
-    drawPacman(context, this.props.player);
+    this.props.players.forEach((player) => {
+      drawPacman(context, player);
+    })
     drawBoard(context, this.props.board)
   }
 

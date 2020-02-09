@@ -1,5 +1,5 @@
 import React from 'react';
-import { WEBSOCKET_HOST } from '../api';
+import { WEBSOCKET_HOST, API_HOST } from '../api';
 import Cable from 'actioncable';
 import Canvas from './Canvas';
 import '../styles/styles.css';
@@ -13,8 +13,9 @@ import {newBoard} from '../helpers/canvasHelper.js'
 import {
   handleDirection,
   handleMouthOpenAngle,
-  handleWrap,
-  findCollisionCoordinates
+  handleWall,
+  findCollisionCoordinates,
+  createPlayer
 } from '../helpers/gameLogic.js';
 
 const DEFAULT_STATE = {
@@ -22,14 +23,8 @@ const DEFAULT_STATE = {
   boardWidth: BOARD_WIDTH,
   boardHeight: BOARD_HEIGHT,
   board: newBoard(),
-  player: {
-    name: 'playerName: yoyo',
-    score: 0,
-    direction: '',
-    location: {x: -50, y: 35},
-    mouthOpenValue: 40,
-    mouthPosition: -1,
-  }
+  currentPlayerId: null,
+  players: []
 };
 
 class Layout extends React.Component {
@@ -39,13 +34,28 @@ class Layout extends React.Component {
   };
 
   componentDidMount() {
+    this.fetchPlayers()
     this.createGameSocket();
-    window.addEventListener('keydown', this.handleDirectionShift);
-    this.interval = setInterval(() => this.movePlayer(), ANAIMATION_FRAME_RATE);
+    window.addEventListener('keydown', this.handleKeyDown);
+    this.interval = setInterval(() => this.movePlayers(), ANAIMATION_FRAME_RATE);
   };
 
   componentWillUnmount() {
     clearInterval(this.interval);
+  }
+
+  fetchPlayers() {
+    fetch(`${API_HOST}/api/v1/game`)
+      .then((response) => response.json())
+      .then((gameData) => {
+        const allPlayers = gameData.players.map((player) => createPlayer(player));
+        this.setState({
+          boardWidth: gameData.game.board.width,
+          boardHeight: gameData.game.board.height,
+          board: gameData.game.board.squares,
+          players: allPlayers
+        })
+    }).catch((error) => console.log('ERROR', error));
   }
 
   createGameSocket() {
@@ -53,31 +63,58 @@ class Layout extends React.Component {
     let gameSocket = cable.subscriptions.create({ channel: 'GameDataChannel' },
     {
       connected: () => {},
-      received: (gameData) => this.handleGameData(gameData),
-      create: function(gameEvent) {
+      received: (receivedData) => this.handleGameData(receivedData),
+      create: function(gameData) {
         this.perform('create', {
-          gameEvent: gameEvent
+          gameData: gameData
         });
-      }
+      },
     });
+
     this.setState({gameSocket: gameSocket})
   };
 
-  handleDirectionShift = (event) => {
+  handleKeyDown = (event) => {
     const keyCode = event.keyCode
-    if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== this.state.player.direction) {
-      const player = {...this.state.player, direction: KEY_MAP[keyCode]}
-      this.sendGameEvent({player: player})
-    };
+    let playerLocations = {};
+    const currentPlayer = this.state.players.filter((player) => {
+      playerLocations[player.id] = player.location
+      return player.id === this.state.currentPlayerId
+    })[0];
+
+    if (this.state.currentPlayerId) {
+      if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.direction) {
+        this.sendGameEvent({
+          id: this.state.currentPlayerId,
+          gameEvent: KEY_MAP[keyCode],
+          playerLocations: playerLocations
+        });
+      };
+    } else {
+      if (KEY_MAP[keyCode] === 'start') {
+        const newPlayerId = this.state.players.length + 1
+        this.sendGameEvent({
+          id: newPlayerId,
+          gameEvent: 'start',
+          playerLocations: playerLocations
+        });
+        // use websocket id
+        this.setState({currentPlayerId: newPlayerId});
+      }
+    }
   }
 
-  movePlayer = () => {
-    let player = {...this.state.player}
-    handleMouthOpenAngle(player)
-    handleDirection(player)
-    handleWrap(player, this.state.boardWidth, this.state.boardHeight);
-    this.handleCollision(player, this.state.board);
-    this.setState({player: player});
+  movePlayers = () => {
+    let players = [...this.state.players];
+    if (players.length > 0) {
+      players.forEach((player) => {
+        handleMouthOpenAngle(player)
+        handleDirection(player)
+        handleWall(player, this.state.boardWidth, this.state.boardHeight);
+        this.handleCollision(player, this.state.board);
+      });
+      this.setState({players: players});
+    }
   };
 
   handleCollision = (player, board) => {
@@ -90,21 +127,22 @@ class Layout extends React.Component {
   }
 
   handleGameData = response => {
-    this.setState({player: response.gameData.player});
+    const updatedPlayers = response.gameData.map((player) => createPlayer(player));
+    this.setState({players: updatedPlayers});
   };
 
-  sendGameEvent = (gameEvent) => {
-    this.state.gameSocket.create(gameEvent)
+  sendGameEvent = (gameData) => {
+    this.state.gameSocket.create(gameData)
   };
 
   render = () => {
-    const {player, boardHeight, boardWidth, board} = this.state;
+    const {players, boardHeight, boardWidth, board} = this.state;
     return (
-      <div className="layout" onKeyDown={this.handleDirectionShift}>
+      <div className="layout" onKeyDown={this.handleKeyDown}>
         <h2>Pacman</h2>
         <div className='game'>
           <Canvas
-            player={player}
+            players={players}
             height={boardHeight}
             width={boardWidth}
             board={board}

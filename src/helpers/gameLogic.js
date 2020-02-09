@@ -1,4 +1,4 @@
-import {VELOCITY, SQUARE_DISTANCE} from '../constants/settings.js';
+import {VELOCITY, SQUARE_DISTANCE, PACMAN_RADIUS} from '../constants/settings.js';
 
 export const handleDirection = (player) => {
   if (player.direction === 'left') {
@@ -25,21 +25,21 @@ export const handleMouthOpenAngle = (player) => {
   player.mouthOpenValue += (8 * player.mouthPosition);
 }
 
-export const handleWrap = (player, width, height) => {
-  if (player.location.x >= width) {
-    player.location.x = 1;
+export const handleWall = (player, width, height) => {
+  if (player.location.x >= (width - PACMAN_RADIUS)) {
+    player.location.x = (width - PACMAN_RADIUS);
   }
 
-  if (player.location.x <= 0) {
-    player.location.x = width;
+  if (player.location.x <= PACMAN_RADIUS) {
+    player.location.x = PACMAN_RADIUS;
   }
 
-  if (player.location.y >= height) {
-    player.location.y = 1;
+  if (player.location.y >= (height - PACMAN_RADIUS)) {
+    player.location.y = (height - PACMAN_RADIUS);
   }
 
-  if (player.location.y <= 0) {
-    player.location.y = height;
+  if (player.location.y <= PACMAN_RADIUS) {
+    player.location.y = PACMAN_RADIUS;
   }
 }
 
@@ -56,4 +56,16 @@ export const findCollisionCoordinates = (player) => {
     yRadius += 1
   };
   return [xRadius, yRadius];
+}
+
+export const createPlayer = (player) => {
+  return {
+    id: player.id,
+    name: 'joe bob',
+    score: 0,
+    direction: player.direction,
+    location: player.location,
+    mouthOpenValue: 40,
+    mouthPosition: -1,
+  }
 }
