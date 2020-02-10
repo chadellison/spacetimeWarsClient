@@ -14,8 +14,7 @@ import {
   handleDirection,
   handleMouthOpenAngle,
   handleWall,
-  findCollisionCoordinates,
-  createPlayer
+  findCollisionCoordinates
 } from '../helpers/gameLogic.js';
 
 const DEFAULT_STATE = {
@@ -49,22 +48,24 @@ class Layout extends React.Component {
     fetch(`${API_HOST}/api/v1/game`)
       .then((response) => response.json())
       .then((gameData) => {
-        const allPlayers = gameData.players.map((player) => createPlayer(player));
         this.setState({
           boardWidth: gameData.game.board.width,
           boardHeight: gameData.game.board.height,
           board: gameData.game.board.squares,
-          players: allPlayers
+          players: gameData.players
         });
     }).catch((error) => console.log('ERROR', error));
   }
 
   createGameSocket() {
     let cable = Cable.createConsumer(WEBSOCKET_HOST)
-    let gameSocket = cable.subscriptions.create({ channel: 'GameDataChannel', userId: this.state.userId },
+    let gameSocket = cable.subscriptions.create({
+      channel: 'GameDataChannel',
+      userId: this.state.userId
+    },
     {
       connected: () => {},
-      received: (receivedData) => this.handleGameData(receivedData),
+      received: (response) => this.setState({players: response.playerData}),
       create: function(gameData) {
         this.perform('create', {
           gameData: gameData
@@ -124,11 +125,6 @@ class Layout extends React.Component {
       this.setState({board: {...board, [key]: 0 }});
     };
   }
-
-  handleGameData = response => {
-    const updatedPlayers = response.gameData.map((player) => createPlayer(player));
-    this.setState({players: updatedPlayers});
-  };
 
   sendGameEvent = (gameData) => {
     this.state.gameSocket.create(gameData)

@@ -57,15 +57,3 @@ export const findCollisionCoordinates = (player) => {
   };
   return [xRadius, yRadius];
 }
-
-export const createPlayer = (player) => {
-  return {
-    id: player.id,
-    name: player.name,
-    score: player.score,
-    direction: player.direction,
-    location: player.location,
-    mouthOpenValue: 40,
-    mouthPosition: -1,
-  }
-}
