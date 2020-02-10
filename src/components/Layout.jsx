@@ -89,7 +89,8 @@ class Layout extends React.Component {
         this.sendGameEvent({
           id: this.state.currentPlayerId,
           gameEvent: KEY_MAP[keyCode],
-          playerLocations: playerLocations
+          playerLocations: playerLocations,
+          sentTime: new Date().getTime()
         });
       };
     } else {
@@ -97,7 +98,7 @@ class Layout extends React.Component {
         this.sendGameEvent({
           id: this.state.userId,
           gameEvent: 'start',
-          playerLocations: playerLocations
+          playerLocations: playerLocations,
         });
         this.setState({currentPlayerId: this.state.userId});
       }
