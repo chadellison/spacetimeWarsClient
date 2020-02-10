@@ -45,7 +45,7 @@ class Layout extends React.Component {
   }
 
   fetchPlayers() {
-    fetch(`${API_HOST}/api/v1/game`)
+    fetch(`${API_HOST}/api/v1/game?sentTime=${new Date().getTime()}`)
       .then((response) => response.json())
       .then((gameData) => {
         this.setState({
