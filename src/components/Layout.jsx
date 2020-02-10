@@ -99,6 +99,7 @@ class Layout extends React.Component {
           id: this.state.userId,
           gameEvent: 'start',
           playerLocations: playerLocations,
+          sentTime: new Date().getTime()
         });
         this.setState({currentPlayerId: this.state.userId});
       }
