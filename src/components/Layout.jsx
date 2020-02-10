@@ -19,6 +19,7 @@ import {
 } from '../helpers/gameLogic.js';
 
 const DEFAULT_STATE = {
+  userId: new Date().getTime(),
   gameSocket: {},
   boardWidth: BOARD_WIDTH,
   boardHeight: BOARD_HEIGHT,
@@ -34,7 +35,7 @@ class Layout extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchPlayers()
+    this.fetchPlayers();
     this.createGameSocket();
     window.addEventListener('keydown', this.handleKeyDown);
     this.interval = setInterval(() => this.movePlayers(), ANAIMATION_FRAME_RATE);
@@ -60,7 +61,7 @@ class Layout extends React.Component {
 
   createGameSocket() {
     let cable = Cable.createConsumer(WEBSOCKET_HOST)
-    let gameSocket = cable.subscriptions.create({ channel: 'GameDataChannel' },
+    let gameSocket = cable.subscriptions.create({ channel: 'GameDataChannel', userId: this.state.userId },
     {
       connected: () => {},
       received: (receivedData) => this.handleGameData(receivedData),
@@ -68,7 +69,7 @@ class Layout extends React.Component {
         this.perform('create', {
           gameData: gameData
         });
-      },
+      }
     });
 
     this.setState({gameSocket: gameSocket})
@@ -92,14 +93,12 @@ class Layout extends React.Component {
       };
     } else {
       if (KEY_MAP[keyCode] === 'start') {
-        const newPlayerId = this.state.players.length + 1
         this.sendGameEvent({
-          id: newPlayerId,
+          id: this.state.userId,
           gameEvent: 'start',
           playerLocations: playerLocations
         });
-        // use websocket id
-        this.setState({currentPlayerId: newPlayerId});
+        this.setState({currentPlayerId: this.state.userId});
       }
     }
   }

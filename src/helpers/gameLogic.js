@@ -13,7 +13,7 @@ export const handleDirection = (player) => {
   if (player.direction === 'down') {
     player.location.y += VELOCITY;
   }
-}
+};
 
 export const handleMouthOpenAngle = (player) => {
   if (player.mouthOpenValue <= 0) {
@@ -23,7 +23,7 @@ export const handleMouthOpenAngle = (player) => {
   }
 
   player.mouthOpenValue += (8 * player.mouthPosition);
-}
+};
 
 export const handleWall = (player, width, height) => {
   if (player.location.x >= (width - PACMAN_RADIUS)) {
