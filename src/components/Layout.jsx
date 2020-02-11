@@ -24,7 +24,9 @@ const DEFAULT_STATE = {
   boardHeight: BOARD_HEIGHT,
   board: newBoard(),
   currentPlayerId: null,
-  players: []
+  players: [],
+  sentTime: null,
+  latency: 0.01
 };
 
 class Layout extends React.Component {
@@ -65,7 +67,7 @@ class Layout extends React.Component {
     },
     {
       connected: () => {},
-      received: (response) => this.setState({players: response.playerData}),
+      received: (response) => this.handleReceivedEvent(response.playerData),
       create: function(gameData) {
         this.perform('create', {
           gameData: gameData
@@ -84,14 +86,16 @@ class Layout extends React.Component {
       return player.id === this.state.currentPlayerId
     })[0];
 
+    const sentTime = new Date().getTime();
     if (this.state.currentPlayerId) {
       if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.direction) {
         this.sendGameEvent({
           id: this.state.currentPlayerId,
           gameEvent: KEY_MAP[keyCode],
           playerLocations: playerLocations,
-          sentTime: new Date().getTime()
+          latency: this.state.latency
         });
+        this.setState({sentTime: sentTime});
       };
     } else {
       if (KEY_MAP[keyCode] === 'start') {
@@ -99,11 +103,16 @@ class Layout extends React.Component {
           id: this.state.userId,
           gameEvent: 'start',
           playerLocations: playerLocations,
-          sentTime: new Date().getTime()
+          latency: this.state.latency
         });
-        this.setState({currentPlayerId: this.state.userId});
+        this.setState({currentPlayerId: this.state.userId, sentTime: sentTime});
       }
     }
+  }
+
+  handleReceivedEvent = (players) => {
+    const latency = (new Date().getTime() - this.state.sentTime)
+    this.setState({players: players, latency: latency})
   }
 
   movePlayers = () => {
