@@ -24,9 +24,7 @@ const DEFAULT_STATE = {
   boardHeight: BOARD_HEIGHT,
   board: newBoard(),
   currentPlayerId: null,
-  players: [],
-  sentTime: null,
-  latency: 0.01
+  players: []
 };
 
 class Layout extends React.Component {
@@ -47,7 +45,7 @@ class Layout extends React.Component {
   }
 
   fetchPlayers() {
-    fetch(`${API_HOST}/api/v1/game?sentTime=${new Date().getTime()}`)
+    fetch(`${API_HOST}/api/v1/game`)
       .then((response) => response.json())
       .then((gameData) => {
         this.setState({
@@ -67,7 +65,7 @@ class Layout extends React.Component {
     },
     {
       connected: () => {},
-      received: (response) => this.handleReceivedEvent(response.playerData),
+      received: (response) => this.setState({players: response.playerData}),
       create: function(gameData) {
         this.perform('create', {
           gameData: gameData
@@ -86,16 +84,13 @@ class Layout extends React.Component {
       return player.id === this.state.currentPlayerId
     })[0];
 
-    const sentTime = new Date().getTime();
     if (this.state.currentPlayerId) {
       if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.direction) {
         this.sendGameEvent({
           id: this.state.currentPlayerId,
           gameEvent: KEY_MAP[keyCode],
           playerLocations: playerLocations,
-          latency: this.state.latency
         });
-        this.setState({sentTime: sentTime});
       };
     } else {
       if (KEY_MAP[keyCode] === 'start') {
@@ -103,16 +98,10 @@ class Layout extends React.Component {
           id: this.state.userId,
           gameEvent: 'start',
           playerLocations: playerLocations,
-          latency: this.state.latency
         });
-        this.setState({currentPlayerId: this.state.userId, sentTime: sentTime});
+        this.setState({currentPlayerId: this.state.userId});
       }
     }
-  }
-
-  handleReceivedEvent = (players) => {
-    const latency = (new Date().getTime() - this.state.sentTime)
-    this.setState({players: players, latency: latency})
   }
 
   movePlayers = () => {
