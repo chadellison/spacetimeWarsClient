@@ -110,6 +110,10 @@ class Layout extends React.Component {
       players = [...players, playerData]
     }
 
+    if (playerData.lastEvent === 'remove') {
+      players = players.filter((player) => player.id !== playerData.id)
+    }
+
     const updatedPlayers = players.map((player) => {
       if (player.id === playerData.id) {
         return updatePlayer(playerData);
