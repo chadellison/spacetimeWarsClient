@@ -14,7 +14,8 @@ import {
   handleDirection,
   handleMouthOpenAngle,
   handleWall,
-  findCollisionCoordinates
+  findCollisionCoordinates,
+  updatePlayer
 } from '../helpers/gameLogic.js';
 
 const DEFAULT_STATE = {
@@ -45,14 +46,14 @@ class Layout extends React.Component {
   }
 
   fetchPlayers() {
-    fetch(`${API_HOST}/api/v1/game?sent_time=${Date.now()}`)
+    fetch(`${API_HOST}/api/v1/game`)
       .then((response) => response.json())
       .then((gameData) => {
         this.setState({
           boardWidth: gameData.game.board.width,
           boardHeight: gameData.game.board.height,
           board: gameData.game.board.squares,
-          players: gameData.players
+          players: gameData.players.map((player) => updatePlayer(player))
         });
     }).catch((error) => console.log('ERROR', error));
   }
@@ -65,7 +66,7 @@ class Layout extends React.Component {
     },
     {
       connected: () => {},
-      received: (response) => this.setState({players: response.playerData}),
+      received: (response) => this.handleReceivedEvent(response.playerData),
       create: function(gameData) {
         this.perform('create', {
           gameData: gameData
@@ -89,8 +90,7 @@ class Layout extends React.Component {
         this.sendGameEvent({
           id: this.state.currentPlayerId,
           gameEvent: KEY_MAP[keyCode],
-          playerLocations: playerLocations,
-          sentTime: Date.now()
+          location: currentPlayer.location
         });
       };
     } else {
@@ -98,12 +98,26 @@ class Layout extends React.Component {
         this.sendGameEvent({
           id: this.state.userId,
           gameEvent: 'start',
-          playerLocations: playerLocations,
-          sentTime: Date.now()
         });
         this.setState({currentPlayerId: this.state.userId});
       }
     }
+  }
+
+  handleReceivedEvent(playerData) {
+    let players = [...this.state.players];
+    if (playerData.lastEvent === 'start') {
+      players = [...players, playerData]
+    }
+
+    const updatedPlayers = players.map((player) => {
+      if (player.id === playerData.id) {
+        return updatePlayer(playerData);
+      } else {
+        return player;
+      };
+    });
+    this.setState({players: updatedPlayers});
   }
 
   movePlayers = () => {

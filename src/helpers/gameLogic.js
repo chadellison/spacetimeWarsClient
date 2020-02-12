@@ -1,4 +1,9 @@
-import {VELOCITY, SQUARE_DISTANCE, PACMAN_RADIUS} from '../constants/settings.js';
+import {
+  VELOCITY,
+  SQUARE_DISTANCE,
+  PACMAN_RADIUS,
+  ANAIMATION_FRAME_RATE
+} from '../constants/settings.js';
 
 export const handleDirection = (player) => {
   if (player.direction === 'left') {
@@ -14,6 +19,39 @@ export const handleDirection = (player) => {
     player.location.y += VELOCITY;
   }
 };
+
+export const distanceTraveled = (elapsedTime, velocity) => {
+  const gameTime = elapsedTime / ANAIMATION_FRAME_RATE;
+  return Math.round(velocity * gameTime);
+}
+
+export const updatePlayer = (player) => {
+  const elapsedTime = Date.now() - player.updatedAt;
+  const distance = distanceTraveled(elapsedTime, player.velocity);
+  player.location = handleLocation(player, distance);
+  return player
+}
+
+export const handleLocation = (player, distance) => {
+  let x;
+  let y;
+  switch (player.direction) {
+    case 'up':
+      y = player.location.y - distance;
+      return {x: player.location.x, y: y };
+    case 'left':
+      x = player.location.x - distance;
+      return {x: x, y: player.location.y};
+    case 'right':
+      x = player.location.x + distance;
+      return {x: x, y: player.location.y};
+    case 'down':
+      y = player.location.y + distance;
+      return {x: player.location.x, y: y};
+    default:
+      return player.location;
+  };
+}
 
 export const handleMouthOpenAngle = (player) => {
   if (player.mouthOpenValue <= 0) {
