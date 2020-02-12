@@ -45,7 +45,7 @@ class Layout extends React.Component {
   }
 
   fetchPlayers() {
-    fetch(`${API_HOST}/api/v1/game`)
+    fetch(`${API_HOST}/api/v1/game?sent_time=${Date.now()}`)
       .then((response) => response.json())
       .then((gameData) => {
         this.setState({
@@ -90,6 +90,7 @@ class Layout extends React.Component {
           id: this.state.currentPlayerId,
           gameEvent: KEY_MAP[keyCode],
           playerLocations: playerLocations,
+          sentTime: Date.now()
         });
       };
     } else {
@@ -98,6 +99,7 @@ class Layout extends React.Component {
           id: this.state.userId,
           gameEvent: 'start',
           playerLocations: playerLocations,
+          sentTime: Date.now()
         });
         this.setState({currentPlayerId: this.state.userId});
       }
