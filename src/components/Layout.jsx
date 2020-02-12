@@ -47,19 +47,6 @@ class Layout extends React.Component {
     clearInterval(this.interval);
   }
 
-  fetchPlayers() {
-    fetch(`${API_HOST}/api/v1/game`)
-      .then((response) => response.json())
-      .then((gameData) => {
-        this.setState({
-          boardWidth: gameData.game.board.width,
-          boardHeight: gameData.game.board.height,
-          board: gameData.game.board.squares,
-          players: gameData.players.map((player) => updatePlayer(player))
-        });
-    }).catch((error) => console.log('ERROR', error));
-  }
-
   fetchTime() {
     const sentTime = Date.now()
     fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
@@ -71,8 +58,21 @@ class Layout extends React.Component {
           timeData.difference,
           timeData.serverTime
         );
-        console.log('***********', clockDifferece)
+        console.log('clock difference: ***********', clockDifferece)
         this.setState({clockDifferece: clockDifferece})
+    }).catch((error) => console.log('ERROR', error));
+  }
+
+  fetchPlayers() {
+    fetch(`${API_HOST}/api/v1/game`)
+      .then((response) => response.json())
+      .then((gameData) => {
+        this.setState({
+          boardWidth: gameData.game.board.width,
+          boardHeight: gameData.game.board.height,
+          board: gameData.game.board.squares,
+          players: gameData.players.map((player) => updatePlayer(player))
+        });
     }).catch((error) => console.log('ERROR', error));
   }
 
@@ -98,9 +98,6 @@ class Layout extends React.Component {
   findClockDifference = (sentTime, responseTime, serverDifference, serverTime) => {
     const roundTripTime = responseTime - sentTime
     let clientDifference = responseTime - serverTime
-    if (clientDifference < 0) {
-      clientDifference *= -1
-    }
     return Math.round(serverDifference + clientDifference - roundTripTime)
   }
 
@@ -143,7 +140,7 @@ class Layout extends React.Component {
 
     const updatedPlayers = players.map((player) => {
       if (player.id === playerData.id) {
-        return updatePlayer(playerData);
+        return updatePlayer(playerData, this.state.clockDifferece);
       } else {
         return player;
       };
