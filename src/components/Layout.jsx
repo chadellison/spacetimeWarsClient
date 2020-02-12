@@ -25,7 +25,8 @@ const DEFAULT_STATE = {
   boardHeight: BOARD_HEIGHT,
   board: newBoard(),
   currentPlayerId: null,
-  players: []
+  players: [],
+  clockDifferece: 0
 };
 
 class Layout extends React.Component {
@@ -35,6 +36,7 @@ class Layout extends React.Component {
   };
 
   componentDidMount() {
+    this.fetchTime();
     this.fetchPlayers();
     this.createGameSocket();
     window.addEventListener('keydown', this.handleKeyDown);
@@ -58,6 +60,22 @@ class Layout extends React.Component {
     }).catch((error) => console.log('ERROR', error));
   }
 
+  fetchTime() {
+    const sentTime = Date.now()
+    fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
+      .then((response) => response.json())
+      .then((timeData) => {
+        const clockDifferece = this.findClockDifference(
+          sentTime,
+          Date.now(),
+          timeData.difference,
+          timeData.serverTime
+        );
+        console.log('***********', clockDifferece)
+        this.setState({clockDifferece: clockDifferece})
+    }).catch((error) => console.log('ERROR', error));
+  }
+
   createGameSocket() {
     let cable = Cable.createConsumer(WEBSOCKET_HOST)
     let gameSocket = cable.subscriptions.create({
@@ -76,6 +94,15 @@ class Layout extends React.Component {
 
     this.setState({gameSocket: gameSocket})
   };
+
+  findClockDifference = (sentTime, responseTime, serverDifference, serverTime) => {
+    const roundTripTime = responseTime - sentTime
+    let clientDifference = responseTime - serverTime
+    if (clientDifference < 0) {
+      clientDifference *= -1
+    }
+    return Math.round(serverDifference + clientDifference - roundTripTime)
+  }
 
   handleKeyDown = (event) => {
     const keyCode = event.keyCode
