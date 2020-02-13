@@ -36,7 +36,7 @@ class Layout extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchTime();
+    // this.fetchTime();
     this.fetchPlayers();
     this.createGameSocket();
     window.addEventListener('keydown', this.handleKeyDown);
