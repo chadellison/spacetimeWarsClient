@@ -98,7 +98,7 @@ class Layout extends React.Component {
   findClockDifference = (sentTime, responseTime, serverDifference, serverTime) => {
     const roundTripTime = responseTime - sentTime
     let clientDifference = responseTime - serverTime
-    return Math.round(serverDifference + clientDifference - roundTripTime)
+    return serverDifference + clientDifference - roundTripTime
   }
 
   handleKeyDown = (event) => {
