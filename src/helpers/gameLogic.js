@@ -25,9 +25,9 @@ export const distanceTraveled = (elapsedTime, velocity) => {
   return Math.round(velocity * gameTime);
 }
 
-export const updatePlayer = (player, clockDifferece) => {
+export const updatePlayer = (player, clockDifference) => {
   const currentTime = Date.now();
-  const elapsedTime = (currentTime + clockDifferece) - player.updatedAt;
+  const elapsedTime = (currentTime + clockDifference) - player.updatedAt + 100;
   const distance = distanceTraveled(elapsedTime, player.velocity);
   player.location = handleLocation(player, distance);
   return player

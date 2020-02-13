@@ -26,7 +26,7 @@ const DEFAULT_STATE = {
   board: newBoard(),
   currentPlayerId: null,
   players: [],
-  clockDifferece: 0
+  clockDifference: 0
 };
 
 class Layout extends React.Component {
@@ -36,8 +36,7 @@ class Layout extends React.Component {
   };
 
   componentDidMount() {
-    // this.fetchTime();
-    this.fetchPlayers();
+    this.fetchTime();
     this.createGameSocket();
     window.addEventListener('keydown', this.handleKeyDown);
     this.interval = setInterval(() => this.movePlayers(), ANAIMATION_FRAME_RATE);
@@ -47,31 +46,33 @@ class Layout extends React.Component {
     clearInterval(this.interval);
   }
 
-  // fetchTime() {
-  //   const sentTime = Date.now()
-  //   fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
-  //     .then((response) => response.json())
-  //     .then((timeData) => {
-  //       const clockDifferece = this.findClockDifference(
-  //         sentTime,
-  //         Date.now(),
-  //         timeData.difference,
-  //         timeData.serverTime
-  //       );
-  //       console.log('clock difference: ***********', clockDifferece)
-  //       this.setState({clockDifferece: clockDifferece})
-  //   }).catch((error) => console.log('ERROR', error));
-  // }
+  fetchTime() {
+    const sentTime = Date.now()
+    fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
+      .then((response) => response.json())
+      .then((timeData) => {
+        const clockDifference = this.findClockDifference(
+          sentTime,
+          Date.now(),
+          timeData.difference,
+          timeData.serverTime
+        );
+        console.log('clock difference: ***********', clockDifference)
+        this.fetchPlayers();
+        this.setState({clockDifference: clockDifference})
+    }).catch((error) => console.log('ERROR', error));
+  }
 
   fetchPlayers() {
     fetch(`${API_HOST}/api/v1/game`)
       .then((response) => response.json())
       .then((gameData) => {
+        const players = gameData.players.map((player) => updatePlayer(player, this.state.clockDifference));
         this.setState({
           boardWidth: gameData.game.board.width,
           boardHeight: gameData.game.board.height,
           board: gameData.game.board.squares,
-          players: gameData.players.map((player) => updatePlayer(player))
+          players: players
         });
     }).catch((error) => console.log('ERROR', error));
   }
@@ -152,7 +153,7 @@ class Layout extends React.Component {
 
     const updatedPlayers = players.map((player) => {
       if (player.id === playerData.id) {
-        return updatePlayer(playerData, this.state.clockDifferece);
+        return updatePlayer(playerData, this.state.clockDifference);
       } else {
         return player;
       };
