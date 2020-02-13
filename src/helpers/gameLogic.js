@@ -21,7 +21,7 @@ export const handleDirection = (player) => {
 };
 
 export const distanceTraveled = (elapsedTime, velocity) => {
-  const gameTime = elapsedTime / ANAIMATION_FRAME_RATE;
+  const gameTime = (elapsedTime - 100) / ANAIMATION_FRAME_RATE;
   return Math.round(velocity * gameTime);
 }
 

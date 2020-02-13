@@ -97,16 +97,9 @@ class Layout extends React.Component {
 
   findClockDifference = (sentTime, responseTime, serverDifference, serverTime) => {
     const roundTripTime = responseTime - sentTime
-    // console.log('sent Time', sentTime)
-    // console.log('server', serverTime)
-    // console.log('responseTime', responseTime)
-    // console.log('round trip time', roundTripTime)
-    // console.log('server diff', serverDifference)
-    let clientDifference = responseTime - serverTime
-    // console.log('clientDifference', clientDifference)
-    // console.log('all:', serverDifference + clientDifference - roundTripTime)
-    let x = ((serverDifference + clientDifference) / 2) - roundTripTime
-    return roundTripTime - x
+    const clientDifference = responseTime - serverTime
+    const difference = ((serverDifference + clientDifference) / 2) - roundTripTime
+    return roundTripTime - difference
   }
 
   handleKeyDown = (event) => {
