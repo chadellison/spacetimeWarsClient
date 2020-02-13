@@ -47,21 +47,21 @@ class Layout extends React.Component {
     clearInterval(this.interval);
   }
 
-  fetchTime() {
-    const sentTime = Date.now()
-    fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
-      .then((response) => response.json())
-      .then((timeData) => {
-        const clockDifferece = this.findClockDifference(
-          sentTime,
-          Date.now(),
-          timeData.difference,
-          timeData.serverTime
-        );
-        console.log('clock difference: ***********', clockDifferece)
-        this.setState({clockDifferece: clockDifferece})
-    }).catch((error) => console.log('ERROR', error));
-  }
+  // fetchTime() {
+  //   const sentTime = Date.now()
+  //   fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
+  //     .then((response) => response.json())
+  //     .then((timeData) => {
+  //       const clockDifferece = this.findClockDifference(
+  //         sentTime,
+  //         Date.now(),
+  //         timeData.difference,
+  //         timeData.serverTime
+  //       );
+  //       console.log('clock difference: ***********', clockDifferece)
+  //       this.setState({clockDifferece: clockDifferece})
+  //   }).catch((error) => console.log('ERROR', error));
+  // }
 
   fetchPlayers() {
     fetch(`${API_HOST}/api/v1/game`)
