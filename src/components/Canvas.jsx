@@ -4,14 +4,11 @@ import {drawPacman, drawBoard} from '../helpers/canvasHelper.js'
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
-    const canvasRef = React.createRef()
-    this.state = {
-      canvasRef: canvasRef
-    }
+    this.canvasRef = React.createRef();
   }
 
   componentDidMount() {
-    const canvas = this.state.canvasRef.current;
+    const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
     context.fillRect(0, 0, canvas.width, canvas.height);
     this.setState({
@@ -21,8 +18,8 @@ class Canvas extends React.Component {
   }
 
   componentDidUpdate() {
-    const canvas = this.state.canvas;
-    const context = this.state.context;
+    const canvas = this.canvasRef.current;
+    const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
     this.props.players.forEach((player) => {
       drawPacman(context, player);
@@ -34,7 +31,7 @@ class Canvas extends React.Component {
     return (
       <canvas
         className="canvas"
-        ref={this.state.canvasRef}
+        ref={this.canvasRef}
         width={this.props.width}
         height={this.props.height}
       />
