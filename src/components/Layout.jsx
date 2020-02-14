@@ -47,19 +47,14 @@ class Layout extends React.Component {
   }
 
   fetchTime() {
-    const sentTime = Date.now()
-    fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
+    const sentTime = Date.now();
+    const startTime = new Date('2020-01-01 06:00:00 UTC').getTime();
+    fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}&start_time=${startTime}`)
       .then((response) => response.json())
       .then((timeData) => {
-        const clockDifference = this.findClockDifference(
-          sentTime,
-          Date.now(),
-          timeData.difference,
-          timeData.serverTime
-        );
-        console.log('clock difference: ***********', clockDifference)
+        console.log('clock difference: ***********', timeData.difference)
         this.fetchPlayers();
-        this.setState({clockDifference: clockDifference})
+        this.setState({clockDifference: timeData.difference})
     }).catch((error) => console.log('ERROR', error));
   }
 
@@ -95,24 +90,6 @@ class Layout extends React.Component {
 
     this.setState({gameSocket: gameSocket})
   };
-
-  findClockDifference = (sentTime, responseTime, serverDifference, serverTime) => {
-    const roundTripTime = responseTime - sentTime
-    if (serverDifference < 0) {
-      serverDifference *= -1
-    }
-
-    let clientDifference = responseTime - serverTime
-
-    if (clientDifference < 0) {
-      clientDifference *= -1
-    }
-
-    const difference = ((serverDifference + clientDifference) / 2) - roundTripTime
-    // value is positive when the server is behind
-    // value is negative when the server is ahead
-    return difference;
-  }
 
   handleKeyDown = (event) => {
     const keyCode = event.keyCode
