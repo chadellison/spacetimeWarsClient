@@ -168,7 +168,7 @@ class Layout extends React.Component {
     const {players, boardHeight, boardWidth, board} = this.state;
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
-        <h2>Pacman</h2>
+        <h2>Tanks</h2>
         <div className='game'>
           <Canvas
             players={players}
