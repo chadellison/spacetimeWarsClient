@@ -96,7 +96,7 @@ class Layout extends React.Component {
     })[0];
 
     if (this.state.currentPlayerId) {
-      if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.direction) {
+      if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.lastEvent) {
         this.sendGameEvent({
           id: this.state.currentPlayerId,
           gameEvent: KEY_MAP[keyCode],

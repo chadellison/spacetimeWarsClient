@@ -12,10 +12,9 @@ export const distanceTraveled = (elapsedTime, velocity) => {
 
 export const updatePlayer = (player, clockDifference) => {
   const currentTime = Date.now();
-  const timeOffset = 100;
-  const elapsedTime = currentTime - clockDifference - player.updatedAt - timeOffset;
-  const distance = distanceTraveled(elapsedTime, player.velocity);
+  const elapsedTime = currentTime - clockDifference - player.updatedAt;
   player.angle = handleAngle(player, elapsedTime);
+  const distance = distanceTraveled(elapsedTime, player.velocity);
   player.location = handleLocation(player, distance);
   return player
 }
