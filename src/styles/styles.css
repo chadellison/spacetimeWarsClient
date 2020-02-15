@@ -40,3 +40,7 @@ body {
   /* background: black; */
   background: #151313;
 }
+
+.hidden {
+  display: none;
+}

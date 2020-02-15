@@ -7,10 +7,10 @@ import {
 
 export const handleDirection = (player) => {
   if (player.direction === 'left') {
-    player.location.x -= VELOCITY;
+    player.rotation -= 0.1;
   }
   if (player.direction === 'right') {
-    player.location.x += VELOCITY;
+    player.rotation += 0.1;
   }
   if (player.direction === 'up') {
     player.location.y -= VELOCITY;
@@ -31,6 +31,7 @@ export const updatePlayer = (player, clockDifference) => {
   const elapsedTime = currentTime - clockDifference - player.updatedAt - timeOffset;
   const distance = distanceTraveled(elapsedTime, player.velocity);
   player.location = handleLocation(player, distance);
+  player.rotation = handleRotation(player, elapsedTime);
   return player
 }
 
@@ -41,12 +42,12 @@ export const handleLocation = (player, distance) => {
     case 'up':
       y = player.location.y - distance;
       return {x: player.location.x, y: y };
-    case 'left':
-      x = player.location.x - distance;
-      return {x: x, y: player.location.y};
-    case 'right':
-      x = player.location.x + distance;
-      return {x: x, y: player.location.y};
+    // case 'left':
+    //   x = player.location.x - distance;
+    //   return {x: x, y: player.location.y};
+    // case 'right':
+    //   x = player.location.x + distance;
+    //   return {x: x, y: player.location.y};
     case 'down':
       y = player.location.y + distance;
       return {x: player.location.x, y: y};
@@ -55,33 +56,34 @@ export const handleLocation = (player, distance) => {
   };
 }
 
-export const handleMouthOpenAngle = (player) => {
-  if (player.mouthOpenValue <= 0) {
-    player.mouthPosition = 1;
-  } else if (player.mouthOpenValue >= 40) {
-    player.mouthPosition = -1;
-  }
-
-  player.mouthOpenValue += (8 * player.mouthPosition);
-};
-
-export const handleWall = (player, width, height) => {
-  if (player.location.x >= (width - PACMAN_RADIUS)) {
-    player.location.x = (width - PACMAN_RADIUS);
-  }
-
-  if (player.location.x <= PACMAN_RADIUS) {
-    player.location.x = PACMAN_RADIUS;
-  }
-
-  if (player.location.y >= (height - PACMAN_RADIUS)) {
-    player.location.y = (height - PACMAN_RADIUS);
-  }
-
-  if (player.location.y <= PACMAN_RADIUS) {
-    player.location.y = PACMAN_RADIUS;
-  }
+export const handleRotation = (player, rotation) => {
+  switch (player.direction) {
+    case 'left':
+      return 0.3
+    case 'right':
+      return -0.3
+    default:
+      return player.rotation;
+  };
 }
+
+// export const handleWall = (player, width, height) => {
+//   if (player.location.x >= (width - PACMAN_RADIUS)) {
+//     player.location.x = (width - PACMAN_RADIUS);
+//   }
+//
+//   if (player.location.x <= PACMAN_RADIUS) {
+//     player.location.x = PACMAN_RADIUS;
+//   }
+//
+//   if (player.location.y >= (height - PACMAN_RADIUS)) {
+//     player.location.y = (height - PACMAN_RADIUS);
+//   }
+//
+//   if (player.location.y <= PACMAN_RADIUS) {
+//     player.location.y = PACMAN_RADIUS;
+//   }
+// }
 
 export const findCollisionCoordinates = (player) => {
   const {x, y} = player.location;

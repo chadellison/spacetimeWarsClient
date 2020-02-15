@@ -1,5 +1,6 @@
 import React from 'react';
-import {drawPacman, drawBoard} from '../helpers/canvasHelper.js'
+import {drawShip, drawBoard} from '../helpers/canvasHelper.js';
+import fighterShip from "../images/fighterShip.png";
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -11,10 +12,14 @@ class Canvas extends React.Component {
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
     context.fillRect(0, 0, canvas.width, canvas.height);
-    this.setState({
-      canvas: canvas,
-      context: context
-    });
+    const fighterShip = this.refs.ship
+    fighterShip.onload = () => {
+      this.setState({
+        canvas: canvas,
+        context: context,
+        fighterShip: fighterShip
+      });
+    }
   }
 
   componentDidUpdate() {
@@ -22,19 +27,23 @@ class Canvas extends React.Component {
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
     this.props.players.forEach((player) => {
-      drawPacman(context, player);
-    })
-    drawBoard(context, this.props.board)
+      drawShip(context, player, this.state.fighterShip);
+      // context.drawImage(this.state.fighterShip, 0, 0);
+    });
+    // drawBoard(context, this.props.board)
   }
 
   render() {
     return (
-      <canvas
-        className="canvas"
-        ref={this.canvasRef}
-        width={this.props.width}
-        height={this.props.height}
-      />
+      <div>
+        <canvas
+          className="canvas"
+          ref={this.canvasRef}
+          width={this.props.width}
+          height={this.props.height}
+        />
+        <img ref="ship" src={fighterShip} className="hidden" />
+      </div>
     );
   };
 }

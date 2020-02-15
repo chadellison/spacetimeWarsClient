@@ -9,10 +9,9 @@ import {
   BOARD_HEIGHT,
   ANAIMATION_FRAME_RATE
 } from '../constants/settings.js';
-import {newBoard} from '../helpers/canvasHelper.js'
+// import {newBoard} from '../helpers/canvasHelper.js'
 import {
   handleDirection,
-  handleMouthOpenAngle,
   handleWall,
   findCollisionCoordinates,
   updatePlayer
@@ -23,10 +22,10 @@ const DEFAULT_STATE = {
   gameSocket: {},
   boardWidth: BOARD_WIDTH,
   boardHeight: BOARD_HEIGHT,
-  board: newBoard(),
+  // board: newBoard(),
   currentPlayerId: null,
   players: [],
-  clockDifference: 0
+  clockDifference: 0,
 };
 
 class Layout extends React.Component {
@@ -39,6 +38,7 @@ class Layout extends React.Component {
     this.fetchTime();
     this.createGameSocket();
     window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('keyup', this.handleKeyUp);
     this.interval = setInterval(() => this.movePlayers(), ANAIMATION_FRAME_RATE);
   };
 
@@ -93,9 +93,7 @@ class Layout extends React.Component {
 
   handleKeyDown = (event) => {
     const keyCode = event.keyCode
-    let playerLocations = {};
     const currentPlayer = this.state.players.filter((player) => {
-      playerLocations[player.id] = player.location
       return player.id === this.state.currentPlayerId
     })[0];
 
@@ -106,6 +104,7 @@ class Layout extends React.Component {
           gameEvent: KEY_MAP[keyCode],
           location: currentPlayer.location
         });
+        this.setState({currentPlayerId: this.state.userId});
       };
     } else {
       if (KEY_MAP[keyCode] === 'start') {
@@ -115,6 +114,30 @@ class Layout extends React.Component {
         });
         this.setState({currentPlayerId: this.state.userId});
       }
+    }
+  }
+
+  handleKeyUp = (event) => {
+    const keyCode = event.keyCode
+    let userEvent;
+
+    const currentPlayer = this.state.players.filter((player) => {
+      return player.id === this.state.currentPlayerId
+    })[0];
+
+    if ('right' === KEY_MAP[keyCode]) {
+      this.sendGameEvent({
+        id: this.state.userId,
+        gameEvent: 'rightStop',
+        location: currentPlayer.location
+      });
+    }
+    if ('left' === KEY_MAP[keyCode]) {
+      this.sendGameEvent({
+        id: this.state.userId,
+        gameEvent: 'leftStop',
+        location: currentPlayer.location
+      });
     }
   }
 
@@ -142,9 +165,8 @@ class Layout extends React.Component {
     let players = [...this.state.players];
     if (players.length > 0) {
       players.forEach((player) => {
-        handleMouthOpenAngle(player)
         handleDirection(player)
-        handleWall(player, this.state.boardWidth, this.state.boardHeight);
+        // handleWall(player, this.state.boardWidth, this.state.boardHeight);
         this.handleCollision(player, this.state.board);
       });
       this.setState({players: players});
