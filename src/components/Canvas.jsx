@@ -28,9 +28,7 @@ class Canvas extends React.Component {
     context.clearRect(0, 0, canvas.width, canvas.height);
     this.props.players.forEach((player) => {
       drawShip(context, player, this.state.fighterShip);
-      // context.drawImage(this.state.fighterShip, 0, 0);
     });
-    // drawBoard(context, this.props.board)
   }
 
   render() {

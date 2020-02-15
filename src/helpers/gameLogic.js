@@ -21,17 +21,19 @@ export const updatePlayer = (player, clockDifference) => {
 
 export const handleLocation = (player, distance) => {
   const slope = Math.tan(player.angle * Math.PI / 180)
+  console.log(slope, 'slope')
   const x = player.location.x + distance;
   const y = player.location.y - (slope * distance);
-  return {x: x, y: y}
+  // return {x: x, y: y}
+  return player.location
 }
 
 export const handleAngle = (player, elapsedTime) => {
   switch (player.lastEvent) {
     case 'left':
-      return 0.3 * (elapsedTime / ANAIMATION_FRAME_RATE)
+      return player.angle - 0.3 * (elapsedTime / ANAIMATION_FRAME_RATE)
     case 'right':
-      return -0.3 * (elapsedTime / ANAIMATION_FRAME_RATE)
+      return player.angle + 0.3 * (elapsedTime / ANAIMATION_FRAME_RATE)
     default:
       return player.angle;
   };

@@ -7,33 +7,31 @@ import {
 
 export const drawShip = (ctx, player, fighterShip) => {
   const {x, y} = player.location;
-  console.log('location', player.location)
-  console.log('angle', player.angle)
-  console.log('last event', player.lastEvent)
+  ctx.save();
+  const cx = x + 0.5 * fighterShip.width;
+  const cy = y + 0.5 * fighterShip.height;
 
-  const cx = x + 0.5 * fighterShip.width;  // x of shape center
-  const cy = y + 0.5 * fighterShip.height;  // y of shape center
-
-  ctx.translate(cx, cy);              //translate to center of shape
+  ctx.translate(cx, cy);
   ctx.rotate((Math.PI / 180) * player.angle);
-  ctx.translate(-cx, -cy);            //translate center back to 0,0
+  ctx.translate(-cx, -cy);
 
   ctx.drawImage(fighterShip, x, y)
+  ctx.restore()
 }
 
 export const animatePlayer = (player) => {
   switch (player.lastEvent) {
     case 'left':
-      player.angle -= 0.3;
+      player.angle -= 3;
       break;
     case 'right':
-      player.angle += 0.3;
+      player.angle += 3;
       break;
     case 'up':
-      const slope = Math.tan(player.angle * Math.PI / 180)
-      player.location.y -= (slope * VELOCITY);
-      player.location.x += VELOCITY;
-      break;
+      // const slope = Math.tan(player.angle * Math.PI / 180)
+      // player.location.y -= (slope * VELOCITY);
+      // player.location.x += VELOCITY;
+      // break;
     default:
       break;
   }
