@@ -124,18 +124,10 @@ class Layout extends React.Component {
       return player.id === this.state.currentPlayerId
     })[0];
 
-    if ('right' === KEY_MAP[keyCode]) {
+    if (['right', 'left'].includes(KEY_MAP[keyCode])) {
       this.sendGameEvent({
         id: this.state.userId,
-        gameEvent: 'rightStop',
-        location: currentPlayer.location,
-        angle: currentPlayer.angle
-      });
-    }
-    if ('left' === KEY_MAP[keyCode]) {
-      this.sendGameEvent({
-        id: this.state.userId,
-        gameEvent: 'leftStop',
+        gameEvent: KEY_MAP[keyCode] + 'Stop',
         location: currentPlayer.location,
         angle: currentPlayer.angle
       });
@@ -166,7 +158,6 @@ class Layout extends React.Component {
     let players = [...this.state.players];
     if (players.length > 0) {
       players.forEach((player) => {
-        // handleDirection(player)
         animatePlayer(player)
         handleWall(player, this.state.boardWidth, this.state.boardHeight);
         // this.handleCollision(player, this.state.board);

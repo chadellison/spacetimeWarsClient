@@ -20,12 +20,15 @@ export const drawShip = (ctx, player, fighterShip) => {
 }
 
 export const animatePlayer = (player) => {
+  let angle = player.angle
   switch (player.lastEvent) {
     case 'left':
-      player.angle -= 3;
+      angle -= 3;
+      player.angle = angle < 0 ? angle + 360 : angle
       break;
     case 'right':
-      player.angle += 3;
+      angle += 3;
+      player.angle = angle > 360 ? angle - 360 : angle
       break;
     case 'up':
       // const slope = Math.tan(player.angle * Math.PI / 180)
