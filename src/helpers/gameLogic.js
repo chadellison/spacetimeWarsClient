@@ -1,24 +1,9 @@
 import {
   VELOCITY,
   SQUARE_DISTANCE,
-  PACMAN_RADIUS,
+  SHIP_RADIUS,
   ANAIMATION_FRAME_RATE
 } from '../constants/settings.js';
-
-export const handleDirection = (player) => {
-  if (player.direction === 'left') {
-    player.rotation -= 0.1;
-  }
-  if (player.direction === 'right') {
-    player.rotation += 0.1;
-  }
-  if (player.direction === 'up') {
-    player.location.y -= VELOCITY;
-  }
-  if (player.direction === 'down') {
-    player.location.y += VELOCITY;
-  }
-};
 
 export const distanceTraveled = (elapsedTime, velocity) => {
   const gameTime = elapsedTime / ANAIMATION_FRAME_RATE;
@@ -30,72 +15,58 @@ export const updatePlayer = (player, clockDifference) => {
   const timeOffset = 100;
   const elapsedTime = currentTime - clockDifference - player.updatedAt - timeOffset;
   const distance = distanceTraveled(elapsedTime, player.velocity);
+  player.angle = handleAngle(player, elapsedTime);
   player.location = handleLocation(player, distance);
-  player.rotation = handleRotation(player, elapsedTime);
   return player
 }
 
 export const handleLocation = (player, distance) => {
-  let x;
-  let y;
-  switch (player.direction) {
-    case 'up':
-      y = player.location.y - distance;
-      return {x: player.location.x, y: y };
-    // case 'left':
-    //   x = player.location.x - distance;
-    //   return {x: x, y: player.location.y};
-    // case 'right':
-    //   x = player.location.x + distance;
-    //   return {x: x, y: player.location.y};
-    case 'down':
-      y = player.location.y + distance;
-      return {x: player.location.x, y: y};
-    default:
-      return player.location;
-  };
+  const slope = Math.tan(player.angle * Math.PI / 180)
+  const x = player.location.x + distance;
+  const y = player.location.y - (slope * distance);
+  return {x: x, y: y}
 }
 
-export const handleRotation = (player, rotation) => {
-  switch (player.direction) {
+export const handleAngle = (player, elapsedTime) => {
+  switch (player.lastEvent) {
     case 'left':
-      return 0.3
+      return 0.3 * (elapsedTime / ANAIMATION_FRAME_RATE)
     case 'right':
-      return -0.3
+      return -0.3 * (elapsedTime / ANAIMATION_FRAME_RATE)
     default:
-      return player.rotation;
+      return player.angle;
   };
 }
 
-// export const handleWall = (player, width, height) => {
-//   if (player.location.x >= (width - PACMAN_RADIUS)) {
-//     player.location.x = (width - PACMAN_RADIUS);
-//   }
+export const handleWall = (player, width, height) => {
+  if (player.location.x >= (width - SHIP_RADIUS)) {
+    player.location.x = (width - SHIP_RADIUS);
+  }
+
+  if (player.location.x <= SHIP_RADIUS) {
+    player.location.x = SHIP_RADIUS;
+  }
+
+  if (player.location.y >= (height - SHIP_RADIUS)) {
+    player.location.y = (height - SHIP_RADIUS);
+  }
+
+  if (player.location.y <= SHIP_RADIUS) {
+    player.location.y = SHIP_RADIUS;
+  }
+}
+
+// export const findCollisionCoordinates = (player) => {
+//   const {x, y} = player.location;
+//   let xRadius = x - 20
+//   let yRadius = y - 20;
 //
-//   if (player.location.x <= PACMAN_RADIUS) {
-//     player.location.x = PACMAN_RADIUS;
-//   }
+//   while (xRadius % SQUARE_DISTANCE !== 0 ) {
+//     xRadius += 1
+//   };
 //
-//   if (player.location.y >= (height - PACMAN_RADIUS)) {
-//     player.location.y = (height - PACMAN_RADIUS);
-//   }
-//
-//   if (player.location.y <= PACMAN_RADIUS) {
-//     player.location.y = PACMAN_RADIUS;
-//   }
+//   while (yRadius % SQUARE_DISTANCE !== 0 ) {
+//     yRadius += 1
+//   };
+//   return [xRadius, yRadius];
 // }
-
-export const findCollisionCoordinates = (player) => {
-  const {x, y} = player.location;
-  let xRadius = x - 20
-  let yRadius = y - 20;
-
-  while (xRadius % SQUARE_DISTANCE !== 0 ) {
-    xRadius += 1
-  };
-
-  while (yRadius % SQUARE_DISTANCE !== 0 ) {
-    yRadius += 1
-  };
-  return [xRadius, yRadius];
-}

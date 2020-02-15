@@ -9,20 +9,18 @@ import {
   BOARD_HEIGHT,
   ANAIMATION_FRAME_RATE
 } from '../constants/settings.js';
-// import {newBoard} from '../helpers/canvasHelper.js'
 import {
-  handleDirection,
   handleWall,
-  findCollisionCoordinates,
   updatePlayer
 } from '../helpers/gameLogic.js';
+
+import {animatePlayer} from '../helpers/canvasHelper.js'
 
 const DEFAULT_STATE = {
   userId: new Date().getTime(),
   gameSocket: {},
   boardWidth: BOARD_WIDTH,
   boardHeight: BOARD_HEIGHT,
-  // board: newBoard(),
   currentPlayerId: null,
   players: [],
   clockDifference: 0,
@@ -102,7 +100,8 @@ class Layout extends React.Component {
         this.sendGameEvent({
           id: this.state.currentPlayerId,
           gameEvent: KEY_MAP[keyCode],
-          location: currentPlayer.location
+          location: currentPlayer.location,
+          angle: currentPlayer.angle
         });
         this.setState({currentPlayerId: this.state.userId});
       };
@@ -129,14 +128,16 @@ class Layout extends React.Component {
       this.sendGameEvent({
         id: this.state.userId,
         gameEvent: 'rightStop',
-        location: currentPlayer.location
+        location: currentPlayer.location,
+        angle: currentPlayer.angle
       });
     }
     if ('left' === KEY_MAP[keyCode]) {
       this.sendGameEvent({
         id: this.state.userId,
         gameEvent: 'leftStop',
-        location: currentPlayer.location
+        location: currentPlayer.location,
+        angle: currentPlayer.angle
       });
     }
   }
@@ -165,22 +166,23 @@ class Layout extends React.Component {
     let players = [...this.state.players];
     if (players.length > 0) {
       players.forEach((player) => {
-        handleDirection(player)
-        // handleWall(player, this.state.boardWidth, this.state.boardHeight);
-        this.handleCollision(player, this.state.board);
+        // handleDirection(player)
+        animatePlayer(player)
+        handleWall(player, this.state.boardWidth, this.state.boardHeight);
+        // this.handleCollision(player, this.state.board);
       });
       this.setState({players: players});
     }
   };
 
-  handleCollision = (player, board) => {
-    const coordinates = findCollisionCoordinates(player);
-    const key = coordinates[0] + ':' + coordinates[1];
-    if (board[key] === 1) {
-      player.score += 1;
-      this.setState({board: {...board, [key]: 0 }});
-    };
-  }
+  // handleCollision = (player, board) => {
+  //   const coordinates = findCollisionCoordinates(player);
+  //   const key = coordinates[0] + ':' + coordinates[1];
+  //   if (board[key] === 1) {
+  //     player.score += 1;
+  //     this.setState({board: {...board, [key]: 0 }});
+  //   };
+  // }
 
   sendGameEvent = (gameData) => {
     this.state.gameSocket.create(gameData)

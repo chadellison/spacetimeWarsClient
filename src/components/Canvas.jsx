@@ -1,5 +1,5 @@
 import React from 'react';
-import {drawShip, drawBoard} from '../helpers/canvasHelper.js';
+import {drawShip} from '../helpers/canvasHelper.js';
 import fighterShip from "../images/fighterShip.png";
 
 class Canvas extends React.Component {
