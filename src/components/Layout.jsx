@@ -65,7 +65,7 @@ class Layout extends React.Component {
 
   fetchTime() {
     const sentTime = Date.now();
-    fetch(`${API_HOST}/api/v1/time?sentTime=${sentTime}`)
+    fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
       .then((response) => response.json())
       .then((timeData) => {
         const responseTime = Date.now();
