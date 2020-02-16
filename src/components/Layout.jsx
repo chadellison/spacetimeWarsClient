@@ -91,29 +91,39 @@ class Layout extends React.Component {
 
   handleKeyDown = (event) => {
     const keyCode = event.keyCode
-    const currentPlayer = this.state.players.filter((player) => {
-      return player.id === this.state.currentPlayerId
-    })[0];
+    const currentPlayer = this.findCurrentPlayer();
 
     if (this.state.currentPlayerId) {
-      if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.lastEvent) {
-        this.sendGameEvent({
-          id: this.state.currentPlayerId,
-          gameEvent: KEY_MAP[keyCode],
-          location: currentPlayer.location,
-          angle: currentPlayer.angle
-        });
-        this.setState({currentPlayerId: this.state.userId});
-      };
-    } else {
-      if (KEY_MAP[keyCode] === 'start') {
-        this.sendGameEvent({
-          id: this.state.userId,
-          gameEvent: 'start',
-        });
-        this.setState({currentPlayerId: this.state.userId});
-      }
+      this.handleMoveEvent(keyCode, currentPlayer)
+    } else if (KEY_MAP[keyCode] === 'start'){
+      this.handleStartEvent(keyCode)
     }
+  }
+
+  findCurrentPlayer = () => {
+    return this.state.players.filter((player) => {
+      return player.id === this.state.currentPlayerId
+    })[0];
+  };
+
+  handleMoveEvent = (keyCode, currentPlayer) => {
+    if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.lastEvent) {
+      this.sendGameEvent({
+        id: this.state.currentPlayerId,
+        gameEvent: KEY_MAP[keyCode],
+        location: currentPlayer.location,
+        angle: currentPlayer.angle
+      });
+      this.setState({currentPlayerId: this.state.userId});
+    };
+  };
+
+  handleStartEvent = () => {
+    this.sendGameEvent({
+      id: this.state.userId,
+      gameEvent: 'start',
+    });
+    this.setState({currentPlayerId: this.state.userId});
   }
 
   handleKeyUp = (event) => {
