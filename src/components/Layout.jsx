@@ -13,7 +13,6 @@ import {
   handleWall,
   updatePlayer
 } from '../helpers/gameLogic.js';
-import {findClockDifference} from '../helpers/timeHelper.js';
 
 import {animatePlayer} from '../helpers/canvasHelper.js'
 
@@ -66,11 +65,13 @@ class Layout extends React.Component {
 
   fetchTime() {
     const sentTime = Date.now();
-    const startTime = new Date('2020-01-01 00:00:00 UTC').getTime();
-    fetch(`${API_HOST}/api/v1/time?start_time=${startTime}`)
+    fetch(`${API_HOST}/api/v1/time?sentTime=${sentTime}`)
       .then((response) => response.json())
       .then((timeData) => {
-        const clockDifference = findClockDifference(sentTime, startTime, timeData.difference);
+        const responseTime = Date.now();
+        const roundTripTime = responseTime - sentTime;
+        console.log('round trip time', roundTripTime)
+        const clockDifference = timeData.difference - (roundTripTime / 2)
         console.log('clock difference: ***********', clockDifference)
         this.fetchPlayers();
         this.setState({clockDifference: clockDifference})
@@ -88,13 +89,6 @@ class Layout extends React.Component {
           players: players
         });
     }).catch((error) => console.log('ERROR', error));
-  }
-
-  findClockDifference(sentTime, startTime, serverDifference) {
-    const responseTime = Date.now();
-    const roundTripTime = responseTime - sentTime;
-    const clientDifference = responseTime - startTime - roundTripTime;
-    return serverDifference - clientDifference;
   }
 
   handleKeyDown = (event) => {
