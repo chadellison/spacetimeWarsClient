@@ -13,6 +13,7 @@ import {
   handleWall,
   updatePlayer
 } from '../helpers/gameLogic.js';
+import {findClockDifference} from '../helpers/timeHelper.js';
 
 import {animatePlayer} from '../helpers/canvasHelper.js'
 
@@ -44,32 +45,6 @@ class Layout extends React.Component {
     clearInterval(this.interval);
   }
 
-  fetchTime() {
-    const sentTime = Date.now();
-    const startTime = new Date('2020-01-01 06:00:00 UTC').getTime();
-    fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}&start_time=${startTime}`)
-      .then((response) => response.json())
-      .then((timeData) => {
-        console.log('clock difference: ***********', timeData.difference)
-        this.fetchPlayers();
-        this.setState({clockDifference: timeData.difference})
-    }).catch((error) => console.log('ERROR', error));
-  }
-
-  fetchPlayers() {
-    fetch(`${API_HOST}/api/v1/game`)
-      .then((response) => response.json())
-      .then((gameData) => {
-        const players = gameData.players.map((player) => updatePlayer(player, this.state.clockDifference));
-        this.setState({
-          boardWidth: gameData.game.board.width,
-          boardHeight: gameData.game.board.height,
-          board: gameData.game.board.squares,
-          players: players
-        });
-    }).catch((error) => console.log('ERROR', error));
-  }
-
   createGameSocket() {
     let cable = Cable.createConsumer(WEBSOCKET_HOST)
     let gameSocket = cable.subscriptions.create({
@@ -89,6 +64,39 @@ class Layout extends React.Component {
     this.setState({gameSocket: gameSocket})
   };
 
+  fetchTime() {
+    const sentTime = Date.now();
+    const startTime = new Date('2020-01-01 00:00:00 UTC').getTime();
+    fetch(`${API_HOST}/api/v1/time?start_time=${startTime}`)
+      .then((response) => response.json())
+      .then((timeData) => {
+        const clockDifference = findClockDifference(sentTime, startTime, timeData.difference);
+        console.log('clock difference: ***********', clockDifference)
+        this.fetchPlayers();
+        this.setState({clockDifference: clockDifference})
+    }).catch((error) => console.log('ERROR', error));
+  }
+
+  fetchPlayers() {
+    fetch(`${API_HOST}/api/v1/game`)
+      .then((response) => response.json())
+      .then((gameData) => {
+        const players = gameData.players.map((player) => updatePlayer(player, this.state.clockDifference));
+        this.setState({
+          boardWidth: gameData.game.board.width,
+          boardHeight: gameData.game.board.height,
+          players: players
+        });
+    }).catch((error) => console.log('ERROR', error));
+  }
+
+  findClockDifference(sentTime, startTime, serverDifference) {
+    const responseTime = Date.now();
+    const roundTripTime = responseTime - sentTime;
+    const clientDifference = responseTime - startTime - roundTripTime;
+    return serverDifference - clientDifference;
+  }
+
   handleKeyDown = (event) => {
     const keyCode = event.keyCode
     const currentPlayer = this.findCurrentPlayer();
@@ -97,6 +105,20 @@ class Layout extends React.Component {
       this.handleMoveEvent(keyCode, currentPlayer)
     } else if (KEY_MAP[keyCode] === 'start'){
       this.handleStartEvent(keyCode)
+    }
+  }
+
+  handleKeyUp = (event) => {
+    const keyCode = event.keyCode
+    const currentPlayer = this.findCurrentPlayer();
+
+    if (['right', 'left'].includes(KEY_MAP[keyCode]) && currentPlayer) {
+      this.sendGameEvent({
+        id: this.state.userId,
+        gameEvent: KEY_MAP[keyCode] + 'Stop',
+        location: currentPlayer.location,
+        angle: currentPlayer.angle
+      });
     }
   }
 
@@ -134,24 +156,6 @@ class Layout extends React.Component {
       gameEvent: 'start',
     });
     this.setState({currentPlayerId: this.state.userId});
-  }
-
-  handleKeyUp = (event) => {
-    const keyCode = event.keyCode
-    let userEvent;
-
-    const currentPlayer = this.state.players.filter((player) => {
-      return player.id === this.state.currentPlayerId
-    })[0];
-
-    if (['right', 'left'].includes(KEY_MAP[keyCode])) {
-      this.sendGameEvent({
-        id: this.state.userId,
-        gameEvent: KEY_MAP[keyCode] + 'Stop',
-        location: currentPlayer.location,
-        angle: currentPlayer.angle
-      });
-    }
   }
 
   handleReceivedEvent(playerData) {
@@ -200,7 +204,7 @@ class Layout extends React.Component {
   };
 
   render = () => {
-    const {players, boardHeight, boardWidth, board} = this.state;
+    const {players, boardHeight, boardWidth} = this.state;
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
         <h2>Tanks</h2>
@@ -209,7 +213,6 @@ class Layout extends React.Component {
             players={players}
             height={boardHeight}
             width={boardWidth}
-            board={board}
           />
         </div>
       </div>

@@ -1,6 +1,4 @@
 import {
-  VELOCITY,
-  SQUARE_DISTANCE,
   SHIP_RADIUS,
   ANAIMATION_FRAME_RATE
 } from '../constants/settings.js';
@@ -12,7 +10,7 @@ export const distanceTraveled = (elapsedTime, velocity) => {
 
 export const updatePlayer = (player, clockDifference) => {
   const currentTime = Date.now();
-  const elapsedTime = currentTime - clockDifference - player.updatedAt;
+  const elapsedTime = currentTime + clockDifference - player.updatedAt;
   player.angle = handleAngle(player, elapsedTime);
   const distance = distanceTraveled(elapsedTime, player.velocity);
   player.location = handleLocation(player, distance);

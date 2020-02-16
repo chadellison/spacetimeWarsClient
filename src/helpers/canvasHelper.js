@@ -1,10 +1,3 @@
-import {
-  SQUARE_DISTANCE,
-  BOARD_WIDTH,
-  BOARD_HEIGHT,
-  VELOCITY
-} from '../constants/settings.js';
-
 export const drawShip = (ctx, player, fighterShip) => {
   const {x, y} = player.location;
   ctx.save();

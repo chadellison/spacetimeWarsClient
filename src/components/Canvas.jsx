@@ -40,7 +40,7 @@ class Canvas extends React.Component {
           width={this.props.width}
           height={this.props.height}
         />
-        <img ref="ship" src={fighterShip} className="hidden" />
+        <img ref="ship" src={fighterShip} className="hidden" alt="fighterShip" />
       </div>
     );
   };
