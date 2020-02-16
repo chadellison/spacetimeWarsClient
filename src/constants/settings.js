@@ -5,3 +5,4 @@ export const SQUARE_DISTANCE = 35;
 export const SHIP_RADIUS = 25;
 export const ANAIMATION_FRAME_RATE = 30;
 export const START_LOCATION = {x: 35, y: 35};
+export const REQUEST_COUNT = 10;

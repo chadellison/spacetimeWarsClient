@@ -7,7 +7,8 @@ import {KEY_MAP} from '../constants/keyMap.js';
 import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
-  ANAIMATION_FRAME_RATE
+  ANAIMATION_FRAME_RATE,
+  REQUEST_COUNT
 } from '../constants/settings.js';
 import {
   handleWall,
@@ -15,7 +16,6 @@ import {
 } from '../helpers/gameLogic.js';
 
 import {animatePlayer} from '../helpers/canvasHelper.js'
-
 const DEFAULT_STATE = {
   userId: new Date().getTime(),
   gameSocket: {},
@@ -24,6 +24,7 @@ const DEFAULT_STATE = {
   currentPlayerId: null,
   players: [],
   clockDifference: 0,
+  shortestRoundTripTime: 5000
 };
 
 class Layout extends React.Component {
@@ -33,7 +34,7 @@ class Layout extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchTime();
+    this.syncClocks(REQUEST_COUNT)
     this.createGameSocket();
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
@@ -62,6 +63,33 @@ class Layout extends React.Component {
 
     this.setState({gameSocket: gameSocket})
   };
+
+  syncClocks = (iteration) => {
+    const sentTime = Date.now();
+    fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
+    .then((response) => response.json())
+    .then((timeData) => {
+      const responseTime = Date.now();
+      const roundTripTime = responseTime - sentTime;
+      console.log('round trip time ' + iteration, roundTripTime);
+      if (roundTripTime < this.state.shortestRoundTripTime) {
+        const clockDifference = timeData.difference - (roundTripTime / 2)
+        this.setState({
+          clockDifference: clockDifference,
+          shortestRoundTripTime: roundTripTime
+        });
+      }
+
+      if (iteration > 0) {
+        iteration -= 1
+        this.syncClocks(iteration, roundTripTime)
+      } else {
+        console.log('clock difference: ***********', this.state.clockDifference);
+        console.log('shortest response time: ***********', this.state.shortestRoundTripTime);
+        this.fetchPlayers();
+      }
+    }).catch((error) => console.log('ERROR', error));
+  }
 
   fetchTime() {
     const sentTime = Date.now();
