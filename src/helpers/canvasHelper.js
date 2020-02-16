@@ -21,21 +21,19 @@ export const drawShip = (ctx, player, fighterShip) => {
 
 export const animatePlayer = (player) => {
   let angle = player.angle
-  switch (player.lastEvent) {
-    case 'left':
-      angle -= 3;
-      player.angle = angle < 0 ? angle + 360 : angle
-      break;
-    case 'right':
-      angle += 3;
-      player.angle = angle > 360 ? angle - 360 : angle
-      break;
-    case 'up':
-      // const slope = Math.tan(player.angle * Math.PI / 180)
-      // player.location.y -= (slope * VELOCITY);
-      // player.location.x += VELOCITY;
-      // break;
-    default:
-      break;
+  if (player.lastEvent === 'left') {
+    angle -= 3;
+    player.angle = angle < 0 ? angle + 360 : angle
+  }
+  if (player.lastEvent === 'right') {
+    angle += 3;
+    player.angle = angle > 360 ? angle - 360 : angle
+  }
+
+  if (player.isAccelerating) {
+    const radians = player.angle * Math.PI / 180
+    const x = Math.round(player.location.x + Math.cos(radians) * player.velocity);
+    const y = Math.round(player.location.y + Math.sin(radians) * player.velocity);
+    player.location = {x: x, y: y}
   }
 };

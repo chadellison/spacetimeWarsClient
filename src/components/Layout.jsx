@@ -107,7 +107,17 @@ class Layout extends React.Component {
   };
 
   handleMoveEvent = (keyCode, currentPlayer) => {
-    if (['left', 'up', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.lastEvent) {
+    if (['left', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.lastEvent) {
+      this.sendGameEvent({
+        id: this.state.currentPlayerId,
+        gameEvent: KEY_MAP[keyCode],
+        location: currentPlayer.location,
+        angle: currentPlayer.angle
+      });
+      this.setState({currentPlayerId: this.state.userId});
+    };
+
+    if (KEY_MAP[keyCode] === 'up' && !currentPlayer.isAccelerating) {
       this.sendGameEvent({
         id: this.state.currentPlayerId,
         gameEvent: KEY_MAP[keyCode],
