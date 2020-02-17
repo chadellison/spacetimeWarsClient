@@ -23,10 +23,9 @@ export const animatePlayer = (player) => {
     player.angle = angle > 360 ? angle - 360 : angle
   }
 
-  if (player.isAccelerating) {
-    const radians = player.angle * Math.PI / 180
-    const x = Math.round(player.location.x + Math.cos(radians) * player.velocity);
-    const y = Math.round(player.location.y + Math.sin(radians) * player.velocity);
-    player.location = {x: x, y: y}
-  }
+  const currentVelocity = player.isAccelerating ? player.velocity + 3 : player.velocity;
+  const radians = player.angle * Math.PI / 180
+  const x = Math.round(player.location.x + Math.cos(radians) * currentVelocity);
+  const y = Math.round(player.location.y + Math.sin(radians) * currentVelocity);
+  player.location = {x: x, y: y}
 };

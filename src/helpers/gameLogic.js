@@ -3,29 +3,26 @@ import {
   ANAIMATION_FRAME_RATE
 } from '../constants/settings.js';
 
-export const distanceTraveled = (elapsedTime, velocity) => {
+export const distanceTraveled = (elapsedTime, player) => {
+  const currentVelocity = player.isAccelerating ? player.velocity + 3 : player.velocity;
   const gameTime = elapsedTime / ANAIMATION_FRAME_RATE;
-  return Math.round(velocity * gameTime);
+  return Math.round(currentVelocity * gameTime);
 }
 
 export const updatePlayer = (player, clockDifference) => {
   const currentTime = Date.now();
   const elapsedTime = currentTime + clockDifference - player.updatedAt;
   player.angle = handleAngle(player, elapsedTime);
-  const distance = distanceTraveled(elapsedTime, player.velocity);
+  const distance = distanceTraveled(elapsedTime, player);
   player.location = handleLocation(player, distance);
   return player
 }
 
 export const handleLocation = (player, distance) => {
-  if (player.isAccelerating) {
-    const radians = player.angle * Math.PI / 180
-    const x = player.location.x + Math.cos(radians) * distance
-    const y = player.location.y + Math.sin(radians) * distance
-    return {x: Math.round(x), y: Math.round(y)}
-  } else {
-    return player.location;
-  }
+  const radians = player.angle * Math.PI / 180
+  const x = Math.round(player.location.x + Math.cos(radians) * distance)
+  const y = Math.round(player.location.y + Math.sin(radians) * distance)
+  return {x: x, y: y}
 }
 
 export const handleAngle = (player, elapsedTime) => {
