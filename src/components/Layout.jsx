@@ -12,7 +12,8 @@ import {
 } from '../constants/settings.js';
 import {
   handleWall,
-  updatePlayer
+  updatePlayer,
+  findElapsedTime
 } from '../helpers/gameLogic.js';
 
 import {animatePlayer} from '../helpers/canvasHelper.js'
@@ -98,7 +99,10 @@ class Layout extends React.Component {
     fetch(`${API_HOST}/api/v1/game`)
       .then((response) => response.json())
       .then((gameData) => {
-        const players = gameData.players.map((player) => updatePlayer(player, this.state.clockDifference));
+        const players = gameData.players.map((player) => {
+          const elapsedTime = findElapsedTime(this.state.clockDifference, player.updatedAt);
+          return updatePlayer(player, elapsedTime)
+        });
         this.setState({
           boardWidth: gameData.game.board.width,
           boardHeight: gameData.game.board.height,
@@ -180,7 +184,8 @@ class Layout extends React.Component {
 
     const updatedPlayers = players.map((player) => {
       if (player.id === playerData.id) {
-        return updatePlayer(playerData, this.state.clockDifference);
+        const elapsedTime = findElapsedTime(this.state.clockDifference, playerData.updatedAt);
+        return updatePlayer(playerData, elapsedTime);
       } else {
         return player;
       };

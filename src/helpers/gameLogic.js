@@ -9,13 +9,16 @@ export const distanceTraveled = (player, elapsedTime) => {
   return Math.round(currentVelocity * gameTime);
 }
 
-export const updatePlayer = (player, clockDifference) => {
-  const currentTime = Date.now();
-  const elapsedTime = currentTime + clockDifference - player.updatedAt;
+export const updatePlayer = (player, elapsedTime) => {
   player.angle = handleAngle(player, elapsedTime);
   const distance = distanceTraveled(player, elapsedTime);
   player.location = handleLocation(player, distance);
   return player
+}
+
+export const findElapsedTime = (clockDifference, updatedAt) => {
+  const currentTime = Date.now();
+  return currentTime + clockDifference - updatedAt;
 }
 
 export const handleLocation = (player, distance) => {
