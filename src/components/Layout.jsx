@@ -16,7 +16,6 @@ import {
   findElapsedTime
 } from '../helpers/gameLogic.js';
 
-import {animatePlayer} from '../helpers/canvasHelper.js'
 const DEFAULT_STATE = {
   userId: new Date().getTime(),
   gameSocket: {},
@@ -196,12 +195,13 @@ class Layout extends React.Component {
   movePlayers = () => {
     let players = [...this.state.players];
     if (players.length > 0) {
-      players.forEach((player) => {
-        animatePlayer(player)
+      const updatedPlayers = players.map((player) => {
+        player = updatePlayer(player, ANAIMATION_FRAME_RATE);
         handleWall(player, this.state.boardWidth, this.state.boardHeight);
+        return player;
         // this.handleCollision(player, this.state.board);
       });
-      this.setState({players: players});
+      this.setState({players: updatedPlayers});
     }
   };
 

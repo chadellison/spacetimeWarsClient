@@ -1,6 +1,3 @@
-import {handleLocation, distanceTraveled, handleAngle} from './gameLogic.js';
-import {ANAIMATION_FRAME_RATE} from '../constants/settings.js';
-
 export const drawShip = (ctx, player, fighterShip) => {
   const {x, y} = player.location;
   ctx.save();
@@ -14,9 +11,3 @@ export const drawShip = (ctx, player, fighterShip) => {
   ctx.drawImage(fighterShip, x, y)
   ctx.restore()
 }
-
-export const animatePlayer = (player) => {
-  player.angle = handleAngle(player, ANAIMATION_FRAME_RATE)
-  const distance = distanceTraveled(player, ANAIMATION_FRAME_RATE)
-  player.location = handleLocation(player, distance);
-};
