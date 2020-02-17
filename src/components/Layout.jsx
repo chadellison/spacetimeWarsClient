@@ -100,7 +100,7 @@ class Layout extends React.Component {
       .then((gameData) => {
         const players = gameData.players.map((player) => {
           const elapsedTime = findElapsedTime(this.state.clockDifference, player.updatedAt);
-          return updatePlayer(player, elapsedTime)
+          return updatePlayer(player, elapsedTime, this.state.clockDifference)
         });
         this.setState({
           boardWidth: gameData.game.board.width,
@@ -142,7 +142,7 @@ class Layout extends React.Component {
   };
 
   handleMoveEvent = (keyCode, currentPlayer) => {
-    if (['left', 'right', 'down'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.lastEvent) {
+    if (['left', 'right'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.lastEvent) {
       this.sendGameEvent({
         id: this.state.currentPlayerId,
         gameEvent: KEY_MAP[keyCode],
@@ -184,7 +184,7 @@ class Layout extends React.Component {
     const updatedPlayers = players.map((player) => {
       if (player.id === playerData.id) {
         const elapsedTime = findElapsedTime(this.state.clockDifference, playerData.updatedAt);
-        return updatePlayer(playerData, elapsedTime);
+        return updatePlayer(playerData, elapsedTime, this.state.clockDifference);
       } else {
         return player;
       };
@@ -196,7 +196,7 @@ class Layout extends React.Component {
     let players = [...this.state.players];
     if (players.length > 0) {
       const updatedPlayers = players.map((player) => {
-        player = updatePlayer(player, ANAIMATION_FRAME_RATE);
+        player = updatePlayer(player, ANAIMATION_FRAME_RATE, this.state.clockDifference);
         handleWall(player, this.state.boardWidth, this.state.boardHeight);
         return player;
         // this.handleCollision(player, this.state.board);
