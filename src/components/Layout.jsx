@@ -67,44 +67,32 @@ class Layout extends React.Component {
   syncClocks = (iteration) => {
     const sentTime = Date.now();
     fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
-    .then((response) => response.json())
-    .then((timeData) => {
-      const responseTime = Date.now();
-      const roundTripTime = responseTime - sentTime;
-      console.log('round trip time ' + iteration, roundTripTime);
-      if (roundTripTime < this.state.shortestRoundTripTime) {
-        const clockDifference = timeData.difference - (roundTripTime / 2)
-        this.setState({
-          clockDifference: clockDifference,
-          shortestRoundTripTime: roundTripTime
-        });
-      }
-
-      if (iteration > 0) {
-        iteration -= 1
-        this.syncClocks(iteration, roundTripTime)
-      } else {
-        console.log('clock difference: ***********', this.state.clockDifference);
-        console.log('shortest response time: ***********', this.state.shortestRoundTripTime);
-        this.fetchPlayers();
-      }
-    }).catch((error) => console.log('ERROR', error));
-  }
-
-  fetchTime() {
-    const sentTime = Date.now();
-    fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
       .then((response) => response.json())
-      .then((timeData) => {
-        const responseTime = Date.now();
-        const roundTripTime = responseTime - sentTime;
-        console.log('round trip time', roundTripTime)
-        const clockDifference = timeData.difference - (roundTripTime / 2)
-        console.log('clock difference: ***********', clockDifference)
-        this.fetchPlayers();
-        this.setState({clockDifference: clockDifference})
-    }).catch((error) => console.log('ERROR', error));
+      .then((timeData) => this.handleTimeResponse(sentTime, timeData, iteration))
+      .catch((error) => console.log('ERROR', error));
   }
+
+  handleTimeResponse = (sentTime, timeData, iteration) => {
+    const responseTime = Date.now();
+    const roundTripTime = responseTime - sentTime;
+    console.log('round trip time ' + iteration, roundTripTime);
+    if (roundTripTime < this.state.shortestRoundTripTime) {
+      const clockDifference = timeData.difference - (roundTripTime / 2)
+      this.setState({
+        clockDifference: clockDifference,
+        shortestRoundTripTime: roundTripTime
+      });
+    }
+
+    if (iteration > 0) {
+      iteration -= 1
+      this.syncClocks(iteration, roundTripTime)
+    } else {
+      console.log('clock difference: ***********', this.state.clockDifference);
+      console.log('shortest response time: ***********', this.state.shortestRoundTripTime);
+      this.fetchPlayers();
+    };
+  };
 
   fetchPlayers() {
     fetch(`${API_HOST}/api/v1/game`)
@@ -134,15 +122,15 @@ class Layout extends React.Component {
     const keyCode = event.keyCode
     const currentPlayer = this.findCurrentPlayer();
 
-    if (['right', 'left'].includes(KEY_MAP[keyCode]) && currentPlayer) {
+    if (['right', 'left', 'up'].includes(KEY_MAP[keyCode]) && currentPlayer) {
       this.sendGameEvent({
         id: this.state.userId,
         gameEvent: KEY_MAP[keyCode] + 'Stop',
         location: currentPlayer.location,
         angle: currentPlayer.angle
       });
-    }
-  }
+    };
+  };
 
   findCurrentPlayer = () => {
     return this.state.players.filter((player) => {
