@@ -1,6 +1,7 @@
 import React from 'react';
 import {drawShip} from '../helpers/canvasHelper.js';
 import fighterShip from "../images/fighterShip.png";
+import thrusterAudio from '../audio/thruster.mov';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -13,11 +14,15 @@ class Canvas extends React.Component {
     const context = canvas.getContext('2d');
     context.fillRect(0, 0, canvas.width, canvas.height);
     const fighterShip = this.refs.ship
+    let thruster = new Audio(thrusterAudio);
+    thruster.loop = true;
+
     fighterShip.onload = () => {
       this.setState({
         canvas: canvas,
         context: context,
-        fighterShip: fighterShip
+        fighterShip: fighterShip,
+        thrusterAudio: thruster
       });
     }
   }
@@ -27,7 +32,7 @@ class Canvas extends React.Component {
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
     this.props.players.forEach((player) => {
-      drawShip(context, player, this.state.fighterShip);
+      drawShip(context, player, this.state.fighterShip, this.state.thrusterAudio);
     });
   }
 
