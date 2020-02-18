@@ -32,18 +32,20 @@ export const findElapsedTime = (clockDifference, updatedAt) => {
 }
 
 export const handleLocation = (player, distance) => {
-  const radians = player.angle * Math.PI / 180
+  const trajectory = player.isAccelerating ? player.angle : player.trajectory;
+  const radians = trajectory * Math.PI / 180
   const x = Math.round(player.location.x + Math.cos(radians) * distance)
   const y = Math.round(player.location.y + Math.sin(radians) * distance)
   return {x: x, y: y}
 }
 
 export const handleAngle = (player, elapsedTime) => {
-  switch (player.lastEvent) {
+  switch (player.rotation) {
     case 'left':
-      return player.angle - 3 * (elapsedTime / ANAIMATION_FRAME_RATE) % 360
+      const angle = (player.angle - 3 * (elapsedTime / ANAIMATION_FRAME_RATE)) % 360;
+      return angle < 0 ? 360 - angle : angle;
     case 'right':
-      return player.angle + 3 * (elapsedTime / ANAIMATION_FRAME_RATE) % 360
+      return (player.angle + 3 * (elapsedTime / ANAIMATION_FRAME_RATE)) % 360
     default:
       return player.angle;
   };
