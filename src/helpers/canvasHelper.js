@@ -13,9 +13,9 @@ export const drawShip = (ctx, player, fighterShip) => {
   if (player.isAccelerating) {
     ctx.beginPath();
     ctx.moveTo(player.location.x - 8, player.location.y + 4 + fighterShip.height / 2);
-    ctx.lineTo(player.location.x - 8, player.location.y - 3 + fighterShip.height / 2);
-    ctx.lineTo(player.location.x, player.location.y - 5 + fighterShip.height / 2);
-    ctx.lineTo(player.location.x, player.location.y + 6 + fighterShip.height / 2);
+    ctx.lineTo(player.location.x - 8, player.location.y - 2 + fighterShip.height / 2);
+    ctx.lineTo(player.location.x, player.location.y - 4 + fighterShip.height / 2);
+    ctx.lineTo(player.location.x, player.location.y + 5 + fighterShip.height / 2);
 
     let grd = ctx.createLinearGradient(
       player.location.x - 8,
