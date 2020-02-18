@@ -1,7 +1,4 @@
-import {
-  SHIP_RADIUS,
-  ANAIMATION_FRAME_RATE
-} from '../constants/settings.js';
+import {ANAIMATION_FRAME_RATE} from '../constants/settings.js';
 
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
   let currentVelocity = player.velocity;
@@ -32,7 +29,7 @@ export const findElapsedTime = (clockDifference, updatedAt) => {
 }
 
 export const handleLocation = (player, distance) => {
-  const trajectory = player.trajectory;
+  const trajectory = player.isAccelerating ? player.angle : player.trajectory;
   const radians = trajectory * Math.PI / 180
   const x = Math.round(player.location.x + Math.cos(radians) * distance)
   const y = Math.round(player.location.y + Math.sin(radians) * distance)
@@ -52,20 +49,20 @@ export const handleAngle = (player, elapsedTime) => {
 }
 
 export const handleWall = (player, width, height) => {
-  if (player.location.x >= (width - SHIP_RADIUS)) {
-    player.location.x = (width - SHIP_RADIUS);
+  if (player.location.x - 100 > width) {
+    player.location.x = 0;
   }
 
-  if (player.location.x <= SHIP_RADIUS) {
-    player.location.x = SHIP_RADIUS;
+  if (player.location.x + 100 < 0) {
+    player.location.x = width;
   }
 
-  if (player.location.y >= (height - SHIP_RADIUS)) {
-    player.location.y = (height - SHIP_RADIUS);
+  if (player.location.y - 100 > height) {
+    player.location.y = 0;
   }
 
-  if (player.location.y <= SHIP_RADIUS) {
-    player.location.y = SHIP_RADIUS;
+  if (player.location.y + 100 < 0) {
+    player.location.y = height;
   }
 }
 
