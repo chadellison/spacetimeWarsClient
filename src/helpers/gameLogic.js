@@ -32,7 +32,7 @@ export const findElapsedTime = (clockDifference, updatedAt) => {
 }
 
 export const handleLocation = (player, distance) => {
-  const trajectory = player.isAccelerating ? player.angle : player.trajectory;
+  const trajectory = player.trajectory;
   const radians = trajectory * Math.PI / 180
   const x = Math.round(player.location.x + Math.cos(radians) * distance)
   const y = Math.round(player.location.y + Math.sin(radians) * distance)
