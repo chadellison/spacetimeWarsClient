@@ -15,6 +15,11 @@ import {
   updatePlayer,
   findElapsedTime
 } from '../helpers/gameLogic.js';
+import {
+  keyDownEventPayload,
+  keyUpEventPayload,
+  handleEventPayload
+} from '../helpers/eventHelpers.js';
 
 const DEFAULT_STATE = {
   userId: new Date().getTime(),
@@ -111,84 +116,34 @@ class Layout extends React.Component {
   }
 
   handleKeyDown = (event) => {
-    const keyCode = event.keyCode
-    const currentPlayer = this.findCurrentPlayer();
+    const eventPayload = keyDownEventPayload(
+      event.keyCode,
+      this.state.currentPlayerId,
+      this.state.userId,
+      this.state.players
+    );
+    this.state.gameSocket.create(eventPayload)
 
-    if (this.state.currentPlayerId) {
-      this.handleMoveEvent(keyCode, currentPlayer)
-    } else if (KEY_MAP[keyCode] === 'start'){
-      this.handleStartEvent(keyCode)
+    if (KEY_MAP[event.keyCode] === 'start') {
+      this.setState({currentPlayerId: this.state.userId});
     }
   }
 
   handleKeyUp = (event) => {
-    const keyCode = event.keyCode
-    const currentPlayer = this.findCurrentPlayer();
-
-    if (['right', 'left', 'up'].includes(KEY_MAP[keyCode]) && currentPlayer) {
-      this.sendGameEvent({
-        id: this.state.userId,
-        gameEvent: KEY_MAP[keyCode] + 'Stop',
-        location: currentPlayer.location,
-        angle: currentPlayer.angle
-      });
-    };
+    const eventPayload = keyUpEventPayload(
+      this.state.currentPlayerId,
+      this.state.players,
+      event.keyCode
+    )
+    this.state.gameSocket.create(eventPayload)
   };
 
-  findCurrentPlayer = () => {
-    return this.state.players.filter((player) => {
-      return player.id === this.state.currentPlayerId
-    })[0];
-  };
-
-  handleMoveEvent = (keyCode, currentPlayer) => {
-    if (['left', 'right'].includes(KEY_MAP[keyCode]) && KEY_MAP[keyCode] !== currentPlayer.lastEvent) {
-      this.sendGameEvent({
-        id: this.state.currentPlayerId,
-        gameEvent: KEY_MAP[keyCode],
-        location: currentPlayer.location,
-        angle: currentPlayer.angle
-      });
-      this.setState({currentPlayerId: this.state.userId});
-    };
-
-    if (KEY_MAP[keyCode] === 'up' && !currentPlayer.isAccelerating) {
-      this.sendGameEvent({
-        id: this.state.currentPlayerId,
-        gameEvent: KEY_MAP[keyCode],
-        location: currentPlayer.location,
-        angle: currentPlayer.angle
-      });
-      this.setState({currentPlayerId: this.state.userId});
-    };
-  };
-
-  handleStartEvent = () => {
-    this.sendGameEvent({
-      id: this.state.userId,
-      gameEvent: 'start',
-    });
-    this.setState({currentPlayerId: this.state.userId});
-  }
-
-  handleReceivedEvent(playerData) {
-    let players = [...this.state.players];
-    if (playerData.lastEvent === 'start') {
-      players = [...players, playerData]
-    }
-
-    if (playerData.lastEvent === 'remove') {
-      players = players.filter((player) => player.id !== playerData.id)
-    }
-
-    const updatedPlayers = players.map((player) => {
-      if (player.id === playerData.id) {
-        const elapsedTime = findElapsedTime(this.state.clockDifference, playerData.updatedAt);
-        return updatePlayer(playerData, elapsedTime, this.state.clockDifference);
-      } else {
-        return player;
-      };
-    });
+  handleReceivedEvent = (playerData) => {
+    const updatedPlayers = handleEventPayload(
+      [...this.state.players],
+      playerData,
+      this.state.clockDifference
+    );
     this.setState({players: updatedPlayers});
   }
 
@@ -199,23 +154,9 @@ class Layout extends React.Component {
         player = updatePlayer(player, ANAIMATION_FRAME_RATE, this.state.clockDifference);
         handleWall(player, this.state.boardWidth, this.state.boardHeight);
         return player;
-        // this.handleCollision(player, this.state.board);
       });
       this.setState({players: updatedPlayers});
     }
-  };
-
-  // handleCollision = (player, board) => {
-  //   const coordinates = findCollisionCoordinates(player);
-  //   const key = coordinates[0] + ':' + coordinates[1];
-  //   if (board[key] === 1) {
-  //     player.score += 1;
-  //     this.setState({board: {...board, [key]: 0 }});
-  //   };
-  // }
-
-  sendGameEvent = (gameData) => {
-    this.state.gameSocket.create(gameData)
   };
 
   render = () => {
