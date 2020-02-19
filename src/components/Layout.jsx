@@ -122,7 +122,9 @@ class Layout extends React.Component {
       this.state.userId,
       this.state.players
     );
-    this.state.gameSocket.create(eventPayload)
+    if (eventPayload) {
+      this.state.gameSocket.create(eventPayload)
+    }
 
     if (KEY_MAP[event.keyCode] === 'start') {
       this.setState({currentPlayerId: this.state.userId});
@@ -135,7 +137,9 @@ class Layout extends React.Component {
       this.state.players,
       event.keyCode
     )
-    this.state.gameSocket.create(eventPayload)
+    if (eventPayload) {
+      this.state.gameSocket.create(eventPayload)
+    }
   };
 
   handleReceivedEvent = (playerData) => {
