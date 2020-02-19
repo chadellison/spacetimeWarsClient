@@ -7,12 +7,12 @@ import {
 export const keyDownEventPayload = (keyCode, playerId, userId, players) => {
   switch (KEY_MAP[keyCode]) {
     case 'start':
-      return {id: userId, gameEvent: 'start'}
+      return handleStartEvent(playerId, userId);
     case 'left':
     case 'right':
-      return handleRotateEvent(playerId, players, KEY_MAP[keyCode])
+      return handleRotateEvent(playerId, players, KEY_MAP[keyCode]);
     case 'up':
-      return handleAcceleration(playerId, players, KEY_MAP[keyCode])
+      return handleAcceleration(playerId, players, KEY_MAP[keyCode]);
     default:
       break;
   }
@@ -53,6 +53,12 @@ export const handleEventPayload = (players, playerData, clockDifference) => {
 const findCurrentPlayer = (players, playerId) => {
   return players.filter((player) => player.id === playerId)[0];
 };
+
+const handleStartEvent = (playerId, userId) => {
+  if (!playerId) {
+    return {id: userId, gameEvent: 'start'}
+  }
+}
 
 const handleRotateEvent = (playerId, players, gameEvent) => {
   if (playerId) {

@@ -1,13 +1,17 @@
-import {ANAIMATION_FRAME_RATE} from '../constants/settings.js';
+import {
+  ANAIMATION_FRAME_RATE,
+  DRIFT,
+  DRIFT_DECAY_TIME
+} from '../constants/settings.js';
 
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
-  let currentVelocity = player.velocity;
+  let currentVelocity = DRIFT;
 
   if (player.isAccelerating) {
-    currentVelocity += 4;
+    currentVelocity += player.velocity;
   } else {
     const timeSinceLastAcceleration = Date.now() + clockDifference - player.lastAccelerationTime;
-    const momentum = 5000 - timeSinceLastAcceleration;
+    const momentum = DRIFT_DECAY_TIME - timeSinceLastAcceleration;
     if (momentum > 0) {
       currentVelocity += (momentum / 1000);
     }
@@ -65,18 +69,3 @@ export const handleWall = (player, width, height) => {
     player.location.y = height;
   }
 }
-
-// export const findCollisionCoordinates = (player) => {
-//   const {x, y} = player.location;
-//   let xRadius = x - 20
-//   let yRadius = y - 20;
-//
-//   while (xRadius % SQUARE_DISTANCE !== 0 ) {
-//     xRadius += 1
-//   };
-//
-//   while (yRadius % SQUARE_DISTANCE !== 0 ) {
-//     yRadius += 1
-//   };
-//   return [xRadius, yRadius];
-// }
