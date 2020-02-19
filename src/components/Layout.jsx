@@ -173,6 +173,7 @@ class Layout extends React.Component {
             players={players}
             height={boardHeight}
             width={boardWidth}
+            playerId={this.state.currentPlayerId}
           />
         </div>
       </div>

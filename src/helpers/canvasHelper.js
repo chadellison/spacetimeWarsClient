@@ -1,4 +1,4 @@
-export const drawShip = (ctx, player, fighterShip, thrusterAudio) => {
+export const drawShip = (ctx, player, fighterShip) => {
   const {x, y} = player.location;
   ctx.save();
   const cx = x + 0.5 * fighterShip.width;
@@ -11,7 +11,6 @@ export const drawShip = (ctx, player, fighterShip, thrusterAudio) => {
   ctx.drawImage(fighterShip, x, y)
 
   if (player.isAccelerating) {
-    thrusterAudio.play()
     ctx.beginPath();
     ctx.moveTo(player.location.x - 8, player.location.y + 4 + fighterShip.height / 2);
     ctx.lineTo(player.location.x - 8, player.location.y - 2 + fighterShip.height / 2);
@@ -30,8 +29,6 @@ export const drawShip = (ctx, player, fighterShip, thrusterAudio) => {
     ctx.stroke();
     ctx.fillStyle = grd;
     ctx.fill();
-  } else {
-    thrusterAudio.pause();
   }
   ctx.restore()
 }
