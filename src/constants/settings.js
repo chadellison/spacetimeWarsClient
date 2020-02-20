@@ -11,7 +11,7 @@ export const WEAPONS = {
     name: 'fireball',
     location: {x: 0, y: 0},
     trajectory: 0,
-    cooldown: 200,
+    cooldown: 100,
     speed: 15
   }
 };

@@ -22,6 +22,7 @@ import {
   keyUpEventPayload,
   handleEventPayload
 } from '../helpers/eventHelpers.js';
+import {thruster} from '../helpers/audioHelpers.js';
 
 const DEFAULT_STATE = {
   userId: new Date().getTime(),
@@ -38,6 +39,7 @@ const DEFAULT_STATE = {
 class Layout extends React.Component {
   constructor(props) {
     super(props)
+    this.thrusterAudio = thruster()
     this.state = DEFAULT_STATE
   };
 
@@ -146,19 +148,33 @@ class Layout extends React.Component {
       playerData,
       this.state.clockDifference
     );
-    this.handleWeapon(playerData)
-    this.setState({players: updatedPlayers});
+    const deployedWeapons = this.handleWeapon(playerData)
+    this.handleAudio(playerData.id, playerData.accelerate);
+
+    this.setState({
+      players: updatedPlayers,
+      deployedWeapons: deployedWeapons
+    });
+  }
+
+  handleAudio = (playerId, isAccelerating) => {
+    if (this.state.currentPlayerId && isAccelerating) {
+      this.thrusterAudio.play()
+    } else {
+      this.thrusterAudio.pause()
+    }
   }
 
   handleWeapon = (playerData) => {
     if (playerData.fire) {
-      const weapon = WEAPONS[playerData.weapon]
+      const weapon = {...WEAPONS[playerData.weapon]}
       weapon.location = playerData.location
       weapon.trajectory = playerData.angle
 
-      const weapons = [...this.state.deployedWeapons, weapon]
-      this.setState({deployedWeapons: weapons})
-    };
+      return [...this.state.deployedWeapons, weapon]
+    } else {
+      return this.state.deployedWeapons;
+    }
   };
 
   renderGame = () => {

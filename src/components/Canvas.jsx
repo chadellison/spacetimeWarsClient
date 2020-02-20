@@ -2,7 +2,6 @@ import React from 'react';
 import {drawShip, drawWeapon} from '../helpers/canvasHelper.js';
 import fighterShip from "../images/fighterShip.png";
 import fireball from "../images/fireball.png";
-import thrusterAudio from '../audio/thruster.mov';
 import '../styles/styles.css';
 
 class Canvas extends React.Component {
@@ -17,15 +16,12 @@ class Canvas extends React.Component {
     context.fillRect(0, 0, canvas.width, canvas.height);
     const fighterShip = this.refs.ship
     const fireball = this.refs.fireball
-    let thruster = new Audio(thrusterAudio);
-    thruster.loop = true;
 
     fighterShip.onload = () => {
       this.setState({
         canvas: canvas,
         context: context,
         fighterShip: fighterShip,
-        thrusterAudio: thruster,
         fireball: fireball
       });
     }
@@ -37,7 +33,6 @@ class Canvas extends React.Component {
     context.clearRect(0, 0, canvas.width, canvas.height);
     this.props.players.forEach((player) => {
       drawShip(context, player, this.state.fighterShip, this.state.thrusterAudio);
-      player.id === this.props.playerId && player.accelerate ? this.state.thrusterAudio.play() : this.state.thrusterAudio.pause();
     });
     this.props.deployedWeapons.forEach((weapon) => {
       drawWeapon(context, weapon, this.state.fighterShip, this.state.fireball)
@@ -54,12 +49,13 @@ class Canvas extends React.Component {
           height={this.props.height}
         />
         <img ref="ship" src={fighterShip} className="hidden" alt="fighterShip" />
-        {[{name: 'fireball', image: fireball}].map((weapon) => {
+        {[{name: 'fireball', image: fireball}].map((weapon, index) => {
           return(
             <img ref={weapon.name}
                 src={weapon.image}
                 className="hidden"
-                alt={weapon.name} />
+                alt={weapon.name}
+                key={`weapon${index}`}/>
           );
         })}
       </div>
