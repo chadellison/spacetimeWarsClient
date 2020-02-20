@@ -23,8 +23,24 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
 export const updatePlayer = (player, elapsedTime, clockDifference) => {
   player.angle = handleAngle(player, elapsedTime);
   const distance = distanceTraveled(player, elapsedTime, clockDifference);
-  player.location = handleLocation(player, distance);
+  const trajectory = player.isAccelerating ? player.angle : player.trajectory;
+  player.location = handleLocation(trajectory, player.location, distance);
   return player
+}
+
+export const updateWeapons = (weapons, width, height) => {
+  const updatedWeapons = weapons.map((weapon) => {
+    const distance = 20
+    weapon.location = handleLocation(weapon.trajectory, weapon.location, distance);
+    return weapon
+  });
+
+  return updatedWeapons.filter((weapon) => {
+    return weapon.location.x > 0 &&
+      weapon.location.x < width &&
+      weapon.location.y > 0 &&
+      weapon.location.y < height
+  });
 }
 
 export const findElapsedTime = (clockDifference, updatedAt) => {
@@ -32,11 +48,10 @@ export const findElapsedTime = (clockDifference, updatedAt) => {
   return currentTime + clockDifference - updatedAt;
 }
 
-export const handleLocation = (player, distance) => {
-  const trajectory = player.isAccelerating ? player.angle : player.trajectory;
+export const handleLocation = (trajectory, location, distance) => {
   const radians = trajectory * Math.PI / 180
-  const x = Math.round(player.location.x + Math.cos(radians) * distance)
-  const y = Math.round(player.location.y + Math.sin(radians) * distance)
+  const x = Math.round(location.x + Math.cos(radians) * distance)
+  const y = Math.round(location.y + Math.sin(radians) * distance)
   return {x: x, y: y}
 }
 

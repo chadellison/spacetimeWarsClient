@@ -13,7 +13,8 @@ import {
 import {
   handleWall,
   updatePlayer,
-  findElapsedTime
+  findElapsedTime,
+  updateWeapons
 } from '../helpers/gameLogic.js';
 import {
   keyDownEventPayload,
@@ -29,7 +30,8 @@ const DEFAULT_STATE = {
   currentPlayerId: null,
   players: [],
   clockDifference: 0,
-  shortestRoundTripTime: 5000
+  shortestRoundTripTime: 5000,
+  deployedWeapons: []
 };
 
 class Layout extends React.Component {
@@ -43,7 +45,7 @@ class Layout extends React.Component {
     this.createGameSocket();
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
-    this.interval = setInterval(() => this.movePlayers(), ANAIMATION_FRAME_RATE);
+    this.interval = setInterval(() => this.renderGame(), ANAIMATION_FRAME_RATE);
   };
 
   componentWillUnmount() {
@@ -126,7 +128,7 @@ class Layout extends React.Component {
       this.state.gameSocket.create(eventPayload)
     }
 
-    if (KEY_MAP[event.keyCode] === 'start') {
+    if (KEY_MAP[event.keyCode] === 'space' && !this.state.currentPlayerId) {
       this.setState({currentPlayerId: this.state.userId});
     }
   }
@@ -148,18 +150,37 @@ class Layout extends React.Component {
       playerData,
       this.state.clockDifference
     );
+    this.handleWeapon(playerData)
     this.setState({players: updatedPlayers});
   }
 
-  movePlayers = () => {
+  handleWeapon = (playerData) => {
+    if (playerData.lastEvent === 'fire') {
+      const weapon = {
+        location: playerData.location,
+        trajectory: playerData.angle
+      }
+      const weapons = [...this.state.deployedWeapons, weapon]
+      this.setState({deployedWeapons: weapons})
+    };
+  };
+
+  renderGame = () => {
     let players = [...this.state.players];
+    let deployedWeapons = [...this.state.deployedWeapons]
+
     if (players.length > 0) {
       const updatedPlayers = players.map((player) => {
         player = updatePlayer(player, ANAIMATION_FRAME_RATE, this.state.clockDifference);
         handleWall(player, this.state.boardWidth, this.state.boardHeight);
         return player;
       });
-      this.setState({players: updatedPlayers});
+
+      if (deployedWeapons.length > 0) {
+        deployedWeapons = updateWeapons(deployedWeapons, this.state.boardWidth, this.state.boardHeight);
+      };
+
+      this.setState({players: updatedPlayers, deployedWeapons: deployedWeapons});
     }
   };
 
@@ -174,6 +195,7 @@ class Layout extends React.Component {
             height={boardHeight}
             width={boardWidth}
             playerId={this.state.currentPlayerId}
+            deployedWeapons={this.state.deployedWeapons}
           />
         </div>
       </div>

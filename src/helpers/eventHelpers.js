@@ -6,8 +6,9 @@ import {
 
 export const keyDownEventPayload = (keyCode, playerId, userId, players) => {
   switch (KEY_MAP[keyCode]) {
-    case 'start':
-      return handleStartEvent(playerId, userId);
+    case 'space':
+    case 'enter':
+      return handleSpaceBarEvent(players, playerId, userId);
     case 'left':
     case 'right':
       return handleRotateEvent(playerId, players, KEY_MAP[keyCode]);
@@ -54,9 +55,17 @@ const findCurrentPlayer = (players, playerId) => {
   return players.filter((player) => player.id === playerId)[0];
 };
 
-const handleStartEvent = (playerId, userId) => {
+const handleSpaceBarEvent = (players, playerId, userId) => {
   if (!playerId) {
     return {id: userId, gameEvent: 'start'}
+  } else {
+    const currentPlayer = findCurrentPlayer(players, playerId)
+    return {
+      id: playerId,
+      gameEvent: 'fire',
+      location: currentPlayer.location,
+      angle: currentPlayer.angle
+    };
   }
 }
 

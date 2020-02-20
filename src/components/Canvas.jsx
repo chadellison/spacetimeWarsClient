@@ -1,7 +1,8 @@
 import React from 'react';
-import {drawShip} from '../helpers/canvasHelper.js';
+import {drawShip, drawWeapon} from '../helpers/canvasHelper.js';
 import fighterShip from "../images/fighterShip.png";
 import thrusterAudio from '../audio/thruster.mov';
+import '../styles/styles.css';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -34,6 +35,9 @@ class Canvas extends React.Component {
     this.props.players.forEach((player) => {
       drawShip(context, player, this.state.fighterShip, this.state.thrusterAudio);
       player.id === this.props.playerId && player.isAccelerating ? this.state.thrusterAudio.play() : this.state.thrusterAudio.pause();
+    });
+    this.props.deployedWeapons.forEach((weapon) => {
+      drawWeapon(context, weapon, this.state.fighterShip)
     });
   }
 
