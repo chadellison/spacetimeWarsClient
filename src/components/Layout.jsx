@@ -8,7 +8,8 @@ import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
   ANAIMATION_FRAME_RATE,
-  REQUEST_COUNT
+  REQUEST_COUNT,
+  WEAPONS
 } from '../constants/settings.js';
 import {
   handleWall,
@@ -151,10 +152,10 @@ class Layout extends React.Component {
 
   handleWeapon = (playerData) => {
     if (playerData.fire) {
-      const weapon = {
-        location: playerData.location,
-        trajectory: playerData.angle
-      }
+      const weapon = WEAPONS[playerData.weapon]
+      weapon.location = playerData.location
+      weapon.trajectory = playerData.angle
+
       const weapons = [...this.state.deployedWeapons, weapon]
       this.setState({deployedWeapons: weapons})
     };

@@ -1,4 +1,5 @@
 import {KEY_MAP} from '../constants/keyMap.js';
+import {WEAPONS} from '../constants/settings.js';
 import {
   updatePlayer,
   findElapsedTime
@@ -70,8 +71,10 @@ const handleStartEvent = (userId) => {
 
 const handleFireEvent = (players, playerId, clockDifference) => {
   const currentPlayer = findCurrentPlayer(players, playerId)
-  const cooldown = findElapsedTime(clockDifference, currentPlayer.lastFired) > 200
-  if (!currentPlayer.fire && cooldown) {
+  const elapsedTime = findElapsedTime(clockDifference, currentPlayer.lastFired)
+  const weaponCooldown = WEAPONS[currentPlayer.weapon].cooldown;
+  const canFire = elapsedTime > weaponCooldown
+  if (!currentPlayer.fire && canFire) {
     return {
       id: playerId,
       gameEvent: 'fire',
