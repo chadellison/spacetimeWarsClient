@@ -118,12 +118,7 @@ class Layout extends React.Component {
   }
 
   handleKeyDown = (event) => {
-    const eventPayload = keyDownEventPayload(
-      event.keyCode,
-      this.state.currentPlayerId,
-      this.state.userId,
-      this.state.players
-    );
+    const eventPayload = keyDownEventPayload(event.keyCode, this.state);
     if (eventPayload) {
       this.state.gameSocket.create(eventPayload)
     }
@@ -155,7 +150,7 @@ class Layout extends React.Component {
   }
 
   handleWeapon = (playerData) => {
-    if (playerData.lastEvent === 'fire') {
+    if (playerData.fire) {
       const weapon = {
         location: playerData.location,
         trajectory: playerData.angle

@@ -7,7 +7,7 @@ import {
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
   let currentVelocity = DRIFT;
 
-  if (player.isAccelerating) {
+  if (player.accelerate) {
     currentVelocity += player.velocity;
   } else {
     const timeSinceLastAcceleration = Date.now() + clockDifference - player.lastAccelerationTime;
@@ -23,7 +23,7 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
 export const updatePlayer = (player, elapsedTime, clockDifference) => {
   player.angle = handleAngle(player, elapsedTime);
   const distance = distanceTraveled(player, elapsedTime, clockDifference);
-  const trajectory = player.isAccelerating ? player.angle : player.trajectory;
+  const trajectory = player.accelerate ? player.angle : player.trajectory;
   player.location = handleLocation(trajectory, player.location, distance);
   return player
 }
@@ -56,7 +56,7 @@ export const handleLocation = (trajectory, location, distance) => {
 }
 
 export const handleAngle = (player, elapsedTime) => {
-  switch (player.rotation) {
+  switch (player.rotate) {
     case 'left':
       const angle = (player.angle - 3 * (elapsedTime / ANAIMATION_FRAME_RATE)) % 360;
       return angle < 0 ? 360 - angle : angle;

@@ -10,7 +10,7 @@ export const drawShip = (context, player, fighterShip) => {
 
   context.drawImage(fighterShip, x, y)
 
-  if (player.isAccelerating) {
+  if (player.accelerate) {
     handleAcceleration(context, player, fighterShip)
   }
   context.restore()

@@ -4,16 +4,16 @@ import {
   findElapsedTime
 } from '../helpers/gameLogic.js';
 
-export const keyDownEventPayload = (keyCode, playerId, userId, players) => {
+export const keyDownEventPayload = (keyCode, {currentPlayerId, userId, players, clockDifference}) => {
   switch (KEY_MAP[keyCode]) {
     case 'space':
     case 'enter':
-      return handleSpaceBarEvent(players, playerId, userId);
+      return currentPlayerId ? handleFireEvent(players, currentPlayerId, clockDifference) : handleStartEvent(userId);
     case 'left':
     case 'right':
-      return handleRotateEvent(playerId, players, KEY_MAP[keyCode]);
+      return handleRotateEvent(currentPlayerId, players, KEY_MAP[keyCode]);
     case 'up':
-      return handleAcceleration(playerId, players, KEY_MAP[keyCode]);
+      return handleAccelerateEvent(currentPlayerId, players, KEY_MAP[keyCode]);
     default:
       break;
   }
@@ -30,6 +30,15 @@ export const keyUpEventPayload = (playerId, players, keyCode) => {
       angle: currentPlayer.angle
     };
   };
+
+  if ('space' === KEY_MAP[keyCode] && currentPlayer) {
+    return {
+      id: playerId,
+      gameEvent: 'fireStop',
+      location: currentPlayer.location,
+      angle: currentPlayer.angle
+    };
+  }
 }
 
 export const handleEventPayload = (players, playerData, clockDifference) => {
@@ -55,19 +64,22 @@ const findCurrentPlayer = (players, playerId) => {
   return players.filter((player) => player.id === playerId)[0];
 };
 
-const handleSpaceBarEvent = (players, playerId, userId) => {
-  if (!playerId) {
-    return {id: userId, gameEvent: 'start'}
-  } else {
-    const currentPlayer = findCurrentPlayer(players, playerId)
+const handleStartEvent = (userId) => {
+  return {id: userId, gameEvent: 'start'};
+}
+
+const handleFireEvent = (players, playerId, clockDifference) => {
+  const currentPlayer = findCurrentPlayer(players, playerId)
+  const cooldown = findElapsedTime(clockDifference, currentPlayer.lastFired) > 200
+  if (!currentPlayer.fire && cooldown) {
     return {
       id: playerId,
       gameEvent: 'fire',
       location: currentPlayer.location,
       angle: currentPlayer.angle
     };
-  }
-}
+  };
+};
 
 const handleRotateEvent = (playerId, players, gameEvent) => {
   if (playerId) {
@@ -81,12 +93,12 @@ const handleRotateEvent = (playerId, players, gameEvent) => {
       };
     };
   };
-}
+};
 
-const handleAcceleration = (playerId, players, gameEvent) => {
+const handleAccelerateEvent = (playerId, players, gameEvent) => {
   if (playerId) {
     const currentPlayer = findCurrentPlayer(players, playerId)
-    if (gameEvent === 'up' && !currentPlayer.isAccelerating) {
+    if (!currentPlayer.accelerate) {
       return {
         id: playerId,
         gameEvent: gameEvent,
