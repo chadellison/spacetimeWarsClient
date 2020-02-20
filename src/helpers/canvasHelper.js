@@ -37,9 +37,10 @@ const handleAcceleration = (context, player, fighterShip) => {
   context.fill();
 }
 
-export const drawWeapon = (context, weapon, fighterShip) => {
-  context.fillStyle = 'green';
+export const drawWeapon = (context, weapon, fighterShip, image) => {
+  context.save();
   const x = weapon.location.x + 0.5 * fighterShip.width;
   const y = weapon.location.y + 0.5 * fighterShip.height;
-  context.fillRect(x, y, 5, 5);
+
+  context.drawImage(image, x, y)
 }

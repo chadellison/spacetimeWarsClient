@@ -30,8 +30,7 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
 
 export const updateWeapons = (weapons, width, height) => {
   const updatedWeapons = weapons.map((weapon) => {
-    const distance = 20
-    weapon.location = handleLocation(weapon.trajectory, weapon.location, distance);
+    weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
     return weapon
   });
 

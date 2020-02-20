@@ -8,9 +8,10 @@ export const DRIFT = 2;
 export const DRIFT_DECAY_TIME = 5000;
 export const WEAPONS = {
   1: {
-    name: 'basic cannon',
+    name: 'fireball',
     location: {x: 0, y: 0},
     trajectory: 0,
-    cooldown: 200
+    cooldown: 200,
+    speed: 15
   }
 };
