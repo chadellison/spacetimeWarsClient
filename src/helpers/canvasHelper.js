@@ -13,6 +13,7 @@ export const drawShip = (context, player, fighterShip) => {
   if (player.accelerate) {
     handleAcceleration(context, player, fighterShip)
   }
+
   context.restore()
 }
 
@@ -35,12 +36,4 @@ const handleAcceleration = (context, player, fighterShip) => {
   context.stroke();
   context.fillStyle = grd;
   context.fill();
-}
-
-export const drawWeapon = (context, weapon, fighterShip, image) => {
-  context.save();
-  const x = weapon.location.x + 0.5 * fighterShip.width;
-  const y = weapon.location.y + 0.5 * fighterShip.height;
-
-  context.drawImage(image, x, y)
 }

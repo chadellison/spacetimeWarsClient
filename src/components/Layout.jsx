@@ -14,7 +14,8 @@ import {
 import {
   updatePlayer,
   findElapsedTime,
-  updateGameState
+  updateGameState,
+  handleFireWeapon
 } from '../helpers/gameLogic.js';
 import {
   keyDownEventPayload,
@@ -147,7 +148,11 @@ class Layout extends React.Component {
       playerData,
       this.state.clockDifference
     );
-    const deployedWeapons = this.handleWeapon(playerData)
+    const deployedWeapons = handleFireWeapon(
+      playerData,
+      {...WEAPONS[playerData.weapon]},
+      [...this.state.deployedWeapons]
+    );
     this.handleAudio(playerData.id, playerData.accelerate);
 
     this.setState({
@@ -163,18 +168,6 @@ class Layout extends React.Component {
       this.thrusterAudio.pause()
     }
   }
-
-  handleWeapon = (playerData) => {
-    if (playerData.fire) {
-      const weapon = {...WEAPONS[playerData.weapon]}
-      weapon.location = playerData.location
-      weapon.trajectory = playerData.angle
-
-      return [...this.state.deployedWeapons, weapon]
-    } else {
-      return this.state.deployedWeapons;
-    }
-  };
 
   renderGame = () => {
     let players = [...this.state.players];

@@ -29,10 +29,10 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
 }
 
 export const updateWeapons = (weapons, width, height, players) => {
-  const updatedWeapons = weapons.map((weapon) => {
+  const updatedWeapons = weapons.filter((weapon) => {
     weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
-    handleCollision(weapon, players)
-    return weapon
+    weapon = handleCollision(weapon, players)
+    return !weapon.removed
   });
 
   return updatedWeapons.filter((weapon) => {
@@ -41,11 +41,51 @@ export const updateWeapons = (weapons, width, height, players) => {
       weapon.location.y > 0 &&
       weapon.location.y < height
   });
+};
+
+const handleCollision = (weapon, players) => {
+  players.forEach((player) => {
+    if (player.id !== weapon.playerId) {
+      const shipCenter = {x: player.location.x + 60.5, y: player.location.y + 38}
+
+      const shipBoundingBoxes = [
+        handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, 30),
+        handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, 10),
+        handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, -10),
+        handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, -35)
+      ];
+      const weaponCenter = {x: weapon.location.x + 8, y: weapon.location.y + 8}
+
+      shipBoundingBoxes.forEach((center, index) => {
+        const distance = findHypotenuse(center, weaponCenter);
+        if ((index < 3 && distance < 18) || (index > 2 && distance < 23)) {
+          console.log('BLAM!')
+          weapon.removed = true
+        }
+      });
+    }
+  });
+  return weapon;
 }
 
-const handleCollision = (weopon, players) => {
-  console.log('yo')
-}
+export const handleFireWeapon = (player, weapon, deployedWeapons) => {
+  if (player.fire) {
+    const x = player.location.x + 60.5;
+    const y = player.location.y + 38;
+
+    weapon.location = handleLocation(player.angle, {x, y}, 50);
+    weapon.trajectory = player.angle
+    weapon.playerId = player.id
+
+    return [...deployedWeapons, weapon]
+  } else {
+    return deployedWeapons;
+  }
+};
+
+const findHypotenuse = (point, pointTwo) => {
+  return Math.round(Math.sqrt((point.x - pointTwo.x) ** 2 + (point.y - pointTwo.y) ** 2))
+};
 
 export const updateGameState = ({players, elapsedTime, clockDifference, width, height, deployedWeapons}) => {
   const updatedPlayers = players.map((player) => {

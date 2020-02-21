@@ -1,5 +1,5 @@
 import React from 'react';
-import {drawShip, drawWeapon} from '../helpers/canvasHelper.js';
+import {drawShip} from '../helpers/canvasHelper.js';
 import fighterShip from "../images/fighterShip.png";
 import fireball from "../images/fireball.png";
 import '../styles/styles.css';
@@ -35,7 +35,7 @@ class Canvas extends React.Component {
       drawShip(context, player, this.state.fighterShip, this.state.thrusterAudio);
     });
     this.props.deployedWeapons.forEach((weapon) => {
-      drawWeapon(context, weapon, this.state.fighterShip, this.state.fireball)
+      context.drawImage(this.state.fireball, weapon.location.x, weapon.location.y)
     });
   }
 
