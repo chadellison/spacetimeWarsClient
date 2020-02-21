@@ -1,7 +1,8 @@
 import {
   ANAIMATION_FRAME_RATE,
   DRIFT,
-  DRIFT_DECAY_TIME
+  DRIFT_DECAY_TIME,
+  SHIP
 } from '../constants/settings.js';
 
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
@@ -36,17 +37,17 @@ export const updateWeapons = (weapons, width, height, players) => {
   });
 
   return updatedWeapons.filter((weapon) => {
-    return weapon.location.x > 0 &&
-      weapon.location.x < width &&
-      weapon.location.y > 0 &&
-      weapon.location.y < height
+    return weapon.location.x > -50 &&
+      weapon.location.x < width + 50 &&
+      weapon.location.y > -50 &&
+      weapon.location.y < height + 50
   });
 };
 
 const handleCollision = (weapon, players) => {
   players.forEach((player) => {
     if (player.id !== weapon.playerId) {
-      const shipCenter = {x: player.location.x + 60.5, y: player.location.y + 38}
+      const shipCenter = {x: player.location.x + SHIP.shipCenter.x, y: player.location.y + SHIP.shipCenter.y}
 
       const shipBoundingBoxes = [
         handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, 30),
@@ -70,8 +71,8 @@ const handleCollision = (weapon, players) => {
 
 export const handleFireWeapon = (player, weapon, deployedWeapons) => {
   if (player.fire) {
-    const x = player.location.x + 60.5;
-    const y = player.location.y + 38;
+    const x = player.location.x + SHIP.shipCenter.x;
+    const y = player.location.y + SHIP.shipCenter.y;
 
     weapon.location = handleLocation(player.angle, {x, y}, 50);
     weapon.trajectory = player.angle

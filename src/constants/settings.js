@@ -15,3 +15,7 @@ export const WEAPONS = {
     speed: 15
   }
 };
+
+export const SHIP = {
+  shipCenter: {x: 60.5, y: 38}
+}
