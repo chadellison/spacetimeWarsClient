@@ -28,9 +28,10 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   return player
 }
 
-export const updateWeapons = (weapons, width, height) => {
+export const updateWeapons = (weapons, width, height, players) => {
   const updatedWeapons = weapons.map((weapon) => {
     weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
+    handleCollision(weapon, players)
     return weapon
   });
 
@@ -40,6 +41,23 @@ export const updateWeapons = (weapons, width, height) => {
       weapon.location.y > 0 &&
       weapon.location.y < height
   });
+}
+
+const handleCollision = (weopon, players) => {
+  console.log('yo')
+}
+
+export const updateGameState = ({players, elapsedTime, clockDifference, width, height, deployedWeapons}) => {
+  const updatedPlayers = players.map((player) => {
+    player = updatePlayer(player, elapsedTime, clockDifference);
+    handleWall(player, width, height);
+    return player;
+  });
+
+  if (deployedWeapons.length > 0) {
+    deployedWeapons = updateWeapons(deployedWeapons, width, height, updatedPlayers);
+  };
+  return {players: updatedPlayers, deployedWeapons: deployedWeapons}
 }
 
 export const findElapsedTime = (clockDifference, updatedAt) => {

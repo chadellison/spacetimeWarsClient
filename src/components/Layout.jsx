@@ -12,10 +12,9 @@ import {
   WEAPONS
 } from '../constants/settings.js';
 import {
-  handleWall,
   updatePlayer,
   findElapsedTime,
-  updateWeapons
+  updateGameState
 } from '../helpers/gameLogic.js';
 import {
   keyDownEventPayload,
@@ -182,17 +181,16 @@ class Layout extends React.Component {
     let deployedWeapons = [...this.state.deployedWeapons]
 
     if (players.length > 0) {
-      const updatedPlayers = players.map((player) => {
-        player = updatePlayer(player, ANAIMATION_FRAME_RATE, this.state.clockDifference);
-        handleWall(player, this.state.boardWidth, this.state.boardHeight);
-        return player;
-      });
-
-      if (deployedWeapons.length > 0) {
-        deployedWeapons = updateWeapons(deployedWeapons, this.state.boardWidth, this.state.boardHeight);
-      };
-
-      this.setState({players: updatedPlayers, deployedWeapons: deployedWeapons});
+      const gameData = {
+        players: players,
+        elapsedTime: ANAIMATION_FRAME_RATE,
+        clockDifference: this.state.clockDifference,
+        width: this.state.boardWidth,
+        height: this.state.boardHeight,
+        deployedWeapons: deployedWeapons
+      }
+      const updatedGameState = updateGameState(gameData)
+      this.setState(updatedGameState);
     }
   };
 
