@@ -37,7 +37,8 @@ body {
 }
 
 .canvas {
-  background: #151313;
+  /* background: #151313; */
+  background-image: url("../images/background.jpg");
 }
 
 .hidden {
