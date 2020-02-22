@@ -116,7 +116,7 @@ export const updateGameState = ({
   if (deployedWeapons.length > 0) {
     deployedWeapons = handleWeapons(deployedWeapons, width, height, updatedPlayers, handleGameEvent);
   };
-  return {players: updatedPlayers, deployedWeapons: deployedWeapons}
+  return {players: updatedPlayers, deployedWeapons: deployedWeapons};
 }
 
 export const findElapsedTime = (clockDifference, updatedAt) => {

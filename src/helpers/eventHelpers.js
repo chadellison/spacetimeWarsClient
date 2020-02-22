@@ -6,16 +6,16 @@ import {
   handleFireWeapon
 } from '../helpers/gameLogic.js';
 
-export const keyDownEventPayload = (keyCode, {currentPlayerId, userId, players, clockDifference}) => {
+export const keyDownEventPayload = (keyCode, state) => {
   switch (KEY_MAP[keyCode]) {
     case 'space':
     case 'enter':
-      return currentPlayerId ? handleFireEvent(players, currentPlayerId, clockDifference) : handleStartEvent(userId);
+      return handleSpaceBarEvent(state);
     case 'left':
     case 'right':
-      return handleRotateEvent(currentPlayerId, players, KEY_MAP[keyCode]);
+      return handleRotateEvent(state.currentPlayerId, state.players, KEY_MAP[keyCode]);
     case 'up':
-      return handleAccelerateEvent(currentPlayerId, players, KEY_MAP[keyCode]);
+      return handleAccelerateEvent(state.currentPlayerId, state.players, KEY_MAP[keyCode]);
     default:
       break;
   }
@@ -55,7 +55,7 @@ const playersFromEvent = (gameEvent, players, playerData) => {
   };
 }
 
-export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayerId) => {
+export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayerId, waitingPlayer) => {
   players = playersFromEvent(playerData.lastEvent, players, playerData);
 
   const updatedWeapons = handleFireWeapon(
@@ -76,21 +76,25 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
   return {
     players: updatedPlayers,
     deployedWeapons: updatedWeapons,
-    waitingPlayer: handleWaitingPlayer(playerData, currentPlayerId)
+    waitingPlayer: handleWaitingPlayer(playerData, currentPlayerId, waitingPlayer)
   };
 }
 
-const handleWaitingPlayer = (player, currentPlayerId) => {
-  return currentPlayerId === player.id && player.lastEvent === 'explode' ? player : null;
-}
+const handleWaitingPlayer = (player, currentPlayerId, waitingPlayer) => {
+  if (currentPlayerId === player.id) {
+    if (waitingPlayer && player.lastEvent === 'start') {
+      return null
+    } else if (player.lastEvent ===  'explode') {
+      return player;
+    };
+  } else {
+    return waitingPlayer;
+  };
+};
 
 const findCurrentPlayer = (players, playerId) => {
   return players.filter((player) => player.id === playerId)[0];
 };
-
-const handleStartEvent = (userId) => {
-  return {id: userId, gameEvent: 'start', hitpoints: 1000, maxHitpoints: 1000, armor: 1};
-}
 
 const handleFireEvent = (players, playerId, clockDifference) => {
   const currentPlayer = findCurrentPlayer(players, playerId)
@@ -135,13 +139,36 @@ const handleAccelerateEvent = (playerId, players, gameEvent) => {
   };
 };
 
+const handleSpaceBarEvent = ({players, currentPlayerId, clockDifference, userId, waitingPlayer}) => {
+  console.log(waitingPlayer, 'wait')
+  if (!currentPlayerId || waitingPlayer) {
+     return handleStartEvent(waitingPlayer, userId, currentPlayerId);
+  } else {
+    return handleFireEvent(players, currentPlayerId, clockDifference);
+  };
+};
+
+const handleStartEvent = (waitingPlayer, userId, currentPlayerId) => {
+  if (waitingPlayer) {
+    return {
+      id: currentPlayerId,
+      gameEvent: 'start',
+      hitpoints: waitingPlayer.maxHitpoints,
+      maxHitpoints: waitingPlayer.maxHitpoints,
+      armor: waitingPlayer.armor,
+      lives: waitingPlayer.lives
+    };
+  } else {
+    return {id: userId, gameEvent: 'start', hitpoints: 1000, maxHitpoints: 1000, armor: 1};
+  }
+}
+
 export const handleExplodeEvent = (player) => {
   return {
     id: player.id,
     gameEvent: 'explode',
     location: player.location,
     angle: player.angle,
-    lives: player.lives - 1,
-    hitpoins: player.maxHitpoints
+    lives: player.lives - 1
   };
 };

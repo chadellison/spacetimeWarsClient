@@ -116,22 +116,22 @@ class Layout extends React.Component {
           players: players
         });
     }).catch((error) => console.log('ERROR', error));
-  }
+  };
 
   handleGameEvent = (eventPayload) => {
     this.state.gameSocket.create(eventPayload)
-  }
+  };
 
   handleKeyDown = (event) => {
     const eventPayload = keyDownEventPayload(event.keyCode, this.state);
     if (eventPayload) {
       this.handleGameEvent(eventPayload)
-    }
+    };
 
     if (KEY_MAP[event.keyCode] === 'space' && !this.state.currentPlayerId) {
       this.setState({currentPlayerId: this.state.userId});
-    }
-  }
+    };
+  };
 
   handleKeyUp = (event) => {
     const eventPayload = keyUpEventPayload(
@@ -150,7 +150,8 @@ class Layout extends React.Component {
       playerData,
       this.state.clockDifference,
       [...this.state.deployedWeapons],
-      this.state.currentPlayerId
+      this.state.currentPlayerId,
+      this.state.waitingPlayer
     );
     handleAudio(playerData);
     this.setState(gameState);
@@ -169,6 +170,11 @@ class Layout extends React.Component {
         height: this.state.boardHeight,
         deployedWeapons: deployedWeapons,
         handleGameEvent: this.handleGameEvent
+      }
+      if (this.state.waitingPlayer) {
+        console.log('hihihihihih')
+      } else {
+        console.log('nononononon')
       }
       const updatedGameState = updateGameState(gameData)
       this.setState(updatedGameState);
