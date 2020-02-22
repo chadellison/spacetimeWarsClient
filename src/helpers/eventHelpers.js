@@ -2,7 +2,8 @@ import {KEY_MAP} from '../constants/keyMap.js';
 import {WEAPONS} from '../constants/settings.js';
 import {
   updatePlayer,
-  findElapsedTime
+  findElapsedTime,
+  handleFireWeapon
 } from '../helpers/gameLogic.js';
 
 export const keyDownEventPayload = (keyCode, {currentPlayerId, userId, players, clockDifference}) => {
@@ -42,16 +43,28 @@ export const keyUpEventPayload = (playerId, players, keyCode) => {
   }
 }
 
-export const handleEventPayload = (players, playerData, clockDifference) => {
-  if (playerData.lastEvent === 'start') {
-    players = [...players, playerData]
-  }
+const playersFromEvent = (gameEvent, players, playerData) => {
+  switch (gameEvent) {
+    case 'start':
+      return [...players, playerData]
+    case 'explode':
+    case 'remove':
+      return players.filter((player) => player.id !== playerData.id)
+    default:
+      return players;
+  };
+}
 
-  if (playerData.lastEvent === 'remove') {
-    players = players.filter((player) => player.id !== playerData.id)
-  }
+export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayerId) => {
+  players = playersFromEvent(playerData.lastEvent, players, playerData);
 
-  return players.map((player) => {
+  const updatedWeapons = handleFireWeapon(
+    playerData,
+    {...WEAPONS[playerData.weapon]},
+    deployedWeapons
+  );
+
+  const updatedPlayers = players.map((player) => {
     if (player.id === playerData.id) {
       const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
       return updatePlayer(playerData, elapsedTime, clockDifference);
@@ -59,6 +72,16 @@ export const handleEventPayload = (players, playerData, clockDifference) => {
       return player;
     };
   });
+
+  return {
+    players: updatedPlayers,
+    deployedWeapons: updatedWeapons,
+    waitingPlayer: handleWaitingPlayer(playerData, currentPlayerId)
+  };
+}
+
+const handleWaitingPlayer = (player, currentPlayerId) => {
+  return currentPlayerId === player.id && player.lastEvent === 'explode' ? player : null;
 }
 
 const findCurrentPlayer = (players, playerId) => {
@@ -66,7 +89,7 @@ const findCurrentPlayer = (players, playerId) => {
 };
 
 const handleStartEvent = (userId) => {
-  return {id: userId, gameEvent: 'start'};
+  return {id: userId, gameEvent: 'start', hitpoints: 1000, maxHitpoints: 1000, armor: 1};
 }
 
 const handleFireEvent = (players, playerId, clockDifference) => {
@@ -109,5 +132,16 @@ const handleAccelerateEvent = (playerId, players, gameEvent) => {
         angle: currentPlayer.angle
       };
     };
+  };
+};
+
+export const handleExplodeEvent = (player) => {
+  return {
+    id: player.id,
+    gameEvent: 'explode',
+    location: player.location,
+    angle: player.angle,
+    lives: player.lives - 1,
+    hitpoins: player.maxHitpoints
   };
 };

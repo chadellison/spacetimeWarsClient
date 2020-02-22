@@ -8,14 +8,12 @@ import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
   ANAIMATION_FRAME_RATE,
-  REQUEST_COUNT,
-  WEAPONS
+  REQUEST_COUNT
 } from '../constants/settings.js';
 import {
   updatePlayer,
   findElapsedTime,
   updateGameState,
-  handleFireWeapon
 } from '../helpers/gameLogic.js';
 import {
   keyDownEventPayload,
@@ -33,7 +31,8 @@ const DEFAULT_STATE = {
   players: [],
   clockDifference: 0,
   shortestRoundTripTime: 5000,
-  deployedWeapons: []
+  deployedWeapons: [],
+  waitingPlayer: null
 };
 
 class Layout extends React.Component {
@@ -119,10 +118,14 @@ class Layout extends React.Component {
     }).catch((error) => console.log('ERROR', error));
   }
 
+  handleGameEvent = (eventPayload) => {
+    this.state.gameSocket.create(eventPayload)
+  }
+
   handleKeyDown = (event) => {
     const eventPayload = keyDownEventPayload(event.keyCode, this.state);
     if (eventPayload) {
-      this.state.gameSocket.create(eventPayload)
+      this.handleGameEvent(eventPayload)
     }
 
     if (KEY_MAP[event.keyCode] === 'space' && !this.state.currentPlayerId) {
@@ -137,28 +140,21 @@ class Layout extends React.Component {
       event.keyCode
     )
     if (eventPayload) {
-      this.state.gameSocket.create(eventPayload)
+      this.handleGameEvent(eventPayload)
     }
   };
 
   handleReceivedEvent = (playerData) => {
-    const updatedPlayers = handleEventPayload(
+    const gameState = handleEventPayload(
       [...this.state.players],
       playerData,
-      this.state.clockDifference
-    );
-    const deployedWeapons = handleFireWeapon(
-      playerData,
-      {...WEAPONS[playerData.weapon]},
-      [...this.state.deployedWeapons]
+      this.state.clockDifference,
+      [...this.state.deployedWeapons],
+      this.state.currentPlayerId
     );
     handleAudio(playerData);
-
-    this.setState({
-      players: updatedPlayers,
-      deployedWeapons: deployedWeapons
-    });
-  }
+    this.setState(gameState);
+  };
 
   renderGame = () => {
     let players = [...this.state.players];
@@ -171,7 +167,8 @@ class Layout extends React.Component {
         clockDifference: this.state.clockDifference,
         width: this.state.boardWidth,
         height: this.state.boardHeight,
-        deployedWeapons: deployedWeapons
+        deployedWeapons: deployedWeapons,
+        handleGameEvent: this.handleGameEvent
       }
       const updatedGameState = updateGameState(gameData)
       this.setState(updatedGameState);

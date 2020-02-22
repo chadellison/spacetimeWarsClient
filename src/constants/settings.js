@@ -12,7 +12,8 @@ export const WEAPONS = {
     location: {x: 0, y: 0},
     trajectory: 0,
     cooldown: 100,
-    speed: 15
+    speed: 15,
+    damage: 50
   }
 };
 

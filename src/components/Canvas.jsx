@@ -32,7 +32,9 @@ class Canvas extends React.Component {
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
     this.props.players.forEach((player) => {
-      drawShip(context, player, this.state.fighterShip, this.state.thrusterAudio);
+      if (player.lastEvent !== 'explode') {
+        drawShip(context, player, this.state.fighterShip, this.state.thrusterAudio);
+      }
     });
     this.props.deployedWeapons.forEach((weapon) => {
       context.drawImage(this.state.fireball, weapon.location.x, weapon.location.y)

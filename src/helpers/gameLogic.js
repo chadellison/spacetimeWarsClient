@@ -5,6 +5,8 @@ import {
   SHIP
 } from '../constants/settings.js';
 
+import {handleExplodeEvent} from './eventHelpers.js';
+
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
   let currentVelocity = DRIFT;
 
@@ -29,10 +31,10 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   return player
 }
 
-export const updateWeapons = (weapons, width, height, players) => {
+export const handleWeapons = (weapons, width, height, players, handleGameEvent) => {
   const updatedWeapons = weapons.filter((weapon) => {
     weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
-    weapon = handleCollision(weapon, players)
+    weapon = handleCollision(weapon, players, handleGameEvent)
     return !weapon.removed
   });
 
@@ -44,7 +46,7 @@ export const updateWeapons = (weapons, width, height, players) => {
   });
 };
 
-const handleCollision = (weapon, players) => {
+const handleCollision = (weapon, players, handleGameEvent) => {
   players.forEach((player) => {
     if (player.id !== weapon.playerId) {
       const shipCenter = {x: player.location.x + SHIP.shipCenter.x, y: player.location.y + SHIP.shipCenter.y}
@@ -61,12 +63,20 @@ const handleCollision = (weapon, players) => {
         const distance = findHypotenuse(center, weaponCenter);
         if ((index < 3 && distance < 18) || (index > 2 && distance < 23)) {
           console.log('BLAM!')
+          player.hitpoints = updateHitpoints(weapon.damage, player.hitpoints, player.armor)
+          if (player.hitpoints < 0) {
+            handleGameEvent(handleExplodeEvent(player));
+          }
           weapon.removed = true
         }
       });
-    }
+    };
   });
   return weapon;
+}
+
+const updateHitpoints = (damage, hitpoints, armor) => {
+  return Math.round(hitpoints - (damage * (10 - armor) / 10));
 }
 
 export const handleFireWeapon = (player, weapon, deployedWeapons) => {
@@ -88,7 +98,15 @@ const findHypotenuse = (point, pointTwo) => {
   return Math.round(Math.sqrt((point.x - pointTwo.x) ** 2 + (point.y - pointTwo.y) ** 2))
 };
 
-export const updateGameState = ({players, elapsedTime, clockDifference, width, height, deployedWeapons}) => {
+export const updateGameState = ({
+  players,
+  elapsedTime,
+  clockDifference,
+  width,
+  height,
+  deployedWeapons,
+  handleGameEvent
+}) => {
   const updatedPlayers = players.map((player) => {
     player = updatePlayer(player, elapsedTime, clockDifference);
     handleWall(player, width, height);
@@ -96,7 +114,7 @@ export const updateGameState = ({players, elapsedTime, clockDifference, width, h
   });
 
   if (deployedWeapons.length > 0) {
-    deployedWeapons = updateWeapons(deployedWeapons, width, height, updatedPlayers);
+    deployedWeapons = handleWeapons(deployedWeapons, width, height, updatedPlayers, handleGameEvent);
   };
   return {players: updatedPlayers, deployedWeapons: deployedWeapons}
 }
