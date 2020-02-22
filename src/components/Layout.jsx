@@ -22,7 +22,7 @@ import {
   keyUpEventPayload,
   handleEventPayload
 } from '../helpers/eventHelpers.js';
-import {thruster} from '../helpers/audioHelpers.js';
+import {handleAudio} from '../helpers/audioHelpers.js';
 
 const DEFAULT_STATE = {
   userId: new Date().getTime(),
@@ -39,7 +39,6 @@ const DEFAULT_STATE = {
 class Layout extends React.Component {
   constructor(props) {
     super(props)
-    this.thrusterAudio = thruster()
     this.state = DEFAULT_STATE
   };
 
@@ -153,20 +152,12 @@ class Layout extends React.Component {
       {...WEAPONS[playerData.weapon]},
       [...this.state.deployedWeapons]
     );
-    this.handleAudio(playerData.id, playerData.accelerate);
+    handleAudio(playerData);
 
     this.setState({
       players: updatedPlayers,
       deployedWeapons: deployedWeapons
     });
-  }
-
-  handleAudio = (playerId, isAccelerating) => {
-    if (this.state.currentPlayerId && isAccelerating) {
-      this.thrusterAudio.play()
-    } else {
-      this.thrusterAudio.pause()
-    }
   }
 
   renderGame = () => {
