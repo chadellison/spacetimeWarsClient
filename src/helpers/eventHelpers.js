@@ -112,29 +112,25 @@ const handleFireEvent = (players, playerId, clockDifference) => {
 };
 
 const handleRotateEvent = (playerId, players, gameEvent) => {
-  if (playerId) {
-    const currentPlayer = findCurrentPlayer(players, playerId)
-    if (gameEvent !== currentPlayer.lastEvent) {
-      return {
-        id: playerId,
-        gameEvent: gameEvent,
-        location: currentPlayer.location,
-        angle: currentPlayer.angle
-      };
+  const currentPlayer = findCurrentPlayer(players, playerId)
+  if (currentPlayer && gameEvent !== currentPlayer.lastEvent) {
+    return {
+      id: playerId,
+      gameEvent: gameEvent,
+      location: currentPlayer.location,
+      angle: currentPlayer.angle
     };
   };
 };
 
 const handleAccelerateEvent = (playerId, players, gameEvent) => {
-  if (playerId) {
-    const currentPlayer = findCurrentPlayer(players, playerId)
-    if (!currentPlayer.accelerate) {
-      return {
-        id: playerId,
-        gameEvent: gameEvent,
-        location: currentPlayer.location,
-        angle: currentPlayer.angle
-      };
+  const currentPlayer = findCurrentPlayer(players, playerId)
+  if (currentPlayer && !currentPlayer.accelerate) {
+    return {
+      id: playerId,
+      gameEvent: gameEvent,
+      location: currentPlayer.location,
+      angle: currentPlayer.angle
     };
   };
 };
