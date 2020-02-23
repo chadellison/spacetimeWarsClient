@@ -140,7 +140,6 @@ const handleAccelerateEvent = (playerId, players, gameEvent) => {
 };
 
 const handleSpaceBarEvent = ({players, currentPlayerId, clockDifference, userId, waitingPlayer}) => {
-  console.log(waitingPlayer, 'wait')
   if (!currentPlayerId || waitingPlayer) {
      return handleStartEvent(waitingPlayer, userId, currentPlayerId);
   } else {

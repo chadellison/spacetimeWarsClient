@@ -171,11 +171,6 @@ class Layout extends React.Component {
         deployedWeapons: deployedWeapons,
         handleGameEvent: this.handleGameEvent
       }
-      if (this.state.waitingPlayer) {
-        console.log('hihihihihih')
-      } else {
-        console.log('nononononon')
-      }
       const updatedGameState = updateGameState(gameData)
       this.setState(updatedGameState);
     }
