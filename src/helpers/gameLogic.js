@@ -80,7 +80,7 @@ const updateHitpoints = (damage, hitpoints, armor) => {
 }
 
 export const handleFireWeapon = (player, weapon, deployedWeapons) => {
-  if (player.fire) {
+  if (player.lastEvent === 'fire') {
     const x = player.location.x + SHIP.shipCenter.x;
     const y = player.location.y + SHIP.shipCenter.y;
 
