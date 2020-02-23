@@ -1,4 +1,4 @@
-import thrusterAudio from '../audio/thruster.mov';
+import thrusterAudio from '../audio/thruster.wav';
 import cannonAudio from '../audio/cannon.wav';
 
 const thruster = new Audio(thrusterAudio);
