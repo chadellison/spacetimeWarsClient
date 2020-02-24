@@ -11,12 +11,12 @@ export const handleAudio = (player) => {
     thruster.currentTime = 0
     const playPromise = thruster.play();
     if (playPromise !== undefined) {
-      playPromise.catch(() => {thruster.play()})
+      playPromise.catch((e) => console.log(e));
     }
   } else {
     const pausePromise = thruster.pause();
     if (pausePromise !== undefined) {
-      pausePromise.catch(() => {thruster.pause()})
+      pausePromise.catch((e) => console.log(e));
     }
   }
 
@@ -24,9 +24,7 @@ export const handleAudio = (player) => {
     cannon.currentTime = 0
     const cannonPromise = cannon.play();
     if (cannonPromise !== undefined) {
-      cannonPromise.catch(() => {
-        cannonPromise.play()
-      });
+      cannonPromise.catch((e) => console.log(e));
     }
   }
 }

@@ -32,7 +32,8 @@ const DEFAULT_STATE = {
   clockDifference: 0,
   shortestRoundTripTime: 5000,
   deployedWeapons: [],
-  waitingPlayer: null
+  waitingPlayer: null,
+  gameOver: false
 };
 
 class Layout extends React.Component {
@@ -178,6 +179,12 @@ class Layout extends React.Component {
 
   render = () => {
     const {players, boardHeight, boardWidth} = this.state;
+    if (this.state.gameOver) {
+      console.log('GAME OVER')
+      if (this.state.currentPlayerId) {
+        console.log(this.state.waitingPlayer.lives)
+      }
+    }
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
         <h2>Tanks</h2>

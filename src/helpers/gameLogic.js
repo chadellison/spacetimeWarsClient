@@ -180,4 +180,8 @@ export const handleWall = (player, width, height) => {
   if (player.location.y + 100 < 0) {
     player.location.y = height;
   }
-}
+};
+
+export const handleGameOver = (playerData, currentPlayerId) => {
+  return playerData.id === currentPlayerId && playerData.lives < 1;
+};

@@ -4,7 +4,8 @@ import {
   updatePlayer,
   findElapsedTime,
   handleFireWeapon,
-  findCurrentPlayer
+  findCurrentPlayer,
+  handleGameOver
 } from '../helpers/gameLogic.js';
 
 export const keyDownEventPayload = (keyCode, state) => {
@@ -78,9 +79,10 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
   return {
     players: updatedPlayers,
     deployedWeapons: updatedWeapons,
-    waitingPlayer: handleWaitingPlayer(playerData, currentPlayerId, waitingPlayer)
+    waitingPlayer: handleWaitingPlayer(playerData, currentPlayerId, waitingPlayer),
+    gameOver: handleGameOver(playerData, currentPlayerId)
   };
-}
+};
 
 const handleWaitingPlayer = (player, currentPlayerId, waitingPlayer) => {
   if (currentPlayerId === player.id) {
@@ -149,7 +151,14 @@ const handleStartEvent = (waitingPlayer, userId) => {
       lives: waitingPlayer.lives
     };
   } else {
-    return {id: userId, gameEvent: 'start', hitpoints: 1000, maxHitpoints: 1000, armor: 1};
+    return {
+      id: userId,
+      gameEvent: 'start',
+      hitpoints: 1000,
+      maxHitpoints: 1000,
+      armor: 1,
+      lives: 3
+    };
   }
 }
 
