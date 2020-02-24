@@ -50,7 +50,7 @@ const playersFromEvent = (gameEvent, players, playerData) => {
   switch (gameEvent) {
     case 'start':
       return [...players, playerData]
-    case 'explode':
+    // case 'explode':
     case 'remove':
       return players.filter((player) => player.id !== playerData.id)
     default:

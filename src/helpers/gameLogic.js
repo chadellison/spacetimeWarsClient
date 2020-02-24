@@ -29,6 +29,7 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   const distance = distanceTraveled(player, elapsedTime, clockDifference);
   const trajectory = player.accelerate ? player.angle : player.trajectory;
   player.location = handleLocation(trajectory, player.location, distance);
+  player.explodeAnimation = handleExplodeUpdate(player.lastEvent, player.explodeAnimation);
   return player
 }
 
@@ -181,6 +182,23 @@ export const handleWall = (player, width, height) => {
     player.location.y = height;
   }
 };
+
+const handleExplodeUpdate = (lastEvent, explode) => {
+  // add explode property to player and check that instead
+  let explodeAnimation = explode ? explode : {};
+  if (lastEvent === 'explode') {
+    if (!explodeAnimation.x && explodeAnimation.x !== 0) {
+      explodeAnimation = {x: 0, y: 0}
+    } else if (explodeAnimation.x < (256 * 8)) {
+      explodeAnimation.x += 256;
+    } else if (explodeAnimation.y < (256 * 6)) {
+      explodeAnimation.y += 256;
+    }
+  } else {
+    return {};
+  }
+  return explodeAnimation;
+}
 
 export const handleGameOver = (playerData, currentPlayerId) => {
   return playerData.id === currentPlayerId && playerData.lives < 1;

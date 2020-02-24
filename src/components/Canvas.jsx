@@ -1,8 +1,9 @@
 import React from 'react';
 import {drawShip} from '../helpers/canvasHelper.js';
-import fighterShip from "../images/fighterShip.png";
-import fireball from "../images/fireball.png";
+import fighterShip from '../images/fighterShip.png';
+import fireball from '../images/fireball.png';
 import '../styles/styles.css';
+import explodeAnimation from '../images/explosion.png';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -16,13 +17,15 @@ class Canvas extends React.Component {
     context.fillRect(0, 0, canvas.width, canvas.height);
     const fighterShip = this.refs.ship
     const fireball = this.refs.fireball
+    const explosion = this.refs.explosion
 
     fighterShip.onload = () => {
       this.setState({
         canvas: canvas,
         context: context,
         fighterShip: fighterShip,
-        fireball: fireball
+        fireball: fireball,
+        explosion: explosion
       });
     }
   }
@@ -34,7 +37,32 @@ class Canvas extends React.Component {
     this.props.players.forEach((player) => {
       if (player.lastEvent !== 'explode') {
         drawShip(context, player, this.state.fighterShip, this.state.thrusterAudio);
-      }
+      } else {
+      console.log('booom', player.explodeAnimation.x)
+      console.log('booom', player.explodeAnimation.y)
+
+        context.drawImage(
+          this.state.explosion,
+          player.explodeAnimation.x,
+          player.explodeAnimation.y,
+          256,
+          256,
+          player.location.x,
+          player.location.y,
+          200,
+          200
+        )
+//         context.drawImage(img,
+//     pixelsLeft,
+//     pixelsTop,
+//     spriteWidth,
+//     spriteHeight,
+//     canvasPosX,
+//     canvasPosY,
+//     spriteWidth,
+//     spriteHeight
+// );
+      };
     });
     this.props.deployedWeapons.forEach((weapon) => {
       context.drawImage(this.state.fireball, weapon.location.x, weapon.location.y)
@@ -60,6 +88,7 @@ class Canvas extends React.Component {
                 key={`weapon${index}`}/>
           );
         })}
+        <img ref="explosion" src={explodeAnimation} className="hidden" alt="explosion" />
       </div>
     );
   };

@@ -195,6 +195,7 @@ class Layout extends React.Component {
             width={boardWidth}
             playerId={this.state.currentPlayerId}
             deployedWeapons={this.state.deployedWeapons}
+            waitingPlayer={this.state.waitingPlayer}
           />
         </div>
       </div>
