@@ -2,7 +2,8 @@ import {
   ANAIMATION_FRAME_RATE,
   DRIFT,
   DRIFT_DECAY_TIME,
-  SHIP
+  SHIP,
+  WEAPONS
 } from '../constants/settings.js';
 
 import {handleExplodeEvent} from './eventHelpers.js';
@@ -94,6 +95,10 @@ export const handleFireWeapon = (player, weapon, deployedWeapons) => {
   }
 };
 
+export const findCurrentPlayer = (players, playerId) => {
+  return players.filter((player) => player.id === playerId)[0];
+};
+
 const findHypotenuse = (point, pointTwo) => {
   return Math.round(Math.sqrt((point.x - pointTwo.x) ** 2 + (point.y - pointTwo.y) ** 2))
 };
@@ -110,6 +115,7 @@ export const updateGameState = ({
   const updatedPlayers = players.map((player) => {
     player = updatePlayer(player, elapsedTime, clockDifference);
     handleWall(player, width, height);
+    handleRepeatedFire(player, clockDifference, handleGameEvent);
     return player;
   });
 
@@ -118,6 +124,21 @@ export const updateGameState = ({
   };
   return {players: updatedPlayers, deployedWeapons: deployedWeapons};
 }
+
+export const handleRepeatedFire = (player, clockDifference, handleGameEvent) => {
+  const elapsedTime = findElapsedTime(clockDifference, player.lastFired)
+  const weaponCooldown = WEAPONS[player.weapon].cooldown;
+  const canFire = elapsedTime > weaponCooldown;
+
+  if (player.fire && canFire) {
+    handleGameEvent({
+      id: player.id,
+      gameEvent: 'fire',
+      location: player.location,
+      angle: player.angle
+    });
+  };
+};
 
 export const findElapsedTime = (clockDifference, updatedAt) => {
   const currentTime = Date.now();

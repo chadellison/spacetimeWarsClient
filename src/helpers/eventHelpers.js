@@ -3,19 +3,21 @@ import {WEAPONS} from '../constants/settings.js';
 import {
   updatePlayer,
   findElapsedTime,
-  handleFireWeapon
+  handleFireWeapon,
+  findCurrentPlayer
 } from '../helpers/gameLogic.js';
 
 export const keyDownEventPayload = (keyCode, state) => {
+  const currentPlayer = findCurrentPlayer(state.players, state.currentPlayerId);
   switch (KEY_MAP[keyCode]) {
     case 'space':
     case 'enter':
-      return handleSpaceBarEvent(state);
+      return handleSpaceBarEvent(currentPlayer, state.userId, state.clockDifference, state.waitingPlayer);
     case 'left':
     case 'right':
-      return handleRotateEvent(state.currentPlayerId, state.players, KEY_MAP[keyCode]);
+      return handleRotateEvent(currentPlayer, KEY_MAP[keyCode]);
     case 'up':
-      return handleAccelerateEvent(state.currentPlayerId, state.players, KEY_MAP[keyCode]);
+      return handleAccelerateEvent(currentPlayer, KEY_MAP[keyCode]);
     default:
       break;
   }
@@ -92,18 +94,13 @@ const handleWaitingPlayer = (player, currentPlayerId, waitingPlayer) => {
   };
 };
 
-const findCurrentPlayer = (players, playerId) => {
-  return players.filter((player) => player.id === playerId)[0];
-};
-
-const handleFireEvent = (players, playerId, clockDifference) => {
-  const currentPlayer = findCurrentPlayer(players, playerId)
+const handleFireEvent = (currentPlayer, clockDifference) => {
   const elapsedTime = findElapsedTime(clockDifference, currentPlayer.lastFired)
   const weaponCooldown = WEAPONS[currentPlayer.weapon].cooldown;
   const canFire = elapsedTime > weaponCooldown
-  if (!currentPlayer.fire && canFire) {
+  if (canFire) {
     return {
-      id: playerId,
+      id: currentPlayer.id,
       gameEvent: 'fire',
       location: currentPlayer.location,
       angle: currentPlayer.angle
@@ -111,11 +108,10 @@ const handleFireEvent = (players, playerId, clockDifference) => {
   };
 };
 
-const handleRotateEvent = (playerId, players, gameEvent) => {
-  const currentPlayer = findCurrentPlayer(players, playerId)
+const handleRotateEvent = (currentPlayer, gameEvent) => {
   if (currentPlayer && gameEvent !== currentPlayer.lastEvent) {
     return {
-      id: playerId,
+      id: currentPlayer.id,
       gameEvent: gameEvent,
       location: currentPlayer.location,
       angle: currentPlayer.angle
@@ -123,11 +119,10 @@ const handleRotateEvent = (playerId, players, gameEvent) => {
   };
 };
 
-const handleAccelerateEvent = (playerId, players, gameEvent) => {
-  const currentPlayer = findCurrentPlayer(players, playerId)
+const handleAccelerateEvent = (currentPlayer, gameEvent) => {
   if (currentPlayer && !currentPlayer.accelerate) {
     return {
-      id: playerId,
+      id: currentPlayer.id,
       gameEvent: gameEvent,
       location: currentPlayer.location,
       angle: currentPlayer.angle
@@ -135,18 +130,18 @@ const handleAccelerateEvent = (playerId, players, gameEvent) => {
   };
 };
 
-const handleSpaceBarEvent = ({players, currentPlayerId, clockDifference, userId, waitingPlayer}) => {
-  if (!currentPlayerId || waitingPlayer) {
-     return handleStartEvent(waitingPlayer, userId, currentPlayerId);
+const handleSpaceBarEvent = (currentPlayer, userId, clockDifference, waitingPlayer) => {
+  if (!currentPlayer || waitingPlayer) {
+     return handleStartEvent(waitingPlayer, userId);
   } else {
-    return handleFireEvent(players, currentPlayerId, clockDifference);
+    return handleFireEvent(currentPlayer, clockDifference);
   };
 };
 
-const handleStartEvent = (waitingPlayer, userId, currentPlayerId) => {
+const handleStartEvent = (waitingPlayer, userId) => {
   if (waitingPlayer) {
     return {
-      id: currentPlayerId,
+      id: userId,
       gameEvent: 'start',
       hitpoints: waitingPlayer.maxHitpoints,
       maxHitpoints: waitingPlayer.maxHitpoints,

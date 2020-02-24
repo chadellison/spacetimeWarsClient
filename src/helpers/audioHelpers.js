@@ -20,7 +20,7 @@ export const handleAudio = (player) => {
     }
   }
 
-  if (player.fire) {
+  if (player.lastEvent === 'fire') {
     cannon.currentTime = 0
     const cannonPromise = cannon.play();
     if (cannonPromise !== undefined) {
