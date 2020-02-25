@@ -6,8 +6,6 @@ import {
   WEAPONS
 } from '../constants/settings.js';
 
-import {handleExplodeEvent} from './eventHelpers.js';
-
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
   let currentVelocity = DRIFT;
 
@@ -29,7 +27,8 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   const distance = distanceTraveled(player, elapsedTime, clockDifference);
   const trajectory = player.accelerate ? player.angle : player.trajectory;
   player.location = handleLocation(trajectory, player.location, distance);
-  player.explodeAnimation = handleExplodeUpdate(player.lastEvent, player.explodeAnimation);
+  player.explodeAnimation = handleExplodeUpdate(player.explode, player.explodeAnimation);
+
   return player
 }
 
@@ -50,7 +49,7 @@ export const handleWeapons = (weapons, width, height, players, handleGameEvent) 
 
 const handleCollision = (weapon, players, handleGameEvent) => {
   players.forEach((player) => {
-    if (player.id !== weapon.playerId) {
+    if (player.id !== weapon.playerId && !player.explode) {
       const shipCenter = {x: player.location.x + SHIP.shipCenter.x, y: player.location.y + SHIP.shipCenter.y}
 
       const shipBoundingBoxes = [
@@ -67,7 +66,7 @@ const handleCollision = (weapon, players, handleGameEvent) => {
           console.log('BLAM!')
           player.hitpoints = updateHitpoints(weapon.damage, player.hitpoints, player.armor)
           if (player.hitpoints < 0) {
-            handleGameEvent(handleExplodeEvent(player));
+            handleGameEvent({id: player.id, gameEvent: 'remove'});
           }
           weapon.removed = true
         }
@@ -113,17 +112,24 @@ export const updateGameState = ({
   deployedWeapons,
   handleGameEvent
 }) => {
-  const updatedPlayers = players.map((player) => {
-    player = updatePlayer(player, elapsedTime, clockDifference);
-    handleWall(player, width, height);
-    handleRepeatedFire(player, clockDifference, handleGameEvent);
-    return player;
+  let updatedPlayers = [];
+  players.forEach((player) => {
+    if (!removePlayer(player.explodeAnimation)) {
+      player = updatePlayer(player, elapsedTime, clockDifference);
+      handleWall(player, width, height);
+      handleRepeatedFire(player, clockDifference, handleGameEvent);
+      updatedPlayers.push(player);
+    };
   });
 
   if (deployedWeapons.length > 0) {
     deployedWeapons = handleWeapons(deployedWeapons, width, height, updatedPlayers, handleGameEvent);
   };
   return {players: updatedPlayers, deployedWeapons: deployedWeapons};
+}
+
+const removePlayer = (explodeAnimation) => {
+  return explodeAnimation && (explodeAnimation.x === (256 * 8) && explodeAnimation.y === (256 * 6));
 }
 
 export const handleRepeatedFire = (player, clockDifference, handleGameEvent) => {
@@ -183,23 +189,22 @@ export const handleWall = (player, width, height) => {
   }
 };
 
-const handleExplodeUpdate = (lastEvent, explode) => {
-  // add explode property to player and check that instead
-  let explodeAnimation = explode ? explode : {};
-  if (lastEvent === 'explode') {
-    if (!explodeAnimation.x && explodeAnimation.x !== 0) {
-      explodeAnimation = {x: 0, y: 0}
-    } else if (explodeAnimation.x < (256 * 8)) {
+const handleExplodeUpdate = (isExploding, explodeAnimation) => {
+  if (isExploding) {
+    if (explodeAnimation.x < (256 * 8)) {
       explodeAnimation.x += 256;
-    } else if (explodeAnimation.y < (256 * 6)) {
+    } else if (explodeAnimation.x === (256 * 8) && explodeAnimation.y < (256 * 6)) {
+      explodeAnimation.x = 0;
       explodeAnimation.y += 256;
+    } else {
+      explodeAnimation = {};
     }
+    return explodeAnimation;
   } else {
     return {};
   }
-  return explodeAnimation;
 }
 
 export const handleGameOver = (playerData, currentPlayerId) => {
-  return playerData.id === currentPlayerId && playerData.lives < 1;
+  return playerData.id === currentPlayerId && playerData.lives === 0;
 };

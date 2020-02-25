@@ -12,7 +12,6 @@ export const keyDownEventPayload = (keyCode, state) => {
   const currentPlayer = findCurrentPlayer(state.players, state.currentPlayerId);
   switch (KEY_MAP[keyCode]) {
     case 'space':
-    case 'enter':
       return handleSpaceBarEvent(currentPlayer, state.userId, state.clockDifference, state.waitingPlayer);
     case 'left':
     case 'right':
@@ -50,16 +49,30 @@ const playersFromEvent = (gameEvent, players, playerData) => {
   switch (gameEvent) {
     case 'start':
       return [...players, playerData]
-    // case 'explode':
-    case 'remove':
-      return players.filter((player) => player.id !== playerData.id)
     default:
       return players;
   };
 }
 
+const handleRemoveEvent = (players, playerData) => {
+  players.forEach((player) => {
+    if (player.id === playerData.id) {
+      player.lastEvent = 'remove';
+      player.explodeAnimation = {x: 0, y: 0};
+      player.explode = true;
+      player.updatedAt = playerData.updatedAt;
+      player.lives -= 1
+      playerData = player;
+    };
+  });
+  return playerData
+}
+
 export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayerId, waitingPlayer) => {
   players = playersFromEvent(playerData.lastEvent, players, playerData);
+  if (playerData.lastEvent === 'remove') {
+    playerData = handleRemoveEvent(players, playerData);
+  };
 
   const updatedWeapons = handleFireWeapon(
     playerData,
@@ -76,19 +89,24 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
     };
   });
 
-  return {
+  let gameState = {
     players: updatedPlayers,
     deployedWeapons: updatedWeapons,
     waitingPlayer: handleWaitingPlayer(playerData, currentPlayerId, waitingPlayer),
-    gameOver: handleGameOver(playerData, currentPlayerId)
   };
+
+  if (handleGameOver(playerData, currentPlayerId)) {
+    gameState.gameOver = true;
+    gameState.currentPlayerId = null;
+  };
+  return gameState;
 };
 
 const handleWaitingPlayer = (player, currentPlayerId, waitingPlayer) => {
   if (currentPlayerId === player.id) {
     if (waitingPlayer && player.lastEvent === 'start') {
       return null
-    } else if (player.lastEvent ===  'explode') {
+    } else if (player.lastEvent === 'remove' && player.lives > 0) {
       return player;
     };
   } else {
@@ -161,13 +179,3 @@ const handleStartEvent = (waitingPlayer, userId) => {
     };
   }
 }
-
-export const handleExplodeEvent = (player) => {
-  return {
-    id: player.id,
-    gameEvent: 'explode',
-    location: player.location,
-    angle: player.angle,
-    lives: player.lives - 1
-  };
-};

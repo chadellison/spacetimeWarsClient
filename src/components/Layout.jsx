@@ -120,17 +120,21 @@ class Layout extends React.Component {
   };
 
   handleGameEvent = (eventPayload) => {
-    this.state.gameSocket.create(eventPayload)
+    this.state.gameSocket.create(eventPayload);
   };
 
   handleKeyDown = (event) => {
-    const eventPayload = keyDownEventPayload(event.keyCode, this.state);
-    if (eventPayload) {
-      this.handleGameEvent(eventPayload)
-    };
+    if (this.state.gameOver) {
+      this.setState({gameOver: false});
+    } else {
+      const eventPayload = keyDownEventPayload(event.keyCode, this.state);
+      if (eventPayload) {
+        this.handleGameEvent(eventPayload);
+      };
 
-    if (KEY_MAP[event.keyCode] === 'space' && !this.state.currentPlayerId) {
-      this.setState({currentPlayerId: this.state.userId});
+      if (KEY_MAP[event.keyCode] === 'space' && !this.state.currentPlayerId) {
+        this.setState({currentPlayerId: this.state.userId});
+      };
     };
   };
 
@@ -154,6 +158,7 @@ class Layout extends React.Component {
       this.state.currentPlayerId,
       this.state.waitingPlayer
     );
+
     handleAudio(playerData);
     this.setState(gameState);
   };
@@ -179,15 +184,10 @@ class Layout extends React.Component {
 
   render = () => {
     const {players, boardHeight, boardWidth} = this.state;
-    if (this.state.gameOver) {
-      console.log('GAME OVER')
-      if (this.state.currentPlayerId) {
-        console.log(this.state.waitingPlayer.lives)
-      }
-    }
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
-        <h2>Tanks</h2>
+        <h2>Space Wars</h2>
+        {this.state.gameOver ? <div>GAME OVER</div> : null}
         <div className='game'>
           <Canvas
             players={players}
@@ -195,7 +195,6 @@ class Layout extends React.Component {
             width={boardWidth}
             playerId={this.state.currentPlayerId}
             deployedWeapons={this.state.deployedWeapons}
-            waitingPlayer={this.state.waitingPlayer}
           />
         </div>
       </div>
