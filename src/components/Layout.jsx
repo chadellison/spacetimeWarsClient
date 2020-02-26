@@ -2,6 +2,7 @@ import React from 'react';
 import { WEBSOCKET_HOST, API_HOST } from '../api';
 import Cable from 'actioncable';
 import Canvas from './Canvas';
+import PlayerData from './PlayerData';
 import '../styles/styles.css';
 import {
   BOARD_WIDTH,
@@ -13,6 +14,7 @@ import {
   updatePlayer,
   findElapsedTime,
   updateGameState,
+  findCurrentPlayer
 } from '../helpers/gameLogic.js';
 import {
   keyDownEvent,
@@ -184,13 +186,25 @@ class Layout extends React.Component {
     }
   };
 
+  renderPlayerData() {
+    const {currentPlayerId, players, waitingPlayer} = this.state;
+    let currentPlayer = findCurrentPlayer(players, currentPlayerId);
+    currentPlayer = currentPlayer ? currentPlayer : waitingPlayer;
+    if (currentPlayer) {
+      return <PlayerData currentPlayer={currentPlayer} />;
+    } else {
+      return null;
+    }
+  }
+
   render = () => {
     const {players, boardHeight, boardWidth} = this.state;
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
         <h2>Space Wars</h2>
         {this.state.gameOver ? <div>GAME OVER</div> : null}
-        <div className='game'>
+        <div className='game row'>
+          {this.renderPlayerData()}
           <Canvas
             players={players}
             height={boardHeight}

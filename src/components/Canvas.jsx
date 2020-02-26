@@ -60,7 +60,7 @@ class Canvas extends React.Component {
     return (
       <div>
         <canvas
-          className="canvas"
+          className="canvas column"
           ref={this.canvasRef}
           width={this.props.width}
           height={this.props.height}

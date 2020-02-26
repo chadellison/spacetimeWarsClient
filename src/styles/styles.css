@@ -37,10 +37,13 @@ body {
 }
 
 .canvas {
-  /* background: #151313; */
   background-image: url("../images/background.jpg");
 }
 
 .hidden {
   display: none;
+}
+
+.playerData {
+  display: flex;
 }
