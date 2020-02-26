@@ -3,7 +3,6 @@ import { WEBSOCKET_HOST, API_HOST } from '../api';
 import Cable from 'actioncable';
 import Canvas from './Canvas';
 import '../styles/styles.css';
-import {KEY_MAP} from '../constants/keyMap.js';
 import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
@@ -16,10 +15,11 @@ import {
   updateGameState,
 } from '../helpers/gameLogic.js';
 import {
-  keyDownEventPayload,
-  keyUpEventPayload,
-  handleEventPayload
-} from '../helpers/eventHelpers.js';
+  keyDownEvent,
+  keyUpEventPayload
+} from '../helpers/sendEventHelpers.js';
+
+import {handleEventPayload} from '../helpers/receiveEventHelpers.js';
 import {handleAudio} from '../helpers/audioHelpers.js';
 
 const DEFAULT_STATE = {
@@ -33,7 +33,9 @@ const DEFAULT_STATE = {
   shortestRoundTripTime: 5000,
   deployedWeapons: [],
   waitingPlayer: null,
-  gameOver: false
+  gameOver: false,
+  isFiring: false,
+  lastFired: 0
 };
 
 class Layout extends React.Component {
@@ -123,30 +125,26 @@ class Layout extends React.Component {
     this.state.gameSocket.create(eventPayload);
   };
 
+  updateState = (newState) => {
+    this.setState(newState);
+  }
+
   handleKeyDown = (event) => {
     if (this.state.gameOver) {
-      this.setState({gameOver: false});
+      this.updateState({gameOver: false});
     } else {
-      const eventPayload = keyDownEventPayload(event.keyCode, this.state);
-      if (eventPayload) {
-        this.handleGameEvent(eventPayload);
-      };
-
-      if (KEY_MAP[event.keyCode] === 'space' && !this.state.currentPlayerId) {
-        this.setState({currentPlayerId: this.state.userId});
-      };
+      keyDownEvent(event.keyCode, this.state, this.handleGameEvent, this.updateState);
     };
   };
 
   handleKeyUp = (event) => {
-    const eventPayload = keyUpEventPayload(
+    keyUpEventPayload(
       this.state.currentPlayerId,
       this.state.players,
-      event.keyCode
+      event.keyCode,
+      this.handleGameEvent,
+      this.updateState
     )
-    if (eventPayload) {
-      this.handleGameEvent(eventPayload)
-    }
   };
 
   handleReceivedEvent = (playerData) => {
@@ -175,7 +173,11 @@ class Layout extends React.Component {
         width: this.state.boardWidth,
         height: this.state.boardHeight,
         deployedWeapons: deployedWeapons,
-        handleGameEvent: this.handleGameEvent
+        handleGameEvent: this.handleGameEvent,
+        lastFired: this.state.lastFired,
+        isFiring: this.state.isFiring,
+        updateState: this.updateState,
+        currentPlayerId: this.state.currentPlayerId
       }
       const updatedGameState = updateGameState(gameData)
       this.setState(updatedGameState);

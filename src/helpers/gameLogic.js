@@ -6,6 +6,10 @@ import {
   WEAPONS
 } from '../constants/settings.js';
 
+export const canFire = (lastFired, cooldown) => {
+  return Date.now() - lastFired > cooldown;
+}
+
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
   let currentVelocity = DRIFT;
 
@@ -110,14 +114,18 @@ export const updateGameState = ({
   width,
   height,
   deployedWeapons,
-  handleGameEvent
+  handleGameEvent,
+  lastFired,
+  isFiring,
+  updateState,
+  currentPlayerId
 }) => {
   let updatedPlayers = [];
   players.forEach((player) => {
     if (!removePlayer(player.explodeAnimation)) {
       player = updatePlayer(player, elapsedTime, clockDifference);
       handleWall(player, width, height);
-      handleRepeatedFire(player, clockDifference, handleGameEvent);
+      handleRepeatedFire(player, handleGameEvent, lastFired, isFiring, updateState, currentPlayerId);
       updatedPlayers.push(player);
     };
   });
@@ -128,24 +136,21 @@ export const updateGameState = ({
   return {players: updatedPlayers, deployedWeapons: deployedWeapons};
 }
 
-const removePlayer = (explodeAnimation) => {
-  return explodeAnimation && (explodeAnimation.x === (256 * 8) && explodeAnimation.y === (256 * 6));
-}
-
-export const handleRepeatedFire = (player, clockDifference, handleGameEvent) => {
-  const elapsedTime = findElapsedTime(clockDifference, player.lastFired)
-  const weaponCooldown = WEAPONS[player.weapon].cooldown;
-  const canFire = elapsedTime > weaponCooldown;
-
-  if (player.fire && canFire) {
+export const handleRepeatedFire = (player, handleGameEvent, lastFired, isFiring, updateState, currentPlayerId) => {
+  if (player.id === currentPlayerId && isFiring && canFire(lastFired, WEAPONS[player.weapon].cooldown)) {
     handleGameEvent({
       id: player.id,
       gameEvent: 'fire',
       location: player.location,
       angle: player.angle
     });
+    updateState({lastFired: Date.now()});
   };
 };
+
+const removePlayer = (explodeAnimation) => {
+  return explodeAnimation && (explodeAnimation.x === (256 * 8) && explodeAnimation.y === (256 * 6));
+}
 
 export const findElapsedTime = (clockDifference, updatedAt) => {
   const currentTime = Date.now();
