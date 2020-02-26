@@ -6,6 +6,8 @@ import {
   WEAPONS
 } from '../constants/settings.js';
 
+import {gameEventPayload} from '../helpers/sendEventHelpers';
+
 export const updateGameState = ({
   players,
   elapsedTime,
@@ -144,12 +146,7 @@ const findHypotenuse = (point, pointTwo) => {
 
 export const handleRepeatedFire = (player, handleGameEvent, lastFired, isFiring, updateState, currentPlayerId) => {
   if (player.id === currentPlayerId && isFiring && canFire(lastFired, WEAPONS[player.weapon].cooldown)) {
-    handleGameEvent({
-      id: player.id,
-      gameEvent: 'fire',
-      location: player.location,
-      angle: player.angle
-    });
+    handleGameEvent(gameEventPayload(player, 'fire'));
     updateState({lastFired: Date.now()});
   };
 };
