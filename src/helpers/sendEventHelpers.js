@@ -1,13 +1,12 @@
-import {KEY_MAP} from '../constants/keyMap.js';
 import {WEAPONS} from '../constants/settings.js';
 import {
   findCurrentPlayer,
   canFire
 } from '../helpers/gameLogic.js';
 
-export const keyDownEvent = (keyCode, state, handleGameEvent, updateState) => {
+export const keyDownEvent = (pressedKey, state, handleGameEvent, updateState) => {
   const currentPlayer = findCurrentPlayer(state.players, state.currentPlayerId);
-  switch (KEY_MAP[keyCode]) {
+  switch (pressedKey) {
     case 'space':
       handleSpaceBarEvent(
         currentPlayer,
@@ -20,37 +19,37 @@ export const keyDownEvent = (keyCode, state, handleGameEvent, updateState) => {
       break;
     case 'left':
     case 'right':
-      handleRotateEvent(currentPlayer, KEY_MAP[keyCode], handleGameEvent);
+      handleRotateEvent(currentPlayer, pressedKey, handleGameEvent);
       break;
     case 'up':
-      handleAccelerateEvent(currentPlayer, KEY_MAP[keyCode], handleGameEvent);
+      handleAccelerateEvent(currentPlayer, pressedKey, handleGameEvent);
       break;
     default:
       break;
   }
 }
 
-export const keyUpEventPayload = (playerId, players, keyCode, handleGameEvent, updateState) => {
+export const keyUpEventPayload = (playerId, players, pressedKey, handleGameEvent, updateState) => {
   const currentPlayer = findCurrentPlayer(players, playerId);
 
-  if (['right', 'left', 'up'].includes(KEY_MAP[keyCode]) && currentPlayer) {
-    handleGameEvent(gameEventPayload(currentPlayer, KEY_MAP[keyCode] + 'Stop'));
+  if (['right', 'left', 'up'].includes(pressedKey) && currentPlayer) {
+    handleGameEvent(gameEventPayload(currentPlayer, pressedKey + 'Stop'));
   };
 
-  if ('space' === KEY_MAP[keyCode] && currentPlayer) {
+  if ('space' === pressedKey && currentPlayer) {
     handleGameEvent(gameEventPayload(currentPlayer, 'fireStop'));
     updateState({isFiring: false});
   };
 };
 
 const handleRotateEvent = (currentPlayer, gameEvent, handleGameEvent) => {
-  if (currentPlayer && gameEvent !== currentPlayer.lastEvent) {
+  if (currentPlayer) {
     handleGameEvent(gameEventPayload(currentPlayer, gameEvent));
   };
 };
 
 const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent) => {
-  if (currentPlayer && !currentPlayer.accelerate) {
+  if (currentPlayer) {
     handleGameEvent(gameEventPayload(currentPlayer, gameEvent));
   };
 };

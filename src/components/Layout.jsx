@@ -10,6 +10,7 @@ import {
   ANAIMATION_FRAME_RATE,
   REQUEST_COUNT
 } from '../constants/settings.js';
+import {KEY_MAP} from '../constants/keyMap.js';
 import {
   updatePlayer,
   findElapsedTime,
@@ -37,7 +38,11 @@ const DEFAULT_STATE = {
   waitingPlayer: null,
   gameOver: false,
   isFiring: false,
-  lastFired: 0
+  lastFired: 0,
+  up: false,
+  left: false,
+  right: false,
+  space: false
 };
 
 class Layout extends React.Component {
@@ -135,18 +140,24 @@ class Layout extends React.Component {
     if (this.state.gameOver) {
       this.updateState({gameOver: false});
     } else {
-      keyDownEvent(event.keyCode, this.state, this.handleGameEvent, this.updateState);
+      const pressedKey = KEY_MAP[event.keyCode];
+      if (!this.state[pressedKey]) {
+        keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState);
+        this.setState({[pressedKey]: true})
+      };
     };
   };
 
   handleKeyUp = (event) => {
+    const pressedKey = KEY_MAP[event.keyCode];
     keyUpEventPayload(
       this.state.currentPlayerId,
       this.state.players,
-      event.keyCode,
+      pressedKey,
       this.handleGameEvent,
       this.updateState
     )
+    this.setState({[pressedKey]: false});
   };
 
   handleReceivedEvent = (playerData) => {
