@@ -63,7 +63,8 @@ const handleSpaceBarEvent = (currentPlayer, userId, waitingPlayer, handleGameEve
       maxHitpoints: waitingPlayer.maxHitpoints,
       armor: waitingPlayer.armor,
       lives: waitingPlayer.lives,
-      ship: waitingPlayer.ship
+      shipIndex: waitingPlayer.shipIndex,
+      weaponIndex: waitingPlayer.weaponIndex
     });
   } else {
     if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
