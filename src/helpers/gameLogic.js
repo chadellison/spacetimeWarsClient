@@ -2,7 +2,8 @@ import {
   ANAIMATION_FRAME_RATE,
   DRIFT,
   DRIFT_DECAY_TIME,
-  WEAPONS
+  WEAPONS,
+  SHIPS
 } from '../constants/settings.js';
 
 import {gameEventPayload} from '../helpers/sendEventHelpers';
@@ -88,7 +89,7 @@ const handleCollision = (weapon, players, handleGameEvent, currentPlayerId) => {
   players.forEach((player) => {
     const currentShooter = weapon.playerId;
     if (player.id !== currentShooter) {
-      const startCenter = player.ship.shipCenter;
+      const startCenter = SHIPS[player.shipIndex].shipCenter;
       const shipCenter = {x: player.location.x + startCenter.x, y: player.location.y + startCenter.y}
 
       const shipBoundingBoxes = [
@@ -123,7 +124,7 @@ const updateHitpoints = (damage, hitpoints, armor) => {
 
 export const handleFireWeapon = (player, weapon, deployedWeapons) => {
   if (player.lastEvent === 'fire') {
-    const shipCenter = player.ship.shipCenter;
+    const shipCenter = SHIPS[player.shipIndex].shipCenter;
     const x = player.location.x + shipCenter.x;
     const y = player.location.y + shipCenter.y;
 
@@ -146,7 +147,7 @@ const findHypotenuse = (point, pointTwo) => {
 };
 
 export const handleRepeatedFire = (player, handleGameEvent, lastFired, isFiring, updateState, currentPlayerId) => {
-  if (player.id === currentPlayerId && isFiring && canFire(lastFired, WEAPONS[player.weapon].cooldown)) {
+  if (player.id === currentPlayerId && isFiring && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
     handleGameEvent(gameEventPayload(player, 'fire'));
     updateState({lastFired: Date.now()});
   };

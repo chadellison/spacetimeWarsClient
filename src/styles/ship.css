@@ -1,4 +1,4 @@
-.shipSelection {
+.selection {
   width: 9em;
   margin-top: 2em;
   margin-left: 2em;
@@ -12,13 +12,13 @@
   opacity: 1;
 }
 
-.shipSelection:hover {
+.selection:hover {
   cursor: pointer;
   opacity: 1;
   transition: ease-in .5s;
 }
 
-.shipImage {
+.selectionImage {
   border: 1px solid #ffa109;
   border: 1px solid #2c66b2;
   border-radius: 10%;
@@ -26,7 +26,8 @@
   margin-bottom: 1em;
 }
 
-.shipData {
+.selectionData {
   padding: 1em;
   text-align: left;
+  width: 100%;
 }

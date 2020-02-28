@@ -37,7 +37,7 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
 
   const updatedWeapons = handleFireWeapon(
     playerData,
-    {...WEAPONS[playerData.weapon]},
+    {...WEAPONS[playerData.weaponIndex]},
     deployedWeapons
   );
 

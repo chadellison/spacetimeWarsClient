@@ -1,41 +1,61 @@
 import React from 'react'
 import '../styles/selectionModal.css'
 import fighterShip from '../images/fighterShip.png';
+import fireball from '../images/fireball.jpeg';
 import {Ship} from './Ship';
+import {Weapon} from './Weapon';
+import {SHIPS, WEAPONS} from '../constants/settings.js';
 
-const handleClick = (selectedShip, updateState, handleGameEvent, userId) => {
+const handleClick = (ship, updateState, handleGameEvent, userId, weapon) => {
   handleGameEvent({
     id: userId,
     gameEvent: 'start',
-    hitpoints: 1000,
-    maxHitpoints: 1000,
-    armor: 1,
+    hitpoints: ship.hitpoints,
+    maxHitpoints: ship.hitpoints,
+    armor: ship.armor,
     lives: 3,
-    ship: selectedShip
+    shipIndex: ship.index,
+    weaponIndex: weapon.index
   });
   updateState({currentPlayerId: userId, showSelectionModal: false});
 };
 
-const renderShips = (updateState, selectedShip) => {
-  return [fighterShip, fighterShip, fighterShip, fighterShip].map((imageSrc, index) => {
-    return (
-      <Ship
-        index={index}
-        key={`ship${index}`}
-        imageSrc={imageSrc}
-        updateState={updateState}
-        selectedShip={selectedShip}
-      />
-    )
-  });
+const renderOptions = (updateState, selectedShipIndex, activeTab, selectedWeaponIndex) => {
+  if (activeTab === 'Ship') {
+    return [fighterShip, fighterShip, fighterShip, fighterShip].map((imageSrc, index) => {
+      return (
+        <Ship
+          index={index}
+          key={`ship${index}`}
+          imageSrc={imageSrc}
+          updateState={updateState}
+          selectedShipIndex={selectedShipIndex}
+          ship={SHIPS[index]}
+        />
+      )
+    });
+  };
+  if (activeTab === 'Weapons') {
+    return [fireball].map((imageSrc, index) => {
+      return (
+        <Weapon
+          index={index}
+          key={`weapon${index}`}
+          imageSrc={imageSrc}
+          updateState={updateState}
+          selectedWeaponIndex={selectedWeaponIndex}
+          weapon={WEAPONS[index]}
+        />
+      )
+    });
+  }
 };
 
-const renderStart = (ship, updateState, handleGameEvent, userId) => {
-  // if ship and weapon...?
+const renderStart = (ship, updateState, handleGameEvent, userId, weapon) => {
   if (ship) {
     return (
       <div className="selectionButton"
-        onClick={() => handleClick(ship, updateState, handleGameEvent, userId)}>
+        onClick={() => handleClick(ship, updateState, handleGameEvent, userId, weapon)}>
         Start
       </div>
     );
@@ -44,14 +64,26 @@ const renderStart = (ship, updateState, handleGameEvent, userId) => {
   }
 }
 
-const SelectionModal = ({showSelectionModal, updateState, handleGameEvent, selectedShip, userId}) => {
+const renderTabs = (activeTab, updateState) => {
+  return ['Ship', 'Weapons', 'Armor', 'Hitpoints'].map((tab, index) => {
+    return (
+      <div className={`selectionText ${activeTab === tab ? 'activeTab' : ''}`}
+        key={`tabs${index}`}
+        onClick={() => updateState({activeTab: tab})}>
+          {tab}
+      </div>
+    );
+  });
+};
+
+const SelectionModal = ({showSelectionModal, updateState, handleGameEvent, selectedShipIndex, userId, activeTab, selectedWeaponIndex}) => {
   return (
     <div className='selectionModal' hidden={!showSelectionModal}>
-      <div className=''>
-        <div className='selectionText'>{'Select a Ship'}</div>
-        {renderShips(updateState, selectedShip)}
-        {renderStart(selectedShip, updateState, handleGameEvent, userId)}
+      <div className="modalTabs">
+        {renderTabs(activeTab, updateState)}
       </div>
+      {renderOptions(updateState, selectedShipIndex, activeTab, selectedWeaponIndex)}
+      {renderStart(SHIPS[selectedShipIndex], updateState, handleGameEvent, userId, WEAPONS[selectedWeaponIndex])}
     </div>
   );
 };

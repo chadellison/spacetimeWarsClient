@@ -66,7 +66,7 @@ const handleSpaceBarEvent = (currentPlayer, userId, waitingPlayer, handleGameEve
       ship: waitingPlayer.ship
     });
   } else {
-    if (canFire(lastFired, WEAPONS[currentPlayer.weapon].cooldown)) {
+    if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
       handleGameEvent(gameEventPayload(currentPlayer, 'fire'));
       updateState({lastFired: Date.now(), isFiring: true});
     };

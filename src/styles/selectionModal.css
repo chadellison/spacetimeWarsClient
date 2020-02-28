@@ -12,15 +12,13 @@
   border-bottom: 1px solid #ffa109;
 }
 
-.selectionText {
-  font-family: 'Pacifico', Sans, Lato, Droid Sans;
-  font-size: 20px;
+.modalTabs {
   margin-top: 1em;
-  margin-bottom: 1em;
+  margin-bottom: 2em;
 }
 
 .selectionButton {
-  margin-top: 10em;
+  margin-top: 8em;
   font-size: 16px;
   height: 30px;
   color: #2c66b2;
@@ -32,6 +30,29 @@
 .selectionButton:hover {
   cursor: pointer;
   box-shadow: 0 0 8px 0 rgba(0,0,0, 0.3);
+}
+
+.selectionText {
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-size: 20px;
+  margin: 1em;
+  display: inline-block;
+  width: 15%;
+  opacity: 0.5;
+  padding-bottom: 1em;
+  transition: ease-out .5s;
+  border-bottom: 1px solid #2c66b2;
+}
+
+.selectionText:hover {
+  cursor: pointer;
+  opacity: 1;
+  transition: ease-in .5s;
+}
+
+.activeTab {
+  opacity: 1;
+  border-bottom: 1px solid #ffa109;
 }
 
 @keyframes slideDown {

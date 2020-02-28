@@ -9,7 +9,8 @@ import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
   ANAIMATION_FRAME_RATE,
-  REQUEST_COUNT
+  REQUEST_COUNT,
+  WEAPONS
 } from '../constants/settings.js';
 import {KEY_MAP} from '../constants/keyMap.js';
 import {
@@ -45,7 +46,9 @@ const DEFAULT_STATE = {
   right: false,
   space: false,
   showSelectionModal: false,
-  ship: null
+  activeTab: 'Ship',
+  weaponIndex: null,
+  shipIndex: null
 };
 
 class Layout extends React.Component {
@@ -201,11 +204,11 @@ class Layout extends React.Component {
   };
 
   renderPlayerData() {
-    const {currentPlayerId, players, waitingPlayer} = this.state;
+    const {currentPlayerId, players, waitingPlayer, weaponIndex} = this.state;
     let currentPlayer = findCurrentPlayer(players, currentPlayerId);
     currentPlayer = currentPlayer ? currentPlayer : waitingPlayer;
     if (currentPlayer) {
-      return <PlayerData currentPlayer={currentPlayer} />;
+      return <PlayerData currentPlayer={currentPlayer} weapon={WEAPONS[weaponIndex]} />;
     } else {
       return null;
     }
@@ -216,9 +219,11 @@ class Layout extends React.Component {
       <SelectionModal
         showSelectionModal={this.state.showSelectionModal}
         updateState={this.updateState}
-        selectedShip={this.state.ship}
+        selectedShipIndex={this.state.shipIndex}
         handleGameEvent={this.handleGameEvent}
         userId={this.state.userId}
+        activeTab={this.state.activeTab}
+        selectedWeaponIndex={this.state.weaponIndex}
       />
     );
   };

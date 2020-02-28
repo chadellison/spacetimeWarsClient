@@ -1,8 +1,7 @@
 import React from "react";
-import {WEAPONS} from '../constants/settings.js';
 import '../styles/playerData.css';
 
-const PlayerData = ({currentPlayer}) => {
+const PlayerData = ({currentPlayer, weapon}) => {
   return (
     <div className="playerData column">
       <div className="row">
@@ -10,7 +9,7 @@ const PlayerData = ({currentPlayer}) => {
         <div className="playerInfo">{currentPlayer.name}</div>
         <div className="playerInfo">{`Lives: ${currentPlayer.lives}`}</div>
         <div className="playerInfo">{`Ship: thunder ship`}</div>
-        <div className="playerInfo">{`Weapon: ${WEAPONS[currentPlayer.weapon].name}`}</div>
+        <div className="playerInfo">{`Weapons: ${weapon.name}`}</div>
         <div className="playerInfo">{`Hitpoints: ${currentPlayer.hitpoints}`}</div>
         <div className="playerInfo">{`Gold: 1000`}</div>
         <div className="playerInfo">{`Score: 0`}</div>

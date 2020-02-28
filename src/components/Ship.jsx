@@ -1,24 +1,21 @@
 import React from 'react'
 import '../styles/ship.css'
-import {SHIPS} from '../constants/settings.js';
 
-export const Ship = ({updateState, imageSrc, index, selectedShip}) => {
-  const ship = SHIPS[index];
-  // should switch tab to weapons after ship selection
+export const Ship = ({updateState, imageSrc, index, selectedShipIndex, ship}) => {
   return (
-    <div className={`shipSelection ${selectedShip && selectedShip.index === index ? 'selected' : ''}`}
-      onClick={() => updateState({ship: ship})}>
-        <img id={index} src={imageSrc} alt="ship" className="shipImage"/>
-        <div className="shipData">
+    <div className={`selection ${selectedShipIndex === index ? 'selected' : ''}`}
+      onClick={() => updateState({shipIndex: index})}>
+        <img id={index} src={imageSrc} alt="ship" className="selectionImage"/>
+        <div className="selectionData">
           {`Price: ${ship.price}`}
         </div>
-        <div className="shipData">
+        <div className="selectionData">
           {`Hitpoints: ${ship.hitpoints}`}
         </div>
-        <div className="shipData">
+        <div className="selectionData">
           {`Armor: ${ship.armor}`}
         </div>
-        <div className="shipData">
+        <div className="selectionData">
           {`Speed: ${ship.speed}`}
         </div>
     </div>
