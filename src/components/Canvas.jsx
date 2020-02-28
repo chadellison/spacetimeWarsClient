@@ -1,9 +1,9 @@
 import React from 'react';
-import {drawShip} from '../helpers/canvasHelper.js';
+import {drawShip, handleDirection} from '../helpers/canvasHelper.js';
 import fighterShip from '../images/fighterShip.png';
-import fireball from '../images/fireball.png';
 import '../styles/styles.css';
 import explodeAnimation from '../images/explosion.png';
+import {WEAPONS} from '../constants/settings.js';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class Canvas extends React.Component {
     context.fillRect(0, 0, canvas.width, canvas.height);
     const fighterShip = this.refs.ship
     const fireball = this.refs.fireball
+    const torpedo = this.refs.torpedo
     const explosion = this.refs.explosion
 
     fighterShip.onload = () => {
@@ -25,6 +26,7 @@ class Canvas extends React.Component {
         context: context,
         fighterShip: fighterShip,
         fireball: fireball,
+        torpedo: torpedo,
         explosion: explosion
       });
     }
@@ -52,7 +54,8 @@ class Canvas extends React.Component {
       };
     });
     this.props.deployedWeapons.forEach((weapon) => {
-      context.drawImage(this.state.fireball, weapon.location.x, weapon.location.y)
+      handleDirection(context, this.state[weapon.name], weapon.location, weapon.trajectory)
+      context.restore();
     });
   }
 
@@ -66,7 +69,7 @@ class Canvas extends React.Component {
           height={this.props.height}
         />
         <img ref="ship" src={fighterShip} className="hidden" alt="fighterShip" />
-        {[{name: 'fireball', image: fireball}].map((weapon, index) => {
+        {WEAPONS.map((weapon, index) => {
           return(
             <img ref={weapon.name}
                 src={weapon.image}

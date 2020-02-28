@@ -1,20 +1,22 @@
 export const drawShip = (context, player, fighterShip) => {
-  const {x, y} = player.location;
-  context.save();
-  const cx = x + 0.5 * fighterShip.width;
-  const cy = y + 0.5 * fighterShip.height;
-
-  context.translate(cx, cy);
-  context.rotate((Math.PI / 180) * player.angle);
-  context.translate(-cx, -cy);
-
-  context.drawImage(fighterShip, x, y)
-
+  handleDirection(context, fighterShip, player.location, player.angle)
   if (player.accelerate) {
-    handleAcceleration(context, player, fighterShip)
+    handleAcceleration(context, player, fighterShip);
   }
 
-  context.restore()
+  context.restore();
+}
+
+export const handleDirection = (context, image, location, trajectory) => {
+  const {x, y} = location;
+  context.save();
+  const cx = x + 0.5 * image.width;
+  const cy = y + 0.5 * image.height;
+
+  context.translate(cx, cy);
+  context.rotate((Math.PI / 180) * trajectory);
+  context.translate(-cx, -cy);
+  context.drawImage(image, x, y);
 }
 
 const handleAcceleration = (context, player, fighterShip) => {

@@ -1,7 +1,6 @@
 import React from 'react'
 import '../styles/selectionModal.css'
 import fighterShip from '../images/fighterShip.png';
-import fireball from '../images/fireball.jpeg';
 import {Ship} from './Ship';
 import {Weapon} from './Weapon';
 import {SHIPS, WEAPONS} from '../constants/settings.js';
@@ -36,15 +35,15 @@ const renderOptions = (updateState, selectedShipIndex, activeTab, selectedWeapon
     });
   };
   if (activeTab === 'Weapons') {
-    return [fireball].map((imageSrc, index) => {
+    return WEAPONS.map((weapon, index) => {
       return (
         <Weapon
           index={index}
           key={`weapon${index}`}
-          imageSrc={imageSrc}
+          imageSrc={weapon.selectionImage}
           updateState={updateState}
           selectedWeaponIndex={selectedWeaponIndex}
-          weapon={WEAPONS[index]}
+          weapon={weapon}
         />
       )
     });
