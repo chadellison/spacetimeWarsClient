@@ -2,7 +2,6 @@ import {
   ANAIMATION_FRAME_RATE,
   DRIFT,
   DRIFT_DECAY_TIME,
-  SHIP,
   WEAPONS
 } from '../constants/settings.js';
 
@@ -89,7 +88,8 @@ const handleCollision = (weapon, players, handleGameEvent, currentPlayerId) => {
   players.forEach((player) => {
     const currentShooter = weapon.playerId;
     if (player.id !== currentShooter) {
-      const shipCenter = {x: player.location.x + SHIP.shipCenter.x, y: player.location.y + SHIP.shipCenter.y}
+      const startCenter = player.ship.shipCenter;
+      const shipCenter = {x: player.location.x + startCenter.x, y: player.location.y + startCenter.y}
 
       const shipBoundingBoxes = [
         handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, 30),
@@ -123,8 +123,9 @@ const updateHitpoints = (damage, hitpoints, armor) => {
 
 export const handleFireWeapon = (player, weapon, deployedWeapons) => {
   if (player.lastEvent === 'fire') {
-    const x = player.location.x + SHIP.shipCenter.x;
-    const y = player.location.y + SHIP.shipCenter.y;
+    const shipCenter = player.ship.shipCenter;
+    const x = player.location.x + shipCenter.x;
+    const y = player.location.y + shipCenter.y;
 
     weapon.location = handleLocation(player.angle, {x, y}, 50);
     weapon.trajectory = player.angle

@@ -13,7 +13,7 @@ const playersFromEvent = (gameEvent, players, playerData) => {
     default:
       return players;
   };
-}
+};
 
 const handleRemoveEvent = (players, playerData) => {
   players.forEach((player) => {

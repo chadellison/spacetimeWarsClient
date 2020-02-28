@@ -1,0 +1,53 @@
+.selectionModal {
+  background-color: rgba(0,0,0,0.8);
+  animation-name: slideDown;
+  -webkit-animation-name: slideDown;
+  animation-duration: .5s;
+  -webkit-animation-duration: .5s;
+  animation-timing-function: ease;
+  position: fixed;
+  width: 60%;
+  margin-left: 20%;
+  height: 80%;
+  border-bottom: 1px solid #ffa109;
+}
+
+.selectionText {
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-size: 20px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.selectionButton {
+  margin-top: 10em;
+  font-size: 16px;
+  height: 30px;
+  color: #2c66b2;
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  margin-left: 40%;
+  width: 20%;
+}
+
+.selectionButton:hover {
+  cursor: pointer;
+  box-shadow: 0 0 8px 0 rgba(0,0,0, 0.3);
+}
+
+@keyframes slideDown {
+	0% {
+		transform: translateY(-100%);
+	}
+	100% {
+		transform: translateY(0%);
+	}
+}
+
+@-webkit-keyframes slideDown {
+	0% {
+		-webkit-transform: translateY(-100%);
+	}
+	100% {
+		-webkit-transform: translateY(0%);
+	}
+}

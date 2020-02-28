@@ -3,6 +3,7 @@ import { WEBSOCKET_HOST, API_HOST } from '../api';
 import Cable from 'actioncable';
 import Canvas from './Canvas';
 import PlayerData from './PlayerData';
+import SelectionModal from './SelectionModal';
 import '../styles/styles.css';
 import {
   BOARD_WIDTH,
@@ -42,7 +43,9 @@ const DEFAULT_STATE = {
   up: false,
   left: false,
   right: false,
-  space: false
+  space: false,
+  showSelectionModal: false,
+  ship: null
 };
 
 class Layout extends React.Component {
@@ -137,8 +140,8 @@ class Layout extends React.Component {
   }
 
   handleKeyDown = (event) => {
-    if (this.state.gameOver) {
-      this.updateState({gameOver: false});
+    if (this.state.gameOver || !this.state.currentPlayerId) {
+      this.updateState({gameOver: false, showSelectionModal: true});
     } else {
       const pressedKey = KEY_MAP[event.keyCode];
       if (!this.state[pressedKey]) {
@@ -208,13 +211,26 @@ class Layout extends React.Component {
     }
   }
 
+  renderSelectionModal() {
+    return (
+      <SelectionModal
+        showSelectionModal={this.state.showSelectionModal}
+        updateState={this.updateState}
+        selectedShip={this.state.ship}
+        handleGameEvent={this.handleGameEvent}
+        userId={this.state.userId}
+      />
+    );
+  };
+
   render = () => {
     const {players, boardHeight, boardWidth} = this.state;
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
-        <h2>Space Wars</h2>
+        <h2>{this.state.showSelectionModal ? null : 'Space Wars'}</h2>
         {this.state.gameOver ? <div>GAME OVER</div> : null}
         <div className='game row'>
+          {this.renderSelectionModal()}
           {this.renderPlayerData()}
           <Canvas
             players={players}

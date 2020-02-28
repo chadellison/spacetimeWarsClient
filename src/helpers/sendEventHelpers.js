@@ -55,11 +55,16 @@ const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent) => {
 };
 
 const handleSpaceBarEvent = (currentPlayer, userId, waitingPlayer, handleGameEvent, updateState, lastFired) => {
-  if (!currentPlayer || waitingPlayer) {
-    if (!currentPlayer) {
-      updateState({currentPlayerId: userId});
-    };
-    handleGameEvent(handleStartEvent(waitingPlayer, userId));
+  if (waitingPlayer) {
+    handleGameEvent({
+      id: userId,
+      gameEvent: 'start',
+      hitpoints: waitingPlayer.maxHitpoints,
+      maxHitpoints: waitingPlayer.maxHitpoints,
+      armor: waitingPlayer.armor,
+      lives: waitingPlayer.lives,
+      ship: waitingPlayer.ship
+    });
   } else {
     if (canFire(lastFired, WEAPONS[currentPlayer.weapon].cooldown)) {
       handleGameEvent(gameEventPayload(currentPlayer, 'fire'));
@@ -76,27 +81,5 @@ export const gameEventPayload = (player, gameEvent) => {
     angle: player.angle,
     hitpoints: player.hitpoints,
     lives: player.lives
-  }
-}
-
-const handleStartEvent = (waitingPlayer, userId) => {
-  if (waitingPlayer) {
-    return {
-      id: userId,
-      gameEvent: 'start',
-      hitpoints: waitingPlayer.maxHitpoints,
-      maxHitpoints: waitingPlayer.maxHitpoints,
-      armor: waitingPlayer.armor,
-      lives: waitingPlayer.lives
-    };
-  } else {
-    return {
-      id: userId,
-      gameEvent: 'start',
-      hitpoints: 1000,
-      maxHitpoints: 1000,
-      armor: 1,
-      lives: 3
-    };
   }
 }
