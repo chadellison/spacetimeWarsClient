@@ -7,10 +7,9 @@
   animation-timing-function: ease;
   position: fixed;
   width: 60%;
-  margin-left: 20%;
   height: 80%;
+  margin-left: 20%;
   border-bottom: 1px solid #ffa109;
-  overflow: scroll;
 }
 
 .modalTabs {

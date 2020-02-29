@@ -1,3 +1,4 @@
+// weapons
 import fireball from '../images/fireball.png';
 import displayFireball from '../images/displayFireball.jpeg';
 import torpedo from '../images/torpedo.png';
@@ -10,6 +11,8 @@ import bomb from '../images/bomb.png';
 import displayBomb from '../images/displayBomb.png';
 import laser from '../images/laser.png';
 import displayLaser from '../images/displayLaser.png';
+
+// ships
 import fighterShip from '../images/fighterShip.png';
 import hunterShip from '../images/hunterShip.png';
 import destroyerShip from '../images/destroyerShip.png';
@@ -18,6 +21,17 @@ import warShip from '../images/warShip.png';
 import cruiserShip from '../images/cruiserShip.png';
 import carrierShip from '../images/carrierShip.png';
 import stealthShip from '../images/stealthShip.png';
+
+// audio
+import thrusterAudio from '../audio/thruster.wav';
+import cannonAudio from '../audio/cannon.wav';
+import missileAudio from '../audio/missile.wav';
+import trifectaAudio from '../audio/trifecta.wav';
+import bombAudio from '../audio/bomb.wav';
+import plasmaCannonAudio from '../audio/plasmaSound.wav';
+import laserAudio from '../audio/laser.wav';
+
+// constants
 export const BOARD_WIDTH = 980;
 export const BOARD_HEIGHT = 665;
 export const ANAIMATION_FRAME_RATE = 30;
@@ -38,6 +52,7 @@ export const WEAPONS = [
     price: 200,
     width: 16,
     height: 16,
+    sound: new Audio(cannonAudio),
     image: fireball,
     selectionImage: displayFireball
   },
@@ -52,6 +67,7 @@ export const WEAPONS = [
     price: 300,
     width: 40,
     height: 15,
+    sound: new Audio(missileAudio),
     image: torpedo,
     selectionImage: displayTorpedo
   },
@@ -67,6 +83,7 @@ export const WEAPONS = [
     width: 50,
     height: 29,
     image: bomb,
+    sound: new Audio(bombAudio),
     selectionImage: displayBomb
   },
   {
@@ -79,8 +96,9 @@ export const WEAPONS = [
     damage: 200,
     price: 500,
     width: 40,
-    heigth: 16,
+    height: 16,
     image: laser,
+    sound: new Audio(laserAudio),
     selectionImage: displayLaser
   },
   {
@@ -95,6 +113,7 @@ export const WEAPONS = [
     width: 32,
     height: 32,
     image: trifecta,
+    sound: new Audio(trifectaAudio),
     selectionImage: displayTrifecta
   },
   {
@@ -109,6 +128,7 @@ export const WEAPONS = [
     width: 16,
     height: 16,
     image: plasmaCannon,
+    sound: new Audio(plasmaCannonAudio),
     selectionImage: displayPlasmaCannon
   },
 ];
@@ -194,3 +214,6 @@ export const SHIPS = [
     image: stealthShip
   }
 ];
+
+export const  thruster = new Audio(thrusterAudio);
+thruster.loop = true;

@@ -20,6 +20,7 @@ const handleClick = (ship, updateState, handleGameEvent, userId, weapon) => {
 };
 
 const renderOptions = (updateState, selectedShipIndex, activeTab, selectedWeaponIndex) => {
+  // render pages for ship
   if (activeTab === 'Ship') {
     return SHIPS.map((ship, index) => {
       return (

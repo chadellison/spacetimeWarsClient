@@ -1,10 +1,4 @@
-import thrusterAudio from '../audio/thruster.wav';
-import cannonAudio from '../audio/cannon.wav';
-
-const thruster = new Audio(thrusterAudio);
-thruster.loop = true;
-
-const cannon = new Audio(cannonAudio);
+import {WEAPONS, thruster} from '../constants/settings.js';
 
 export const handleAudio = (player) => {
   if (player.accelerate) {
@@ -18,13 +12,14 @@ export const handleAudio = (player) => {
     if (pausePromise !== undefined) {
       pausePromise.catch((e) => console.log(e));
     }
-  }
+  };
 
   if (player.lastEvent === 'fire') {
-    cannon.currentTime = 0
-    const cannonPromise = cannon.play();
-    if (cannonPromise !== undefined) {
-      cannonPromise.catch((e) => console.log(e));
+    const audio = WEAPONS[player.weaponIndex].sound
+    audio.currentTime = 0
+    const audioPromise = audio.play();
+    if (audioPromise !== undefined) {
+      audioPromise.catch((e) => console.log(e));
     }
-  }
-}
+  };
+};
