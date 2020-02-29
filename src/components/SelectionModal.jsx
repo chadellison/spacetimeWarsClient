@@ -81,8 +81,8 @@ const SelectionModal = ({showSelectionModal, updateState, handleGameEvent, selec
       <div className="modalTabs">
         {renderTabs(activeTab, updateState)}
       </div>
-      {renderOptions(updateState, selectedShipIndex, activeTab, selectedWeaponIndex)}
       {renderStart(SHIPS[selectedShipIndex], updateState, handleGameEvent, userId, WEAPONS[selectedWeaponIndex])}
+      {renderOptions(updateState, selectedShipIndex, activeTab, selectedWeaponIndex)}
     </div>
   );
 };

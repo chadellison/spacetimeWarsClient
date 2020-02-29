@@ -10,6 +10,7 @@
   margin-left: 20%;
   height: 80%;
   border-bottom: 1px solid #ffa109;
+  overflow: scroll;
 }
 
 .modalTabs {
@@ -18,13 +19,13 @@
 }
 
 .selectionButton {
-  margin-top: 8em;
-  font-size: 16px;
+  font-size: 20px;
   height: 30px;
   color: #2c66b2;
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   margin-left: 40%;
   width: 20%;
+  transition: ease-in 1.5s;
 }
 
 .selectionButton:hover {

@@ -18,6 +18,10 @@ class Canvas extends React.Component {
     const hunterShip = this.refs.hunterShip
     const scoutShip = this.refs.scoutShip
     const destroyerShip = this.refs.destroyerShip
+    const warShip = this.refs.warShip
+    const cruiserShip = this.refs.cruiserShip
+    const carrierShip = this.refs.carrierShip
+    const stealthShip = this.refs.stealthShip
     const fireball = this.refs.fireball
     const torpedo = this.refs.torpedo
     const explosion = this.refs.explosion
@@ -29,6 +33,10 @@ class Canvas extends React.Component {
       hunterShip: hunterShip,
       destroyerShip: destroyerShip,
       scoutShip: scoutShip,
+      warShip: warShip,
+      cruiserShip: cruiserShip,
+      carrierShip: carrierShip,
+      stealthShip: stealthShip,
       fireball: fireball,
       torpedo: torpedo,
       explosion: explosion
