@@ -30,6 +30,8 @@ import trifectaAudio from '../audio/trifecta.wav';
 import bombAudio from '../audio/bomb.wav';
 import plasmaCannonAudio from '../audio/plasmaSound.wav';
 import laserAudio from '../audio/laser.wav';
+import gongAudio from '../audio/gong.wav';
+import loadWeaponAudio from '../audio/loadWeapon.wav';
 
 // constants
 export const BOARD_WIDTH = 980;
@@ -215,5 +217,8 @@ export const SHIPS = [
   }
 ];
 
-export const  thruster = new Audio(thrusterAudio);
+export const thruster = new Audio(thrusterAudio);
 thruster.loop = true;
+
+export const gong = new Audio(gongAudio);
+export const loadWeapon = new Audio(loadWeaponAudio);

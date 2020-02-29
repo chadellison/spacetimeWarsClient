@@ -1,10 +1,16 @@
-import React from 'react'
-import '../styles/ship.css'
+import React from 'react';
+import '../styles/ship.css';
+import {gong} from '../constants/settings.js';
+
+const handleClick = (updateState, shipIndex) => {
+  gong.play();
+  updateState({shipIndex: shipIndex});
+};
 
 export const Ship = ({updateState, imageSrc, selectedShipIndex, ship}) => {
   return (
     <div className={`selection ${selectedShipIndex === ship.index ? 'selected' : ''}`}
-      onClick={() => updateState({shipIndex: ship.index})}>
+      onClick={() => handleClick(updateState, ship.index)}>
         <img id={ship.index} src={imageSrc} alt="ship" className="selectionImage"/>
         <div className="selectionData">
           {`${ship.name}`}
