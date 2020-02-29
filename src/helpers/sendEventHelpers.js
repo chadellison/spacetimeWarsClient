@@ -1,4 +1,4 @@
-import {WEAPONS} from '../constants/settings.js';
+import {WEAPONS, SHIPS} from '../constants/settings.js';
 import {
   findCurrentPlayer,
   canFire
@@ -64,7 +64,8 @@ const handleSpaceBarEvent = (currentPlayer, userId, waitingPlayer, handleGameEve
       armor: waitingPlayer.armor,
       lives: waitingPlayer.lives,
       shipIndex: waitingPlayer.shipIndex,
-      weaponIndex: waitingPlayer.weaponIndex
+      weaponIndex: waitingPlayer.weaponIndex,
+      velocity: SHIPS[waitingPlayer.shipIndex].speed
     });
   } else {
     if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {

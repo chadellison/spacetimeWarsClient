@@ -1,7 +1,6 @@
 import {
   ANAIMATION_FRAME_RATE,
   DRIFT,
-  DRIFT_DECAY_TIME,
   WEAPONS,
   SHIPS
 } from '../constants/settings.js';
@@ -49,7 +48,7 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
     currentVelocity += player.velocity;
   } else {
     const timeSinceLastAcceleration = Date.now() + clockDifference - player.lastAccelerationTime;
-    const momentum = DRIFT_DECAY_TIME - timeSinceLastAcceleration;
+    const momentum = ((player.velocity) * 1000) - timeSinceLastAcceleration;
     if (momentum > 0) {
       currentVelocity += (momentum / 1000);
     }
@@ -106,7 +105,7 @@ const handleCollision = (weapon, players, handleGameEvent, currentPlayerId) => {
           console.log('BLAM!')
           if (player.hitpoints > 0) {
             player.hitpoints = updateHitpoints(weapon.damage, player.hitpoints, player.armor)
-            if (player.hitpoints < 0 && currentShooter === currentPlayerId) {
+            if (player.hitpoints <= 0 && currentShooter === currentPlayerId) {
               handleGameEvent({id: player.id, gameEvent: 'remove'});
             }
           }

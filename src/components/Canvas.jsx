@@ -1,9 +1,8 @@
 import React from 'react';
 import {drawShip, handleDirection} from '../helpers/canvasHelper.js';
-import fighterShip from '../images/fighterShip.png';
 import '../styles/styles.css';
 import explodeAnimation from '../images/explosion.png';
-import {WEAPONS} from '../constants/settings.js';
+import {WEAPONS, SHIPS} from '../constants/settings.js';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -15,21 +14,25 @@ class Canvas extends React.Component {
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
     context.fillRect(0, 0, canvas.width, canvas.height);
-    const fighterShip = this.refs.ship
+    const fighterShip = this.refs.fighterShip
+    const hunterShip = this.refs.hunterShip
+    const scoutShip = this.refs.scoutShip
+    const destroyerShip = this.refs.destroyerShip
     const fireball = this.refs.fireball
     const torpedo = this.refs.torpedo
     const explosion = this.refs.explosion
 
-    fighterShip.onload = () => {
-      this.setState({
-        canvas: canvas,
-        context: context,
-        fighterShip: fighterShip,
-        fireball: fireball,
-        torpedo: torpedo,
-        explosion: explosion
-      });
-    }
+    this.setState({
+      canvas: canvas,
+      context: context,
+      fighterShip: fighterShip,
+      hunterShip: hunterShip,
+      destroyerShip: destroyerShip,
+      scoutShip: scoutShip,
+      fireball: fireball,
+      torpedo: torpedo,
+      explosion: explosion
+    });
   }
 
   componentDidUpdate() {
@@ -38,7 +41,7 @@ class Canvas extends React.Component {
     context.clearRect(0, 0, canvas.width, canvas.height);
     this.props.players.forEach((player) => {
       if (!player.explode) {
-        drawShip(context, player, this.state.fighterShip, this.state.thrusterAudio);
+        drawShip(context, player, this.state[SHIPS[player.shipIndex].name], this.state.thrusterAudio);
       } else {
         context.drawImage(
           this.state.explosion,
@@ -68,7 +71,15 @@ class Canvas extends React.Component {
           width={this.props.width}
           height={this.props.height}
         />
-        <img ref="ship" src={fighterShip} className="hidden" alt="fighterShip" />
+        {SHIPS.map((ship, index) => {
+          return (
+            <img ref={ship.name}
+              src={ship.image}
+              className="hidden"
+              alt={ship.name}
+              key={`ship${index}`}/>
+          );
+        })}
         {WEAPONS.map((weapon, index) => {
           return(
             <img ref={weapon.name}
