@@ -1,7 +1,7 @@
 .selection {
-  width: 9em;
+  width: 16%;
   margin-top: 2em;
-  margin-left: 2em;
+  margin-left: 1em;
   margin-right: 2em;
   opacity: 0.5;
   transition: ease-out .5s;
@@ -29,5 +29,6 @@
 .selectionData {
   padding: 1em;
   text-align: left;
-  width: 100%;
+  /* width: 100%; */
+  width: 86%;
 }
