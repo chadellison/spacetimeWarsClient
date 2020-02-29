@@ -2,7 +2,7 @@ import React from 'react';
 import {drawShip, handleDirection} from '../helpers/canvasHelper.js';
 import '../styles/styles.css';
 import explodeAnimation from '../images/explosion.png';
-import {WEAPONS, SHIPS} from '../constants/settings.js';
+import {WEAPONS, SHIPS, SPRITE_WIDTH} from '../constants/settings.js';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -24,6 +24,10 @@ class Canvas extends React.Component {
     const stealthShip = this.refs.stealthShip
     const fireball = this.refs.fireball
     const torpedo = this.refs.torpedo
+    const trifecta = this.refs.trifecta
+    const plasmaCannon = this.refs.plasmaCannon
+    const bomb = this.refs.bomb
+    const laser = this.refs.laser
     const explosion = this.refs.explosion
 
     this.setState({
@@ -39,6 +43,10 @@ class Canvas extends React.Component {
       stealthShip: stealthShip,
       fireball: fireball,
       torpedo: torpedo,
+      trifecta: trifecta,
+      plasmaCannon: plasmaCannon,
+      bomb: bomb,
+      laser: laser,
       explosion: explosion
     });
   }
@@ -55,8 +63,8 @@ class Canvas extends React.Component {
           this.state.explosion,
           player.explodeAnimation.x,
           player.explodeAnimation.y,
-          256,
-          256,
+          SPRITE_WIDTH,
+          SPRITE_WIDTH,
           player.location.x,
           player.location.y,
           200,

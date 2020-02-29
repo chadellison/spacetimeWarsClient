@@ -2,7 +2,10 @@ import {
   ANAIMATION_FRAME_RATE,
   DRIFT,
   WEAPONS,
-  SHIPS
+  SHIPS,
+  SPRITE_WIDTH,
+  SPRITE_ROW_COUNT,
+  SPRITE_COLUMN_COUNT
 } from '../constants/settings.js';
 
 import {gameEventPayload} from '../helpers/sendEventHelpers';
@@ -97,7 +100,8 @@ const handleCollision = (weapon, players, handleGameEvent, currentPlayerId) => {
         handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, -10),
         handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, -35)
       ];
-      const weaponCenter = {x: weapon.location.x + 8, y: weapon.location.y + 8}
+      
+      const weaponCenter = {x: weapon.location.x + (weapon.width / 2), y: weapon.location.y + (weapon.height / 2)}
 
       shipBoundingBoxes.forEach((center, index) => {
         const distance = findHypotenuse(center, weaponCenter);
@@ -153,7 +157,7 @@ export const handleRepeatedFire = (player, handleGameEvent, lastFired, isFiring,
 };
 
 const removePlayer = (explodeAnimation) => {
-  return explodeAnimation && (explodeAnimation.x === (256 * 8) && explodeAnimation.y === (256 * 6));
+  return explodeAnimation && (explodeAnimation.x === (SPRITE_WIDTH * SPRITE_ROW_COUNT) && explodeAnimation.y === (SPRITE_WIDTH * SPRITE_COLUMN_COUNT));
 }
 
 export const findElapsedTime = (clockDifference, updatedAt) => {
@@ -200,11 +204,11 @@ export const handleWall = (player, width, height) => {
 
 const handleExplodeUpdate = (isExploding, explodeAnimation) => {
   if (isExploding) {
-    if (explodeAnimation.x < (256 * 8)) {
-      explodeAnimation.x += 256;
-    } else if (explodeAnimation.x === (256 * 8) && explodeAnimation.y < (256 * 6)) {
+    if (explodeAnimation.x < (SPRITE_WIDTH * SPRITE_ROW_COUNT)) {
+      explodeAnimation.x += SPRITE_WIDTH;
+    } else if (explodeAnimation.x === (SPRITE_WIDTH * SPRITE_ROW_COUNT) && explodeAnimation.y < (SPRITE_WIDTH * SPRITE_COLUMN_COUNT)) {
       explodeAnimation.x = 0;
-      explodeAnimation.y += 256;
+      explodeAnimation.y += SPRITE_WIDTH;
     } else {
       explodeAnimation = {};
     }

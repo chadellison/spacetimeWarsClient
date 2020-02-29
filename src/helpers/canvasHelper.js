@@ -1,7 +1,7 @@
-export const drawShip = (context, player, fighterShip) => {
-  handleDirection(context, fighterShip, player.location, player.angle)
+export const drawShip = (context, player, ship) => {
+  handleDirection(context, ship, player.location, player.angle)
   if (player.accelerate) {
-    handleAcceleration(context, player, fighterShip);
+    handleAcceleration(context, player, ship);
   }
 
   context.restore();
@@ -19,18 +19,18 @@ export const handleDirection = (context, image, location, trajectory) => {
   context.drawImage(image, x, y);
 }
 
-const handleAcceleration = (context, player, fighterShip) => {
+const handleAcceleration = (context, player, ship) => {
   context.beginPath();
-  context.moveTo(player.location.x - 8, player.location.y + 4 + fighterShip.height / 2);
-  context.lineTo(player.location.x - 8, player.location.y - 2 + fighterShip.height / 2);
-  context.lineTo(player.location.x, player.location.y - 4 + fighterShip.height / 2);
-  context.lineTo(player.location.x, player.location.y + 5 + fighterShip.height / 2);
+  context.moveTo(player.location.x - 8, player.location.y + 4 + ship.height / 2);
+  context.lineTo(player.location.x - 8, player.location.y - 2 + ship.height / 2);
+  context.lineTo(player.location.x, player.location.y - 4 + ship.height / 2);
+  context.lineTo(player.location.x, player.location.y + 5 + ship.height / 2);
 
   let grd = context.createLinearGradient(
     player.location.x - 8,
-    player.location.y - 5 + fighterShip.height / 2,
+    player.location.y - 5 + ship.height / 2,
     player.location.x,
-    player.location.y + 6 + fighterShip.height / 2
+    player.location.y + 6 + ship.height / 2
   );
   grd.addColorStop(0, "#5c93e6");
   grd.addColorStop(1, "#f0f6ff");

@@ -7,7 +7,7 @@ export const Weapon = ({updateState, imageSrc, index, weapon, selectedWeaponInde
       onClick={() => updateState({weaponIndex: index})}>
         <img id={index} src={imageSrc} alt="ship" className="selectionImage"/>
         <div className="selectionData">
-          {`Name: ${weapon.name}`}
+          {`${weapon.name}`}
         </div>
         <div className="selectionData">
           {`Price: ${weapon.price}`}

@@ -2,6 +2,14 @@ import fireball from '../images/fireball.png';
 import displayFireball from '../images/displayFireball.jpeg';
 import torpedo from '../images/torpedo.png';
 import displayTorpedo from '../images/displayTorpedo.png';
+import trifecta from '../images/trifecta.png';
+import displayTrifecta from '../images/displayTrifecta.png';
+import plasmaCannon from '../images/plasmaCannon.png';
+import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
+import bomb from '../images/bomb.png';
+import displayBomb from '../images/displayBomb.png';
+import laser from '../images/laser.png';
+import displayLaser from '../images/displayLaser.png';
 import fighterShip from '../images/fighterShip.png';
 import hunterShip from '../images/hunterShip.png';
 import destroyerShip from '../images/destroyerShip.png';
@@ -15,6 +23,9 @@ export const BOARD_HEIGHT = 665;
 export const ANAIMATION_FRAME_RATE = 30;
 export const REQUEST_COUNT = 10;
 export const DRIFT = 2;
+export const SPRITE_WIDTH = 256;
+export const SPRITE_ROW_COUNT = 8;
+export const SPRITE_COLUMN_COUNT = 6;
 export const WEAPONS = [
   {
     index: 0,
@@ -25,6 +36,8 @@ export const WEAPONS = [
     speed: 15,
     damage: 50,
     price: 200,
+    width: 16,
+    height: 16,
     image: fireball,
     selectionImage: displayFireball
   },
@@ -37,11 +50,68 @@ export const WEAPONS = [
     speed: 20,
     damage: 100,
     price: 300,
+    width: 40,
+    height: 15,
     image: torpedo,
     selectionImage: displayTorpedo
-  }
+  },
+  {
+    index: 2,
+    name: 'bomb',
+    location: {x: 0, y: 0},
+    trajectory: 0,
+    cooldown: 800,
+    speed: 8,
+    damage: 500,
+    price: 600,
+    width: 50,
+    height: 29,
+    image: bomb,
+    selectionImage: displayBomb
+  },
+  {
+    index: 3,
+    name: 'laser',
+    location: {x: 0, y: 0},
+    trajectory: 0,
+    cooldown: 300,
+    speed: 20,
+    damage: 200,
+    price: 500,
+    width: 40,
+    heigth: 16,
+    image: laser,
+    selectionImage: displayLaser
+  },
+  {
+    index: 4,
+    name: 'trifecta',
+    location: {x: 0, y: 0},
+    trajectory: 0,
+    cooldown: 300,
+    speed: 20,
+    damage: 300,
+    price: 700,
+    width: 32,
+    height: 32,
+    image: trifecta,
+    selectionImage: displayTrifecta
+  },
+  {
+    index: 5,
+    name: 'plasmaCannon',
+    location: {x: 0, y: 0},
+    trajectory: 0,
+    cooldown: 400,
+    speed: 20,
+    damage: 350,
+    price: 500,
+    width: 16,
+    height: 16,
+    image: plasmaCannon,
+    selectionImage: displayPlasmaCannon
+  },
 ];
-
 export const SHIPS = [
   {
     index: 0,
@@ -60,7 +130,7 @@ export const SHIPS = [
     armor: 2,
     hitpoints: 1100,
     speed: 2,
-    shipCenter: {x: 60.5, y: 38},
+    shipCenter: {x: 60.5, y: 36},
     image: destroyerShip
   },
   {
@@ -70,7 +140,7 @@ export const SHIPS = [
     armor: 1,
     hitpoints: 900,
     speed: 3,
-    shipCenter: {x: 60.5, y: 38},
+    shipCenter: {x: 60.5, y: 35},
     image: hunterShip
   },
   {
@@ -80,7 +150,7 @@ export const SHIPS = [
     armor: 0,
     hitpoints: 600,
     speed: 4,
-    shipCenter: {x: 60.5, y: 38},
+    shipCenter: {x: 60.5, y: 32},
     image: scoutShip
   },
   {
@@ -90,7 +160,7 @@ export const SHIPS = [
     armor: 3,
     hitpoints: 1400,
     speed: 4,
-    shipCenter: {x: 60.5, y: 38},
+    shipCenter: {x: 60.5, y: 27},
     image: warShip
   },
   {
@@ -100,7 +170,7 @@ export const SHIPS = [
     armor: 2,
     hitpoints: 800,
     speed: 5.5,
-    shipCenter: {x: 60.5, y: 38},
+    shipCenter: {x: 60.5, y: 22.5},
     image: cruiserShip
   },
   {
@@ -110,7 +180,7 @@ export const SHIPS = [
     armor: 4,
     hitpoints: 3000,
     speed: 3.5,
-    shipCenter: {x: 60.5, y: 38},
+    shipCenter: {x: 60.5, y: 29},
     image: carrierShip
   },
   {
@@ -120,7 +190,7 @@ export const SHIPS = [
     armor: 2,
     hitpoints: 1400,
     speed: 4.5,
-    shipCenter: {x: 60.5, y: 38},
+    shipCenter: {x: 60, y: 34},
     image: stealthShip
   }
 ];
