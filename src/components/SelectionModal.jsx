@@ -2,6 +2,7 @@ import React from 'react'
 import '../styles/selectionModal.css'
 import {Ship} from './Ship';
 import {Weapon} from './Weapon';
+import {PaginateButton} from './PaginateButton';
 import {SHIPS, WEAPONS} from '../constants/settings.js';
 
 const handleClick = (ship, updateState, handleGameEvent, userId, weapon) => {
@@ -19,10 +20,10 @@ const handleClick = (ship, updateState, handleGameEvent, userId, weapon) => {
   updateState({currentPlayerId: userId, showSelectionModal: false});
 };
 
-const renderOptions = (updateState, selectedShipIndex, activeTab, selectedWeaponIndex) => {
-  // render pages for ship
+const renderOptions = (updateState, selectedShipIndex, activeTab, selectedWeaponIndex, page) => {
   if (activeTab === 'Ship') {
-    return SHIPS.map((ship, index) => {
+    const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
+    return ships.map((ship, index) => {
       return (
         <Ship
           index={index}
@@ -36,7 +37,8 @@ const renderOptions = (updateState, selectedShipIndex, activeTab, selectedWeapon
     });
   };
   if (activeTab === 'Weapons') {
-    return WEAPONS.map((weapon, index) => {
+    const weapons = page === 1 ? WEAPONS.slice(0, 4) : WEAPONS.slice(4, 8);
+    return weapons.map((weapon, index) => {
       return (
         <Weapon
           index={index}
@@ -69,21 +71,31 @@ const renderTabs = (activeTab, updateState) => {
     return (
       <div className={`selectionText ${activeTab === tab ? 'activeTab' : ''}`}
         key={`tabs${index}`}
-        onClick={() => updateState({activeTab: tab})}>
+        onClick={() => updateState({activeTab: tab, page: 1})}>
           {tab}
       </div>
     );
   });
 };
 
-const SelectionModal = ({showSelectionModal, updateState, handleGameEvent, selectedShipIndex, userId, activeTab, selectedWeaponIndex}) => {
+const SelectionModal = ({
+  showSelectionModal,
+  updateState,
+  handleGameEvent,
+  selectedShipIndex,
+  userId,
+  activeTab,
+  selectedWeaponIndex,
+  page
+}) => {
   return (
     <div className='selectionModal' hidden={!showSelectionModal}>
       <div className="modalTabs">
         {renderTabs(activeTab, updateState)}
       </div>
       {renderStart(SHIPS[selectedShipIndex], updateState, handleGameEvent, userId, WEAPONS[selectedWeaponIndex])}
-      {renderOptions(updateState, selectedShipIndex, activeTab, selectedWeaponIndex)}
+      {renderOptions(updateState, selectedShipIndex, activeTab, selectedWeaponIndex, page)}
+      <PaginateButton updateState={updateState} page={page}/>
     </div>
   );
 };

@@ -47,6 +47,7 @@ const DEFAULT_STATE = {
   space: false,
   showSelectionModal: false,
   activeTab: 'Ship',
+  page: 1,
   weaponIndex: null,
   shipIndex: null
 };
@@ -224,6 +225,7 @@ class Layout extends React.Component {
         userId={this.state.userId}
         activeTab={this.state.activeTab}
         selectedWeaponIndex={this.state.weaponIndex}
+        page={this.state.page}
       />
     );
   };

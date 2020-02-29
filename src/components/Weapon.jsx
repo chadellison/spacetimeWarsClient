@@ -4,7 +4,7 @@ import '../styles/ship.css'
 export const Weapon = ({updateState, imageSrc, index, weapon, selectedWeaponIndex}) => {
   return (
     <div className={`selection ${selectedWeaponIndex === index ? 'selected' : ''}`}
-      onClick={() => updateState({weaponIndex: index})}>
+      onClick={() => updateState({weaponIndex: weapon.index})}>
         <img id={index} src={imageSrc} alt="ship" className="selectionImage"/>
         <div className="selectionData">
           {`${weapon.name}`}
