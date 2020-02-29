@@ -1,11 +1,11 @@
 import React from 'react'
 import '../styles/ship.css'
 
-export const Weapon = ({updateState, imageSrc, index, weapon, selectedWeaponIndex}) => {
+export const Weapon = ({updateState, imageSrc, weapon, selectedWeaponIndex}) => {
   return (
-    <div className={`selection ${selectedWeaponIndex === index ? 'selected' : ''}`}
+    <div className={`selection ${selectedWeaponIndex === weapon.index ? 'selected' : ''}`}
       onClick={() => updateState({weaponIndex: weapon.index})}>
-        <img id={index} src={imageSrc} alt="ship" className="selectionImage"/>
+        <img id={weapon.index} src={imageSrc} alt="ship" className="selectionImage"/>
         <div className="selectionData">
           {`${weapon.name}`}
         </div>

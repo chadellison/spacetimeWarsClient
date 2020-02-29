@@ -23,11 +23,10 @@ const handleClick = (ship, updateState, handleGameEvent, userId, weapon) => {
 const renderOptions = (updateState, selectedShipIndex, activeTab, selectedWeaponIndex, page) => {
   if (activeTab === 'Ship') {
     const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
-    return ships.map((ship, index) => {
+    return ships.map((ship) => {
       return (
         <Ship
-          index={index}
-          key={`ship${index}`}
+          key={`ship${ship.index}`}
           imageSrc={ship.image}
           updateState={updateState}
           selectedShipIndex={selectedShipIndex}
@@ -38,11 +37,10 @@ const renderOptions = (updateState, selectedShipIndex, activeTab, selectedWeapon
   };
   if (activeTab === 'Weapons') {
     const weapons = page === 1 ? WEAPONS.slice(0, 4) : WEAPONS.slice(4, 8);
-    return weapons.map((weapon, index) => {
+    return weapons.map((weapon) => {
       return (
         <Weapon
-          index={index}
-          key={`weapon${index}`}
+          key={`weapon${weapon.index}`}
           imageSrc={weapon.selectionImage}
           updateState={updateState}
           selectedWeaponIndex={selectedWeaponIndex}
