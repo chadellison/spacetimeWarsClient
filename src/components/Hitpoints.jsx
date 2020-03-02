@@ -3,7 +3,8 @@ import {PieChart, Pie, Label} from 'recharts'
 import '../styles/hitpoints.css';
 
 const calculateAngle = (hitpoints, maxHitpoints) => {
-  return Math.round(hitpoints * 360 / maxHitpoints)
+  const value = Math.round(hitpoints * 360 / maxHitpoints)
+  return value > 0 ? value : 0;
 };
 
 export const Hitpoints = ({hitpoints, maxHitpoints}) => {
@@ -24,7 +25,7 @@ export const Hitpoints = ({hitpoints, maxHitpoints}) => {
           fill="red"
           text={'hp'}
         >
-          <Label style={{fill: 'red'}} value={hitpoints} offset={0} position="center"/>
+          <Label style={{fill: 'red'}} value={hitpoints > 0 ? hitpoints : 0} offset={0} position="center"/>
         </Pie>
       </PieChart>
     </div>

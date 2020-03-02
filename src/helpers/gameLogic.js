@@ -100,13 +100,13 @@ const handleCollision = (weapon, players, handleGameEvent, currentPlayerId) => {
         handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, -10),
         handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, -35)
       ];
-      
+
       const weaponCenter = {x: weapon.location.x + (weapon.width / 2), y: weapon.location.y + (weapon.height / 2)}
 
       shipBoundingBoxes.forEach((center, index) => {
         const distance = findHypotenuse(center, weaponCenter);
         if ((index < 3 && distance < 18) || (index > 2 && distance < 23)) {
-          console.log('BLAM!')
+          console.log('BLAM!');
           if (player.hitpoints > 0) {
             player.hitpoints = updateHitpoints(weapon.damage, player.hitpoints, player.armor)
             if (player.hitpoints <= 0 && currentShooter === currentPlayerId) {
