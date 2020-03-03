@@ -17,7 +17,7 @@ const playersFromEvent = (gameEvent, players, playerData) => {
 
 const handleRemoveEvent = (players, playerData) => {
   players.forEach((player) => {
-    if (player.id === playerData.id) {
+    if (player.id === playerData.id && !player.explode) {
       player.lastEvent = 'remove';
       player.explodeAnimation = {x: 0, y: 0};
       player.explode = true;
