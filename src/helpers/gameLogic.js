@@ -26,6 +26,9 @@ export const updateGameState = ({
   let updatedPlayers = [];
   players.forEach((player) => {
     if (!removePlayer(player.explodeAnimation)) {
+      if (player.hitpoints <= 0 && !player.explode && currentPlayerId === player.id) {
+        handleGameEvent({id: currentPlayerId, gameEvent: 'remove'});
+      }
       player = updatePlayer(player, elapsedTime, clockDifference);
       handleWall(player, width, height);
       handleRepeatedFire(player, handleGameEvent, lastFired, isFiring, updateState, currentPlayerId);
