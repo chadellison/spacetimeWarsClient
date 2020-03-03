@@ -2,6 +2,8 @@ import React from "react";
 import '../styles/playerData.css';
 import {SHIPS, WEAPONS} from '../constants/settings.js';
 import {Hitpoints} from './Hitpoints'
+import {findElapsedTime} from '../helpers/gameLogic.js';
+
 const renderLives = (count, image) => {
   let ships = [];
   while (count > 0) {
@@ -17,11 +19,24 @@ const renderLives = (count, image) => {
   return ships;
 }
 
-const PlayerData = ({currentPlayer, weapon}) => {
+const handleWaitTime = (currentPlayer, clockDifference, updateState) => {
+  const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
+  if (currentPlayer.explode && elapsedSeconds < 10) {
+    return <span className="waitCountDown">{Math.round(10 - elapsedSeconds)}</span>;
+  } else {
+    if (currentPlayer.explode) {
+      const waitingPlayer = {...currentPlayer, explode: false};
+      updateState({waitingPlayer: waitingPlayer});
+    };
+    return <img className="playerImage" src={`https://robohash.org/${currentPlayer.id}`} alt="player"/>;
+  }
+}
+
+const PlayerData = ({currentPlayer, weapon, clockDifference, updateState}) => {
   return (
-    <div className="playerData column">
+    <div className={`playerData column ${currentPlayer.explode ? 'waiting' : ''}`}>
       <div className="row">
-        <img className="playerImage" src={`https://robohash.org/${currentPlayer.name}`} alt="player"/>
+        {handleWaitTime(currentPlayer, clockDifference, updateState)}
         <div className="playerInfo">{currentPlayer.name}</div>
         {renderLives(currentPlayer.lives, SHIPS[currentPlayer.shipIndex].image)}
         <img className="playerInfoWeapon" src={WEAPONS[currentPlayer.weaponIndex].selectionImage} alt="weapon"/>

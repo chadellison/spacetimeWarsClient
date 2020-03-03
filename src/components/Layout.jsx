@@ -144,27 +144,31 @@ class Layout extends React.Component {
   }
 
   handleKeyDown = (event) => {
-    if (this.state.gameOver || !this.state.currentPlayerId) {
-      this.updateState({gameOver: false, showSelectionModal: true});
-    } else {
-      const pressedKey = KEY_MAP[event.keyCode];
-      if (!this.state[pressedKey]) {
-        keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState);
-        this.setState({[pressedKey]: true})
+    if (!(this.state.waitingPlayer && this.state.waitingPlayer.explode)) {
+      if (this.state.gameOver || !this.state.currentPlayerId) {
+        this.updateState({gameOver: false, showSelectionModal: true});
+      } else {
+        const pressedKey = KEY_MAP[event.keyCode];
+        if (!this.state[pressedKey]) {
+          keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState);
+          this.setState({[pressedKey]: true})
+        };
       };
     };
   };
 
   handleKeyUp = (event) => {
-    const pressedKey = KEY_MAP[event.keyCode];
-    keyUpEventPayload(
-      this.state.currentPlayerId,
-      this.state.players,
-      pressedKey,
-      this.handleGameEvent,
-      this.updateState
-    )
-    this.setState({[pressedKey]: false});
+    if (!(this.state.waitingPlayer && this.state.waitingPlayer.explode)) {
+      const pressedKey = KEY_MAP[event.keyCode];
+      keyUpEventPayload(
+        this.state.currentPlayerId,
+        this.state.players,
+        pressedKey,
+        this.handleGameEvent,
+        this.updateState
+      )
+      this.setState({[pressedKey]: false});
+    };
   };
 
   handleReceivedEvent = (playerData) => {
@@ -205,11 +209,18 @@ class Layout extends React.Component {
   };
 
   renderPlayerData() {
-    const {currentPlayerId, players, waitingPlayer, weaponIndex} = this.state;
+    const {currentPlayerId, players, waitingPlayer, weaponIndex, clockDifference} = this.state;
     let currentPlayer = findCurrentPlayer(players, currentPlayerId);
     currentPlayer = currentPlayer ? currentPlayer : waitingPlayer;
     if (currentPlayer) {
-      return <PlayerData currentPlayer={currentPlayer} weapon={WEAPONS[weaponIndex]} />;
+      return (
+        <PlayerData
+          currentPlayer={currentPlayer}
+          weapon={WEAPONS[weaponIndex]}
+          clockDifference={clockDifference}
+          updateState={this.updateState}
+        />
+      );
     } else {
       return null;
     }

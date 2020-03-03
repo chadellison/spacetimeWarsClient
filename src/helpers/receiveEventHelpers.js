@@ -59,6 +59,8 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
   if (handleGameOver(playerData, currentPlayerId)) {
     gameState.gameOver = true;
     gameState.currentPlayerId = null;
+    gameState.shipIndex = null;
+    gameState.weaponIndex = null;
   };
   return gameState;
 };

@@ -23,7 +23,7 @@
 }
 
 .playerLivesShip {
-  width: 10%;
+  width: 2.5em;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
   display: inline-block;
@@ -31,8 +31,21 @@
 }
 
 .playerInfoWeapon {
-  width: 20%;
+  width: 3.5em;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
   display: block;
+}
+
+.waitCountDown {
+  margin-top: .5em;
+  font-size: 36px;
+  color: red;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+}
+
+.waiting {
+  opacity: 0.5;
 }
