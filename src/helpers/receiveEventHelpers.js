@@ -59,19 +59,15 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
   if (handleGameOver(playerData, currentPlayerId)) {
     gameState.gameOver = true;
     gameState.currentPlayerId = null;
-    gameState.shipIndex = null;
-    gameState.weaponIndex = null;
+    gameState.waitingPlayer = {};
+    gameState.activeTab = 'Ship';
   };
   return gameState;
 };
 
 const handleWaitingPlayer = (player, currentPlayerId, waitingPlayer) => {
   if (currentPlayerId === player.id) {
-    if (waitingPlayer && player.lastEvent === 'start') {
-      return null
-    } else if (player.lastEvent === 'remove' && player.lives > 0) {
-      return player;
-    };
+    return player;
   } else {
     return waitingPlayer;
   };

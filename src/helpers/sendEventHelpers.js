@@ -55,7 +55,7 @@ const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent) => {
 };
 
 const handleSpaceBarEvent = (currentPlayer, userId, waitingPlayer, handleGameEvent, updateState, lastFired) => {
-  if (waitingPlayer) {
+  if (waitingPlayer.lastEvent === 'waiting') {
     handleGameEvent({
       id: userId,
       gameEvent: 'start',

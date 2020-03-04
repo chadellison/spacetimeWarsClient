@@ -9,8 +9,7 @@ import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
   ANAIMATION_FRAME_RATE,
-  REQUEST_COUNT,
-  WEAPONS
+  REQUEST_COUNT
 } from '../constants/settings.js';
 import {KEY_MAP} from '../constants/keyMap.js';
 import {
@@ -37,7 +36,7 @@ const DEFAULT_STATE = {
   clockDifference: 0,
   shortestRoundTripTime: 5000,
   deployedWeapons: [],
-  waitingPlayer: null,
+  waitingPlayer: {},
   gameOver: false,
   isFiring: false,
   lastFired: 0,
@@ -48,8 +47,6 @@ const DEFAULT_STATE = {
   showSelectionModal: false,
   activeTab: 'Ship',
   page: 1,
-  weaponIndex: null,
-  shipIndex: null
 };
 
 class Layout extends React.Component {
@@ -144,9 +141,13 @@ class Layout extends React.Component {
   }
 
   handleKeyDown = (event) => {
-    if (!(this.state.waitingPlayer && this.state.waitingPlayer.explode)) {
-      if (this.state.gameOver || !this.state.currentPlayerId) {
-        this.updateState({gameOver: false, showSelectionModal: true});
+    if (!this.state.waitingPlayer.explode) {
+      if (!this.state.waitingPlayer.id) {
+        this.updateState({
+          gameOver: false,
+          showSelectionModal: true,
+          waitingPlayer: {id: this.state.userId, gold: 1000, lastEvent: 'waiting'}
+        });
       } else {
         const pressedKey = KEY_MAP[event.keyCode];
         if (!this.state[pressedKey]) {
@@ -154,11 +155,11 @@ class Layout extends React.Component {
           this.setState({[pressedKey]: true})
         };
       };
-    };
+    }
   };
 
   handleKeyUp = (event) => {
-    if (!(this.state.waitingPlayer && this.state.waitingPlayer.explode)) {
+    if (!this.state.waitingPlayer.explode) {
       const pressedKey = KEY_MAP[event.keyCode];
       keyUpEventPayload(
         this.state.currentPlayerId,
@@ -209,14 +210,13 @@ class Layout extends React.Component {
   };
 
   renderPlayerData() {
-    const {currentPlayerId, players, waitingPlayer, weaponIndex, clockDifference} = this.state;
+    const {currentPlayerId, players, waitingPlayer, clockDifference} = this.state;
     let currentPlayer = findCurrentPlayer(players, currentPlayerId);
     currentPlayer = currentPlayer ? currentPlayer : waitingPlayer;
     if (currentPlayer) {
       return (
         <PlayerData
           currentPlayer={currentPlayer}
-          weapon={WEAPONS[weaponIndex]}
           clockDifference={clockDifference}
           updateState={this.updateState}
         />
@@ -227,18 +227,19 @@ class Layout extends React.Component {
   }
 
   renderSelectionModal() {
-    return (
-      <SelectionModal
-        showSelectionModal={this.state.showSelectionModal}
-        updateState={this.updateState}
-        selectedShipIndex={this.state.shipIndex}
-        handleGameEvent={this.handleGameEvent}
-        userId={this.state.userId}
-        activeTab={this.state.activeTab}
-        selectedWeaponIndex={this.state.weaponIndex}
-        page={this.state.page}
-      />
-    );
+    if (this.state.showSelectionModal) {
+      return (
+        <SelectionModal
+          showSelectionModal={this.state.showSelectionModal}
+          updateState={this.updateState}
+          handleGameEvent={this.handleGameEvent}
+          userId={this.state.userId}
+          activeTab={this.state.activeTab}
+          page={this.state.page}
+          waitingPlayer={this.state.waitingPlayer}
+        />
+      );
+    }
   };
 
   render = () => {

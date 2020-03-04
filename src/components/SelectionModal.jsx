@@ -5,9 +5,12 @@ import {Weapon} from './Weapon';
 import {PaginateButton} from './PaginateButton';
 import {SHIPS, WEAPONS} from '../constants/settings.js';
 
-const handleClick = (ship, updateState, handleGameEvent, userId, weapon) => {
+const handleClick = (updateState, handleGameEvent, waitingPlayer) => {
+  const ship = SHIPS[waitingPlayer.shipIndex];
+  const weapon = WEAPONS[waitingPlayer.weaponIndex];
+
   handleGameEvent({
-    id: userId,
+    id: waitingPlayer.id,
     gameEvent: 'start',
     hitpoints: ship.hitpoints,
     maxHitpoints: ship.hitpoints,
@@ -15,12 +18,13 @@ const handleClick = (ship, updateState, handleGameEvent, userId, weapon) => {
     lives: 3,
     shipIndex: ship.index,
     weaponIndex: weapon.index,
-    velocity: ship.speed
+    velocity: ship.speed,
+    gold: waitingPlayer.gold
   });
-  updateState({currentPlayerId: userId, showSelectionModal: false});
+  updateState({currentPlayerId: waitingPlayer.id, showSelectionModal: false});
 };
 
-const renderOptions = (updateState, selectedShipIndex, activeTab, selectedWeaponIndex, page) => {
+const renderOptions = (updateState, activeTab, page, waitingPlayer) => {
   if (activeTab === 'Ship') {
     const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
     return ships.map((ship) => {
@@ -29,7 +33,7 @@ const renderOptions = (updateState, selectedShipIndex, activeTab, selectedWeapon
           key={`ship${ship.index}`}
           imageSrc={ship.image}
           updateState={updateState}
-          selectedShipIndex={selectedShipIndex}
+          waitingPlayer={waitingPlayer}
           ship={ship}
         />
       )
@@ -43,7 +47,7 @@ const renderOptions = (updateState, selectedShipIndex, activeTab, selectedWeapon
           key={`weapon${weapon.index}`}
           imageSrc={weapon.selectionImage}
           updateState={updateState}
-          selectedWeaponIndex={selectedWeaponIndex}
+          waitingPlayer={waitingPlayer}
           weapon={weapon}
         />
       )
@@ -51,11 +55,11 @@ const renderOptions = (updateState, selectedShipIndex, activeTab, selectedWeapon
   }
 };
 
-const renderStart = (ship, updateState, handleGameEvent, userId, weapon) => {
-  if (ship && weapon) {
+const renderStart = (updateState, handleGameEvent, waitingPlayer) => {
+  if (waitingPlayer.shipIndex && waitingPlayer.weaponIndex) {
     return (
       <div className="selectionButton"
-        onClick={() => handleClick(ship, updateState, handleGameEvent, userId, weapon)}>
+        onClick={() => handleClick(updateState, handleGameEvent, waitingPlayer)}>
         Start
       </div>
     );
@@ -64,8 +68,16 @@ const renderStart = (ship, updateState, handleGameEvent, userId, weapon) => {
   };
 };
 
-const renderTabs = (activeTab, updateState) => {
-  return ['Ship', 'Weapons', 'Armor', 'Hitpoints'].map((tab, index) => {
+const renderTabs = (activeTab, updateState, waitingPlayer) => {
+  let tabs = ['Ship'];
+  if (waitingPlayer.shipIndex || waitingPlayer.shipIndex === 0) {
+    tabs.push('Weapons');
+  };
+  if (waitingPlayer.weaponIndex) {
+    tabs.push('Armor');
+    tabs.push('Hitpoins');
+  };
+  return tabs.map((tab, index) => {
     return (
       <div className={`selectionText ${activeTab === tab ? 'activeTab' : ''}`}
         key={`tabs${index}`}
@@ -80,19 +92,17 @@ const SelectionModal = ({
   showSelectionModal,
   updateState,
   handleGameEvent,
-  selectedShipIndex,
-  userId,
   activeTab,
-  selectedWeaponIndex,
-  page
+  page,
+  waitingPlayer
 }) => {
   return (
-    <div className='selectionModal' hidden={!showSelectionModal}>
+    <div className='selectionModal'>
       <div className="modalTabs">
-        {renderTabs(activeTab, updateState)}
+        {renderTabs(activeTab, updateState, waitingPlayer)}
       </div>
-      {renderStart(SHIPS[selectedShipIndex], updateState, handleGameEvent, userId, WEAPONS[selectedWeaponIndex])}
-      {renderOptions(updateState, selectedShipIndex, activeTab, selectedWeaponIndex, page)}
+      {renderStart(updateState, handleGameEvent, waitingPlayer)}
+      {renderOptions(updateState, activeTab, page, waitingPlayer)}
       <PaginateButton updateState={updateState} page={page}/>
     </div>
   );

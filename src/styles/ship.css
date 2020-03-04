@@ -29,6 +29,5 @@
 .selectionData {
   padding: 1em;
   text-align: left;
-  /* width: 100%; */
-  width: 86%;
+  width: 100%;
 }

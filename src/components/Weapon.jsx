@@ -2,15 +2,15 @@ import React from 'react'
 import '../styles/ship.css'
 import {loadWeapon} from '../constants/settings.js';
 
-const handleClick = (updateState, weaponIndex) => {
+const handleClick = (updateState, weaponIndex, waitingPlayer) => {
   loadWeapon.play();
-  updateState({weaponIndex: weaponIndex});
+  updateState({waitingPlayer: {...waitingPlayer, weaponIndex: weaponIndex}});
 };
 
-export const Weapon = ({updateState, imageSrc, weapon, selectedWeaponIndex}) => {
+export const Weapon = ({updateState, imageSrc, weapon, waitingPlayer}) => {
   return (
-    <div className={`selection ${selectedWeaponIndex === weapon.index ? 'selected' : ''}`}
-      onClick={() => handleClick(updateState, weapon.index)}>
+    <div className={`selection ${waitingPlayer.weaponIndex === weapon.index ? 'selected' : ''}`}
+      onClick={() => handleClick(updateState, weapon.index, waitingPlayer)}>
         <img id={weapon.index} src={imageSrc} alt="ship" className="selectionImage"/>
         <div className="selectionData">
           {`${weapon.name}`}
