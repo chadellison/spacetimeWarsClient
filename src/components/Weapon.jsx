@@ -1,10 +1,16 @@
 import React from 'react'
 import '../styles/ship.css'
 import {loadWeapon} from '../constants/settings.js';
+import {WEAPONS} from '../constants/settings.js';
 
 const handleClick = (updateState, weaponIndex, waitingPlayer) => {
-  loadWeapon.play();
-  updateState({waitingPlayer: {...waitingPlayer, weaponIndex: weaponIndex}});
+  const gold = waitingPlayer.gold - WEAPONS[weaponIndex].price;
+  if (gold >= 0) {
+    loadWeapon.play();
+    updateState({waitingPlayer: {...waitingPlayer, weaponIndex, gold}});
+  } else {
+    console.log('Not enough gold');
+  }
 };
 
 export const Weapon = ({updateState, imageSrc, weapon, waitingPlayer}) => {

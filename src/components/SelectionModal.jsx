@@ -57,13 +57,13 @@ const renderOptions = (updateState, activeTab, page, waitingPlayer) => {
 };
 
 const renderStart = (updateState, handleGameEvent, waitingPlayer) => {
-  if ((waitingPlayer.shipIndex || waitingPlayer.shipIndex === 0) && waitingPlayer.weaponIndex) {
-    return (
-      <div className="selectionButton"
-        onClick={() => handleClick(updateState, handleGameEvent, waitingPlayer)}>
-        Start
-      </div>
-    );
+  if (waitingPlayer.shipIndex !== undefined && waitingPlayer.weaponIndex !== undefined) {
+      return (
+        <div className="selectionButton"
+          onClick={() => handleClick(updateState, handleGameEvent, waitingPlayer)}>
+          Start
+        </div>
+      );
   } else {
     return null;
   };
@@ -74,7 +74,7 @@ const renderTabs = (activeTab, updateState, waitingPlayer) => {
   if (waitingPlayer.shipIndex || waitingPlayer.shipIndex === 0) {
     tabs.push('Weapons');
   };
-  if (waitingPlayer.weaponIndex) {
+  if (waitingPlayer.weaponIndex || waitingPlayer.weaponIndex === 0) {
     tabs.push('Armor');
     tabs.push('Hitpoins');
   };

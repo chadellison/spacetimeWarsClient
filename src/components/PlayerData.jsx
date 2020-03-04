@@ -46,7 +46,7 @@ const renderArmor = (shipIndex) => {
 }
 
 const renderGold = (gold) => {
-  if (gold) {
+  if (gold >= 0) {
     return (
       <div className="playerInfo">{`Gold: ${gold}`}</div>
     );

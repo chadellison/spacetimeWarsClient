@@ -1,10 +1,17 @@
 import React from 'react';
 import '../styles/ship.css';
 import {gong} from '../constants/settings.js';
+import {SHIPS} from '../constants/settings.js';
 
 const handleClick = (updateState, shipIndex, waitingPlayer) => {
-  gong.play();
-  updateState({waitingPlayer: {...waitingPlayer, shipIndex}});
+  const gold = waitingPlayer.gold - SHIPS[shipIndex].price;
+
+  if (gold >= 0) {
+    gong.play();
+    updateState({waitingPlayer: {...waitingPlayer, shipIndex, gold}});
+  } else {
+    console.log('Not enough gold');
+  }
 };
 
 export const Ship = ({updateState, imageSrc, waitingPlayer, ship}) => {
