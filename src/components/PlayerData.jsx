@@ -70,7 +70,7 @@ const handleWaitTime = (currentPlayer, countDown) => {
 }
 
 const renderHitPoints = (currentPlayer) => {
-  if (currentPlayer.hitpoints && currentPlayer.maxHitpoints) {
+  if (currentPlayer.hitpoints > 0) {
     return (
       <Hitpoints
         hitpoints={currentPlayer.hitpoints}

@@ -10,7 +10,6 @@ export const keyDownEvent = (pressedKey, state, handleGameEvent, updateState) =>
     case 'space':
       handleSpaceBarEvent(
         currentPlayer,
-        state.userId,
         state.waitingPlayer,
         handleGameEvent,
         updateState,
@@ -54,19 +53,9 @@ const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent) => {
   };
 };
 
-const handleSpaceBarEvent = (currentPlayer, userId, waitingPlayer, handleGameEvent, updateState, lastFired) => {
+const handleSpaceBarEvent = (currentPlayer, waitingPlayer, handleGameEvent, updateState, lastFired) => {
   if (waitingPlayer.lastEvent === 'waiting') {
-    handleGameEvent({
-      id: userId,
-      gameEvent: 'start',
-      hitpoints: waitingPlayer.maxHitpoints,
-      maxHitpoints: waitingPlayer.maxHitpoints,
-      armor: waitingPlayer.armor,
-      lives: waitingPlayer.lives,
-      shipIndex: waitingPlayer.shipIndex,
-      weaponIndex: waitingPlayer.weaponIndex,
-      velocity: SHIPS[waitingPlayer.shipIndex].speed
-    });
+    handleGameEvent(startEventPayload(waitingPlayer));
   } else {
     if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
       handleGameEvent(gameEventPayload(currentPlayer, 'fire'));
@@ -82,6 +71,24 @@ export const gameEventPayload = (player, gameEvent) => {
     location: player.location,
     angle: player.angle,
     hitpoints: player.hitpoints,
-    lives: player.lives
+    lives: player.lives,
+    gold: player.gold,
+    score: player.score
   }
+}
+
+export const startEventPayload = (player) => {
+  return {
+    id: player.id,
+    gameEvent: 'start',
+    hitpoints: player.maxHitpoints,
+    maxHitpoints: player.maxHitpoints,
+    armor: player.armor,
+    lives: player.lives,
+    shipIndex: player.shipIndex,
+    weaponIndex: player.weaponIndex,
+    velocity: SHIPS[player.shipIndex].speed,
+    gold: player.gold,
+    score: player.score
+  };
 }

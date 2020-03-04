@@ -19,7 +19,8 @@ const handleClick = (updateState, handleGameEvent, waitingPlayer) => {
     shipIndex: ship.index,
     weaponIndex: weapon.index,
     velocity: ship.speed,
-    gold: waitingPlayer.gold
+    gold: waitingPlayer.gold,
+    score: waitingPlayer.score
   });
   updateState({currentPlayerId: waitingPlayer.id, showSelectionModal: false});
 };
@@ -56,7 +57,7 @@ const renderOptions = (updateState, activeTab, page, waitingPlayer) => {
 };
 
 const renderStart = (updateState, handleGameEvent, waitingPlayer) => {
-  if (waitingPlayer.shipIndex && waitingPlayer.weaponIndex) {
+  if ((waitingPlayer.shipIndex || waitingPlayer.shipIndex === 0) && waitingPlayer.weaponIndex) {
     return (
       <div className="selectionButton"
         onClick={() => handleClick(updateState, handleGameEvent, waitingPlayer)}>
