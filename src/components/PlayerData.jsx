@@ -54,7 +54,7 @@ const renderGold = (gold) => {
 }
 
 const renderScore = (score) => {
-  if (score) {
+  if (score >= 0) {
     return (
       <div className="playerInfo">{`Score: ${score}`}</div>
     );

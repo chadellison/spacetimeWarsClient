@@ -58,12 +58,12 @@ const renderOptions = (updateState, activeTab, page, waitingPlayer) => {
 
 const renderStart = (updateState, handleGameEvent, waitingPlayer) => {
   if (waitingPlayer.shipIndex !== undefined && waitingPlayer.weaponIndex !== undefined) {
-      return (
-        <div className="selectionButton"
-          onClick={() => handleClick(updateState, handleGameEvent, waitingPlayer)}>
-          Start
-        </div>
-      );
+    return (
+      <div className="selectionButton"
+        onClick={() => handleClick(updateState, handleGameEvent, waitingPlayer)}>
+        Start
+      </div>
+    );
   } else {
     return null;
   };
