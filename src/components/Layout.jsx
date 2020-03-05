@@ -141,12 +141,12 @@ class Layout extends React.Component {
   }
 
   handleKeyDown = (event) => {
-    if (!this.state.waitingPlayer.explode) {
+    if (!this.state.waitingPlayer.explode && !this.state.showSelectionModal) {
       if (!this.state.waitingPlayer.id) {
         this.updateState({
           gameOver: false,
           showSelectionModal: true,
-          waitingPlayer: {id: this.state.userId, gold: 1000, lastEvent: 'waiting'}
+          waitingPlayer: {id: this.state.userId, gold: 1000, lastEvent: 'waiting', lives: 3}
         });
       } else {
         const pressedKey = KEY_MAP[event.keyCode];
@@ -219,6 +219,7 @@ class Layout extends React.Component {
           currentPlayer={currentPlayer}
           clockDifference={clockDifference}
           updateState={this.updateState}
+          showSelectionModal={this.state.showSelectionModal}
         />
       );
     } else {

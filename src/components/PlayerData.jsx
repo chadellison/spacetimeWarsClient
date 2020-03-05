@@ -45,18 +45,10 @@ const renderArmor = (shipIndex) => {
   }
 }
 
-const renderGold = (gold) => {
-  if (gold >= 0) {
+const renderData = (type, value) => {
+  if (value >= 0) {
     return (
-      <div className="playerInfo">{`Gold: ${gold}`}</div>
-    );
-  }
-}
-
-const renderScore = (score) => {
-  if (score >= 0) {
-    return (
-      <div className="playerInfo">{`Score: ${score}`}</div>
+      <div className="playerInfo">{`${type}: ${value}`}</div>
     );
   }
 }
@@ -80,7 +72,15 @@ const renderHitPoints = (currentPlayer) => {
   }
 };
 
-const PlayerData = ({currentPlayer, clockDifference, updateState}) => {
+const renderShopButton = (lastEvent, updateState, showSelectionModal) => {
+  if (['waiting', 'remove'].includes(lastEvent) && !showSelectionModal) {
+    return <div className="shopButton" onClick={() => updateState({showSelectionModal: true})}>Shop</div>
+  } else {
+    return null;
+  }
+}
+
+const PlayerData = ({currentPlayer, clockDifference, updateState, showSelectionModal}) => {
   const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
   let countDown = 0;
   if (currentPlayer.explode && elapsedSeconds < 10) {
@@ -97,13 +97,13 @@ const PlayerData = ({currentPlayer, clockDifference, updateState}) => {
       <div className={`playerData column ${currentPlayer.explode ? 'waiting' : ''}`}>
         <div className="row">
           {handleWaitTime(currentPlayer, countDown)}
-          <div className="playerInfo">{currentPlayer.name}</div>
+          {renderData('Gold', currentPlayer.gold)}
           {renderLives(currentPlayer)}
           {renderHitPoints(currentPlayer)}
           {renderWeapon(currentPlayer.weaponIndex)}
           {renderArmor(currentPlayer.shipIndex)}
-          {renderGold(currentPlayer.gold)}
-          {renderScore(currentPlayer.score)}
+          {renderData('Score', currentPlayer.score)}
+          {renderShopButton(currentPlayer.lastEvent, updateState, showSelectionModal)}
         </div>
       </div>
     );

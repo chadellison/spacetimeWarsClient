@@ -73,7 +73,7 @@ export const gameEventPayload = (player, gameEvent) => {
     hitpoints: player.hitpoints,
     lives: player.lives,
     gold: player.gold + 1,
-    score: player.score
+    score: player.score + 1
   }
 }
 

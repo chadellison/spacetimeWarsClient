@@ -49,3 +49,21 @@
 .waiting {
   opacity: 0.5;
 }
+
+.shopButton {
+  margin-top: 2em;
+  padding: 12px;
+  font-size: 14px;
+  text-align: center;
+  color: white;
+  color: #2c66b2;
+  border: 1px solid #2c66b2;
+  border-radius: 5px;
+  transition: ease-out .3s;
+}
+
+.shopButton:hover {
+  cursor: pointer;
+  opacity: 0.8;
+  transition: ease-in .3s;
+}

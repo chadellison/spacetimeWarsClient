@@ -15,7 +15,7 @@ const handleClick = (updateState, handleGameEvent, waitingPlayer) => {
     hitpoints: ship.hitpoints,
     maxHitpoints: ship.hitpoints,
     armor: ship.armor,
-    lives: 3,
+    lives: waitingPlayer.lives,
     shipIndex: ship.index,
     weaponIndex: weapon.index,
     velocity: ship.speed,
