@@ -32,6 +32,7 @@ import plasmaCannonAudio from '../audio/plasmaSound.wav';
 import laserAudio from '../audio/laser.wav';
 import gongAudio from '../audio/gong.wav';
 import loadWeaponAudio from '../audio/loadWeapon.wav';
+import notEnoughResourcesAudio from '../audio/notEnoughResources.wav';
 
 // constants
 export const BOARD_WIDTH = 980;
@@ -222,3 +223,4 @@ thruster.loop = true;
 
 export const gong = new Audio(gongAudio);
 export const loadWeapon = new Audio(loadWeaponAudio);
+export const notEnoughResources = new Audio(notEnoughResourcesAudio);

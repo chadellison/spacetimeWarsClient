@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/ship.css';
-import {gong} from '../constants/settings.js';
+import {gong, notEnoughResources} from '../constants/settings.js';
 import {SHIPS} from '../constants/settings.js';
 
 const handleClick = (updateState, shipIndex, waitingPlayer) => {
@@ -10,6 +10,7 @@ const handleClick = (updateState, shipIndex, waitingPlayer) => {
     gong.play();
     updateState({waitingPlayer: {...waitingPlayer, shipIndex, gold}});
   } else {
+    notEnoughResources.play();
     console.log('Not enough gold');
   }
 };

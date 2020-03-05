@@ -1,6 +1,6 @@
 import React from 'react'
 import '../styles/ship.css'
-import {loadWeapon} from '../constants/settings.js';
+import {loadWeapon, notEnoughResources} from '../constants/settings.js';
 import {WEAPONS} from '../constants/settings.js';
 
 const handleClick = (updateState, weaponIndex, waitingPlayer) => {
@@ -9,6 +9,7 @@ const handleClick = (updateState, weaponIndex, waitingPlayer) => {
     loadWeapon.play();
     updateState({waitingPlayer: {...waitingPlayer, weaponIndex, gold}});
   } else {
+    notEnoughResources.play();
     console.log('Not enough gold');
   }
 };
