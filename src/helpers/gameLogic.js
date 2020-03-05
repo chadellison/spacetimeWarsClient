@@ -92,8 +92,7 @@ const removeOutOfBoundsShots = (weapons, width, height) => {
 
 const handleCollision = (weapon, players, handleGameEvent, currentPlayerId) => {
   players.forEach((player) => {
-    const currentShooter = weapon.playerId;
-    if (player.id !== currentShooter) {
+    if (player.id !== weapon.playerId) {
       const startCenter = SHIPS[player.shipIndex].shipCenter;
       const shipCenter = {x: player.location.x + startCenter.x, y: player.location.y + startCenter.y}
 
@@ -111,10 +110,16 @@ const handleCollision = (weapon, players, handleGameEvent, currentPlayerId) => {
         if ((index < 3 && distance < 18) || (index > 2 && distance < 23)) {
           console.log('BLAM!');
           if (player.hitpoints > 0) {
-            player.hitpoints = updateHitpoints(weapon.damage, player.hitpoints, player.armor)
-            if (player.hitpoints <= 0 && currentShooter === currentPlayerId) {
+            const damage = calculateDamage(weapon.damage, player.armor);
+            let bounty = Math.round(damage / 10);
+            player.hitpoints -= damage
+            if (player.hitpoints <= 0 && weapon.playerId === currentPlayerId) {
+              bounty += Math.round(player.score / 10 + 100);
               handleGameEvent({id: player.id, gameEvent: 'remove'});
             }
+            let currentShooter = findCurrentPlayer(players, weapon.playerId);
+            currentShooter.gold += bounty
+            currentShooter.score += bounty
           }
           weapon.removed = true
         }
@@ -124,8 +129,8 @@ const handleCollision = (weapon, players, handleGameEvent, currentPlayerId) => {
   return weapon;
 }
 
-const updateHitpoints = (damage, hitpoints, armor) => {
-  return Math.round(hitpoints - (damage * (10 - armor) / 10));
+const calculateDamage = (damage, armor) => {
+  return Math.round(damage * (10 - armor) / 10);
 }
 
 export const handleFireWeapon = (player, weapon, deployedWeapons) => {
