@@ -90,37 +90,29 @@ const removeOutOfBoundsShots = (weapons, width, height) => {
   });
 };
 
+const findShipBoundingBoxes = (player) => {
+  const startCenter = SHIPS[player.shipIndex].shipCenter;
+  const shipCenter = {x: player.location.x + startCenter.x, y: player.location.y + startCenter.y}
+
+  return [
+    handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, 30),
+    handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, 10),
+    handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, -10),
+    handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, -35)
+  ];
+}
+
 const handleCollision = (weapon, players, handleGameEvent, currentPlayerId) => {
   players.forEach((player) => {
     if (player.id !== weapon.playerId) {
-      const startCenter = SHIPS[player.shipIndex].shipCenter;
-      const shipCenter = {x: player.location.x + startCenter.x, y: player.location.y + startCenter.y}
-
-      const shipBoundingBoxes = [
-        handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, 30),
-        handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, 10),
-        handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, -10),
-        handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, -35)
-      ];
-
+      const shipBoundingBoxes = findShipBoundingBoxes(player);
       const weaponCenter = {x: weapon.location.x + (weapon.width / 2), y: weapon.location.y + (weapon.height / 2)}
 
       shipBoundingBoxes.forEach((center, index) => {
         const distance = findHypotenuse(center, weaponCenter);
         if ((index < 3 && distance < 18) || (index > 2 && distance < 23)) {
           console.log('BLAM!');
-          if (player.hitpoints > 0) {
-            const damage = calculateDamage(weapon.damage, player.armor);
-            let bounty = Math.round(damage / 10);
-            player.hitpoints -= damage
-            if (player.hitpoints <= 0 && weapon.playerId === currentPlayerId) {
-              bounty += Math.round(player.score / 10 + 100);
-              handleGameEvent({id: player.id, gameEvent: 'remove'});
-            }
-            let currentShooter = findCurrentPlayer(players, weapon.playerId);
-            currentShooter.gold += bounty
-            currentShooter.score += bounty
-          }
+          updateCollisionData(player, weapon, players, currentPlayerId)
           weapon.removed = true
         }
       });
@@ -128,6 +120,21 @@ const handleCollision = (weapon, players, handleGameEvent, currentPlayerId) => {
   });
   return weapon;
 }
+
+const updateCollisionData = (player, weapon, players, handleGameEvent, currentPlayerId) => {
+  if (player.hitpoints > 0) {
+    const damage = calculateDamage(weapon.damage, player.armor);
+    let bounty = Math.round(damage / 10);
+    player.hitpoints -= damage
+    if (player.hitpoints <= 0 && weapon.playerId === currentPlayerId) {
+      bounty += Math.round(player.score / 10 + 100);
+      handleGameEvent({id: player.id, gameEvent: 'remove'});
+    }
+    let currentShooter = findCurrentPlayer(players, weapon.playerId);
+    currentShooter.gold += bounty
+    currentShooter.score += bounty
+  };
+};
 
 const calculateDamage = (damage, armor) => {
   return Math.round(damage * (10 - armor) / 10);
