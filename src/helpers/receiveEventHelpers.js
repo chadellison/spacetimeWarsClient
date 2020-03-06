@@ -7,12 +7,10 @@ import {
 } from '../helpers/gameLogic.js';
 
 const playersFromEvent = (gameEvent, players, playerData) => {
-  switch (gameEvent) {
-    case 'start':
-      return [...players, playerData]
-    default:
-      return players;
-  };
+  if (gameEvent === 'start') {
+    players = [...players, playerData]
+  }
+  return players;
 };
 
 const handleRemoveEvent = (players, playerData) => {
@@ -22,7 +20,12 @@ const handleRemoveEvent = (players, playerData) => {
       player.explodeAnimation = {x: 0, y: 0};
       player.explode = true;
       player.updatedAt = playerData.updatedAt;
-      player.lives -= 1
+      player.lives -= 1;
+      player.accelerate = false;
+      player.fire = false;
+      player.angle = 0;
+      player.trajectory = 0;
+      player.rotate = 'none';
       playerData = player;
     };
   });
