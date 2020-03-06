@@ -141,7 +141,6 @@ const calculateDamage = (damage, armor) => {
 }
 
 export const handleFireWeapon = (player, weapon, deployedWeapons) => {
-  // if (player.lastEvent === 'fire') {
   const shipCenter = SHIPS[player.shipIndex].shipCenter;
   const x = player.location.x + shipCenter.x;
   const y = player.location.y + shipCenter.y;
@@ -151,9 +150,6 @@ export const handleFireWeapon = (player, weapon, deployedWeapons) => {
   weapon.playerId = player.id
 
   return [...deployedWeapons, weapon]
-  // } else {
-  //   return deployedWeapons;
-  // }
 };
 
 export const findCurrentPlayer = (players, playerId) => {
