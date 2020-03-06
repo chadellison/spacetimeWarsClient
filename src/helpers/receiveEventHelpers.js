@@ -34,24 +34,27 @@ const handleRemoveEvent = (players, playerData) => {
 
 export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayerId, waitingPlayer) => {
   players = playersFromEvent(playerData.lastEvent, players, playerData);
+
+  let updatedPlayers = players;
+  let updatedWeapons = deployedWeapons;
   if (playerData.lastEvent === 'remove') {
     playerData = handleRemoveEvent(players, playerData);
-  };
-
-  const updatedWeapons = handleFireWeapon(
-    playerData,
-    {...WEAPONS[playerData.weaponIndex]},
-    deployedWeapons
-  );
-
-  const updatedPlayers = players.map((player) => {
-    if (player.id === playerData.id) {
-      const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
-      return updatePlayer(playerData, elapsedTime, clockDifference);
-    } else {
-      return player;
-    };
-  });
+  } else if (playerData.lastEvent === 'fire') {
+    updatedWeapons = handleFireWeapon(
+      playerData,
+      {...WEAPONS[playerData.weaponIndex]},
+      deployedWeapons
+    );
+  } else {
+    updatedPlayers = players.map((player) => {
+      if (player.id === playerData.id) {
+        const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
+        return updatePlayer(playerData, elapsedTime, clockDifference);
+      } else {
+        return player;
+      };
+    });
+  }
 
   let gameState = {
     players: updatedPlayers,
