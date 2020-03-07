@@ -21,26 +21,33 @@ export const updateGameState = ({
   lastFired,
   isFiring,
   updateState,
-  currentPlayerId
+  waitingPlayer
 }) => {
   let updatedPlayers = [];
   players.forEach((player) => {
     if (!removePlayer(player.explodeAnimation)) {
-      if (player.hitpoints <= 0 && !player.explode && currentPlayerId === player.id) {
-        handleGameEvent({id: currentPlayerId, gameEvent: 'remove'});
+      if (player.hitpoints <= 0 && !player.explode && waitingPlayer.id === player.id) {
+        handleGameEvent({id: waitingPlayer.id, gameEvent: 'remove'});
       }
       player = updatePlayer(player, elapsedTime, clockDifference);
+      if (player.id === waitingPlayer.id) {
+        waitingPlayer = player;
+        handleRepeatedFire(player, handleGameEvent, lastFired, isFiring, updateState);
+      }
       handleWall(player, width, height);
-      handleRepeatedFire(player, handleGameEvent, lastFired, isFiring, updateState, currentPlayerId);
       updatedPlayers.push(player);
     };
   });
 
   if (deployedWeapons.length > 0) {
     const filteredWeapons = removeOutOfBoundsShots(deployedWeapons, width, height);
-    deployedWeapons = handleWeapons(filteredWeapons, updatedPlayers, handleGameEvent, currentPlayerId);
+    deployedWeapons = handleWeapons(filteredWeapons, updatedPlayers, handleGameEvent, waitingPlayer);
   };
-  return {players: updatedPlayers, deployedWeapons: deployedWeapons};
+  return {
+    players: updatedPlayers,
+    deployedWeapons: deployedWeapons,
+    waitingPlayer: waitingPlayer
+  };
 };
 
 export const canFire = (lastFired, cooldown) => {
@@ -73,10 +80,10 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   return player
 }
 
-export const handleWeapons = (weapons, players, handleGameEvent, currentPlayerId) => {
+export const handleWeapons = (weapons, players, handleGameEvent, waitingPlayer) => {
   return weapons.filter((weapon) => {
     weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
-    weapon = handleCollision(weapon, players, handleGameEvent, currentPlayerId)
+    weapon = handleCollision(weapon, players, handleGameEvent, waitingPlayer)
     return !weapon.removed
   });
 };
@@ -102,7 +109,7 @@ const findShipBoundingBoxes = (player) => {
   ];
 }
 
-const handleCollision = (weapon, players, handleGameEvent, currentPlayerId) => {
+const handleCollision = (weapon, players, handleGameEvent, waitingPlayer) => {
   players.forEach((player) => {
     if (player.id !== weapon.playerId) {
       const shipBoundingBoxes = findShipBoundingBoxes(player);
@@ -112,7 +119,7 @@ const handleCollision = (weapon, players, handleGameEvent, currentPlayerId) => {
         const distance = findHypotenuse(center, weaponCenter);
         if ((index < 3 && distance < 18) || (index > 2 && distance < 23)) {
           console.log('BLAM!');
-          updateCollisionData(player, weapon, players, currentPlayerId)
+          updateCollisionData(player, weapon, players, handleGameEvent, waitingPlayer)
           weapon.removed = true
         }
       });
@@ -121,18 +128,17 @@ const handleCollision = (weapon, players, handleGameEvent, currentPlayerId) => {
   return weapon;
 }
 
-const updateCollisionData = (player, weapon, players, handleGameEvent, currentPlayerId) => {
+const updateCollisionData = (player, weapon, players, handleGameEvent, waitingPlayer) => {
   if (player.hitpoints > 0) {
     const damage = calculateDamage(weapon.damage, player.armor);
     let bounty = Math.round(damage / 10);
     player.hitpoints -= damage
-    if (player.hitpoints <= 0 && weapon.playerId === currentPlayerId) {
+    if (player.hitpoints <= 0 && weapon.playerId === waitingPlayer.id) {
       bounty += Math.round(player.score / 10 + 100);
       handleGameEvent({id: player.id, gameEvent: 'remove'});
     }
-    let currentShooter = findCurrentPlayer(players, weapon.playerId);
-    currentShooter.gold += bounty
-    currentShooter.score += bounty
+    waitingPlayer.gold += bounty
+    waitingPlayer.score += bounty
   };
 };
 
@@ -152,16 +158,12 @@ export const handleFireWeapon = (player, weapon, deployedWeapons) => {
   return [...deployedWeapons, weapon]
 };
 
-export const findCurrentPlayer = (players, playerId) => {
-  return players.filter((player) => player.id === playerId)[0];
-};
-
 const findHypotenuse = (point, pointTwo) => {
   return Math.round(Math.sqrt((point.x - pointTwo.x) ** 2 + (point.y - pointTwo.y) ** 2))
 };
 
-export const handleRepeatedFire = (player, handleGameEvent, lastFired, isFiring, updateState, currentPlayerId) => {
-  if (player.id === currentPlayerId && isFiring && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
+export const handleRepeatedFire = (player, handleGameEvent, lastFired, isFiring, updateState) => {
+  if (isFiring && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
     handleGameEvent(gameEventPayload(player, 'fire'));
     updateState({lastFired: Date.now()});
   };

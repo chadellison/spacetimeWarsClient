@@ -15,8 +15,7 @@ import {KEY_MAP} from '../constants/keyMap.js';
 import {
   updatePlayer,
   findElapsedTime,
-  updateGameState,
-  findCurrentPlayer
+  updateGameState
 } from '../helpers/gameLogic.js';
 import {
   keyDownEvent,
@@ -141,7 +140,8 @@ class Layout extends React.Component {
   }
 
   handleKeyDown = (event) => {
-    if (!this.state.waitingPlayer.explode && !this.state.showSelectionModal) {
+    const {explode} = this.state.waitingPlayer;
+    if (!explode && !this.state.showSelectionModal) {
       if (!this.state.waitingPlayer.id) {
         this.updateState({
           gameOver: false,
@@ -159,10 +159,11 @@ class Layout extends React.Component {
   };
 
   handleKeyUp = (event) => {
-    if (!this.state.waitingPlayer.explode) {
+    const {explode, lastEvent} = this.state.waitingPlayer;
+    if (!explode && lastEvent !== 'waiting') {
       const pressedKey = KEY_MAP[event.keyCode];
       keyUpEventPayload(
-        this.state.currentPlayerId,
+        this.state.waitingPlayer,
         this.state.players,
         pressedKey,
         this.handleGameEvent,
@@ -202,7 +203,7 @@ class Layout extends React.Component {
         lastFired: this.state.lastFired,
         isFiring: this.state.isFiring,
         updateState: this.updateState,
-        currentPlayerId: this.state.currentPlayerId
+        waitingPlayer: this.state.waitingPlayer
       }
       const updatedGameState = updateGameState(gameData)
       this.setState(updatedGameState);
@@ -210,16 +211,14 @@ class Layout extends React.Component {
   };
 
   renderPlayerData() {
-    const {currentPlayerId, players, waitingPlayer, clockDifference} = this.state;
-    let currentPlayer = findCurrentPlayer(players, currentPlayerId);
-    currentPlayer = currentPlayer ? currentPlayer : waitingPlayer;
-    if (currentPlayer) {
+    const {waitingPlayer, clockDifference, showSelectionModal} = this.state;
+    if (waitingPlayer) {
       return (
         <PlayerData
-          currentPlayer={currentPlayer}
+          currentPlayer={waitingPlayer}
           clockDifference={clockDifference}
           updateState={this.updateState}
-          showSelectionModal={this.state.showSelectionModal}
+          showSelectionModal={showSelectionModal}
         />
       );
     } else {
