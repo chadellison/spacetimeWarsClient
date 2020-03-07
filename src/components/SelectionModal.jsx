@@ -2,8 +2,9 @@ import React from 'react'
 import '../styles/selectionModal.css'
 import {Ship} from './Ship';
 import {Weapon} from './Weapon';
+import {Defense} from './Defense';
 import {PaginateButton} from './PaginateButton';
-import {SHIPS, WEAPONS} from '../constants/settings.js';
+import {SHIPS, WEAPONS, DEFENSES} from '../constants/settings.js';
 
 const handleClick = (updateState, handleGameEvent, waitingPlayer) => {
   const ship = SHIPS[waitingPlayer.shipIndex];
@@ -26,7 +27,8 @@ const handleClick = (updateState, handleGameEvent, waitingPlayer) => {
 };
 
 const renderOptions = (updateState, activeTab, page, waitingPlayer) => {
-  if (activeTab === 'Ship') {
+  switch (activeTab) {
+    case 'Ship':
     const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
     return ships.map((ship) => {
       return (
@@ -39,8 +41,7 @@ const renderOptions = (updateState, activeTab, page, waitingPlayer) => {
         />
       )
     });
-  };
-  if (activeTab === 'Weapons') {
+    case 'Weapons':
     const weapons = page === 1 ? WEAPONS.slice(0, 4) : WEAPONS.slice(4, 8);
     return weapons.map((weapon) => {
       return (
@@ -53,6 +54,21 @@ const renderOptions = (updateState, activeTab, page, waitingPlayer) => {
         />
       )
     });
+    case 'Defenses':
+    const defenseItems = page === 1 ? DEFENSES.slice(0, 4) : DEFENSES.slice(4, 8);
+    return defenseItems.map((defenseItem) => {
+      return (
+        <Defense
+          key={`defenseItem${defenseItem.index}`}
+          imageSrc={defenseItem.image}
+          updateState={updateState}
+          waitingPlayer={waitingPlayer}
+          defenseItem={defenseItem}
+        />
+      )
+    });
+    default:
+    return null;
   }
 };
 
@@ -75,8 +91,8 @@ const renderTabs = (activeTab, updateState, waitingPlayer) => {
     tabs.push('Weapons');
   };
   if (waitingPlayer.weaponIndex || waitingPlayer.weaponIndex === 0) {
-    tabs.push('Armor');
-    tabs.push('Hitpoins');
+    tabs.push('Defenses');
+    tabs.push('Other');
   };
   return tabs.map((tab, index) => {
     return (

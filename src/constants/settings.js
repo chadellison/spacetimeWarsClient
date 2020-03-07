@@ -22,6 +22,9 @@ import cruiserShip from '../images/cruiserShip.png';
 import carrierShip from '../images/carrierShip.png';
 import stealthShip from '../images/stealthShip.png';
 
+// defense
+import shield from '../images/shield.jpg';
+
 // audio
 import thrusterAudio from '../audio/thruster.wav';
 import cannonAudio from '../audio/cannon.wav';
@@ -215,6 +218,46 @@ export const SHIPS = [
     speed: 4.5,
     shipCenter: {x: 60, y: 34},
     image: stealthShip
+  }
+];
+
+export const DEFENSES = [
+  {
+    index: 0,
+    price: 200,
+    name: 'Armor upgrade',
+    image: shield,
+    description: 'Upgrades armor by one up to 5'
+  },
+  {
+    index: 1,
+    price: 200,
+    name: 'Hitpoints',
+    image: shield,
+    description: 'Permanantly increases hitpoints by 200'
+  },
+  {
+    index: 2,
+    price: 700,
+    name: 'Health boost',
+    image: shield,
+    description: 'Boosts hitpoints by 500 when hitpoints drop below 300 (120 second cooldown)'
+  },
+  {
+    index: 3,
+    price: 800,
+    name: 'Repair bots',
+    image: shield,
+    description: 'Repairs 1% of total hitpoints every second'
+  },
+];
+
+export const OTHER_ITEMS = [
+  {
+    index: 3,
+    price: 800,
+    name: '1 Up',
+    description: 'Adds an extra life'
   }
 ];
 
