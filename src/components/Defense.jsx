@@ -6,7 +6,7 @@ const handleClick = () => {
   console.log('clicked armor')
 };
 
-export const Defense = ({updateState, imageSrc, waitingPlayer, defenseItem}) => {
+export const Defense = ({updateState, imageSrc, currentPlayer, defenseItem}) => {
   return (
     <div className="selection"
       onClick={() => handleClick()}>
