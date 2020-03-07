@@ -35,7 +35,7 @@ const DEFAULT_STATE = {
   clockDifference: 0,
   shortestRoundTripTime: 5000,
   deployedWeapons: [],
-  waitingPlayer: {},
+  currentPlayer: {},
   gameOver: false,
   isFiring: false,
   lastFired: 0,
@@ -140,13 +140,13 @@ class Layout extends React.Component {
   }
 
   handleKeyDown = (event) => {
-    const {explode} = this.state.waitingPlayer;
+    const {explode} = this.state.currentPlayer;
     if (!explode && !this.state.showSelectionModal) {
-      if (!this.state.waitingPlayer.id) {
+      if (!this.state.currentPlayer.id) {
         this.updateState({
           gameOver: false,
           showSelectionModal: true,
-          waitingPlayer: {id: this.state.userId, gold: 1000, lastEvent: 'waiting', lives: 3}
+          currentPlayer: {id: this.state.userId, gold: 1000, lastEvent: 'waiting', lives: 3}
         });
       } else {
         const pressedKey = KEY_MAP[event.keyCode];
@@ -159,11 +159,11 @@ class Layout extends React.Component {
   };
 
   handleKeyUp = (event) => {
-    const {explode, lastEvent} = this.state.waitingPlayer;
+    const {explode, lastEvent} = this.state.currentPlayer;
     if (!explode && lastEvent !== 'waiting') {
       const pressedKey = KEY_MAP[event.keyCode];
       keyUpEventPayload(
-        this.state.waitingPlayer,
+        this.state.currentPlayer,
         this.state.players,
         pressedKey,
         this.handleGameEvent,
@@ -180,7 +180,7 @@ class Layout extends React.Component {
       this.state.clockDifference,
       [...this.state.deployedWeapons],
       this.state.currentPlayerId,
-      this.state.waitingPlayer
+      this.state.currentPlayer
     );
 
     handleAudio(playerData);
@@ -203,7 +203,7 @@ class Layout extends React.Component {
         lastFired: this.state.lastFired,
         isFiring: this.state.isFiring,
         updateState: this.updateState,
-        waitingPlayer: this.state.waitingPlayer
+        currentPlayer: this.state.currentPlayer
       }
       const updatedGameState = updateGameState(gameData)
       this.setState(updatedGameState);
@@ -211,19 +211,15 @@ class Layout extends React.Component {
   };
 
   renderPlayerData() {
-    const {waitingPlayer, clockDifference, showSelectionModal} = this.state;
-    if (waitingPlayer) {
-      return (
-        <PlayerData
-          currentPlayer={waitingPlayer}
-          clockDifference={clockDifference}
-          updateState={this.updateState}
-          showSelectionModal={showSelectionModal}
-        />
-      );
-    } else {
-      return null;
-    }
+    const {currentPlayer, clockDifference, showSelectionModal} = this.state;
+    return (
+      <PlayerData
+        currentPlayer={currentPlayer}
+        clockDifference={clockDifference}
+        updateState={this.updateState}
+        showSelectionModal={showSelectionModal}
+      />
+    );
   }
 
   renderSelectionModal() {
@@ -236,7 +232,7 @@ class Layout extends React.Component {
           userId={this.state.userId}
           activeTab={this.state.activeTab}
           page={this.state.page}
-          waitingPlayer={this.state.waitingPlayer}
+          currentPlayer={this.state.currentPlayer}
         />
       );
     }

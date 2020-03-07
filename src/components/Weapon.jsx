@@ -3,21 +3,21 @@ import '../styles/ship.css'
 import {loadWeapon, notEnoughResources} from '../constants/settings.js';
 import {WEAPONS} from '../constants/settings.js';
 
-const handleClick = (updateState, weaponIndex, waitingPlayer) => {
-  const gold = waitingPlayer.gold - WEAPONS[weaponIndex].price;
+const handleClick = (updateState, weaponIndex, currentPlayer) => {
+  const gold = currentPlayer.gold - WEAPONS[weaponIndex].price;
   if (gold >= 0) {
     loadWeapon.play();
-    updateState({waitingPlayer: {...waitingPlayer, weaponIndex, gold}});
+    updateState({currentPlayer: {...currentPlayer, weaponIndex, gold}});
   } else {
     notEnoughResources.play();
     console.log('Not enough gold');
   }
 };
 
-export const Weapon = ({updateState, imageSrc, weapon, waitingPlayer}) => {
+export const Weapon = ({updateState, imageSrc, weapon, currentPlayer}) => {
   return (
-    <div className={`selection ${waitingPlayer.weaponIndex === weapon.index ? 'selected' : ''}`}
-      onClick={() => handleClick(updateState, weapon.index, waitingPlayer)}>
+    <div className={`selection ${currentPlayer.weaponIndex === weapon.index ? 'selected' : ''}`}
+      onClick={() => handleClick(updateState, weapon.index, currentPlayer)}>
         <img id={weapon.index} src={imageSrc} alt="ship" className="selectionImage"/>
         <div className="selectionData">
           {`${weapon.name}`}

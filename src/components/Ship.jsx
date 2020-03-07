@@ -3,22 +3,22 @@ import '../styles/ship.css';
 import {gong, notEnoughResources} from '../constants/settings.js';
 import {SHIPS} from '../constants/settings.js';
 
-const handleClick = (updateState, shipIndex, waitingPlayer) => {
-  const gold = waitingPlayer.gold - SHIPS[shipIndex].price;
+const handleClick = (updateState, shipIndex, currentPlayer) => {
+  const gold = currentPlayer.gold - SHIPS[shipIndex].price;
 
   if (gold >= 0) {
     gong.play();
-    updateState({waitingPlayer: {...waitingPlayer, shipIndex, gold}});
+    updateState({currentPlayer: {...currentPlayer, shipIndex, gold}});
   } else {
     notEnoughResources.play();
     console.log('Not enough gold');
   }
 };
 
-export const Ship = ({updateState, imageSrc, waitingPlayer, ship}) => {
+export const Ship = ({updateState, imageSrc, currentPlayer, ship}) => {
   return (
-    <div className={`selection ${waitingPlayer.shipIndex === ship.index ? 'selected' : ''}`}
-      onClick={() => handleClick(updateState, ship.index, waitingPlayer)}>
+    <div className={`selection ${currentPlayer.shipIndex === ship.index ? 'selected' : ''}`}
+      onClick={() => handleClick(updateState, ship.index, currentPlayer)}>
         <img id={ship.index} src={imageSrc} alt="ship" className="selectionImage"/>
         <div className="selectionData">
           {`${ship.name}`}

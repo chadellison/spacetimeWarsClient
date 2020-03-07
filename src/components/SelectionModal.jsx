@@ -6,27 +6,27 @@ import {Defense} from './Defense';
 import {PaginateButton} from './PaginateButton';
 import {SHIPS, WEAPONS, DEFENSES} from '../constants/settings.js';
 
-const handleClick = (updateState, handleGameEvent, waitingPlayer) => {
-  const ship = SHIPS[waitingPlayer.shipIndex];
-  const weapon = WEAPONS[waitingPlayer.weaponIndex];
+const handleClick = (updateState, handleGameEvent, currentPlayer) => {
+  const ship = SHIPS[currentPlayer.shipIndex];
+  const weapon = WEAPONS[currentPlayer.weaponIndex];
 
   handleGameEvent({
-    id: waitingPlayer.id,
+    id: currentPlayer.id,
     gameEvent: 'start',
     hitpoints: ship.hitpoints,
     maxHitpoints: ship.hitpoints,
     armor: ship.armor,
-    lives: waitingPlayer.lives,
+    lives: currentPlayer.lives,
     shipIndex: ship.index,
     weaponIndex: weapon.index,
     velocity: ship.speed,
-    gold: waitingPlayer.gold,
-    score: waitingPlayer.score
+    gold: currentPlayer.gold,
+    score: currentPlayer.score
   });
-  updateState({currentPlayerId: waitingPlayer.id, showSelectionModal: false});
+  updateState({currentPlayerId: currentPlayer.id, showSelectionModal: false});
 };
 
-const renderOptions = (updateState, activeTab, page, waitingPlayer) => {
+const renderOptions = (updateState, activeTab, page, currentPlayer) => {
   switch (activeTab) {
     case 'Ship':
     const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
@@ -36,7 +36,7 @@ const renderOptions = (updateState, activeTab, page, waitingPlayer) => {
           key={`ship${ship.index}`}
           imageSrc={ship.image}
           updateState={updateState}
-          waitingPlayer={waitingPlayer}
+          currentPlayer={currentPlayer}
           ship={ship}
         />
       )
@@ -49,7 +49,7 @@ const renderOptions = (updateState, activeTab, page, waitingPlayer) => {
           key={`weapon${weapon.index}`}
           imageSrc={weapon.selectionImage}
           updateState={updateState}
-          waitingPlayer={waitingPlayer}
+          currentPlayer={currentPlayer}
           weapon={weapon}
         />
       )
@@ -62,7 +62,7 @@ const renderOptions = (updateState, activeTab, page, waitingPlayer) => {
           key={`defenseItem${defenseItem.index}`}
           imageSrc={defenseItem.image}
           updateState={updateState}
-          waitingPlayer={waitingPlayer}
+          currentPlayer={currentPlayer}
           defenseItem={defenseItem}
         />
       )
@@ -72,11 +72,11 @@ const renderOptions = (updateState, activeTab, page, waitingPlayer) => {
   }
 };
 
-const renderStart = (updateState, handleGameEvent, waitingPlayer) => {
-  if (waitingPlayer.shipIndex !== undefined && waitingPlayer.weaponIndex !== undefined) {
+const renderStart = (updateState, handleGameEvent, currentPlayer) => {
+  if (currentPlayer.shipIndex !== undefined && currentPlayer.weaponIndex !== undefined) {
     return (
       <div className="selectionButton"
-        onClick={() => handleClick(updateState, handleGameEvent, waitingPlayer)}>
+        onClick={() => handleClick(updateState, handleGameEvent, currentPlayer)}>
         Start
       </div>
     );
@@ -85,12 +85,12 @@ const renderStart = (updateState, handleGameEvent, waitingPlayer) => {
   };
 };
 
-const renderTabs = (activeTab, updateState, waitingPlayer) => {
+const renderTabs = (activeTab, updateState, currentPlayer) => {
   let tabs = ['Ship'];
-  if (waitingPlayer.shipIndex || waitingPlayer.shipIndex === 0) {
+  if (currentPlayer.shipIndex || currentPlayer.shipIndex === 0) {
     tabs.push('Weapons');
   };
-  if (waitingPlayer.weaponIndex || waitingPlayer.weaponIndex === 0) {
+  if (currentPlayer.weaponIndex || currentPlayer.weaponIndex === 0) {
     tabs.push('Defenses');
     tabs.push('Other');
   };
@@ -111,15 +111,15 @@ const SelectionModal = ({
   handleGameEvent,
   activeTab,
   page,
-  waitingPlayer
+  currentPlayer
 }) => {
   return (
     <div className='selectionModal'>
       <div className="modalTabs">
-        {renderTabs(activeTab, updateState, waitingPlayer)}
+        {renderTabs(activeTab, updateState, currentPlayer)}
       </div>
-      {renderStart(updateState, handleGameEvent, waitingPlayer)}
-      {renderOptions(updateState, activeTab, page, waitingPlayer)}
+      {renderStart(updateState, handleGameEvent, currentPlayer)}
+      {renderOptions(updateState, activeTab, page, currentPlayer)}
       <PaginateButton updateState={updateState} page={page}/>
     </div>
   );

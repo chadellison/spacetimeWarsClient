@@ -21,17 +21,17 @@ export const updateGameState = ({
   lastFired,
   isFiring,
   updateState,
-  waitingPlayer
+  currentPlayer
 }) => {
   let updatedPlayers = [];
   players.forEach((player) => {
     if (!removePlayer(player.explodeAnimation)) {
-      if (player.hitpoints <= 0 && !player.explode && waitingPlayer.id === player.id) {
-        handleGameEvent({id: waitingPlayer.id, gameEvent: 'remove'});
+      if (player.hitpoints <= 0 && !player.explode && currentPlayer.id === player.id) {
+        handleGameEvent({id: currentPlayer.id, gameEvent: 'remove'});
       }
       player = updatePlayer(player, elapsedTime, clockDifference);
-      if (player.id === waitingPlayer.id) {
-        waitingPlayer = player;
+      if (player.id === currentPlayer.id) {
+        currentPlayer = player;
         handleRepeatedFire(player, handleGameEvent, lastFired, isFiring, updateState);
       }
       handleWall(player, width, height);
@@ -41,12 +41,12 @@ export const updateGameState = ({
 
   if (deployedWeapons.length > 0) {
     const filteredWeapons = removeOutOfBoundsShots(deployedWeapons, width, height);
-    deployedWeapons = handleWeapons(filteredWeapons, updatedPlayers, handleGameEvent, waitingPlayer);
+    deployedWeapons = handleWeapons(filteredWeapons, updatedPlayers, handleGameEvent, currentPlayer);
   };
   return {
     players: updatedPlayers,
     deployedWeapons: deployedWeapons,
-    waitingPlayer: waitingPlayer
+    currentPlayer: currentPlayer
   };
 };
 
@@ -80,10 +80,10 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   return player
 }
 
-export const handleWeapons = (weapons, players, handleGameEvent, waitingPlayer) => {
+export const handleWeapons = (weapons, players, handleGameEvent, currentPlayer) => {
   return weapons.filter((weapon) => {
     weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
-    weapon = handleCollision(weapon, players, handleGameEvent, waitingPlayer)
+    weapon = handleCollision(weapon, players, handleGameEvent, currentPlayer)
     return !weapon.removed
   });
 };
@@ -109,7 +109,7 @@ const findShipBoundingBoxes = (player) => {
   ];
 }
 
-const handleCollision = (weapon, players, handleGameEvent, waitingPlayer) => {
+const handleCollision = (weapon, players, handleGameEvent, currentPlayer) => {
   players.forEach((player) => {
     if (player.id !== weapon.playerId) {
       const shipBoundingBoxes = findShipBoundingBoxes(player);
@@ -119,7 +119,7 @@ const handleCollision = (weapon, players, handleGameEvent, waitingPlayer) => {
         const distance = findHypotenuse(center, weaponCenter);
         if ((index < 3 && distance < 18) || (index > 2 && distance < 23)) {
           console.log('BLAM!');
-          updateCollisionData(player, weapon, players, handleGameEvent, waitingPlayer)
+          updateCollisionData(player, weapon, players, handleGameEvent, currentPlayer)
           weapon.removed = true
         }
       });
@@ -128,17 +128,17 @@ const handleCollision = (weapon, players, handleGameEvent, waitingPlayer) => {
   return weapon;
 }
 
-const updateCollisionData = (player, weapon, players, handleGameEvent, waitingPlayer) => {
+const updateCollisionData = (player, weapon, players, handleGameEvent, currentPlayer) => {
   if (player.hitpoints > 0) {
     const damage = calculateDamage(weapon.damage, player.armor);
     let bounty = Math.round(damage / 10);
     player.hitpoints -= damage
-    if (player.hitpoints <= 0 && weapon.playerId === waitingPlayer.id) {
+    if (player.hitpoints <= 0 && weapon.playerId === currentPlayer.id) {
       bounty += Math.round(player.score / 10 + 100);
       handleGameEvent({id: player.id, gameEvent: 'remove'});
     }
-    waitingPlayer.gold += bounty
-    waitingPlayer.score += bounty
+    currentPlayer.gold += bounty
+    currentPlayer.score += bounty
   };
 };
 

@@ -87,8 +87,7 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, showSelectionM
     countDown = Math.round(10 - elapsedSeconds);
   } else {
     if (currentPlayer.explode) {
-      const waitingPlayer = {...currentPlayer, explode: false, lastEvent: 'waiting'};
-      updateState({waitingPlayer: waitingPlayer});
+      updateState({currentPlayer: {...currentPlayer, explode: false, lastEvent: 'waiting'}});
     };
   };
 

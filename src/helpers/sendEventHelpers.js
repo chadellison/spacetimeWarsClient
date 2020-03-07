@@ -7,7 +7,7 @@ export const keyDownEvent = (pressedKey, state, handleGameEvent, updateState) =>
   switch (pressedKey) {
     case 'space':
       handleSpaceBarEvent(
-        state.waitingPlayer,
+        state.currentPlayer,
         handleGameEvent,
         updateState,
         state.lastFired
@@ -15,45 +15,45 @@ export const keyDownEvent = (pressedKey, state, handleGameEvent, updateState) =>
       break;
     case 'left':
     case 'right':
-      handleRotateEvent(state.waitingPlayer, pressedKey, handleGameEvent);
+      handleRotateEvent(state.currentPlayer, pressedKey, handleGameEvent);
       break;
     case 'up':
-      handleAccelerateEvent(state.waitingPlayer, pressedKey, handleGameEvent);
+      handleAccelerateEvent(state.currentPlayer, pressedKey, handleGameEvent);
       break;
     default:
       break;
   }
 }
 
-export const keyUpEventPayload = (waitingPlayer, players, pressedKey, handleGameEvent, updateState) => {
-  if (['right', 'left', 'up'].includes(pressedKey) && waitingPlayer) {
-    handleGameEvent(gameEventPayload(waitingPlayer, pressedKey + 'Stop'));
+export const keyUpEventPayload = (currentPlayer, players, pressedKey, handleGameEvent, updateState) => {
+  if (['right', 'left', 'up'].includes(pressedKey) && currentPlayer) {
+    handleGameEvent(gameEventPayload(currentPlayer, pressedKey + 'Stop'));
   };
 
-  if ('space' === pressedKey && waitingPlayer) {
-    handleGameEvent(gameEventPayload(waitingPlayer, 'fireStop'));
+  if ('space' === pressedKey && currentPlayer) {
+    handleGameEvent(gameEventPayload(currentPlayer, 'fireStop'));
     updateState({isFiring: false});
   };
 };
 
-const handleRotateEvent = (waitingPlayer, gameEvent, handleGameEvent) => {
-  if (waitingPlayer && waitingPlayer.lastEvent !== 'waiting') {
-    handleGameEvent(gameEventPayload(waitingPlayer, gameEvent));
+const handleRotateEvent = (currentPlayer, gameEvent, handleGameEvent) => {
+  if (currentPlayer && currentPlayer.lastEvent !== 'waiting') {
+    handleGameEvent(gameEventPayload(currentPlayer, gameEvent));
   };
 };
 
-const handleAccelerateEvent = (waitingPlayer, gameEvent, handleGameEvent) => {
-  if (waitingPlayer && waitingPlayer.lastEvent !== 'waiting') {
-    handleGameEvent(gameEventPayload(waitingPlayer, gameEvent));
+const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent) => {
+  if (currentPlayer && currentPlayer.lastEvent !== 'waiting') {
+    handleGameEvent(gameEventPayload(currentPlayer, gameEvent));
   };
 };
 
-const handleSpaceBarEvent = (waitingPlayer, handleGameEvent, updateState, lastFired) => {
-  if (waitingPlayer.lastEvent === 'waiting') {
-    handleGameEvent(startEventPayload(waitingPlayer));
+const handleSpaceBarEvent = (currentPlayer, handleGameEvent, updateState, lastFired) => {
+  if (currentPlayer.lastEvent === 'waiting') {
+    handleGameEvent(startEventPayload(currentPlayer));
   } else {
-    if (canFire(lastFired, WEAPONS[waitingPlayer.weaponIndex].cooldown)) {
-      handleGameEvent(gameEventPayload(waitingPlayer, 'fire'));
+    if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
+      handleGameEvent(gameEventPayload(currentPlayer, 'fire'));
       updateState({lastFired: Date.now(), isFiring: true});
     };
   };
