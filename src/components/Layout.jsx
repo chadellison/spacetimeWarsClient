@@ -30,7 +30,6 @@ const DEFAULT_STATE = {
   gameSocket: {},
   boardWidth: BOARD_WIDTH,
   boardHeight: BOARD_HEIGHT,
-  currentPlayerId: null,
   players: [],
   clockDifference: 0,
   shortestRoundTripTime: 5000,
@@ -179,7 +178,6 @@ class Layout extends React.Component {
       playerData,
       this.state.clockDifference,
       [...this.state.deployedWeapons],
-      this.state.currentPlayerId,
       this.state.currentPlayer
     );
 
@@ -251,7 +249,7 @@ class Layout extends React.Component {
             players={players}
             height={boardHeight}
             width={boardWidth}
-            playerId={this.state.currentPlayerId}
+            playerId={this.state.currentPlayer.id}
             deployedWeapons={this.state.deployedWeapons}
           />
         </div>

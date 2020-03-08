@@ -32,7 +32,7 @@ const handleRemoveEvent = (players, playerData) => {
   return playerData
 }
 
-export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayerId, currentPlayer) => {
+export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
   players = playersFromEvent(playerData.lastEvent, players, playerData);
 
   let updatedPlayers = players;
@@ -59,20 +59,19 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
   let gameState = {
     players: updatedPlayers,
     deployedWeapons: updatedWeapons,
-    currentPlayer: handleWaitingPlayer(playerData, currentPlayerId, currentPlayer),
+    currentPlayer: handleWaitingPlayer(playerData, currentPlayer),
   };
 
-  if (handleGameOver(playerData, currentPlayerId)) {
+  if (handleGameOver(playerData, currentPlayer.id)) {
     gameState.gameOver = true;
-    gameState.currentPlayerId = null;
     gameState.currentPlayer = {};
     gameState.activeTab = 'Ship';
   };
   return gameState;
 };
 
-const handleWaitingPlayer = (player, currentPlayerId, currentPlayer) => {
-  if (currentPlayerId === player.id) {
+const handleWaitingPlayer = (player, currentPlayer) => {
+  if (currentPlayer.id === player.id) {
     return player;
   } else {
     return currentPlayer;
