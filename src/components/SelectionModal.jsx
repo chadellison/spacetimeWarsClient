@@ -7,23 +7,21 @@ import {PaginateButton} from './PaginateButton';
 import {SHIPS, WEAPONS, DEFENSES} from '../constants/settings.js';
 
 const handleClick = (updateState, handleGameEvent, currentPlayer) => {
-  const ship = SHIPS[currentPlayer.shipIndex];
-  const weapon = WEAPONS[currentPlayer.weaponIndex];
-
-  handleGameEvent({
+  const player = {
     id: currentPlayer.id,
     gameEvent: 'start',
-    hitpoints: ship.hitpoints,
-    maxHitpoints: ship.hitpoints,
-    armor: ship.armor,
+    hitpoints: currentPlayer.hitpoints,
+    maxHitpoints: currentPlayer.hitpoints,
+    armor: currentPlayer.armor,
     lives: currentPlayer.lives,
-    shipIndex: ship.index,
-    weaponIndex: weapon.index,
-    velocity: ship.speed,
+    shipIndex: currentPlayer.shipIndex,
+    weaponIndex: currentPlayer.weaponIndex,
+    velocity: currentPlayer.velocity,
     gold: currentPlayer.gold,
     score: currentPlayer.score
-  });
-  updateState({currentPlayerId: currentPlayer.id, showSelectionModal: false});
+  }
+  handleGameEvent(player);
+  updateState({currentPlayer: player, showSelectionModal: false});
 };
 
 const renderOptions = (updateState, activeTab, page, currentPlayer) => {
@@ -55,8 +53,7 @@ const renderOptions = (updateState, activeTab, page, currentPlayer) => {
       )
     });
     case 'Defenses':
-    const defenseItems = page === 1 ? DEFENSES.slice(0, 4) : DEFENSES.slice(4, 8);
-    return defenseItems.map((defenseItem) => {
+    return DEFENSES.map((defenseItem) => {
       return (
         <Defense
           key={`defenseItem${defenseItem.index}`}

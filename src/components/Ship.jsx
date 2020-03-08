@@ -8,7 +8,16 @@ const handleClick = (updateState, shipIndex, currentPlayer) => {
 
   if (gold >= 0) {
     gong.play();
-    updateState({currentPlayer: {...currentPlayer, shipIndex, gold}});
+    const player = {
+      ...currentPlayer,
+      shipIndex: shipIndex,
+      gold: gold,
+      armor: SHIPS[shipIndex].armor,
+      hitpoints: SHIPS[shipIndex].hitpoints,
+      maxHitpoints: SHIPS[shipIndex].hitpoints,
+      velocity: SHIPS[shipIndex].speed,
+    }
+    updateState({currentPlayer: player});
   } else {
     notEnoughResources.play();
     console.log('Not enough gold');

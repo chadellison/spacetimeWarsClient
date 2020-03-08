@@ -145,7 +145,7 @@ class Layout extends React.Component {
         this.updateState({
           gameOver: false,
           showSelectionModal: true,
-          currentPlayer: {id: this.state.userId, gold: 1000, lastEvent: 'waiting', lives: 3}
+          currentPlayer: {id: this.state.userId, gold: 1000, lastEvent: 'waiting', lives: 3, score: 0}
         });
       } else {
         const pressedKey = KEY_MAP[event.keyCode];

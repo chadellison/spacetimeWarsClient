@@ -24,7 +24,7 @@ const renderLives = (currentPlayer) => {
 }
 
 const renderWeapon = (weaponIndex) => {
-  if (weaponIndex) {
+  if (weaponIndex || weaponIndex === 0) {
     return (
       <img
         className="playerInfoWeapon"
@@ -32,16 +32,6 @@ const renderWeapon = (weaponIndex) => {
         alt="weapon"
       />
     )
-  }
-}
-
-const renderArmor = (shipIndex) => {
-  if (shipIndex || shipIndex === 0) {
-    return (
-      <div className="playerInfo">
-        {`Armor: ${SHIPS[shipIndex].armor}`}
-      </div>
-    );
   }
 }
 
@@ -100,7 +90,8 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, showSelectionM
           {renderLives(currentPlayer)}
           {renderHitPoints(currentPlayer)}
           {renderWeapon(currentPlayer.weaponIndex)}
-          {renderArmor(currentPlayer.shipIndex)}
+          {renderData('Armor', currentPlayer.armor)}
+          {renderData('Speed', currentPlayer.velocity)}
           {renderData('Score', currentPlayer.score)}
           {renderShopButton(currentPlayer.lastEvent, updateState, showSelectionModal)}
         </div>

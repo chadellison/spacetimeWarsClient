@@ -1,4 +1,4 @@
-import {WEAPONS, SHIPS} from '../constants/settings.js';
+import {WEAPONS} from '../constants/settings.js';
 import {
   canFire
 } from '../helpers/gameLogic.js';
@@ -82,7 +82,7 @@ export const startEventPayload = (player) => {
     lives: player.lives,
     shipIndex: player.shipIndex,
     weaponIndex: player.weaponIndex,
-    velocity: SHIPS[player.shipIndex].speed,
+    velocity: player.velocity,
     gold: player.gold,
     score: player.score
   };
