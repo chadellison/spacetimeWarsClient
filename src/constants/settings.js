@@ -84,8 +84,8 @@ export const WEAPONS = [
     trajectory: 0,
     cooldown: 800,
     speed: 10,
-    damage: 500,
-    price: 600,
+    damage: 400,
+    price: 400,
     width: 50,
     height: 29,
     image: bomb,
@@ -241,7 +241,7 @@ export const DEFENSES = [
     price: 700,
     name: 'Health boost',
     image: shield,
-    description: 'Boosts hitpoints by 500 when hitpoints drop below 300 (120 second cooldown)'
+    description: 'Boosts hitpoints to %50 of max hitpoints when hitpoints drop below %25 (120 second cooldown)'
   },
   {
     index: 3,

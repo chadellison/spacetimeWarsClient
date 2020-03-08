@@ -24,7 +24,7 @@
 .playerLivesShip {
   width: 2.5em;
   margin-top: 1.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
   display: inline-block;
   transform: rotate(270deg);
 }

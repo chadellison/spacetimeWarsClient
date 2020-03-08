@@ -87,8 +87,8 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, showSelectionM
         <div className="row">
           {handleWaitTime(currentPlayer, countDown)}
           {renderData('Gold', currentPlayer.gold)}
-          {renderLives(currentPlayer)}
           {renderHitPoints(currentPlayer)}
+          {renderLives(currentPlayer)}
           {renderWeapon(currentPlayer.weaponIndex)}
           {renderData('Armor', currentPlayer.armor)}
           {renderData('Speed', currentPlayer.velocity)}

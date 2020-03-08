@@ -8,7 +8,13 @@ const handleClick = (updateState, currentPlayer, defenseItemIndex) => {
   if (defenseItemIndex === 0) {
     if (gold >= 0 && currentPlayer.armor < 5) {
       gong.play();
-      updateState({currentPlayer: {...currentPlayer, armor: currentPlayer.armor + 1, gold: gold}});
+      const player = {
+        ...currentPlayer,
+        hitpoints: currentPlayer.maxHitpoints,
+        armor: currentPlayer.armor + 1,
+        gold: gold
+      };
+      updateState({currentPlayer: player});
     } else {
       notEnoughResources.play();
       console.log('Not enough gold');
@@ -16,7 +22,13 @@ const handleClick = (updateState, currentPlayer, defenseItemIndex) => {
   } else if (defenseItemIndex === 1) {
     if (gold >= 0) {
       gong.play();
-      updateState({currentPlayer: {...currentPlayer, hitpoints: currentPlayer.hitpoints + 200, gold: gold}});
+      const player = {
+        ...currentPlayer,
+        hitpoints: currentPlayer.maxHitpoints + 200,
+        maxHitpoints: currentPlayer.maxHitpoints + 200,
+        gold: gold
+      };
+      updateState({currentPlayer: player});
     } else {
       notEnoughResources.play();
       console.log('Not enough gold');
