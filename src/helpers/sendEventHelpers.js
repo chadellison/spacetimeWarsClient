@@ -74,7 +74,6 @@ export const gameEventPayload = (player, gameEvent) => {
 }
 
 export const startEventPayload = (player) => {
-  console.log(player.items, 'items')
   return {
     id: player.id,
     gameEvent: 'start',

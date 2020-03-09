@@ -3,9 +3,10 @@ import '../styles/selectionModal.css'
 import {startEventPayload} from '../helpers/sendEventHelpers.js'
 import {Ship} from './Ship';
 import {Weapon} from './Weapon';
-import {Defense} from './Defense';
+import {Upgrade} from './Upgrade';
+import {Item} from './Item';
 import {PaginateButton} from './PaginateButton';
-import {SHIPS, WEAPONS, DEFENSES} from '../constants/settings.js';
+import {SHIPS, WEAPONS, UPGRADES, ITEMS} from '../constants/settings.js';
 
 const handleClick = (updateState, handleGameEvent, currentPlayer) => {
   const player = startEventPayload(currentPlayer);
@@ -16,45 +17,57 @@ const handleClick = (updateState, handleGameEvent, currentPlayer) => {
 const renderOptions = (updateState, activeTab, page, currentPlayer) => {
   switch (activeTab) {
     case 'Ship':
-    const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
-    return ships.map((ship) => {
-      return (
-        <Ship
-          key={`ship${ship.index}`}
-          imageSrc={ship.image}
-          updateState={updateState}
-          currentPlayer={currentPlayer}
-          ship={ship}
-        />
-      )
-    });
+      const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
+      return ships.map((ship) => {
+        return (
+          <Ship
+            key={`ship${ship.index}`}
+            imageSrc={ship.image}
+            updateState={updateState}
+            currentPlayer={currentPlayer}
+            ship={ship}
+          />
+        )
+      });
     case 'Weapons':
-    const weapons = page === 1 ? WEAPONS.slice(0, 4) : WEAPONS.slice(4, 8);
-    return weapons.map((weapon) => {
-      return (
-        <Weapon
-          key={`weapon${weapon.index}`}
-          imageSrc={weapon.selectionImage}
-          updateState={updateState}
-          currentPlayer={currentPlayer}
-          weapon={weapon}
-        />
-      )
-    });
-    case 'Defenses':
-    return DEFENSES.map((defenseItem) => {
-      return (
-        <Defense
-          key={`defenseItem${defenseItem.index}`}
-          imageSrc={defenseItem.image}
-          updateState={updateState}
-          currentPlayer={currentPlayer}
-          defenseItem={defenseItem}
-        />
-      )
-    });
+      const weapons = page === 1 ? WEAPONS.slice(0, 4) : WEAPONS.slice(4, 8);
+      return weapons.map((weapon) => {
+        return (
+          <Weapon
+            key={`weapon${weapon.index}`}
+            imageSrc={weapon.selectionImage}
+            updateState={updateState}
+            currentPlayer={currentPlayer}
+            weapon={weapon}
+          />
+        )
+      });
+    case 'Upgrades':
+      return UPGRADES.map((upgrade) => {
+        return (
+          <Upgrade
+            key={`upgrade${upgrade.index}`}
+            imageSrc={upgrade.image}
+            updateState={updateState}
+            currentPlayer={currentPlayer}
+            upgrade={upgrade}
+          />
+        )
+      });
+    case 'Items':
+      return ITEMS.map((item) => {
+        return (
+          <Item
+            key={`item${item.index}`}
+            imageSrc={item.image}
+            updateState={updateState}
+            currentPlayer={currentPlayer}
+            item={item}
+          />
+        )
+      });
     default:
-    return null;
+      return null;
   }
 };
 
@@ -77,8 +90,8 @@ const renderTabs = (activeTab, updateState, currentPlayer) => {
     tabs.push('Weapons');
   };
   if (currentPlayer.weaponIndex || currentPlayer.weaponIndex === 0) {
-    tabs.push('Defenses');
-    tabs.push('Other');
+    tabs.push('Upgrades');
+    tabs.push('Items');
   };
   return tabs.map((tab, index) => {
     return (

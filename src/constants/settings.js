@@ -221,13 +221,13 @@ export const SHIPS = [
   }
 ];
 
-export const DEFENSES = [
+export const UPGRADES = [
   {
     index: 0,
     price: 200,
     name: 'Armor upgrade',
     image: shield,
-    description: 'Upgrades armor by one up to 5'
+    description: 'Upgrades armor by 1 up to 5'
   },
   {
     index: 1,
@@ -237,8 +237,25 @@ export const DEFENSES = [
     description: 'Permanantly increases hitpoints by 200'
   },
   {
-    id: 1,
     index: 2,
+    price: 150,
+    name: 'Speed',
+    image: shield,
+    description: 'Permanantly increases speed by 1 up to 6'
+  },
+  {
+    index: 3,
+    price: 700,
+    name: '1 Up',
+    image: shield,
+    description: 'Adds an extra life'
+  }
+];
+
+export const ITEMS = [
+  {
+    id: 1,
+    index: 0,
     price: 700,
     name: 'Health boost',
     image: shield,
@@ -247,21 +264,12 @@ export const DEFENSES = [
   },
   {
     id: 2,
-    index: 3,
-    price: 800,
+    index: 1,
+    price: 300,
     name: 'Repair bots',
     image: shield,
     lastUpdated: 0,
     description: 'Repairs 1% of total hitpoints every second'
-  },
-];
-
-export const OTHER_ITEMS = [
-  {
-    index: 3,
-    price: 800,
-    name: '1 Up',
-    description: 'Adds an extra life'
   }
 ];
 
