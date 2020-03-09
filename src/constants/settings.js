@@ -239,7 +239,7 @@ export const DEFENSES = [
   {
     id: 1,
     index: 2,
-    price: 100,
+    price: 700,
     name: 'Health boost',
     image: shield,
     lastUpdated: 0,

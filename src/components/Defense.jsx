@@ -5,29 +5,15 @@ import {DEFENSES} from '../constants/settings.js';
 
 const handleClick = (updateState, currentPlayer, defenseItem) => {
   const gold = currentPlayer.gold - DEFENSES[defenseItem.index].price;
-  let player;
   if (gold >= 0) {
+    let player = {...currentPlayer, hitpoints: currentPlayer.maxHitpoints, gold: gold}
     if (defenseItem.index === 0 && currentPlayer.armor < 5) {
-      player = {
-        ...currentPlayer,
-        hitpoints: currentPlayer.maxHitpoints,
-        armor: currentPlayer.armor + 1,
-        gold: gold
-      };
+      player.armor += 1
     } else if (defenseItem.index === 1) {
-      player = {
-        ...currentPlayer,
-        hitpoints: currentPlayer.maxHitpoints + 200,
-        maxHitpoints: currentPlayer.maxHitpoints + 200,
-        gold: gold
-      };
+      player.maxHitpoints += 200
+      player.hitpoints += 200
     } else {
-      player = {
-        ...currentPlayer,
-        hitpoints: currentPlayer.maxHitpoints,
-        gold: gold,
-        items: [...currentPlayer.items, {id: defenseItem.id, lastUpdated: 0}]
-      };
+      player.items = [...player.items, {id: defenseItem.id, lastUpdated: 0}]
     }
     gong.play();
     updateState({currentPlayer: player});
