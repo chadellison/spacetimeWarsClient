@@ -68,11 +68,13 @@ export const gameEventPayload = (player, gameEvent) => {
     hitpoints: player.hitpoints,
     lives: player.lives,
     gold: player.gold + 1,
-    score: player.score + 1
+    score: player.score + 1,
+    items: player.items
   }
 }
 
 export const startEventPayload = (player) => {
+  console.log(player.items, 'items')
   return {
     id: player.id,
     gameEvent: 'start',
@@ -84,6 +86,7 @@ export const startEventPayload = (player) => {
     weaponIndex: player.weaponIndex,
     velocity: player.velocity,
     gold: player.gold,
-    score: player.score
+    score: player.score,
+    items: player.items
   };
 }

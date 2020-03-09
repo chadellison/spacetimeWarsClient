@@ -3,45 +3,44 @@ import '../styles/ship.css';
 import {notEnoughResources, gong} from '../constants/settings.js';
 import {DEFENSES} from '../constants/settings.js';
 
-const handleClick = (updateState, currentPlayer, defenseItemIndex) => {
-  const gold = currentPlayer.gold - DEFENSES[defenseItemIndex].price;
-  if (defenseItemIndex === 0) {
-    if (gold >= 0 && currentPlayer.armor < 5) {
-      gong.play();
-      const player = {
+const handleClick = (updateState, currentPlayer, defenseItem) => {
+  const gold = currentPlayer.gold - DEFENSES[defenseItem.index].price;
+  let player;
+  if (gold >= 0) {
+    if (defenseItem.index === 0 && currentPlayer.armor < 5) {
+      player = {
         ...currentPlayer,
         hitpoints: currentPlayer.maxHitpoints,
         armor: currentPlayer.armor + 1,
         gold: gold
       };
-      updateState({currentPlayer: player});
-    } else {
-      notEnoughResources.play();
-      console.log('Not enough gold');
-    }
-  } else if (defenseItemIndex === 1) {
-    if (gold >= 0) {
-      gong.play();
-      const player = {
+    } else if (defenseItem.index === 1) {
+      player = {
         ...currentPlayer,
         hitpoints: currentPlayer.maxHitpoints + 200,
         maxHitpoints: currentPlayer.maxHitpoints + 200,
         gold: gold
       };
-      updateState({currentPlayer: player});
     } else {
-      notEnoughResources.play();
-      console.log('Not enough gold');
+      player = {
+        ...currentPlayer,
+        hitpoints: currentPlayer.maxHitpoints,
+        gold: gold,
+        items: [...currentPlayer.items, {id: defenseItem.id, lastUpdated: 0}]
+      };
     }
+    gong.play();
+    updateState({currentPlayer: player});
   } else {
-
+    notEnoughResources.play();
+    console.log('Not enough gold');
   }
 };
 
 export const Defense = ({updateState, imageSrc, currentPlayer, defenseItem}) => {
   return (
     <div className="selection"
-      onClick={() => handleClick(updateState, currentPlayer, defenseItem.index)}>
+      onClick={() => handleClick(updateState, currentPlayer, defenseItem)}>
         <img id={defenseItem.index} src={imageSrc} alt="item" className="selectionImage"/>
         <div className="selectionData">
           {`${defenseItem.name}`}

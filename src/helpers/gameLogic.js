@@ -9,6 +9,7 @@ import {
 } from '../constants/settings.js';
 
 import {gameEventPayload} from '../helpers/sendEventHelpers';
+import {handleItems} from '../helpers/itemHelpers';
 
 export const updateGameState = ({
   players,
@@ -76,7 +77,7 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   const trajectory = player.accelerate ? player.angle : player.trajectory;
   player.location = handleLocation(trajectory, player.location, distance);
   player.explodeAnimation = handleExplodeUpdate(player.explode, player.explodeAnimation);
-
+  handleItems(player);
   return player
 }
 

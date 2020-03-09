@@ -1,5 +1,6 @@
 import React from 'react'
 import '../styles/selectionModal.css'
+import {startEventPayload} from '../helpers/sendEventHelpers.js'
 import {Ship} from './Ship';
 import {Weapon} from './Weapon';
 import {Defense} from './Defense';
@@ -7,19 +8,7 @@ import {PaginateButton} from './PaginateButton';
 import {SHIPS, WEAPONS, DEFENSES} from '../constants/settings.js';
 
 const handleClick = (updateState, handleGameEvent, currentPlayer) => {
-  const player = {
-    id: currentPlayer.id,
-    gameEvent: 'start',
-    hitpoints: currentPlayer.hitpoints,
-    maxHitpoints: currentPlayer.hitpoints,
-    armor: currentPlayer.armor,
-    lives: currentPlayer.lives,
-    shipIndex: currentPlayer.shipIndex,
-    weaponIndex: currentPlayer.weaponIndex,
-    velocity: currentPlayer.velocity,
-    gold: currentPlayer.gold,
-    score: currentPlayer.score
-  }
+  const player = startEventPayload(currentPlayer);
   handleGameEvent(player);
   updateState({currentPlayer: player, showSelectionModal: false});
 };

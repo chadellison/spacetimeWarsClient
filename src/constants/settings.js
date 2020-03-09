@@ -237,17 +237,21 @@ export const DEFENSES = [
     description: 'Permanantly increases hitpoints by 200'
   },
   {
+    id: 1,
     index: 2,
-    price: 700,
+    price: 100,
     name: 'Health boost',
     image: shield,
+    lastUpdated: 0,
     description: 'Boosts hitpoints to %50 of max hitpoints when hitpoints drop below %25 (120 second cooldown)'
   },
   {
+    id: 2,
     index: 3,
     price: 800,
     name: 'Repair bots',
     image: shield,
+    lastUpdated: 0,
     description: 'Repairs 1% of total hitpoints every second'
   },
 ];
