@@ -1,6 +1,6 @@
 import React from "react";
 import '../styles/playerData.css';
-import {SHIPS, WEAPONS} from '../constants/settings.js';
+import {SHIPS, WEAPONS, ITEMS} from '../constants/settings.js';
 import {Hitpoints} from './Hitpoints'
 import {findElapsedTime} from '../helpers/gameLogic.js';
 
@@ -41,6 +41,18 @@ const renderData = (type, value) => {
       <div className="playerInfo">{`${type}: ${value}`}</div>
     );
   }
+}
+
+const renderItems = (items) => {
+  return items.map((item) => {
+    return (
+      <img
+        src={ITEMS[item.index].image}
+        className="playerItem"
+        alt="playerItem"
+      />
+    )
+  });
 }
 
 const handleWaitTime = (currentPlayer, countDown) => {
@@ -93,6 +105,7 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, showSelectionM
           {renderData('Armor', currentPlayer.armor)}
           {renderData('Speed', currentPlayer.velocity)}
           {renderData('Score', currentPlayer.score)}
+          {renderItems(currentPlayer.items)}
           {renderShopButton(currentPlayer.lastEvent, updateState, showSelectionModal)}
         </div>
       </div>

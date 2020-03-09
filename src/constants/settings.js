@@ -24,6 +24,7 @@ import stealthShip from '../images/stealthShip.png';
 
 // defense
 import shield from '../images/shield.jpg';
+import speed from '../images/speedTry.jpg';
 
 // audio
 import thrusterAudio from '../audio/thruster.wav';
@@ -240,7 +241,7 @@ export const UPGRADES = [
     index: 2,
     price: 150,
     name: 'Speed',
-    image: shield,
+    image: speed,
     description: 'Permanantly increases speed by 1 up to 6'
   },
   {

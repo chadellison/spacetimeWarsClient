@@ -66,3 +66,9 @@
   opacity: 0.8;
   transition: ease-in .3s;
 }
+
+.playerItem {
+  width: 2em;
+  border-radius: 7px;
+  display: inline-block;
+}
