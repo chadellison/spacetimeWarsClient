@@ -4,7 +4,7 @@ import {SHIPS, WEAPONS, ITEMS} from '../constants/settings.js';
 import {Hitpoints} from './Hitpoints'
 import {findElapsedTime} from '../helpers/gameLogic.js';
 
-const renderLives = (currentPlayer) => {
+const renderShip = (currentPlayer) => {
   if (currentPlayer.shipIndex || currentPlayer.shipIndex === 0) {
   let image = SHIPS[currentPlayer.shipIndex].image
     return (
@@ -93,7 +93,7 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, showSelectionM
           {handleWaitTime(currentPlayer, countDown)}
           {renderData('Gold', currentPlayer.gold)}
           {renderHitPoints(currentPlayer)}
-          {renderLives(currentPlayer)}
+          {renderShip(currentPlayer)}
           {renderWeapon(currentPlayer.weaponIndex)}
           {renderData('Armor', currentPlayer.armor)}
           {renderData('Speed', currentPlayer.velocity)}

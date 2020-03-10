@@ -149,7 +149,6 @@ class Layout extends React.Component {
             id: this.state.userId,
             gold: 1000,
             lastEvent: 'waiting',
-            lives: 3,
             score: 0,
             items: []
           }

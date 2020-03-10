@@ -28,7 +28,6 @@ import stealthShip from '../images/stealthShip.png';
 import shield from '../images/shield.png';
 import hitpoints from '../images/hitpointBackground.png';
 import speed from '../images/speed.png';
-import extraLife from '../images/extraLife.png';
 
 // items
 import repairBots from '../images/repairGears.png'
@@ -266,13 +265,6 @@ export const UPGRADES = [
     name: 'Speed',
     image: speed,
     description: 'Permanantly increases speed by 1 up to 6'
-  },
-  {
-    index: 3,
-    price: 700,
-    name: 'Extra Life',
-    image: extraLife,
-    description: 'Adds an extra life'
   }
 ];
 
