@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/ship.css';
-import {notEnoughResources, gong} from '../constants/settings.js';
+import {notEnoughResources, upgradeSound} from '../constants/settings.js';
 import {UPGRADES} from '../constants/settings.js';
 
 const handleClick = (updateState, currentPlayer, upgrade) => {
@@ -9,20 +9,20 @@ const handleClick = (updateState, currentPlayer, upgrade) => {
     let player = {...currentPlayer, hitpoints: currentPlayer.maxHitpoints, gold: gold}
     if (upgrade.index === 0 && player.armor < 5) {
       player.armor += 1
-      gong.play();
+      upgradeSound.play();
       updateState({currentPlayer: player});
     } else if (upgrade.index === 1) {
       player.maxHitpoints += 200
       player.hitpoints += 200
-      gong.play();
+      upgradeSound.play();
       updateState({currentPlayer: player});
     } else if (upgrade.index === 2 && player.velocity < 6) {
       player.velocity += 1
-      gong.play();
+      upgradeSound.play();
       updateState({currentPlayer: player});
     } else if (upgrade.index === 3) {
       player.lives += 1
-      gong.play();
+      upgradeSound.play();
       updateState({currentPlayer: player});
     }
   } else {

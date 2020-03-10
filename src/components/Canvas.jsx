@@ -99,10 +99,11 @@ class Canvas extends React.Component {
         {WEAPONS.map((weapon, index) => {
           return(
             <img ref={weapon.name}
-                src={weapon.image}
-                className="hidden"
-                alt={weapon.name}
-                key={`weapon${index}`}/>
+              src={weapon.image}
+              className="hidden"
+              alt={weapon.name}
+              key={`weapon${index}`}
+            />
           );
         })}
         <img ref="explosion" src={explodeAnimation} className="hidden" alt="explosion" />

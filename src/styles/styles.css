@@ -28,3 +28,7 @@ body {
 .playerData {
   display: flex;
 }
+
+.playerWeapon {
+  border: 10px solid red;
+}

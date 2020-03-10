@@ -23,7 +23,7 @@ export const Hitpoints = ({hitpoints, maxHitpoints}) => {
           activeIndex={0}
           startAngle={0}
           endAngle={calculateAngle(hitpoints, maxHitpoints)}
-          outerRadius={40}
+          outerRadius={43}
           fill={color}
           text={'hp'}
         >

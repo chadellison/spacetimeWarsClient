@@ -1,6 +1,6 @@
 // weapons
 import fireball from '../images/fireball.png';
-import displayFireball from '../images/displayFireball.jpeg';
+import displayFireball from '../images/displayFireball.png';
 import torpedo from '../images/torpedo.png';
 import displayTorpedo from '../images/displayTorpedo.png';
 import trifecta from '../images/trifecta.png';
@@ -22,10 +22,15 @@ import cruiserShip from '../images/cruiserShip.png';
 import carrierShip from '../images/carrierShip.png';
 import stealthShip from '../images/stealthShip.png';
 
-// defense
-import shield from '../images/shield.jpg';
-import speed from '../images/speedTry.jpg';
+// upgrades
+import shield from '../images/shield.png';
+import hitpoints from '../images/hitpointBackground.png';
+import speed from '../images/speed.png';
+import extraLife from '../images/extraLife.png';
 
+// items
+import repairBots from '../images/repairGears.png'
+import healthBoost from '../images/healthBoost.jpg'
 // audio
 import thrusterAudio from '../audio/thruster.wav';
 import cannonAudio from '../audio/cannon.wav';
@@ -37,6 +42,7 @@ import laserAudio from '../audio/laser.wav';
 import gongAudio from '../audio/gong.wav';
 import loadWeaponAudio from '../audio/loadWeapon.wav';
 import notEnoughResourcesAudio from '../audio/notEnoughResources.wav';
+import upgradeAudio from '../audio/upgrade.wav';
 
 // constants
 export const BOARD_WIDTH = 980;
@@ -137,7 +143,7 @@ export const WEAPONS = [
     image: plasmaCannon,
     sound: new Audio(plasmaCannonAudio),
     selectionImage: displayPlasmaCannon
-  },
+  }
 ];
 export const SHIPS = [
   {
@@ -234,7 +240,7 @@ export const UPGRADES = [
     index: 1,
     price: 200,
     name: 'Hitpoints',
-    image: shield,
+    image: hitpoints,
     description: 'Permanantly increases hitpoints by 200'
   },
   {
@@ -247,8 +253,8 @@ export const UPGRADES = [
   {
     index: 3,
     price: 700,
-    name: '1 Up',
-    image: shield,
+    name: 'Extra Life',
+    image: extraLife,
     description: 'Adds an extra life'
   }
 ];
@@ -259,7 +265,7 @@ export const ITEMS = [
     index: 0,
     price: 700,
     name: 'Health boost',
-    image: shield,
+    image: healthBoost,
     lastUpdated: 0,
     description: 'Boosts hitpoints to %50 of max hitpoints when hitpoints drop below %25 (120 second cooldown)'
   },
@@ -268,7 +274,7 @@ export const ITEMS = [
     index: 1,
     price: 300,
     name: 'Repair bots',
-    image: shield,
+    image: repairBots,
     lastUpdated: 0,
     description: 'Repairs 1% of total hitpoints every second'
   }
@@ -279,4 +285,5 @@ thruster.loop = true;
 
 export const gong = new Audio(gongAudio);
 export const loadWeapon = new Audio(loadWeaponAudio);
+export const upgradeSound = new Audio(upgradeAudio);
 export const notEnoughResources = new Audio(notEnoughResourcesAudio);
