@@ -11,6 +11,8 @@ import bomb from '../images/bomb.png';
 import displayBomb from '../images/displayBomb.png';
 import laser from '../images/laser.png';
 import displayLaser from '../images/displayLaser.png';
+import blueFire from '../images/blueFire.png';
+import displayBlueFire from '../images/displayBlueFire.png';
 
 // ships
 import fighterShip from '../images/fighterShip.png';
@@ -63,8 +65,6 @@ export const WEAPONS = [
     speed: 15,
     damage: 50,
     price: 200,
-    width: 16,
-    height: 16,
     sound: new Audio(cannonAudio),
     image: fireball,
     selectionImage: displayFireball
@@ -75,11 +75,9 @@ export const WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     cooldown: 500,
-    speed: 20,
+    speed: 16,
     damage: 100,
     price: 300,
-    width: 40,
-    height: 15,
     sound: new Audio(missileAudio),
     image: torpedo,
     selectionImage: displayTorpedo
@@ -93,8 +91,6 @@ export const WEAPONS = [
     speed: 10,
     damage: 400,
     price: 400,
-    width: 50,
-    height: 29,
     image: bomb,
     sound: new Audio(bombAudio),
     selectionImage: displayBomb
@@ -106,10 +102,8 @@ export const WEAPONS = [
     trajectory: 0,
     cooldown: 300,
     speed: 20,
-    damage: 200,
-    price: 500,
-    width: 40,
-    height: 16,
+    damage: 100,
+    price: 400,
     image: laser,
     sound: new Audio(laserAudio),
     selectionImage: displayLaser
@@ -123,8 +117,6 @@ export const WEAPONS = [
     speed: 20,
     damage: 300,
     price: 700,
-    width: 32,
-    height: 32,
     image: trifecta,
     sound: new Audio(trifectaAudio),
     selectionImage: displayTrifecta
@@ -138,11 +130,22 @@ export const WEAPONS = [
     speed: 20,
     damage: 350,
     price: 500,
-    width: 16,
-    height: 16,
     image: plasmaCannon,
     sound: new Audio(plasmaCannonAudio),
     selectionImage: displayPlasmaCannon
+  },
+  {
+    index: 6,
+    name: 'blueFire',
+    location: {x: 0, y: 0},
+    trajectory: 0,
+    cooldown: 350,
+    speed: 18,
+    damage: 500,
+    price: 800,
+    image: blueFire,
+    sound: new Audio(plasmaCannonAudio),
+    selectionImage: displayBlueFire
   }
 ];
 export const SHIPS = [

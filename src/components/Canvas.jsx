@@ -28,6 +28,7 @@ class Canvas extends React.Component {
     const plasmaCannon = this.refs.plasmaCannon
     const bomb = this.refs.bomb
     const laser = this.refs.laser
+    const blueFire = this.refs.blueFire
     const explosion = this.refs.explosion
 
     this.setState({
@@ -47,6 +48,7 @@ class Canvas extends React.Component {
       plasmaCannon: plasmaCannon,
       bomb: bomb,
       laser: laser,
+      blueFire: blueFire,
       explosion: explosion
     });
   }
