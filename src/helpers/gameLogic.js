@@ -231,7 +231,3 @@ const handleExplodeUpdate = (isExploding, explodeAnimation) => {
     return {};
   }
 }
-
-export const handleGameOver = (playerData, currentPlayerId) => {
-  return playerData.id === currentPlayerId && playerData.lives === 0;
-};

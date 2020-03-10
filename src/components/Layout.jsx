@@ -248,7 +248,6 @@ class Layout extends React.Component {
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
         <h2>{this.state.showSelectionModal ? null : 'Space Wars'}</h2>
-        {this.state.gameOver ? <div>GAME OVER</div> : null}
         <div className='game row'>
           {this.renderSelectionModal()}
           {this.renderPlayerData()}

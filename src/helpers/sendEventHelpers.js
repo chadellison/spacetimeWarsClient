@@ -66,7 +66,6 @@ export const gameEventPayload = (player, gameEvent) => {
     location: player.location,
     angle: player.angle,
     hitpoints: player.hitpoints,
-    lives: player.lives,
     gold: player.gold + 1,
     score: player.score + 1,
     items: player.items
@@ -80,7 +79,6 @@ export const startEventPayload = (player) => {
     hitpoints: player.maxHitpoints,
     maxHitpoints: player.maxHitpoints,
     armor: player.armor,
-    lives: player.lives,
     shipIndex: player.shipIndex,
     weaponIndex: player.weaponIndex,
     velocity: player.velocity,

@@ -6,21 +6,14 @@ import {findElapsedTime} from '../helpers/gameLogic.js';
 
 const renderLives = (currentPlayer) => {
   if (currentPlayer.shipIndex || currentPlayer.shipIndex === 0) {
-    let count = currentPlayer.lives;
-    let image = SHIPS[currentPlayer.shipIndex].image
-    let ships = [];
-    while (count > 0) {
-      ships.push(
-        <img className="playerLivesShip"
-          src={image}
-          alt="ship"
-          key={`life${count}`}
-        />
-      );
-      count -= 1;
-    };
-    return ships;
-  }
+  let image = SHIPS[currentPlayer.shipIndex].image
+    return (
+      <img className="playerLivesShip"
+        src={image}
+        alt="ship"
+      />
+    );
+  };
 }
 
 const renderWeapon = (weaponIndex) => {
@@ -40,7 +33,7 @@ const renderData = (type, value) => {
     return (
       <div className="playerInfo">{`${type}: ${value}`}</div>
     );
-  }
+  };
 }
 
 const renderItems = (items) => {

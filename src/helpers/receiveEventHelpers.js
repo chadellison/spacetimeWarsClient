@@ -2,8 +2,7 @@ import {WEAPONS} from '../constants/settings.js';
 import {
   updatePlayer,
   findElapsedTime,
-  handleFireWeapon,
-  handleGameOver
+  handleFireWeapon
 } from '../helpers/gameLogic.js';
 
 const playersFromEvent = (gameEvent, players, playerData) => {
@@ -20,7 +19,6 @@ const handleRemoveEvent = (players, playerData) => {
       player.explodeAnimation = {x: 0, y: 0};
       player.explode = true;
       player.updatedAt = playerData.updatedAt;
-      player.lives -= 1;
       player.accelerate = false;
       player.fire = false;
       player.angle = 0;
@@ -62,11 +60,6 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
     currentPlayer: handleWaitingPlayer(playerData, currentPlayer),
   };
 
-  if (handleGameOver(playerData, currentPlayer.id)) {
-    gameState.gameOver = true;
-    gameState.currentPlayer = {};
-    gameState.activeTab = 'Ship';
-  };
   return gameState;
 };
 

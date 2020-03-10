@@ -23,11 +23,11 @@
 }
 
 .playerLivesShip {
-  width: 2.5em;
+  width: 6em;
   margin-top: 1.5em;
-  margin-bottom: 1em;
+  margin-bottom: .5em;
   display: inline-block;
-  transform: rotate(270deg);
+  /* transform: rotate(270deg); */
 }
 
 .playerInfoWeapon {
