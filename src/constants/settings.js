@@ -1,8 +1,8 @@
 // weapons
 import fireball from '../images/fireball.png';
 import displayFireball from '../images/displayFireball.png';
-import torpedo from '../images/torpedo.png';
-import displayTorpedo from '../images/displayTorpedo.png';
+import missile from '../images/missile.png';
+import displayMissile from '../images/displayMissile.png';
 import trifecta from '../images/trifecta.png';
 import displayTrifecta from '../images/displayTrifecta.png';
 import plasmaCannon from '../images/plasmaCannon.png';
@@ -73,7 +73,7 @@ export const WEAPONS = [
   },
   {
     index: 1,
-    name: 'torpedo',
+    name: 'missile',
     location: {x: 0, y: 0},
     trajectory: 0,
     cooldown: 500,
@@ -83,8 +83,8 @@ export const WEAPONS = [
     width: 40,
     height: 15,
     sound: new Audio(missileAudio),
-    image: torpedo,
-    selectionImage: displayTorpedo
+    image: missile,
+    selectionImage: displayMissile
   },
   {
     index: 2,
@@ -108,8 +108,8 @@ export const WEAPONS = [
     trajectory: 0,
     cooldown: 300,
     speed: 20,
-    damage: 100,
-    price: 400,
+    damage: 200,
+    price: 500,
     width: 40,
     height: 16,
     image: laser,

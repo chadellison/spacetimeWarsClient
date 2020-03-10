@@ -23,7 +23,7 @@ class Canvas extends React.Component {
     const carrierShip = this.refs.carrierShip
     const stealthShip = this.refs.stealthShip
     const fireball = this.refs.fireball
-    const torpedo = this.refs.torpedo
+    const missile = this.refs.missile
     const trifecta = this.refs.trifecta
     const plasmaCannon = this.refs.plasmaCannon
     const bomb = this.refs.bomb
@@ -43,7 +43,7 @@ class Canvas extends React.Component {
       carrierShip: carrierShip,
       stealthShip: stealthShip,
       fireball: fireball,
-      torpedo: torpedo,
+      missile: missile,
       trifecta: trifecta,
       plasmaCannon: plasmaCannon,
       bomb: bomb,
