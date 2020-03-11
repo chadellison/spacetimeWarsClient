@@ -37,15 +37,17 @@ const renderData = (type, value) => {
 }
 
 const renderItems = (items) => {
-  return items.map((item) => {
-    return (
-      <img
-        src={ITEMS[item.index].image}
-        className="playerItem"
-        alt="playerItem"
-      />
-    )
-  });
+  if (items) {
+    return items.map((item) => {
+      return (
+        <img
+          src={ITEMS[item.index].image}
+          className="playerItem"
+          alt="playerItem"
+        />
+      )
+    });
+  }
 }
 
 const handleWaitTime = (currentPlayer, countDown) => {

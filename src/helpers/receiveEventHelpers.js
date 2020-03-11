@@ -27,16 +27,15 @@ const handleRemoveEvent = (players, playerData) => {
       playerData = player;
     };
   });
+
   return playerData
 }
 
 export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
-  players = playersFromEvent(playerData.lastEvent, players, playerData);
-
-  let updatedPlayers = players;
+  let updatedPlayers = playersFromEvent(playerData.lastEvent, players, playerData);;
   let updatedWeapons = deployedWeapons;
   if (playerData.lastEvent === 'remove') {
-    playerData = handleRemoveEvent(players, playerData);
+    playerData = handleRemoveEvent(updatedPlayers, playerData);
   } else if (playerData.lastEvent === 'fire') {
     updatedWeapons = handleFireWeapon(
       playerData,
@@ -44,7 +43,7 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
       deployedWeapons
     );
   } else {
-    updatedPlayers = players.map((player) => {
+    updatedPlayers = updatedPlayers.map((player) => {
       if (player.id === playerData.id) {
         const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
         return updatePlayer(playerData, elapsedTime, clockDifference);
