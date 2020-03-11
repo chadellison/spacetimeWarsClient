@@ -49,11 +49,16 @@ class Canvas extends React.Component {
       bomb: bomb,
       laser: laser,
       blueFire: blueFire,
-      explosion: explosion
+      explosion: explosion,
+      halfWindowWidth: Math.round(window.innerWidth / 2),
+      halfWindowHeight: Math.round(window.innerHeight / 2)
     });
   }
 
   componentDidUpdate() {
+    if (this.props.currentPlayer.location) {
+      window.scrollTo(this.props.currentPlayer.location.x - this.state.halfWindowWidth, this.props.currentPlayer.location.y - this.state.halfWindowHeight)
+    }
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);

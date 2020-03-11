@@ -46,8 +46,8 @@ import notEnoughResourcesAudio from '../audio/notEnoughResources.wav';
 import upgradeAudio from '../audio/upgrade.wav';
 
 // constants
-export const BOARD_WIDTH = 980;
-export const BOARD_HEIGHT = 665;
+export const BOARD_WIDTH = 1800;
+export const BOARD_HEIGHT = 1125;
 export const ANAIMATION_FRAME_RATE = 30;
 export const REQUEST_COUNT = 10;
 export const DRIFT = 2;
