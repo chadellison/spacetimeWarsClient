@@ -115,18 +115,14 @@ class Layout extends React.Component {
   };
 
   fetchPlayers() {
-    fetch(`${API_HOST}/api/v1/game`)
+    fetch(`${API_HOST}/api/v1/players`)
       .then((response) => response.json())
       .then((gameData) => {
         const players = gameData.players.map((player) => {
           const elapsedTime = findElapsedTime(this.state.clockDifference, player.updatedAt);
           return updatePlayer(player, elapsedTime, this.state.clockDifference)
         });
-        this.setState({
-          boardWidth: gameData.game.board.width,
-          boardHeight: gameData.game.board.height,
-          players: players
-        });
+        this.setState({players: players});
     }).catch((error) => console.log('ERROR', error));
   };
 
