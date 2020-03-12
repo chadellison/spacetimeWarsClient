@@ -44,7 +44,7 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
       handleRemoveEvent(updatedPlayers, playerData, currentPlayer);
       break;
     case 'fire':
-      updatedWeapons = handleFireWeapon(playerData, updatedWeapons);
+      updatedWeapons = handleFireWeapon(playerData, updatedWeapons, clockDifference);
       updatedPlayers = updatePlayersFromFireEvent(playerData, updatedPlayers);
       break;
     case 'fireStop':

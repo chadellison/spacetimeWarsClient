@@ -146,14 +146,20 @@ const calculateDamage = (damage, armor) => {
   return Math.round(damage * (10 - armor) / 10);
 }
 
-export const handleFireWeapon = (player, deployedWeapons) => {
+export const handleFireWeapon = (player, deployedWeapons, clockDifference) => {
+  const timeOffset = 10;
+  const elapsedTime = findElapsedTime(clockDifference, player.updatedAt + timeOffset);
+  const angle = handleAngle(player, elapsedTime);
+  const distance = distanceTraveled(player, elapsedTime, clockDifference);
+  const location = handleLocation(angle, player.location, distance);
+console.log(elapsedTime, 'elapsted time')
   let weapon = {...WEAPONS[player.weaponIndex]}
   const shipCenter = SHIPS[player.shipIndex].shipCenter;
-  const x = player.location.x + shipCenter.x;
-  const y = player.location.y + shipCenter.y;
+  const x = location.x + shipCenter.x;
+  const y = location.y + shipCenter.y;
 
-  weapon.location = handleLocation(player.angle, {x, y}, 50);
-  weapon.trajectory = player.angle
+  weapon.location = handleLocation(angle, {x, y}, 50);
+  weapon.trajectory = angle
   weapon.playerId = player.id
 
   return [...deployedWeapons, weapon]
