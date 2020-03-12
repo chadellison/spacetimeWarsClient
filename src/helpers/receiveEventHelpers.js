@@ -47,6 +47,9 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
       updatedWeapons = handleFireWeapon(playerData, updatedWeapons);
       updatedPlayers = updatePlayersFromFireEvent(playerData, updatedPlayers);
       break;
+    case 'fireStop':
+      updatedPlayers = updatePlayersFromFireEvent(playerData, updatedPlayers);
+      break;
     default:
       updatedPlayers = updatedPlayers.map((player) => {
         if (player.id === playerData.id) {
@@ -68,10 +71,14 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
 const updatePlayersFromFireEvent = (playerData, updatedPlayers) => {
   return updatedPlayers.map((player) => {
     if (player.id === playerData.id) {
-      player.lastEvent = 'fire'
-      player.fire = true
-      player.gold = playerData.gold
-      player.score = playerData.score
+      player.lastEvent = playerData.lastEvent
+      if (player.lastEvent === 'fire') {
+        player.fire = true
+        player.gold = playerData.gold
+        player.score = playerData.score
+      } else {
+        player.fire = false
+      }
     }
     return player;
   });
