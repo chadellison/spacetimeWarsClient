@@ -12,19 +12,24 @@ const playersFromEvent = (gameEvent, players, playerData) => {
   return players;
 };
 
-const handleRemoveEvent = (players, playerData) => {
+const handleRemoveEvent = (players, playerData, currentPlayer) => {
   players.forEach((player) => {
-    if (player.id === playerData.id && !player.explode) {
-      player.lastEvent = 'remove';
-      player.explodeAnimation = {x: 0, y: 0};
-      player.explode = true;
-      player.updatedAt = playerData.updatedAt;
-      player.accelerate = false;
-      player.fire = false;
-      player.angle = 0;
-      player.trajectory = 0;
-      player.rotate = 'none';
-      playerData = player;
+    if (player.id === playerData.id) {
+      if (!player.explode) {
+        player.lastEvent = 'remove';
+        player.explodeAnimation = {x: 0, y: 0};
+        player.explode = true;
+        player.updatedAt = playerData.updatedAt;
+        player.accelerate = false;
+        player.fire = false;
+        player.angle = 0;
+        player.trajectory = 0;
+        player.rotate = 'none';
+        playerData = player;
+      }
+      if (playerData.id === currentPlayer.id) {
+        currentPlayer = player;
+      };
     };
   });
 
@@ -35,7 +40,7 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
   let updatedPlayers = playersFromEvent(playerData.lastEvent, players, playerData);;
   let updatedWeapons = deployedWeapons;
   if (playerData.lastEvent === 'remove') {
-    playerData = handleRemoveEvent(updatedPlayers, playerData);
+    playerData = handleRemoveEvent(updatedPlayers, playerData, currentPlayer);
   } else if (playerData.lastEvent === 'fire') {
     updatedWeapons = handleFireWeapon(
       playerData,
@@ -53,19 +58,9 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
     });
   }
 
-  let gameState = {
+  return {
     players: updatedPlayers,
     deployedWeapons: updatedWeapons,
-    currentPlayer: handleWaitingPlayer(playerData, currentPlayer),
-  };
-
-  return gameState;
-};
-
-const handleWaitingPlayer = (player, currentPlayer) => {
-  if (currentPlayer.id === player.id) {
-    return player;
-  } else {
-    return currentPlayer;
+    currentPlayer: currentPlayer
   };
 };
