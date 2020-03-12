@@ -152,7 +152,7 @@ export const handleFireWeapon = (player, deployedWeapons, clockDifference) => {
   const angle = handleAngle(player, elapsedTime);
   const distance = distanceTraveled(player, elapsedTime, clockDifference);
   const location = handleLocation(angle, player.location, distance);
-console.log(elapsedTime, 'elapsted time')
+
   let weapon = {...WEAPONS[player.weaponIndex]}
   const shipCenter = SHIPS[player.shipIndex].shipCenter;
   const x = location.x + shipCenter.x;
