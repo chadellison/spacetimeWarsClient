@@ -95,6 +95,7 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, showSelectionM
           {renderHitPoints(currentPlayer)}
           {renderShip(currentPlayer)}
           {renderWeapon(currentPlayer.weaponIndex)}
+          {renderData('Damage', currentPlayer.damage)}
           {renderData('Armor', currentPlayer.armor)}
           {renderData('Speed', currentPlayer.velocity)}
           {renderData('Score', currentPlayer.score)}

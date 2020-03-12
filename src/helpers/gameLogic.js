@@ -146,7 +146,7 @@ const calculateDamage = (damage, armor) => {
   return Math.round(damage * (10 - armor) / 10);
 }
 
-export const handleFireWeapon = (player, deployedWeapons, clockDifference) => {
+export const handleFireWeapon = (player, clockDifference) => {
   const timeOffset = 10;
   const elapsedTime = findElapsedTime(clockDifference, player.updatedAt + timeOffset);
   const angle = handleAngle(player, elapsedTime);
@@ -161,8 +161,9 @@ export const handleFireWeapon = (player, deployedWeapons, clockDifference) => {
   weapon.location = handleLocation(angle, {x, y}, 50);
   weapon.trajectory = angle
   weapon.playerId = player.id
+  weapon.damage = player.damage
 
-  return [...deployedWeapons, weapon]
+  return weapon;
 };
 
 const findHypotenuse = (point, pointTwo) => {

@@ -3,22 +3,17 @@ import {
   canFire
 } from '../helpers/gameLogic.js';
 
-export const keyDownEvent = (pressedKey, state, handleGameEvent, updateState) => {
+export const keyDownEvent = (pressedKey, lastFired, currentPlayer, handleGameEvent, updateState) => {
   switch (pressedKey) {
     case 'space':
-      handleSpaceBarEvent(
-        state.currentPlayer,
-        handleGameEvent,
-        updateState,
-        state.lastFired
-      );
+      handleSpaceBarEvent(currentPlayer, handleGameEvent, updateState, lastFired);
       break;
     case 'left':
     case 'right':
-      handleRotateEvent(state.currentPlayer, pressedKey, handleGameEvent);
+      handleRotateEvent(currentPlayer, pressedKey, handleGameEvent);
       break;
     case 'up':
-      handleAccelerateEvent(state.currentPlayer, pressedKey, handleGameEvent);
+      handleAccelerateEvent(currentPlayer, pressedKey, handleGameEvent);
       break;
     default:
       break;
@@ -82,6 +77,7 @@ export const startEventPayload = (player) => {
     armor: player.armor,
     shipIndex: player.shipIndex,
     weaponIndex: player.weaponIndex,
+    damage: player.damage,
     velocity: player.velocity,
     gold: player.gold,
     score: player.score,

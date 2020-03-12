@@ -28,6 +28,7 @@ import stealthShip from '../images/stealthShip.png';
 import shield from '../images/shield.png';
 import hitpoints from '../images/hitpointBackground.png';
 import speed from '../images/speed.png';
+import damage from '../images/damage.png';
 
 // items
 import repairBots from '../images/repairGears.png'
@@ -265,6 +266,13 @@ export const UPGRADES = [
     name: 'Speed',
     image: speed,
     description: 'Permanantly increases speed by 1 up to 6'
+  },
+  {
+    index: 3,
+    price: 500,
+    name: 'Damage',
+    image: damage,
+    description: 'Permanantly increases damage by 100'
   }
 ];
 

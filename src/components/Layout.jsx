@@ -147,14 +147,15 @@ class Layout extends React.Component {
   }
 
   handleKeyDown = (event) => {
-    const {explode} = this.state.currentPlayer;
-    if (!explode && !this.state.showSelectionModal) {
-      if (!this.state.currentPlayer.id) {
+    const {currentPlayer, lastFired, showSelectionModal} = this.state;
+    const {explode} = currentPlayer;
+    if (!explode && !showSelectionModal) {
+      if (!currentPlayer.id) {
         this.updateState(this.addPlayer());
       } else {
         const pressedKey = KEY_MAP[event.keyCode];
         if (!this.state[pressedKey]) {
-          keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState);
+          keyDownEvent(pressedKey, lastFired, currentPlayer, this.handleGameEvent, this.updateState);
           this.setState({[pressedKey]: true})
         };
       };
@@ -162,27 +163,23 @@ class Layout extends React.Component {
   };
 
   handleKeyUp = (event) => {
-    const {explode, lastEvent} = this.state.currentPlayer;
+    const {currentPlayer, players} = this.state;
+    const {explode, lastEvent} = currentPlayer;
     if (!explode && lastEvent !== 'waiting') {
       const pressedKey = KEY_MAP[event.keyCode];
-      keyUpEventPayload(
-        this.state.currentPlayer,
-        this.state.players,
-        pressedKey,
-        this.handleGameEvent,
-        this.updateState
-      )
+      keyUpEventPayload(currentPlayer, players, pressedKey, this.handleGameEvent, this.updateState)
       this.setState({[pressedKey]: false});
     };
   };
 
   handleReceivedEvent = (playerData) => {
+    const {players, clockDifference, deployedWeapons, currentPlayer} = this.state;
     const gameState = handleEventPayload(
-      [...this.state.players],
+      [...players],
       playerData,
-      this.state.clockDifference,
-      [...this.state.deployedWeapons],
-      this.state.currentPlayer
+      clockDifference,
+      [...deployedWeapons],
+      currentPlayer
     );
 
     handleAudio(playerData);

@@ -7,7 +7,13 @@ const handleClick = (updateState, weaponIndex, currentPlayer) => {
   const gold = currentPlayer.gold - WEAPONS[weaponIndex].price;
   if (gold >= 0) {
     loadWeapon.play();
-    updateState({currentPlayer: {...currentPlayer, weaponIndex, gold}});
+    const updatedPlayer = {
+      ...currentPlayer,
+      weaponIndex: weaponIndex,
+      damage: WEAPONS[weaponIndex].damage,
+      gold: gold
+    };
+    updateState({currentPlayer: updatedPlayer});
   } else {
     notEnoughResources.play();
     console.log('Not enough gold');

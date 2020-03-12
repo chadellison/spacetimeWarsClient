@@ -20,6 +20,10 @@ const handleClick = (updateState, currentPlayer, upgrade) => {
       player.velocity += 1
       upgradeSound.play();
       updateState({currentPlayer: player});
+    } else if (upgrade.index === 3) {
+      player.damage += 100
+      upgradeSound.play();
+      updateState({currentPlayer: player});
     }
   } else {
     notEnoughResources.play();
