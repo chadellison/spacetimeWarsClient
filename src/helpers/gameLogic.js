@@ -20,7 +20,6 @@ export const updateGameState = ({
   deployedWeapons,
   handleGameEvent,
   lastFired,
-  isFiring,
   updateState,
   currentPlayer
 }) => {
@@ -32,8 +31,8 @@ export const updateGameState = ({
       }
       player = updatePlayer(player, elapsedTime, clockDifference);
       if (player.id === currentPlayer.id) {
+        handleRepeatedFire(currentPlayer, handleGameEvent, lastFired, updateState);
         currentPlayer = player;
-        handleRepeatedFire(player, handleGameEvent, lastFired, isFiring, updateState);
       }
       handleWall(player, width, height);
       updatedPlayers.push(player);
@@ -147,7 +146,8 @@ const calculateDamage = (damage, armor) => {
   return Math.round(damage * (10 - armor) / 10);
 }
 
-export const handleFireWeapon = (player, weapon, deployedWeapons) => {
+export const handleFireWeapon = (player, deployedWeapons) => {
+  let weapon = {...WEAPONS[player.weaponIndex]}
   const shipCenter = SHIPS[player.shipIndex].shipCenter;
   const x = player.location.x + shipCenter.x;
   const y = player.location.y + shipCenter.y;
@@ -163,8 +163,8 @@ const findHypotenuse = (point, pointTwo) => {
   return Math.round(Math.sqrt((point.x - pointTwo.x) ** 2 + (point.y - pointTwo.y) ** 2))
 };
 
-export const handleRepeatedFire = (player, handleGameEvent, lastFired, isFiring, updateState) => {
-  if (isFiring && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
+export const handleRepeatedFire = (player, handleGameEvent, lastFired, updateState) => {
+  if (player.fire && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
     handleGameEvent(gameEventPayload(player, 'fire'));
     updateState({lastFired: Date.now()});
   };

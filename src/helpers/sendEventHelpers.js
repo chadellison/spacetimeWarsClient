@@ -32,7 +32,7 @@ export const keyUpEventPayload = (currentPlayer, players, pressedKey, handleGame
 
   if ('space' === pressedKey && currentPlayer) {
     handleGameEvent(gameEventPayload(currentPlayer, 'fireStop'));
-    updateState({isFiring: false});
+    updateState({currentPlayer: {...currentPlayer, fire: false}});
   };
 };
 
@@ -54,7 +54,8 @@ const handleSpaceBarEvent = (currentPlayer, handleGameEvent, updateState, lastFi
   } else {
     if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
       handleGameEvent(gameEventPayload(currentPlayer, 'fire'));
-      updateState({lastFired: Date.now(), isFiring: true});
+      const updatedPlayer = {...currentPlayer, fire: true};
+      updateState({lastFired: Date.now(), currentPlayer: updatedPlayer});
     };
   };
 };

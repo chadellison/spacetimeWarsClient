@@ -35,8 +35,6 @@ const DEFAULT_STATE = {
   shortestRoundTripTime: 5000,
   deployedWeapons: [],
   currentPlayer: {},
-  gameOver: false,
-  isFiring: false,
   lastFired: 0,
   up: false,
   left: false,
@@ -134,21 +132,25 @@ class Layout extends React.Component {
     this.setState(newState);
   }
 
+  addPlayer = () => {
+    return {
+      showSelectionModal: true,
+      currentPlayer: {
+        id: this.state.userId,
+        gold: 1000,
+        lastEvent: 'waiting',
+        score: 0,
+        items: [],
+        fire: false
+      }
+    };
+  }
+
   handleKeyDown = (event) => {
     const {explode} = this.state.currentPlayer;
     if (!explode && !this.state.showSelectionModal) {
       if (!this.state.currentPlayer.id) {
-        this.updateState({
-          gameOver: false,
-          showSelectionModal: true,
-          currentPlayer: {
-            id: this.state.userId,
-            gold: 1000,
-            lastEvent: 'waiting',
-            score: 0,
-            items: []
-          }
-        });
+        this.updateState(this.addPlayer());
       } else {
         const pressedKey = KEY_MAP[event.keyCode];
         if (!this.state[pressedKey]) {
@@ -201,7 +203,6 @@ class Layout extends React.Component {
         deployedWeapons: deployedWeapons,
         handleGameEvent: this.handleGameEvent,
         lastFired: this.state.lastFired,
-        isFiring: this.state.isFiring,
         updateState: this.updateState,
         currentPlayer: this.state.currentPlayer
       }

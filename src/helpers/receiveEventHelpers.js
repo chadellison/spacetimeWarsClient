@@ -1,4 +1,3 @@
-import {WEAPONS} from '../constants/settings.js';
 import {
   updatePlayer,
   findElapsedTime,
@@ -37,25 +36,26 @@ const handleRemoveEvent = (players, playerData, currentPlayer) => {
 }
 
 export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
-  let updatedPlayers = playersFromEvent(playerData.lastEvent, players, playerData);;
+  let updatedPlayers = playersFromEvent(playerData.lastEvent, players, playerData);
   let updatedWeapons = deployedWeapons;
-  if (playerData.lastEvent === 'remove') {
-    playerData = handleRemoveEvent(updatedPlayers, playerData, currentPlayer);
-  } else if (playerData.lastEvent === 'fire') {
-    updatedWeapons = handleFireWeapon(
-      playerData,
-      {...WEAPONS[playerData.weaponIndex]},
-      deployedWeapons
-    );
-  } else {
-    updatedPlayers = updatedPlayers.map((player) => {
-      if (player.id === playerData.id) {
-        const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
-        return updatePlayer(playerData, elapsedTime, clockDifference);
-      } else {
-        return player;
-      };
-    });
+
+  switch (playerData.lastEvent) {
+    case 'remove':
+      handleRemoveEvent(updatedPlayers, playerData, currentPlayer);
+      break;
+    case 'fire':
+      updatedWeapons = handleFireWeapon(playerData, updatedWeapons);
+      updatedPlayers = updatePlayersFromFireEvent(playerData, updatedPlayers);
+      break;
+    default:
+      updatedPlayers = updatedPlayers.map((player) => {
+        if (player.id === playerData.id) {
+          const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
+          return updatePlayer(playerData, elapsedTime, clockDifference);
+        } else {
+          return player;
+        };
+      });
   }
 
   return {
@@ -64,3 +64,15 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
     currentPlayer: currentPlayer
   };
 };
+
+const updatePlayersFromFireEvent = (playerData, updatedPlayers) => {
+  return updatedPlayers.map((player) => {
+    if (player.id === playerData.id) {
+      player.lastEvent = 'fire'
+      player.fire = true
+      player.gold = playerData.gold
+      player.score = playerData.score
+    }
+    return player;
+  });
+}
