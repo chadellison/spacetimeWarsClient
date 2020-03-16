@@ -1,0 +1,19 @@
+.gameButton {
+  padding: 12px;
+  font-size: 14px;
+  color: #2c66b2;
+  border: 1px solid #2c66b2;
+  border-radius: 5px;
+  transition: ease-out .3s;
+  display: block;
+  width: 4em;
+  margin-top: -3.5em;
+  margin-left: 2em;
+  position: fixed;
+}
+
+.gameButton:hover {
+  cursor: pointer;
+  opacity: 0.8;
+  transition: ease-in .3s;
+}

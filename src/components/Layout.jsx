@@ -4,6 +4,7 @@ import Cable from 'actioncable';
 import Canvas from './Canvas';
 import PlayerData from './PlayerData';
 import SelectionModal from './SelectionModal';
+import {GameButton} from './GameButton';
 import '../styles/styles.css';
 import {
   BOARD_WIDTH,
@@ -146,6 +147,14 @@ class Layout extends React.Component {
     };
   }
 
+  handleShopButton = () => {
+    if (this.state.currentPlayer.id) {
+      this.updateState({showSelectionModal: true})
+    } else {
+      this.updateState(this.addPlayer());
+    };
+  };
+
   handleKeyDown = (event) => {
     const {currentPlayer, lastFired, showSelectionModal} = this.state;
     const {explode} = currentPlayer;
@@ -210,19 +219,20 @@ class Layout extends React.Component {
 
   render = () => {
     const {
-      players,
-      boardHeight,
-      boardWidth,
-      currentPlayer,
-      clockDifference,
-      showSelectionModal,
+      page,
       userId,
+      players,
       activeTab,
-      page
+      boardWidth,
+      boardHeight,
+      currentPlayer,
+      deployedWeapons,
+      clockDifference,
+      showSelectionModal
     } = this.state;
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
-        <h2>{this.state.showSelectionModal ? null : 'Space Wars'}</h2>
+        <h2>{showSelectionModal ? null : 'Space Wars'}</h2>
         <div className='game row'>
           <SelectionModal
             showSelectionModal={showSelectionModal}
@@ -232,6 +242,10 @@ class Layout extends React.Component {
             activeTab={activeTab}
             page={page}
             currentPlayer={currentPlayer}
+          />
+          <GameButton
+            buttonText={currentPlayer.id ? 'shop' : 'start'}
+            handleShopButton={this.handleShopButton}
           />
           <PlayerData
             currentPlayer={currentPlayer}
@@ -243,8 +257,8 @@ class Layout extends React.Component {
             players={players}
             height={boardHeight}
             width={boardWidth}
-            deployedWeapons={this.state.deployedWeapons}
-            currentPlayer={this.state.currentPlayer}
+            deployedWeapons={deployedWeapons}
+            currentPlayer={currentPlayer}
           />
         </div>
       </div>

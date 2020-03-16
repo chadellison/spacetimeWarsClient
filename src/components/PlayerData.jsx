@@ -67,14 +67,6 @@ const renderHitPoints = (currentPlayer) => {
   }
 };
 
-const renderShopButton = (lastEvent, updateState, showSelectionModal) => {
-  if (['waiting', 'remove'].includes(lastEvent) && !showSelectionModal) {
-    return <div className="shopButton" onClick={() => updateState({showSelectionModal: true})}>Shop</div>
-  } else {
-    return null;
-  }
-}
-
 const PlayerData = ({currentPlayer, clockDifference, updateState, showSelectionModal}) => {
   const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
   let countDown = 0;
@@ -100,7 +92,6 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, showSelectionM
           {renderData('Speed', currentPlayer.velocity)}
           {renderData('Score', currentPlayer.score)}
           {renderItems(currentPlayer.items)}
-          {renderShopButton(currentPlayer.lastEvent, updateState, showSelectionModal)}
         </div>
       </div>
     );
