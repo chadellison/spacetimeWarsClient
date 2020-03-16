@@ -208,42 +208,37 @@ class Layout extends React.Component {
     }
   };
 
-  renderPlayerData() {
-    const {currentPlayer, clockDifference, showSelectionModal} = this.state;
-    return (
-      <PlayerData
-        currentPlayer={currentPlayer}
-        clockDifference={clockDifference}
-        updateState={this.updateState}
-        showSelectionModal={showSelectionModal}
-      />
-    );
-  }
-
-  renderSelectionModal() {
-    if (this.state.showSelectionModal) {
-      return (
-        <SelectionModal
-          showSelectionModal={this.state.showSelectionModal}
-          updateState={this.updateState}
-          handleGameEvent={this.handleGameEvent}
-          userId={this.state.userId}
-          activeTab={this.state.activeTab}
-          page={this.state.page}
-          currentPlayer={this.state.currentPlayer}
-        />
-      );
-    }
-  };
-
   render = () => {
-    const {players, boardHeight, boardWidth} = this.state;
+    const {
+      players,
+      boardHeight,
+      boardWidth,
+      currentPlayer,
+      clockDifference,
+      showSelectionModal,
+      userId,
+      activeTab,
+      page
+    } = this.state;
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
         <h2>{this.state.showSelectionModal ? null : 'Space Wars'}</h2>
         <div className='game row'>
-          {this.renderSelectionModal()}
-          {this.renderPlayerData()}
+          <SelectionModal
+            showSelectionModal={showSelectionModal}
+            updateState={this.updateState}
+            handleGameEvent={this.handleGameEvent}
+            userId={userId}
+            activeTab={activeTab}
+            page={page}
+            currentPlayer={currentPlayer}
+          />
+          <PlayerData
+            currentPlayer={currentPlayer}
+            clockDifference={clockDifference}
+            updateState={this.updateState}
+            showSelectionModal={showSelectionModal}
+          />
           <Canvas
             players={players}
             height={boardHeight}

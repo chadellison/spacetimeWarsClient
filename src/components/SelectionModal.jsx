@@ -113,7 +113,7 @@ const SelectionModal = ({
   currentPlayer
 }) => {
   return (
-    <div className='selectionModal'>
+    <div className='selectionModal' hidden={!showSelectionModal}>
       <div className="modalTabs">
         {renderTabs(activeTab, updateState, currentPlayer)}
       </div>
