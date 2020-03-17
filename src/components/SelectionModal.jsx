@@ -1,6 +1,5 @@
 import React from 'react'
 import '../styles/selectionModal.css'
-import {startEventPayload, shopEventPayload} from '../helpers/sendEventHelpers.js'
 import {Ship} from './Ship';
 import {Weapon} from './Weapon';
 import {Upgrade} from './Upgrade';
@@ -11,9 +10,9 @@ import {SHIPS, WEAPONS, UPGRADES, ITEMS} from '../constants/settings.js';
 const handleClick = (updateState, handleGameEvent, currentPlayer) => {
   let player;
   if (currentPlayer.lastEvent === 'waiting') {
-    player = startEventPayload(currentPlayer);
+    player = {...currentPlayer, gameEvent: 'start', hitpoints: currentPlayer.maxHitpoints}
   } else {
-    player = shopEventPayload(currentPlayer)
+    player = {...currentPlayer, gameEvent: 'shop'}
   }
   handleGameEvent(player);
   updateState({currentPlayer: player, showSelectionModal: false});
