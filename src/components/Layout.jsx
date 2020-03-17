@@ -147,6 +147,17 @@ class Layout extends React.Component {
     };
   }
 
+  updatePlayerState = (updatedPlayer) => {
+    const updatedPlayers = this.state.players.map((player) => {
+      if (player.id === updatedPlayer.id) {
+        player = updatedPlayer;
+      }
+      return player;
+    });
+
+    this.updateState({currentPlayer: updatedPlayer, players: updatedPlayers});
+  }
+
   handleShopButton = () => {
     if (this.state.currentPlayer.id) {
       this.updateState({showSelectionModal: true})
@@ -242,6 +253,7 @@ class Layout extends React.Component {
             activeTab={activeTab}
             page={page}
             currentPlayer={currentPlayer}
+            updatePlayerState={this.updatePlayerState}
           />
           <GameButton
             buttonText={currentPlayer.id ? 'shop' : 'start'}

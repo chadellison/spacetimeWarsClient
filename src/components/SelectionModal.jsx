@@ -1,6 +1,6 @@
 import React from 'react'
 import '../styles/selectionModal.css'
-import {startEventPayload} from '../helpers/sendEventHelpers.js'
+import {startEventPayload, shopEventPayload} from '../helpers/sendEventHelpers.js'
 import {Ship} from './Ship';
 import {Weapon} from './Weapon';
 import {Upgrade} from './Upgrade';
@@ -9,12 +9,17 @@ import {PaginateButton} from './PaginateButton';
 import {SHIPS, WEAPONS, UPGRADES, ITEMS} from '../constants/settings.js';
 
 const handleClick = (updateState, handleGameEvent, currentPlayer) => {
-  const player = startEventPayload(currentPlayer);
+  let player;
+  if (currentPlayer.lastEvent === 'waiting') {
+    player = startEventPayload(currentPlayer);
+  } else {
+    player = shopEventPayload(currentPlayer)
+  }
   handleGameEvent(player);
   updateState({currentPlayer: player, showSelectionModal: false});
 };
 
-const renderOptions = (updateState, activeTab, page, currentPlayer) => {
+const renderOptions = (updatePlayerState, activeTab, page, currentPlayer) => {
   switch (activeTab) {
     case 'Ship':
       const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
@@ -23,7 +28,7 @@ const renderOptions = (updateState, activeTab, page, currentPlayer) => {
           <Ship
             key={`ship${ship.index}`}
             imageSrc={ship.image}
-            updateState={updateState}
+            updatePlayerState={updatePlayerState}
             currentPlayer={currentPlayer}
             ship={ship}
           />
@@ -36,7 +41,7 @@ const renderOptions = (updateState, activeTab, page, currentPlayer) => {
           <Weapon
             key={`weapon${weapon.index}`}
             imageSrc={weapon.selectionImage}
-            updateState={updateState}
+            updatePlayerState={updatePlayerState}
             currentPlayer={currentPlayer}
             weapon={weapon}
           />
@@ -48,7 +53,7 @@ const renderOptions = (updateState, activeTab, page, currentPlayer) => {
           <Upgrade
             key={`upgrade${upgrade.index}`}
             imageSrc={upgrade.image}
-            updateState={updateState}
+            updatePlayerState={updatePlayerState}
             currentPlayer={currentPlayer}
             upgrade={upgrade}
           />
@@ -60,7 +65,7 @@ const renderOptions = (updateState, activeTab, page, currentPlayer) => {
           <Item
             key={`item${item.index}`}
             imageSrc={item.image}
-            updateState={updateState}
+            updatePlayerState={updatePlayerState}
             currentPlayer={currentPlayer}
             item={item}
           />
@@ -72,7 +77,7 @@ const renderOptions = (updateState, activeTab, page, currentPlayer) => {
 };
 
 const renderStart = (updateState, handleGameEvent, currentPlayer) => {
-  if (currentPlayer.shipIndex !== undefined && currentPlayer.weaponIndex !== undefined) {
+  if (currentPlayer.shipIndex !== undefined && currentPlayer.weaponIndex !== undefined && currentPlayer.lastEvent !== 'remove') {
     return (
       <div className="selectionButton"
         onClick={() => handleClick(updateState, handleGameEvent, currentPlayer)}>
@@ -110,7 +115,8 @@ const SelectionModal = ({
   handleGameEvent,
   activeTab,
   page,
-  currentPlayer
+  currentPlayer,
+  updatePlayerState
 }) => {
   return (
     <div className='selectionModal' hidden={!showSelectionModal}>
@@ -118,7 +124,7 @@ const SelectionModal = ({
         {renderTabs(activeTab, updateState, currentPlayer)}
       </div>
       {renderStart(updateState, handleGameEvent, currentPlayer)}
-      {renderOptions(updateState, activeTab, page, currentPlayer)}
+      {renderOptions(updatePlayerState, activeTab, page, currentPlayer)}
       <PaginateButton updateState={updateState} page={page}/>
     </div>
   );

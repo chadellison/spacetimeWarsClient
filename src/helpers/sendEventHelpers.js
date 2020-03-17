@@ -84,3 +84,21 @@ export const startEventPayload = (player) => {
     items: player.items
   };
 }
+
+export const shopEventPayload = (player) => {
+  return {
+    id: player.id,
+    gameEvent: 'shop',
+    armor: player.armor,
+    location: player.location,
+    angle: player.angle,
+    hitpoints: player.hitpoints,
+    maxHitpoints: player.maxHitpoints,
+    trajectroy: player.trajectroy,
+    shipIndex: player.shipIndex,
+    weaponIndex: player.weaponIndex,
+    damage: player.damage,
+    velocity: player.velocity,
+    items: player.items
+  };
+}
