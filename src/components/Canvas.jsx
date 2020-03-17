@@ -2,7 +2,13 @@ import React from 'react';
 import {drawShip, handleDirection} from '../helpers/canvasHelper.js';
 import '../styles/styles.css';
 import explodeAnimation from '../images/explosion.png';
-import {WEAPONS, SHIPS, SPRITE_WIDTH} from '../constants/settings.js';
+import {
+  WEAPONS,
+  SHIPS,
+  SPRITE_WIDTH,
+  BOARD_WIDTH,
+  BOARD_HEIGHT
+} from '../constants/settings.js';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -91,8 +97,8 @@ class Canvas extends React.Component {
         <canvas
           className="canvas column"
           ref={this.canvasRef}
-          width={this.props.width}
-          height={this.props.height}
+          width={BOARD_WIDTH}
+          height={BOARD_HEIGHT}
         />
         {SHIPS.map((ship, index) => {
           return (

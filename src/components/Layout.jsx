@@ -141,7 +141,7 @@ class Layout extends React.Component {
   }
 
   updatePlayerState = (updatedPlayer) => {
-    const updatedPlayers = this.state.players.map((player) => {
+    const updatedPlayers = [...this.state.players].map((player) => {
       if (player.id === updatedPlayer.id) {
         player = updatedPlayer;
       }
@@ -225,8 +225,6 @@ class Layout extends React.Component {
       userId,
       players,
       activeTab,
-      boardWidth,
-      boardHeight,
       currentPlayer,
       deployedWeapons,
       clockDifference,
@@ -258,8 +256,6 @@ class Layout extends React.Component {
           />
           <Canvas
             players={players}
-            height={boardHeight}
-            width={boardWidth}
             deployedWeapons={deployedWeapons}
             currentPlayer={currentPlayer}
           />
