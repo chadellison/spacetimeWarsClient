@@ -5,7 +5,9 @@ import {
   SHIPS,
   SPRITE_WIDTH,
   SPRITE_ROW_COUNT,
-  SPRITE_COLUMN_COUNT
+  SPRITE_COLUMN_COUNT,
+  BOARD_WIDTH,
+  BOARD_HEIGHT
 } from '../constants/settings.js';
 
 import {gameEventPayload} from '../helpers/sendEventHelpers';
@@ -15,8 +17,6 @@ export const updateGameState = ({
   players,
   elapsedTime,
   clockDifference,
-  width,
-  height,
   deployedWeapons,
   handleGameEvent,
   lastFired,
@@ -34,13 +34,13 @@ export const updateGameState = ({
         handleRepeatedFire(currentPlayer, handleGameEvent, lastFired, updateState);
         currentPlayer = player;
       }
-      handleWall(player, width, height);
+      handleWall(player);
       updatedPlayers.push(player);
     };
   });
 
   if (deployedWeapons.length > 0) {
-    const filteredWeapons = removeOutOfBoundsShots(deployedWeapons, width, height);
+    const filteredWeapons = removeOutOfBoundsShots(deployedWeapons);
     deployedWeapons = handleWeapons(filteredWeapons, updatedPlayers, handleGameEvent, currentPlayer);
   };
   return {
@@ -88,12 +88,12 @@ export const handleWeapons = (weapons, players, handleGameEvent, currentPlayer) 
   });
 };
 
-const removeOutOfBoundsShots = (weapons, width, height) => {
+const removeOutOfBoundsShots = (weapons) => {
   return weapons.filter((weapon) => {
     return weapon.location.x > -50 &&
-      weapon.location.x < width + 50 &&
+      weapon.location.x < BOARD_WIDTH + 50 &&
       weapon.location.y > -50 &&
-      weapon.location.y < height + 50
+      weapon.location.y < BOARD_HEIGHT + 50
   });
 };
 
@@ -205,21 +205,21 @@ export const handleAngle = (player, elapsedTime) => {
   };
 }
 
-export const handleWall = (player, width, height) => {
-  if (player.location.x - 100 > width) {
+export const handleWall = (player) => {
+  if (player.location.x - 100 > BOARD_WIDTH) {
     player.location.x = 0;
   }
 
   if (player.location.x + 100 < 0) {
-    player.location.x = width;
+    player.location.x = BOARD_WIDTH;
   }
 
-  if (player.location.y - 100 > height) {
+  if (player.location.y - 100 > BOARD_HEIGHT) {
     player.location.y = 0;
   }
 
   if (player.location.y + 100 < 0) {
-    player.location.y = height;
+    player.location.y = BOARD_HEIGHT;
   }
 };
 

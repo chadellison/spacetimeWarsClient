@@ -6,12 +6,7 @@ import PlayerData from './PlayerData';
 import SelectionModal from './SelectionModal';
 import {GameButton} from './GameButton';
 import '../styles/styles.css';
-import {
-  BOARD_WIDTH,
-  BOARD_HEIGHT,
-  ANAIMATION_FRAME_RATE,
-  REQUEST_COUNT
-} from '../constants/settings.js';
+import {ANAIMATION_FRAME_RATE, REQUEST_COUNT} from '../constants/settings.js';
 import {KEY_MAP} from '../constants/keyMap.js';
 import {
   updatePlayer,
@@ -29,8 +24,6 @@ import {handleAudio} from '../helpers/audioHelpers.js';
 const DEFAULT_STATE = {
   userId: new Date().getTime(),
   gameSocket: {},
-  boardWidth: BOARD_WIDTH,
-  boardHeight: BOARD_HEIGHT,
   players: [],
   clockDifference: 0,
   shortestRoundTripTime: 5000,
@@ -215,8 +208,6 @@ class Layout extends React.Component {
         players: players,
         elapsedTime: ANAIMATION_FRAME_RATE,
         clockDifference: this.state.clockDifference,
-        width: this.state.boardWidth,
-        height: this.state.boardHeight,
         deployedWeapons: deployedWeapons,
         handleGameEvent: this.handleGameEvent,
         lastFired: this.state.lastFired,
