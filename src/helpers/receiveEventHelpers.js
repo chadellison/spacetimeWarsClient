@@ -1,9 +1,7 @@
 import {
   findElapsedTime,
   handleFireWeapon,
-  handleAngle,
-  handleLocation,
-  distanceTraveled
+  updatePlayer
 } from '../helpers/gameLogic.js';
 
 export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
@@ -18,13 +16,9 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
 }
 
 const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
-  let updatedCurrentPlayer = {...currentPlayer};
   let updatedWeapons = [...deployedWeapons];
   const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
-  const distance = distanceTraveled(playerData, elapsedTime, clockDifference);
-  const trajectory = playerData.accelerate ? playerData.angle : playerData.trajectory;
-  playerData.angle = handleAngle(playerData, elapsedTime);
-  playerData.location = handleLocation(trajectory, playerData.location, distance)
+  playerData = updatePlayer(playerData, elapsedTime, clockDifference);
 
   if (playerData.gameEvent === 'fire') {
     updatedWeapons = [...updatedWeapons, handleFireWeapon(playerData, clockDifference)];
@@ -32,9 +26,6 @@ const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons
 
   const updatedPlayers = [...players].map((player) => {
     if (playerData.id === player.id) {
-      if (currentPlayer.id === playerData.id) {
-        updatedCurrentPlayer = playerData;
-      }
       return playerData;
     } else {
       return player;
@@ -44,7 +35,7 @@ const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons
   return {
     players: updatedPlayers,
     deployedWeapons: updatedWeapons,
-    currentPlayer: updatedCurrentPlayer
+    currentPlayer: (currentPlayer.id === playerData.id ? playerData : currentPlayer)
   };
 }
 
@@ -64,6 +55,7 @@ const handleRemoveEvent = (players, playerData, deployedWeapons, currentPlayer) 
     if (player.id === playerData.id) {
       if (!player.explode) {
         player.gameEvent = 'remove';
+        player.hitpoints = 0;
         player.explodeAnimation = {x: 0, y: 0};
         player.explode = true;
         player.updatedAt = playerData.updatedAt;
