@@ -1,21 +1,69 @@
 import {
-  updatePlayer,
   findElapsedTime,
-  handleFireWeapon
+  handleFireWeapon,
+  handleAngle,
+  handleLocation,
+  distanceTraveled
 } from '../helpers/gameLogic.js';
 
-const playersFromEvent = (gameEvent, players, playerData) => {
-  if (gameEvent === 'start') {
-    players = [...players, playerData]
-  }
-  return players;
-};
+export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
+  switch (playerData.gameEvent) {
+    case 'start':
+      return handleStartEvent(players, playerData, deployedWeapons, currentPlayer);
+    case 'remove':
+      return handleRemoveEvent(players, playerData, deployedWeapons, currentPlayer);
+    default:
+      return handleUpdateEvent(players, playerData, clockDifference, deployedWeapons, currentPlayer);
+  };
+}
 
-const handleRemoveEvent = (players, playerData, currentPlayer) => {
-  players.forEach((player) => {
+const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
+  let updatedCurrentPlayer = {...currentPlayer};
+  let updatedWeapons = [...deployedWeapons];
+  const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
+  const distance = distanceTraveled(playerData, elapsedTime, clockDifference);
+  const trajectory = playerData.accelerate ? playerData.angle : playerData.trajectory;
+  playerData.angle = handleAngle(playerData, elapsedTime);
+  playerData.location = handleLocation(trajectory, playerData.location, distance)
+
+  if (playerData.gameEvent === 'fire') {
+    updatedWeapons = [...updatedWeapons, handleFireWeapon(playerData, clockDifference)];
+  }
+
+  const updatedPlayers = [...players].map((player) => {
+    if (playerData.id === player.id) {
+      if (currentPlayer.id === playerData.id) {
+        updatedCurrentPlayer = playerData;
+      }
+      return playerData;
+    } else {
+      return player;
+    };
+  });
+
+  return {
+    players: updatedPlayers,
+    deployedWeapons: updatedWeapons,
+    currentPlayer: updatedCurrentPlayer
+  };
+}
+
+const handleStartEvent = (players, playerData, deployedWeapons, currentPlayer) => {
+  const updatedPlayers = [...players, playerData];
+
+  return {
+    players: updatedPlayers,
+    deployedWeapons: deployedWeapons,
+    currentPlayer: currentPlayer
+  };
+}
+
+const handleRemoveEvent = (players, playerData, deployedWeapons, currentPlayer) => {
+  let updatedCurrentPlayer = {...currentPlayer};
+  const updatedPlayers = [...players].map((player) => {
     if (player.id === playerData.id) {
       if (!player.explode) {
-        player.lastEvent = 'remove';
+        player.gameEvent = 'remove';
         player.explodeAnimation = {x: 0, y: 0};
         player.explode = true;
         player.updatedAt = playerData.updatedAt;
@@ -27,59 +75,15 @@ const handleRemoveEvent = (players, playerData, currentPlayer) => {
         playerData = player;
       }
       if (playerData.id === currentPlayer.id) {
-        currentPlayer = player;
+        updatedCurrentPlayer = player;
       };
     };
+    return player;
   });
-
-  return playerData
-}
-
-export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
-  let updatedPlayers = playersFromEvent(playerData.lastEvent, players, playerData);
-  let updatedWeapons = deployedWeapons;
-
-  switch (playerData.lastEvent) {
-    case 'remove':
-      handleRemoveEvent(updatedPlayers, playerData, currentPlayer);
-      break;
-    case 'fire':
-      updatedWeapons = [...updatedWeapons, handleFireWeapon(playerData, clockDifference)];
-      updatedPlayers = updatePlayersFromFireEvent(playerData, updatedPlayers);
-      break;
-    case 'fireStop':
-      updatedPlayers = updatePlayersFromFireEvent(playerData, updatedPlayers);
-      break;
-    default:
-      updatedPlayers = updatedPlayers.map((player) => {
-        if (player.id === playerData.id) {
-          const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
-          return updatePlayer(playerData, elapsedTime, clockDifference);
-        } else {
-          return player;
-        };
-      });
-  }
 
   return {
     players: updatedPlayers,
-    deployedWeapons: updatedWeapons,
-    currentPlayer: currentPlayer
+    deployedWeapons: deployedWeapons,
+    currentPlayer: updatedCurrentPlayer
   };
-};
-
-const updatePlayersFromFireEvent = (playerData, updatedPlayers) => {
-  return updatedPlayers.map((player) => {
-    if (player.id === playerData.id) {
-      player.lastEvent = playerData.lastEvent
-      if (player.lastEvent === 'fire') {
-        player.fire = true
-        player.gold = playerData.gold
-        player.score = playerData.score
-      } else {
-        player.fire = false
-      }
-    }
-    return player;
-  });
 }

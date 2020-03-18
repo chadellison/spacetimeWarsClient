@@ -14,7 +14,7 @@ export const handleAudio = (player) => {
     }
   };
 
-  if (player.lastEvent === 'fire') {
+  if (player.gameEvent === 'fire') {
     const audio = WEAPONS[player.weaponIndex].sound
     audio.currentTime = 0
     const audioPromise = audio.play();

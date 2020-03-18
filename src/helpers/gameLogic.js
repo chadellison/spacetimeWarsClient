@@ -10,7 +10,6 @@ import {
   BOARD_HEIGHT
 } from '../constants/settings.js';
 
-import {gameEventPayload} from '../helpers/sendEventHelpers';
 import {handleItems} from '../helpers/itemHelpers';
 
 export const updateGameState = ({
@@ -147,8 +146,7 @@ const calculateDamage = (damage, armor) => {
 }
 
 export const handleFireWeapon = (player, clockDifference) => {
-  const timeOffset = 10;
-  const elapsedTime = findElapsedTime(clockDifference, player.updatedAt + timeOffset);
+  const elapsedTime = findElapsedTime(clockDifference, player.updatedAt);
   const angle = handleAngle(player, elapsedTime);
   const distance = distanceTraveled(player, elapsedTime, clockDifference);
   const location = handleLocation(angle, player.location, distance);
@@ -172,7 +170,7 @@ const findHypotenuse = (point, pointTwo) => {
 
 export const handleRepeatedFire = (player, handleGameEvent, lastFired, updateState) => {
   if (player.fire && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
-    handleGameEvent(gameEventPayload(player, 'fire'));
+    handleGameEvent({...player, gameEvent: 'fire', gold: player.gold + 1, score: player.score + 1});
     updateState({lastFired: Date.now()});
   };
 };

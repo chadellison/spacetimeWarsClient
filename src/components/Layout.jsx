@@ -132,7 +132,7 @@ class Layout extends React.Component {
       currentPlayer: {
         id: this.state.userId,
         gold: 1000,
-        lastEvent: 'waiting',
+        gameEvent: 'waiting',
         score: 0,
         items: [],
         fire: false
@@ -177,8 +177,8 @@ class Layout extends React.Component {
 
   handleKeyUp = (event) => {
     const {currentPlayer, players} = this.state;
-    const {explode, lastEvent} = currentPlayer;
-    if (!explode && lastEvent !== 'waiting') {
+    const {explode, gameEvent} = currentPlayer;
+    if (!explode && gameEvent !== 'waiting') {
       const pressedKey = KEY_MAP[event.keyCode];
       keyUpEventPayload(currentPlayer, players, pressedKey, this.handleGameEvent, this.updateState)
       this.setState({[pressedKey]: false});
@@ -188,10 +188,10 @@ class Layout extends React.Component {
   handleReceivedEvent = (playerData) => {
     const {players, clockDifference, deployedWeapons, currentPlayer} = this.state;
     const gameState = handleEventPayload(
-      [...players],
+      players,
       playerData,
       clockDifference,
-      [...deployedWeapons],
+      deployedWeapons,
       currentPlayer
     );
 

@@ -22,48 +22,35 @@ export const keyDownEvent = (pressedKey, lastFired, currentPlayer, handleGameEve
 
 export const keyUpEventPayload = (currentPlayer, players, pressedKey, handleGameEvent, updateState) => {
   if (['right', 'left', 'up'].includes(pressedKey) && currentPlayer) {
-    handleGameEvent(gameEventPayload(currentPlayer, pressedKey + 'Stop'));
+    handleGameEvent({...currentPlayer, gameEvent: pressedKey + 'Stop'});
   };
 
   if ('space' === pressedKey && currentPlayer) {
-    handleGameEvent(gameEventPayload(currentPlayer, 'fireStop'));
+    handleGameEvent({...currentPlayer, gameEvent: 'fireStop'});
     updateState({currentPlayer: {...currentPlayer, fire: false}});
   };
 };
 
-const handleRotateEvent = (currentPlayer, gameEvent, handleGameEvent) => {
-  if (currentPlayer && currentPlayer.lastEvent !== 'waiting') {
-    handleGameEvent(gameEventPayload(currentPlayer, gameEvent));
+const handleRotateEvent = (currentPlayer, pressedKey, handleGameEvent) => {
+  if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
+    handleGameEvent({...currentPlayer, gameEvent: pressedKey});
   };
 };
 
 const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent) => {
-  if (currentPlayer && currentPlayer.lastEvent !== 'waiting') {
-    handleGameEvent(gameEventPayload(currentPlayer, gameEvent));
+  if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
+    handleGameEvent({...currentPlayer, gameEvent});
   };
 };
 
 const handleSpaceBarEvent = (currentPlayer, handleGameEvent, updateState, lastFired) => {
-  if (currentPlayer.lastEvent === 'waiting') {
+  if (currentPlayer.gameEvent === 'waiting') {
     handleGameEvent({...currentPlayer, gameEvent: 'start', hitpoints: currentPlayer.maxHitpoints});
   } else {
     if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
-      handleGameEvent(gameEventPayload(currentPlayer, 'fire'));
+      handleGameEvent({...currentPlayer, gameEvent: 'fire', gold: currentPlayer.gold + 1, score: currentPlayer.score + 1});
       const updatedPlayer = {...currentPlayer, fire: true};
       updateState({lastFired: Date.now(), currentPlayer: updatedPlayer});
     };
   };
 };
-
-export const gameEventPayload = (player, gameEvent) => {
-  return {
-    id: player.id,
-    gameEvent: gameEvent,
-    location: player.location,
-    angle: player.angle,
-    hitpoints: player.hitpoints,
-    gold: player.gold + 1,
-    score: player.score + 1,
-    items: player.items
-  }
-}

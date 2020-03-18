@@ -9,7 +9,7 @@ import {SHIPS, WEAPONS, UPGRADES, ITEMS} from '../constants/settings.js';
 
 const handleClick = (updateState, handleGameEvent, currentPlayer) => {
   let player;
-  if (currentPlayer.lastEvent === 'waiting') {
+  if (currentPlayer.gameEvent === 'waiting') {
     player = {...currentPlayer, gameEvent: 'start', hitpoints: currentPlayer.maxHitpoints}
   } else {
     player = {...currentPlayer, gameEvent: 'shop'}
@@ -76,7 +76,7 @@ const renderOptions = (updatePlayerState, activeTab, page, currentPlayer) => {
 };
 
 const renderStart = (updateState, handleGameEvent, currentPlayer) => {
-  if (currentPlayer.shipIndex !== undefined && currentPlayer.weaponIndex !== undefined && currentPlayer.lastEvent !== 'remove') {
+  if (currentPlayer.shipIndex !== undefined && currentPlayer.weaponIndex !== undefined && currentPlayer.gameEvent !== 'remove') {
     return (
       <div className="selectionButton"
         onClick={() => handleClick(updateState, handleGameEvent, currentPlayer)}>
