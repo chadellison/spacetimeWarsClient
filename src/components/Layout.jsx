@@ -202,7 +202,7 @@ class Layout extends React.Component {
   renderGame = () => {
     let players = [...this.state.players];
     let deployedWeapons = [...this.state.deployedWeapons]
-
+    let currentPlayer = {...this.state.currentPlayer}
     if (players.length > 0) {
       const gameData = {
         players: players,
@@ -212,7 +212,7 @@ class Layout extends React.Component {
         handleGameEvent: this.handleGameEvent,
         lastFired: this.state.lastFired,
         updateState: this.updateState,
-        currentPlayer: this.state.currentPlayer
+        currentPlayer: currentPlayer
       }
       const updatedGameState = updateGameState(gameData)
       this.setState(updatedGameState);
