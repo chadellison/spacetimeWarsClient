@@ -68,17 +68,17 @@ const renderHitPoints = (currentPlayer) => {
 };
 
 const PlayerData = ({currentPlayer, clockDifference, updateState, showSelectionModal}) => {
-  const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
-  let countDown = 0;
-  if (currentPlayer.explode && elapsedSeconds < 10) {
-    countDown = Math.round(10 - elapsedSeconds);
-  } else {
-    if (currentPlayer.explode) {
-      updateState({currentPlayer: {...currentPlayer, explode: false, gameEvent: 'waiting'}});
-    };
-  };
-
   if (currentPlayer.id) {
+    const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
+    let countDown = 0;
+    if (currentPlayer.explode && elapsedSeconds < 10) {
+      countDown = Math.round(10 - elapsedSeconds);
+    } else {
+      if (currentPlayer.explode) {
+        updateState({currentPlayer: {...currentPlayer, explode: false, gameEvent: 'waiting'}});
+      };
+    };
+  
     return (
       <div className={`playerData column ${currentPlayer.explode ? 'waiting' : ''}`}>
         <div className="row">

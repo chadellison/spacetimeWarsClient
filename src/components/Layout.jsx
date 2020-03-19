@@ -176,11 +176,11 @@ class Layout extends React.Component {
   };
 
   handleKeyUp = (event) => {
-    const {currentPlayer, players} = this.state;
+    const {currentPlayer} = this.state;
     const {explode, gameEvent} = currentPlayer;
     if (!explode && gameEvent !== 'waiting') {
       const pressedKey = KEY_MAP[event.keyCode];
-      keyUpEventPayload(currentPlayer, players, pressedKey, this.handleGameEvent, this.updateState)
+      keyUpEventPayload(currentPlayer, pressedKey, this.handleGameEvent, this.updateState)
       this.setState({[pressedKey]: false});
     };
   };
