@@ -17,11 +17,12 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
 
 const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
   let updatedWeapons = [...deployedWeapons];
-  const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
-  playerData = updatePlayer(playerData, elapsedTime, clockDifference);
 
   if (playerData.gameEvent === 'fire') {
     updatedWeapons = [...updatedWeapons, handleFireWeapon(playerData, clockDifference)];
+  } else {
+    const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
+    playerData = updatePlayer(playerData, elapsedTime, clockDifference);
   }
 
   const updatedPlayers = [...players].map((player) => {
