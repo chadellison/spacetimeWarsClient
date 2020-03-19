@@ -17,17 +17,22 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
 
 const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
   let updatedWeapons = [...deployedWeapons];
-
-  if (playerData.gameEvent === 'fire') {
-    updatedWeapons = [...updatedWeapons, handleFireWeapon(playerData, clockDifference)];
-  } else {
-    const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
-    playerData = updatePlayer(playerData, elapsedTime, clockDifference);
-  }
+  let updatedPlayer;
 
   const updatedPlayers = [...players].map((player) => {
     if (playerData.id === player.id) {
-      return playerData;
+      if (playerData.gameEvent === 'fire') {
+        updatedWeapons = [...updatedWeapons, handleFireWeapon(playerData, clockDifference)];
+        player.fire = true
+        updatedPlayer = player;
+      } else if (playerData.gameEvent === 'fireStop') {
+        player.fire = false
+        updatedPlayer = player;
+      } else {
+        const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
+        updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
+      }
+      return updatedPlayer;
     } else {
       return player;
     };
@@ -36,7 +41,7 @@ const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons
   return {
     players: updatedPlayers,
     deployedWeapons: updatedWeapons,
-    currentPlayer: (currentPlayer.id === playerData.id ? playerData : currentPlayer)
+    currentPlayer: (currentPlayer.id === playerData.id ? updatedPlayer : currentPlayer)
   };
 }
 
