@@ -7,9 +7,9 @@ import {
 export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
   switch (playerData.gameEvent) {
     case 'start':
-      return handleStartEvent(players, playerData, deployedWeapons, currentPlayer);
+      return {players: [...players, playerData]};
     case 'remove':
-      return handleRemoveEvent(players, playerData, deployedWeapons, currentPlayer);
+      return handleRemoveEvent(players, playerData, currentPlayer);
     default:
       return handleUpdateEvent(players, playerData, clockDifference, deployedWeapons, currentPlayer);
   };
@@ -40,17 +40,7 @@ const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons
   };
 }
 
-const handleStartEvent = (players, playerData, deployedWeapons, currentPlayer) => {
-  const updatedPlayers = [...players, playerData];
-
-  return {
-    players: updatedPlayers,
-    deployedWeapons: deployedWeapons,
-    currentPlayer: currentPlayer
-  };
-}
-
-const handleRemoveEvent = (players, playerData, deployedWeapons, currentPlayer) => {
+const handleRemoveEvent = (players, playerData, currentPlayer) => {
   let updatedCurrentPlayer = {...currentPlayer};
   const updatedPlayers = [...players].map((player) => {
     if (player.id === playerData.id) {
@@ -76,7 +66,6 @@ const handleRemoveEvent = (players, playerData, deployedWeapons, currentPlayer) 
 
   return {
     players: updatedPlayers,
-    deployedWeapons: deployedWeapons,
     currentPlayer: updatedCurrentPlayer
   };
 }
