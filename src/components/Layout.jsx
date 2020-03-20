@@ -35,7 +35,7 @@ const DEFAULT_STATE = {
   right: false,
   space: false,
   showSelectionModal: false,
-  activeTab: 'Ship',
+  activeTab: 'Ships',
   page: 1,
 };
 

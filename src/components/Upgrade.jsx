@@ -42,8 +42,8 @@ export const Upgrade = ({updatePlayerState, imageSrc, currentPlayer, upgrade}) =
         <div className="selectionData">
           {`Price: ${upgrade.price}`}
         </div>
-        <div className="selectionData">
-          {`Description: ${upgrade.description}`}
+        <div className="selectionDescription">
+          {upgrade.description}
         </div>
     </div>
   );

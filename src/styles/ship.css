@@ -33,3 +33,10 @@
   line-height: 16px;
   display: flex;
 }
+
+.selectionDescription {
+  padding: .5em;
+  text-align: left;
+  line-height: 1.3em;
+  display: flex;
+}

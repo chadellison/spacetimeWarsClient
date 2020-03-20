@@ -38,7 +38,7 @@ export const ITEMS = [
   {
     id: 4,
     index: 3,
-    price: 100,
+    price: 500,
     name: 'Absorb damage',
     image: absorbDamage,
     cooldown: 10000,

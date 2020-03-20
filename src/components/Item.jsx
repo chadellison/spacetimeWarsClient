@@ -33,8 +33,8 @@ export const Item = ({updatePlayerState, imageSrc, currentPlayer, item}) => {
         <div className="selectionData">
           {`Price: ${item.price}`}
         </div>
-        <div className="selectionData">
-          {`Description: ${item.description}`}
+        <div className="selectionDescription">
+          {item.description}
         </div>
     </div>
   );

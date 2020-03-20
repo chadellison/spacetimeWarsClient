@@ -23,7 +23,7 @@ const handleClick = (updateState, handleGameEvent, currentPlayer) => {
 
 const renderOptions = (updatePlayerState, activeTab, page, currentPlayer) => {
   switch (activeTab) {
-    case 'Ship':
+    case 'Ships':
       const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
       return ships.map((ship) => {
         return (
@@ -92,7 +92,7 @@ const renderStart = (updateState, handleGameEvent, currentPlayer) => {
 };
 
 const renderTabs = (activeTab, updateState, currentPlayer) => {
-  let tabs = ['Ship'];
+  let tabs = ['Ships'];
   if (currentPlayer.shipIndex || currentPlayer.shipIndex === 0) {
     tabs.push('Weapons');
   };
@@ -127,7 +127,7 @@ const SelectionModal = ({
       </div>
       {renderStart(updateState, handleGameEvent, currentPlayer)}
       {renderOptions(updatePlayerState, activeTab, page, currentPlayer)}
-      <PaginateButton updateState={updateState} page={page}/>
+      <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />
     </div>
   );
 };
