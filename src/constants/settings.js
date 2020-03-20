@@ -49,7 +49,7 @@ import upgradeAudio from '../audio/upgrade.wav';
 // constants
 export const BOARD_WIDTH = 1800;
 export const BOARD_HEIGHT = 1125;
-export const ANAIMATION_FRAME_RATE = 30;
+export const ANAIMATION_FRAME_RATE = 40;
 export const REQUEST_COUNT = 10;
 export const DRIFT = 2;
 export const SPRITE_WIDTH = 256;
@@ -62,7 +62,7 @@ export const WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     cooldown: 300,
-    speed: 15,
+    speed: 18,
     damage: 50,
     price: 200,
     width: 16,
@@ -77,7 +77,7 @@ export const WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     cooldown: 500,
-    speed: 16,
+    speed: 20,
     damage: 100,
     price: 300,
     width: 40,
@@ -92,7 +92,7 @@ export const WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     cooldown: 800,
-    speed: 10,
+    speed: 14,
     damage: 400,
     price: 400,
     width: 50,
@@ -107,7 +107,7 @@ export const WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     cooldown: 300,
-    speed: 20,
+    speed: 24,
     damage: 200,
     price: 500,
     width: 40,
@@ -122,7 +122,7 @@ export const WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     cooldown: 300,
-    speed: 20,
+    speed: 24,
     damage: 300,
     price: 700,
     width: 32,
@@ -137,7 +137,7 @@ export const WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     cooldown: 400,
-    speed: 20,
+    speed: 22,
     damage: 350,
     price: 500,
     width: 16,
@@ -152,9 +152,9 @@ export const WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     cooldown: 350,
-    speed: 18,
-    damage: 500,
-    price: 800,
+    speed: 20,
+    damage: 700,
+    price: 1000,
     width: 20,
     height: 20,
     image: blueFire,

@@ -23,11 +23,9 @@ const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons
     if (playerData.id === player.id) {
       if (playerData.gameEvent === 'fire') {
         updatedWeapons = [...updatedWeapons, handleFireWeapon(playerData, clockDifference)];
-        player.fire = true
-        updatedPlayer = player;
+        updatedPlayer = updatedPlayerFromFireEvent(player, 'fire');
       } else if (playerData.gameEvent === 'fireStop') {
-        player.fire = false
-        updatedPlayer = player;
+        updatedPlayer = updatedPlayerFromFireEvent(player, 'fireStop');
       } else {
         const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
         updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
@@ -43,6 +41,13 @@ const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons
     deployedWeapons: updatedWeapons,
     currentPlayer: (currentPlayer.id === playerData.id ? updatedPlayer : currentPlayer)
   };
+}
+
+const updatedPlayerFromFireEvent = (player, gameEvent) => {
+  player.fire = gameEvent === 'fire';
+  player.gold += 1;
+  player.score += 1;
+  return player;
 }
 
 const handleRemoveEvent = (players, playerData, currentPlayer) => {
