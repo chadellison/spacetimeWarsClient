@@ -3,12 +3,12 @@ import {drawShip, handleDirection} from '../helpers/canvasHelper.js';
 import '../styles/styles.css';
 import explodeAnimation from '../images/explosion.png';
 import {
-  WEAPONS,
-  SHIPS,
   SPRITE_WIDTH,
   BOARD_WIDTH,
   BOARD_HEIGHT
 } from '../constants/settings.js';
+import {SHIPS} from '../constants/ships.js';
+import {WEAPONS} from '../constants/weapons.js';
 
 class Canvas extends React.Component {
   constructor(props) {

@@ -1,4 +1,5 @@
-import {WEAPONS, thruster} from '../constants/settings.js';
+import {thruster} from '../constants/settings.js';
+import {WEAPONS} from '../constants/weapons.js';
 
 export const handleAudio = (player) => {
   if (player.accelerate) {

@@ -1,6 +1,8 @@
 import React from "react";
 import '../styles/playerData.css';
-import {SHIPS, WEAPONS, ITEMS} from '../constants/settings.js';
+import {SHIPS} from '../constants/ships.js';
+import {WEAPONS} from '../constants/weapons.js';
+import {ITEMS} from '../constants/items.js';
 import {Hitpoints} from './Hitpoints'
 import {findElapsedTime} from '../helpers/gameLogic.js';
 
@@ -78,7 +80,7 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, showSelectionM
         updateState({currentPlayer: {...currentPlayer, explode: false, gameEvent: 'waiting'}});
       };
     };
-  
+
     return (
       <div className={`playerData column ${currentPlayer.explode ? 'waiting' : ''}`}>
         <div className="row">

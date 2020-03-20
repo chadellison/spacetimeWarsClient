@@ -5,7 +5,10 @@ import {Weapon} from './Weapon';
 import {Upgrade} from './Upgrade';
 import {Item} from './Item';
 import {PaginateButton} from './PaginateButton';
-import {SHIPS, WEAPONS, UPGRADES, ITEMS} from '../constants/settings.js';
+import {ITEMS} from '../constants/items.js';
+import {SHIPS} from '../constants/ships.js';
+import {WEAPONS} from '../constants/weapons.js';
+import {UPGRADES} from '../constants/upgrades.js';
 
 const handleClick = (updateState, handleGameEvent, currentPlayer) => {
   let player;

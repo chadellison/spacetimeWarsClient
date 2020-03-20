@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/ship.css';
 import {notEnoughResources, upgradeSound} from '../constants/settings.js';
-import {UPGRADES} from '../constants/settings.js';
+import {UPGRADES} from '../constants/upgrades.js';
 
 const handleClick = (updatePlayerState, currentPlayer, upgrade) => {
   const gold = currentPlayer.gold - UPGRADES[upgrade.index].price;

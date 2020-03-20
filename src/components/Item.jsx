@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/ship.css';
 import {notEnoughResources, gong} from '../constants/settings.js';
-import {ITEMS} from '../constants/settings.js';
+import {ITEMS} from '../constants/items.js';
 
 const handleClick = (updatePlayerState, currentPlayer, item) => {
   const gold = currentPlayer.gold - ITEMS[item.index].price;

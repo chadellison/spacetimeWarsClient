@@ -1,4 +1,4 @@
-import {WEAPONS} from '../constants/settings.js';
+import {WEAPONS} from '../constants/weapons.js';
 import {
   canFire
 } from '../helpers/gameLogic.js';

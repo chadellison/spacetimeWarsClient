@@ -1,14 +1,14 @@
 import {
   ANAIMATION_FRAME_RATE,
   DRIFT,
-  WEAPONS,
-  SHIPS,
   SPRITE_WIDTH,
   SPRITE_ROW_COUNT,
   SPRITE_COLUMN_COUNT,
   BOARD_WIDTH,
   BOARD_HEIGHT
 } from '../constants/settings.js';
+import {SHIPS} from '../constants/ships.js';
+import {WEAPONS} from '../constants/weapons.js';
 
 import {handleItems} from '../helpers/itemHelpers';
 

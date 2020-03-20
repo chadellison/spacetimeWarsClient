@@ -1,7 +1,7 @@
 import React from 'react'
 import '../styles/ship.css'
 import {loadWeapon, notEnoughResources} from '../constants/settings.js';
-import {WEAPONS} from '../constants/settings.js';
+import {WEAPONS} from '../constants/weapons.js';
 
 const handleClick = (updatePlayerState, weaponIndex, currentPlayer) => {
   const gold = currentPlayer.gold - WEAPONS[weaponIndex].price;
