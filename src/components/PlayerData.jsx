@@ -42,6 +42,7 @@ const renderItems = (items) => {
   return items.map((item) => {
     return (
       <img
+        key={'playerItem' + item.id}
         src={ITEMS[item.index].image}
         className="playerItem"
         alt="playerItem"

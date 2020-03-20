@@ -9,8 +9,11 @@ import {
 } from '../constants/settings.js';
 import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
-
-import {handleItems} from '../helpers/itemHelpers';
+import {
+  handleItems,
+  handleAbsorbDamage,
+  canAbsorbDamage
+} from '../helpers/itemHelpers';
 
 export const updateGameState = ({
   players,
@@ -117,15 +120,23 @@ const handleCollision = (weapon, players, handleGameEvent, currentPlayer) => {
       shipBoundingBoxes.forEach((center, index) => {
         const distance = findHypotenuse(center, weaponCenter);
         if ((index < 3 && distance < 18) || (index > 2 && distance < 23)) {
-          console.log('BLAM!');
-          updateCollisionData(player, weapon, players, handleGameEvent, currentPlayer)
-          weapon.removed = true
+          applyHit(player, weapon, players, handleGameEvent, currentPlayer);
         }
       });
     };
   });
   return weapon;
 }
+
+const applyHit = (player, weapon, players, handleGameEvent, currentPlayer) => {
+  if (canAbsorbDamage(player.items)) {
+    handleAbsorbDamage(player.items);
+  } else {
+    console.log('BLAM!');
+    updateCollisionData(player, weapon, players, handleGameEvent, currentPlayer)
+  }
+  weapon.removed = true
+};
 
 const updateCollisionData = (player, weapon, players, handleGameEvent, currentPlayer) => {
   if (player.hitpoints > 0) {

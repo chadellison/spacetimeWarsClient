@@ -8,7 +8,10 @@ const handleClick = (updatePlayerState, currentPlayer, item) => {
   if (gold >= 0) {
     const player = {
       ...currentPlayer,
-      items: [...currentPlayer.items, {id: item.id, index: item.index, lastUpdated: 0}],
+      items: [
+        ...currentPlayer.items,
+        {id: item.id, index: item.index, lastUpdated: 0, cooldown: item.cooldown}
+      ],
       gold: gold
     }
     gong.play();
