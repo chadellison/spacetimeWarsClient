@@ -7,10 +7,18 @@
   display: flex;
 }
 
-.playerInfo {
+.DamageInfo, .ArmorInfo, .SpeedInfo, .ScoreInfo {
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   font-size: 14px;
   color: gray;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+}
+
+.GoldInfo {
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-size: 14px;
+  color: #ab8432;
   padding-top: .75rem;
   padding-bottom: .75rem;
 }

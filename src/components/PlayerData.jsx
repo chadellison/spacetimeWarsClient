@@ -33,7 +33,7 @@ const renderWeapon = (weaponIndex) => {
 const renderData = (type, value) => {
   if (value >= 0) {
     return (
-      <div className="playerInfo">{`${type}: ${value}`}</div>
+      <div className={`${type}Info`}>{`${type}: ${value}`}</div>
     );
   };
 }

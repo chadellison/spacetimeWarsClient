@@ -6,7 +6,7 @@ import {
 export const keyDownEvent = (pressedKey, lastFired, currentPlayer, handleGameEvent, updateState, updatePlayerState) => {
   switch (pressedKey) {
     case 'space':
-      handleSpaceBarEvent(currentPlayer, handleGameEvent, updateState, lastFired, updatePlayerState);
+      handleSpaceBarEvent(currentPlayer, handleGameEvent, updateState, lastFired);
       break;
     case 'left':
     case 'right':
@@ -65,7 +65,7 @@ const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent, update
   };
 };
 
-const handleSpaceBarEvent = (currentPlayer, handleGameEvent, updateState, lastFired, updatePlayerState) => {
+const handleSpaceBarEvent = (currentPlayer, handleGameEvent, updateState, lastFired) => {
   if (currentPlayer.gameEvent === 'waiting') {
     handleGameEvent({...currentPlayer, gameEvent: 'start', hitpoints: currentPlayer.maxHitpoints});
   } else {
@@ -73,7 +73,6 @@ const handleSpaceBarEvent = (currentPlayer, handleGameEvent, updateState, lastFi
       handleGameEvent({...currentPlayer, gameEvent: 'fire', fire: true, gold: currentPlayer.gold + 1, score: currentPlayer.score + 1});
       const updatedPlayer = {...currentPlayer, fire: true};
       updateState({lastFired: Date.now(), currentPlayer: updatedPlayer});
-      updatePlayerState(updatedPlayer);
     };
   };
 };
