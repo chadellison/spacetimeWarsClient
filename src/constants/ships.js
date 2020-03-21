@@ -1,92 +1,82 @@
 // ships
-import fighterShip from '../images/fighterShip.png';
 import hunterShip from '../images/hunterShip.png';
+import hunterShipAbsorb from '../images/hunterShipAbsorb.png';
 import destroyerShip from '../images/destroyerShip.png';
-import scoutShip from '../images/scoutShip.png';
+import destroyerShipAbsorb from '../images/destroyerShipAbsorb.png';
 import warShip from '../images/warShip.png';
+import warShipAbsorb from '../images/warShipAbsorb.png';
 import cruiserShip from '../images/cruiserShip.png';
+import cruiserShipAbsorb from '../images/cruiserShipAbsorb.png';
 import carrierShip from '../images/carrierShip.png';
+import carrierShipAbsorb from '../images/carrierShipAbsorb.png';
 import stealthShip from '../images/stealthShip.png';
+import stealthShipAbsorb from '../images/stealthShipAbsorb.png';
 
 export const SHIPS = [
   {
     index: 0,
-    name: 'fighterShip',
-    price: 700,
+    name: 'destroyerShip',
+    price: 600,
     armor: 1,
-    hitpoints: 650,
-    speed: 4,
-    shipCenter: {x: 60.5, y: 38},
-    image: fighterShip
+    hitpoints: 900,
+    speed: 2,
+    shipCenter: {x: 60.5, y: 36},
+    image: destroyerShip,
+    absorbImage: destroyerShipAbsorb
   },
   {
     index: 1,
-    name: 'destroyerShip',
-    price: 800,
-    armor: 2,
-    hitpoints: 1100,
-    speed: 2,
-    shipCenter: {x: 60.5, y: 36},
-    image: destroyerShip
+    name: 'hunterShip',
+    price: 550,
+    armor: 0,
+    hitpoints: 700,
+    speed: 3,
+    shipCenter: {x: 60.5, y: 35},
+    image: hunterShip,
+    absorbImage: hunterShipAbsorb
   },
   {
     index: 2,
-    name: 'hunterShip',
-    price: 750,
+    name: 'warShip',
+    price: 700,
     armor: 1,
-    hitpoints: 900,
-    speed: 3,
-    shipCenter: {x: 60.5, y: 35},
-    image: hunterShip
+    hitpoints: 700,
+    speed: 4,
+    shipCenter: {x: 60.5, y: 27},
+    image: warShip,
+    absorbImage: warShipAbsorb
   },
   {
     index: 3,
-    name: 'scoutShip',
-    price: 550,
-    armor: 0,
-    hitpoints: 500,
-    speed: 4,
-    shipCenter: {x: 60.5, y: 32},
-    image: scoutShip
-  },
-  {
-    index: 4,
-    name: 'warShip',
-    price: 1300,
-    armor: 3,
-    hitpoints: 1400,
-    speed: 4,
-    shipCenter: {x: 60.5, y: 27},
-    image: warShip
-  },
-  {
-    index: 5,
     name: 'cruiserShip',
-    price: 900,
-    armor: 2,
+    price: 800,
+    armor: 0,
     hitpoints: 800,
     speed: 5.5,
     shipCenter: {x: 60.5, y: 22.5},
-    image: cruiserShip
+    image: cruiserShip,
+    absorbImage: cruiserShipAbsorb
   },
   {
-    index: 6,
+    index: 4,
     name: 'carrierShip',
-    price: 1700,
-    armor: 4,
-    hitpoints: 3000,
-    speed: 3.5,
+    price: 800,
+    armor: 2,
+    hitpoints: 900,
+    speed: 3,
     shipCenter: {x: 60.5, y: 29},
-    image: carrierShip
+    image: carrierShip,
+    absorbImage: carrierShipAbsorb
   },
   {
-    index: 7,
+    index: 5,
     name: 'stealthShip',
-    price: 1350,
-    armor: 2,
-    hitpoints: 1400,
+    price: 800,
+    armor: 1,
+    hitpoints: 900,
     speed: 4.5,
     shipCenter: {x: 60, y: 34},
-    image: stealthShip
+    image: stealthShip,
+    absorbImage: stealthShipAbsorb
   }
 ];

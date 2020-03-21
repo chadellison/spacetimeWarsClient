@@ -1,5 +1,6 @@
 import React from 'react';
 import {drawShip, handleDirection} from '../helpers/canvasHelper.js';
+import {canAbsorbDamage} from '../helpers/itemHelpers.js';
 import '../styles/styles.css';
 import explodeAnimation from '../images/explosion.png';
 import {
@@ -20,14 +21,18 @@ class Canvas extends React.Component {
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
     context.fillRect(0, 0, canvas.width, canvas.height);
-    const fighterShip = this.refs.fighterShip
     const hunterShip = this.refs.hunterShip
-    const scoutShip = this.refs.scoutShip
+    const hunterShipAbsorb = this.refs.hunterShipAbsorb
     const destroyerShip = this.refs.destroyerShip
+    const destroyerShipAbsorb = this.refs.destroyerShipAbsorb
     const warShip = this.refs.warShip
+    const warShipAbsorb = this.refs.warShipAbsorb
     const cruiserShip = this.refs.cruiserShip
+    const cruiserShipAbsorb = this.refs.cruiserShipAbsorb
     const carrierShip = this.refs.carrierShip
+    const carrierShipAbsorb = this.refs.carrierShipAbsorb
     const stealthShip = this.refs.stealthShip
+    const stealthShipAbsorb = this.refs.stealthShipAbsorb
     const fireball = this.refs.fireball
     const missile = this.refs.missile
     const trifecta = this.refs.trifecta
@@ -40,14 +45,18 @@ class Canvas extends React.Component {
     this.setState({
       canvas: canvas,
       context: context,
-      fighterShip: fighterShip,
       hunterShip: hunterShip,
+      hunterShipAbsorb: hunterShipAbsorb,
       destroyerShip: destroyerShip,
-      scoutShip: scoutShip,
+      destroyerShipAbsorb: destroyerShipAbsorb,
       warShip: warShip,
+      warShipAbsorb: warShipAbsorb,
       cruiserShip: cruiserShip,
+      cruiserShipAbsorb: cruiserShipAbsorb,
       carrierShip: carrierShip,
+      carrierShipAbsorb: carrierShipAbsorb,
       stealthShip: stealthShip,
+      stealthShipAbsorb: stealthShipAbsorb,
       fireball: fireball,
       missile: missile,
       trifecta: trifecta,
@@ -61,6 +70,14 @@ class Canvas extends React.Component {
     });
   }
 
+  handleImage = (player) => {
+    let imageReference = SHIPS[player.shipIndex].name
+    if (canAbsorbDamage(player.items)) {
+      imageReference += 'Absorb';
+    }
+    return this.state[imageReference];
+  };
+
   componentDidUpdate() {
     if (this.props.currentPlayer.location) {
       window.scrollTo(this.props.currentPlayer.location.x - this.state.halfWindowWidth, this.props.currentPlayer.location.y - this.state.halfWindowHeight)
@@ -70,7 +87,7 @@ class Canvas extends React.Component {
     context.clearRect(0, 0, canvas.width, canvas.height);
     this.props.players.forEach((player) => {
       if (!player.explode) {
-        drawShip(context, player, this.state[SHIPS[player.shipIndex].name], this.state.thrusterAudio);
+        drawShip(context, player, this.handleImage(player), this.state.thrusterAudio);
       } else {
         context.drawImage(
           this.state.explosion,
@@ -107,6 +124,15 @@ class Canvas extends React.Component {
               className="hidden"
               alt={ship.name}
               key={`ship${index}`}/>
+          );
+        })}
+        {SHIPS.map((ship, index) => {
+          return (
+            <img ref={`${ship.name}Absorb`}
+              src={ship.absorbImage}
+              className="hidden"
+              alt={`${ship.name} Absorb`}
+              key={`ship${index}Absorb`}/>
           );
         })}
         {WEAPONS.map((weapon, index) => {

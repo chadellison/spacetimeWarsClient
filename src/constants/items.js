@@ -38,11 +38,11 @@ export const ITEMS = [
   {
     id: 4,
     index: 3,
-    price: 500,
+    price: 700,
     name: 'Absorb damage',
     image: absorbDamage,
     cooldown: 10000,
     lastUpdated: 0,
-    description: 'Completely absorbs one hit -- negating all damage from it-- every 10 seconds.'
+    description: 'Provieds a shield that completely absorbs one hit -- negating all damage from it-- every 10 seconds.'
   }
 ];

@@ -105,7 +105,7 @@ export const WEAPONS = [
     cooldown: 400,
     speed: 22,
     damage: 350,
-    price: 500,
+    price: 700,
     width: 16,
     height: 16,
     image: plasmaCannon,

@@ -144,7 +144,7 @@ const updateCollisionData = (player, weapon, players, handleGameEvent, currentPl
     let bounty = Math.round(damage / 10);
     player.hitpoints -= damage
     if (player.hitpoints <= 0 && weapon.playerId === currentPlayer.id) {
-      bounty += Math.round(player.score / 10 + 100);
+      bounty += Math.round(player.gold / 10 + 100);
       handleGameEvent({id: player.id, gameEvent: 'remove'});
     }
     currentPlayer.gold += bounty

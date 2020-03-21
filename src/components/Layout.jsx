@@ -134,7 +134,7 @@ class Layout extends React.Component {
         gold: 1000,
         gameEvent: 'waiting',
         score: 0,
-        items: [],
+        items: {},
         fire: false
       }
     };

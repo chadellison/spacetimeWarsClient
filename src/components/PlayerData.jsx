@@ -39,10 +39,10 @@ const renderData = (type, value) => {
 }
 
 const renderItems = (items) => {
-  return items.map((item) => {
+  return Object.values(items).map((item) => {
     return (
       <img
-        key={'playerItem' + item.id}
+        key={'playerItem' + item.index}
         src={ITEMS[item.index].image}
         className="playerItem"
         alt="playerItem"

@@ -1,8 +1,8 @@
 export const handleItems = (player) => {
   const currentTime = Date.now();
-  player.items.forEach((item) => {
-    switch (item.id) {
-      case 1:
+  Object.values(player.items).forEach((item) => {
+    switch (item.index) {
+      case 0:
       if (currentTime - item.lastUpdated >= item.cooldown) {
         if (player.hitpoints < player.maxHitpoints / 4) {
           item.lastUpdated = currentTime;
@@ -10,7 +10,7 @@ export const handleItems = (player) => {
         }
       }
       break;
-      case 2:
+      case 1:
       if (currentTime - item.lastUpdated >= item.cooldown) {
         item.lastUpdated = currentTime;
         const newHitpoints = Math.round(player.maxHitpoints * 0.01 + player.hitpoints);
@@ -38,6 +38,6 @@ export const canAbsorbDamage = (items) => {
 
 export const getItem = (items, id) => {
   if (items) {
-    return items.filter((item) => item.id === id)[0];
+    return items[id];
   }
 }
