@@ -45,6 +45,8 @@ export const updateGameState = ({
     const filteredWeapons = removeOutOfBoundsShots(deployedWeapons);
     deployedWeapons = handleWeapons(filteredWeapons, updatedPlayers, handleGameEvent, currentPlayer);
   };
+  handleCountDownEnd(currentPlayer, clockDifference);
+
   return {
     players: updatedPlayers,
     deployedWeapons: deployedWeapons,
@@ -54,6 +56,16 @@ export const updateGameState = ({
 
 export const canFire = (lastFired, cooldown) => {
   return Date.now() - lastFired > cooldown;
+}
+
+const handleCountDownEnd = (currentPlayer, clockDifference) => {
+  if (currentPlayer.explode) {
+    const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
+    if (elapsedSeconds >= 10) {
+      currentPlayer.explode = false;
+      currentPlayer.gameEvent = 'waiting';
+    };
+  };
 }
 
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {

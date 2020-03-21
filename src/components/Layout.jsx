@@ -162,6 +162,7 @@ class Layout extends React.Component {
   handleKeyDown = (event) => {
     const {currentPlayer, lastFired, showSelectionModal} = this.state;
     const {explode} = currentPlayer;
+
     if (!explode && !showSelectionModal) {
       if (!currentPlayer.id) {
         this.updateState(this.addPlayer());
