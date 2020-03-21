@@ -168,7 +168,7 @@ class Layout extends React.Component {
       } else {
         const pressedKey = KEY_MAP[event.keyCode];
         if (!this.state[pressedKey]) {
-          keyDownEvent(pressedKey, lastFired, currentPlayer, this.handleGameEvent, this.updateState);
+          keyDownEvent(pressedKey, lastFired, currentPlayer, this.handleGameEvent, this.updateState, this.updatePlayerState);
           this.setState({[pressedKey]: true})
         };
       };
@@ -180,7 +180,7 @@ class Layout extends React.Component {
     const {explode, gameEvent} = currentPlayer;
     if (!explode && gameEvent !== 'waiting') {
       const pressedKey = KEY_MAP[event.keyCode];
-      keyUpEventPayload(currentPlayer, pressedKey, this.handleGameEvent, this.updateState)
+      keyUpEventPayload(currentPlayer, pressedKey, this.handleGameEvent, this.updateState, this.updatePlayerState)
       this.setState({[pressedKey]: false});
     };
   };
