@@ -3,6 +3,7 @@ import '../styles/playerData.css';
 import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
 import {ITEMS} from '../constants/items.js';
+import gold from "../images/gold.png";
 import {Hitpoints} from './Hitpoints'
 import {findElapsedTime} from '../helpers/gameLogic.js';
 
@@ -34,6 +35,17 @@ const renderData = (type, value) => {
   if (value >= 0) {
     return (
       <div className={`${type}Info`}>{`${type}: ${value}`}</div>
+    );
+  };
+}
+
+const renderGold = (type, value) => {
+  if (value >= 0) {
+    return (
+      <div className="playerInfo">
+        <img src={gold} alt="Gold" className="goldIcon" />
+        <span className="GoldInfo">{value}</span>
+      </div>
     );
   };
 }
@@ -86,7 +98,7 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, showSelectionM
       <div className={`playerData column ${currentPlayer.explode ? 'waiting' : ''}`}>
         <div className="row">
           {handleWaitTime(currentPlayer, countDown)}
-          {renderData('Gold', currentPlayer.gold)}
+          {renderGold('Gold', currentPlayer.gold)}
           {renderHitPoints(currentPlayer)}
           {renderShip(currentPlayer)}
           {renderWeapon(currentPlayer.weaponIndex)}

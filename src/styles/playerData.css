@@ -7,7 +7,7 @@
   display: flex;
 }
 
-.DamageInfo, .ArmorInfo, .SpeedInfo, .ScoreInfo {
+.DamageInfo, .ArmorInfo, .SpeedInfo, .ScoreInfo, .playerInfo {
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   font-size: 14px;
   color: gray;
@@ -15,12 +15,16 @@
   padding-bottom: .75rem;
 }
 
+.goldIcon {
+  margin-bottom: -.25em;
+}
+
 .GoldInfo {
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   font-size: 14px;
   color: #ab8432;
   padding-top: .75rem;
-  padding-bottom: .75rem;
+  padding-bottom: .75em;
 }
 
 .playerImage {
