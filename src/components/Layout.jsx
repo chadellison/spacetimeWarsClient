@@ -160,7 +160,7 @@ class Layout extends React.Component {
   };
 
   handleKeyDown = (event) => {
-    const {currentPlayer, lastFired, showSelectionModal} = this.state;
+    const {currentPlayer, lastFired, showSelectionModal, shortestRoundTripTime} = this.state;
     const {explode} = currentPlayer;
 
     if (!explode && !showSelectionModal) {
@@ -169,7 +169,7 @@ class Layout extends React.Component {
       } else {
         const pressedKey = KEY_MAP[event.keyCode];
         if (!this.state[pressedKey]) {
-          keyDownEvent(pressedKey, lastFired, currentPlayer, this.handleGameEvent, this.updateState, this.updatePlayerState);
+          keyDownEvent(pressedKey, lastFired, currentPlayer, this.handleGameEvent, this.updateState, this.updatePlayerState, shortestRoundTripTime);
           this.setState({[pressedKey]: true})
         };
       };
@@ -177,11 +177,11 @@ class Layout extends React.Component {
   };
 
   handleKeyUp = (event) => {
-    const {currentPlayer} = this.state;
+    const {currentPlayer, shortestRoundTripTime} = this.state;
     const {explode, gameEvent} = currentPlayer;
     if (!explode && gameEvent !== 'waiting') {
       const pressedKey = KEY_MAP[event.keyCode];
-      keyUpEventPayload(currentPlayer, pressedKey, this.handleGameEvent, this.updateState, this.updatePlayerState)
+      keyUpEventPayload(currentPlayer, pressedKey, this.handleGameEvent, this.updateState, this.updatePlayerState, shortestRoundTripTime)
       this.setState({[pressedKey]: false});
     };
   };

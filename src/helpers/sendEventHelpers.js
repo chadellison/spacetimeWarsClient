@@ -3,24 +3,32 @@ import {
   canFire
 } from '../helpers/gameLogic.js';
 
-export const keyDownEvent = (pressedKey, lastFired, currentPlayer, handleGameEvent, updateState, updatePlayerState) => {
+export const keyDownEvent = (
+  pressedKey,
+  lastFired,
+  currentPlayer,
+  handleGameEvent,
+  updateState,
+  updatePlayerState,
+  shortestRoundTripTime
+) => {
   switch (pressedKey) {
     case 'space':
       handleSpaceBarEvent(currentPlayer, handleGameEvent, updateState, lastFired);
       break;
     case 'left':
     case 'right':
-      handleRotateEvent(currentPlayer, pressedKey, handleGameEvent, updatePlayerState);
+      handleRotateEvent(currentPlayer, pressedKey, handleGameEvent, updatePlayerState, shortestRoundTripTime);
       break;
     case 'up':
-      handleAccelerateEvent(currentPlayer, pressedKey, handleGameEvent, updatePlayerState);
+      handleAccelerateEvent(currentPlayer, pressedKey, handleGameEvent, updatePlayerState, shortestRoundTripTime);
       break;
     default:
       break;
   }
 }
 
-export const keyUpEventPayload = (currentPlayer, pressedKey, handleGameEvent, updateState, updatePlayerState) => {
+export const keyUpEventPayload = (currentPlayer, pressedKey, handleGameEvent, updateState, updatePlayerState, shortestRoundTripTime) => {
   if (['right', 'left'].includes(pressedKey) && currentPlayer) {
     handleGameEvent({...currentPlayer, gameEvent: pressedKey + 'Stop', rotate: 'none'});
   };
@@ -33,26 +41,25 @@ export const keyUpEventPayload = (currentPlayer, pressedKey, handleGameEvent, up
       trajectory: currentPlayer.angle
     }
     handleGameEvent(player);
-    updatePlayerState(player)
+    setTimeout(() => updatePlayerState(player), shortestRoundTripTime / 2)
   }
 
   if ('space' === pressedKey && currentPlayer) {
     const updatedPlayer = {...currentPlayer, gameEvent: 'fireStop', fire: false};
     handleGameEvent(updatedPlayer);
     updateState({currentPlayer: updatedPlayer});
-    updatePlayerState(updatedPlayer)
   };
 };
 
-const handleRotateEvent = (currentPlayer, pressedKey, handleGameEvent, updatePlayerState) => {
+const handleRotateEvent = (currentPlayer, pressedKey, handleGameEvent, updatePlayerState, shortestRoundTripTime) => {
   if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
     const player = {...currentPlayer, gameEvent: pressedKey, rotate: pressedKey};
     handleGameEvent(player);
-    updatePlayerState(player);
+    setTimeout(() => updatePlayerState(player), shortestRoundTripTime / 2)
   };
 };
 
-const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent, updatePlayerState) => {
+const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent, updatePlayerState, shortestRoundTripTime) => {
   if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
     const player = {
       ...currentPlayer,
@@ -61,7 +68,7 @@ const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent, update
       trajectory: currentPlayer.angle
     }
     handleGameEvent(player);
-    updatePlayerState(player);
+    setTimeout(() => updatePlayerState(player), shortestRoundTripTime / 2)
   };
 };
 
@@ -71,8 +78,7 @@ const handleSpaceBarEvent = (currentPlayer, handleGameEvent, updateState, lastFi
   } else {
     if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
       handleGameEvent({...currentPlayer, gameEvent: 'fire', fire: true, gold: currentPlayer.gold + 1, score: currentPlayer.score + 1});
-      const updatedPlayer = {...currentPlayer, fire: true};
-      updateState({lastFired: Date.now(), currentPlayer: updatedPlayer});
+      updateState({lastFired: Date.now()});
     };
   };
 };
