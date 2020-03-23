@@ -1,3 +1,37 @@
+.informationTitle {
+  margin-top: 1em;
+  font-size: 20px;
+  height: 30px;
+  color: white;
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  margin-left: 40%;
+  width: 20%;
+}
+
+.instructionControl {
+  color: #ffa109;
+  margin-right: 0.2em;
+}
+
+.creditTitle {
+  color: #ffa109;
+  margin-right: .5em;
+}
+
+.informationText {
+  height: 1.25em;
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-size: 18px;
+  padding: 0.25em;
+}
+
+.noteText {
+  height: 1.25em;
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-size: 14px;
+  padding: 0.25em;
+}
+
 .selectionModal {
   background-color: rgba(0,0,0,0.8);
   animation-name: slideDown;
@@ -9,6 +43,7 @@
   width: 60%;
   height: 80%;
   margin-left: 20%;
+  overflow: scroll;
   border-bottom: 1px solid #ffa109;
 }
 
@@ -25,6 +60,29 @@
   margin-left: 40%;
   width: 20%;
   transition: ease-in 1.5s;
+}
+
+.closeButton {
+  margin-top: 2em;
+  font-size: 20px;
+  height: 30px;
+  color: #2c66b2;
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  margin-left: 40%;
+  width: 20%;
+  transition: ease-in 1.5s;
+}
+
+.assetLink {
+  margin-left: 1em;
+  color: #2c66b2;
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  transition: ease-in 1.5s;
+}
+
+.closeButton:hover {
+  cursor: pointer;
+  box-shadow: 0 0 8px 0 rgba(0,0,0, 0.3);
 }
 
 .selectionButton:hover {

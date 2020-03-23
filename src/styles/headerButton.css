@@ -1,0 +1,14 @@
+.headerButton {
+  font-size: 16px;
+  margin-left: 4em;
+  color: #2c66b2;
+  transition: ease-out .3s;
+  display: inline-block;
+  width: 4em;
+}
+
+.headerButton:hover {
+  cursor: pointer;
+  opacity: 0.8;
+  transition: ease-in .3s;
+}

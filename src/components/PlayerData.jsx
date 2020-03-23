@@ -82,7 +82,7 @@ const renderHitPoints = (currentPlayer) => {
   }
 };
 
-const PlayerData = ({currentPlayer, clockDifference, updateState, showSelectionModal}) => {
+const PlayerData = ({currentPlayer, clockDifference, updateState}) => {
   if (currentPlayer.id) {
     const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
     let countDown = 0;

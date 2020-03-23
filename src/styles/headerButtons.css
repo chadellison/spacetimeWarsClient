@@ -1,0 +1,10 @@
+.headerButtons {
+  padding: 12px;
+  font-size: 16px;
+  color: #2c66b2;
+  transition: ease-out .3s;
+  width: 16em;
+  margin-top: -3em;
+  position: fixed;
+  margin-left: 80%;
+}

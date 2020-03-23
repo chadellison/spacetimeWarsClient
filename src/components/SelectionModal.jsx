@@ -1,5 +1,5 @@
-import React from 'react'
-import '../styles/selectionModal.css'
+import React from 'react';
+import '../styles/modal.css';
 import {Ship} from './Ship';
 import {Weapon} from './Weapon';
 import {Upgrade} from './Upgrade';
@@ -18,7 +18,7 @@ const handleClick = (updateState, handleGameEvent, currentPlayer) => {
     player = {...currentPlayer, gameEvent: 'shop'}
   }
   handleGameEvent(player);
-  updateState({currentPlayer: player, showSelectionModal: false});
+  updateState({currentPlayer: player, modal: null});
 };
 
 const renderOptions = (updatePlayerState, activeTab, page, currentPlayer) => {
@@ -112,7 +112,7 @@ const renderTabs = (activeTab, updateState, currentPlayer) => {
 };
 
 const SelectionModal = ({
-  showSelectionModal,
+  modal,
   updateState,
   handleGameEvent,
   activeTab,
@@ -121,7 +121,7 @@ const SelectionModal = ({
   updatePlayerState
 }) => {
   return (
-    <div className='selectionModal' hidden={!showSelectionModal}>
+    <div className='selectionModal' hidden={!modal}>
       <div className="modalTabs">
         {renderTabs(activeTab, updateState, currentPlayer)}
       </div>

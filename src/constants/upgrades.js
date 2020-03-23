@@ -8,7 +8,7 @@ export const UPGRADES = [
   {
     index: 0,
     price: 200,
-    name: 'Armor upgrade',
+    name: 'Armor',
     image: shield,
     description: 'Upgrades armor by 1 up to 5'
   },

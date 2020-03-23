@@ -4,7 +4,10 @@ import Cable from 'actioncable';
 import Canvas from './Canvas';
 import PlayerData from './PlayerData';
 import SelectionModal from './SelectionModal';
+import {InformationModal} from './InformationModal';
+import {CreditsModal} from './CreditsModal';
 import {GameButton} from './GameButton';
+import {HeaderButtons} from './HeaderButtons';
 import '../styles/styles.css';
 import {ANAIMATION_FRAME_RATE, REQUEST_COUNT} from '../constants/settings.js';
 import {KEY_MAP} from '../constants/keyMap.js';
@@ -34,7 +37,7 @@ const DEFAULT_STATE = {
   left: false,
   right: false,
   space: false,
-  showSelectionModal: false,
+  modal: null,
   activeTab: 'Ships',
   page: 1,
 };
@@ -128,7 +131,7 @@ class Layout extends React.Component {
 
   addPlayer = () => {
     return {
-      showSelectionModal: true,
+      modal: true,
       currentPlayer: {
         id: this.state.userId,
         gold: 1000,
@@ -153,17 +156,17 @@ class Layout extends React.Component {
 
   handleShopButton = () => {
     if (this.state.currentPlayer.id) {
-      this.updateState({showSelectionModal: true})
+      this.updateState({modal: true})
     } else {
       this.updateState(this.addPlayer());
     };
   };
 
   handleKeyDown = (event) => {
-    const {currentPlayer, lastFired, showSelectionModal, shortestRoundTripTime} = this.state;
+    const {currentPlayer, lastFired, modal, shortestRoundTripTime} = this.state;
     const {explode} = currentPlayer;
 
-    if (!explode && !showSelectionModal) {
+    if (!explode && !modal) {
       if (!currentPlayer.id) {
         this.updateState(this.addPlayer());
       } else {
@@ -220,40 +223,56 @@ class Layout extends React.Component {
     }
   };
 
-  render = () => {
+  renderModal = () => {
     const {
       page,
       userId,
-      players,
       activeTab,
+      currentPlayer,
+      modal
+    } = this.state;
+    if (modal === 'instructions') {
+      return <InformationModal updateState={this.updateState} />
+    } else if (modal === 'credits') {
+      return <CreditsModal updateState={this.updateState} />
+    } else {
+      return (
+        <SelectionModal
+          modal={modal}
+          updateState={this.updateState}
+          handleGameEvent={this.handleGameEvent}
+          userId={userId}
+          activeTab={activeTab}
+          page={page}
+          currentPlayer={currentPlayer}
+          updatePlayerState={this.updatePlayerState}
+        />
+      );
+    }
+  }
+
+  render = () => {
+    const {
+      players,
       currentPlayer,
       deployedWeapons,
       clockDifference,
-      showSelectionModal
+      modal
     } = this.state;
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
-        <h2>{showSelectionModal ? null : 'Space Wars'}</h2>
+        <h2>{modal ? null : 'Space Wars'}</h2>
         <div className='game row'>
-          <SelectionModal
-            showSelectionModal={showSelectionModal}
-            updateState={this.updateState}
-            handleGameEvent={this.handleGameEvent}
-            userId={userId}
-            activeTab={activeTab}
-            page={page}
-            currentPlayer={currentPlayer}
-            updatePlayerState={this.updatePlayerState}
-          />
+          {this.renderModal()}
           <GameButton
             buttonText={currentPlayer.id ? 'shop' : 'start'}
             handleShopButton={this.handleShopButton}
           />
+          <HeaderButtons updateState={this.updateState} />
           <PlayerData
             currentPlayer={currentPlayer}
             clockDifference={clockDifference}
             updateState={this.updateState}
-            showSelectionModal={showSelectionModal}
           />
           <Canvas
             players={players}
