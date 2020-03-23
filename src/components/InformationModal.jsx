@@ -3,7 +3,7 @@ import '../styles/modal.css';
 
 export const InformationModal = ({updateState}) => {
   return (
-    <div className='selectionModal'>
+    <div className="modal">
       <div className="informationTitle">How to play</div>
         <div className="informationText">Press any key to start or click the Start button</div>
         <div className="informationText">Select a Ship from the menu</div>

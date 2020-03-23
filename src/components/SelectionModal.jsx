@@ -121,7 +121,7 @@ const SelectionModal = ({
   updatePlayerState
 }) => {
   return (
-    <div className='selectionModal' hidden={!modal}>
+    <div className="modal" hidden={!modal}>
       <div className="modalTabs">
         {renderTabs(activeTab, updateState, currentPlayer)}
       </div>

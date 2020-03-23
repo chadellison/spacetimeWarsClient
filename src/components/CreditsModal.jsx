@@ -3,7 +3,7 @@ import '../styles/modal.css';
 
 export const CreditsModal = ({updateState}) => {
   return (
-    <div className='selectionModal'>
+    <div className='modal'>
       <div className="closeButton" onClick={() => updateState({modal: null})}>Close</div>
       <div className="informationTitle">Credits</div>
       <div className="informationText">
