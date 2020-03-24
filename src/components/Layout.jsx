@@ -131,7 +131,7 @@ class Layout extends React.Component {
 
   addPlayer = () => {
     return {
-      modal: true,
+      modal: 'selection',
       currentPlayer: {
         id: this.state.userId,
         gold: 1000,
@@ -143,27 +143,16 @@ class Layout extends React.Component {
     };
   }
 
-  updatePlayerState = (updatedPlayer) => {
-    const updatedPlayers = [...this.state.players].map((player) => {
-      if (player.id === updatedPlayer.id) {
-        player = updatedPlayer;
-      }
-      return player;
-    });
-
-    this.updateState({currentPlayer: updatedPlayer, players: updatedPlayers});
-  }
-
   handleShopButton = () => {
     if (this.state.currentPlayer.id) {
-      this.updateState({modal: true})
+      this.updateState({modal: 'selection'})
     } else {
       this.updateState(this.addPlayer());
     };
   };
 
   handleKeyDown = (event) => {
-    const {currentPlayer, lastFired, modal, shortestRoundTripTime} = this.state;
+    const {currentPlayer, lastFired, modal, shortestRoundTripTime, players} = this.state;
     const {explode} = currentPlayer;
 
     if (!explode && !modal) {
@@ -172,7 +161,7 @@ class Layout extends React.Component {
       } else {
         const pressedKey = KEY_MAP[event.keyCode];
         if (!this.state[pressedKey]) {
-          keyDownEvent(pressedKey, lastFired, currentPlayer, this.handleGameEvent, this.updateState, this.updatePlayerState, shortestRoundTripTime);
+          keyDownEvent(pressedKey, lastFired, currentPlayer, this.handleGameEvent, this.updateState, shortestRoundTripTime, players);
           this.setState({[pressedKey]: true})
         };
       };
@@ -180,11 +169,11 @@ class Layout extends React.Component {
   };
 
   handleKeyUp = (event) => {
-    const {currentPlayer, shortestRoundTripTime} = this.state;
+    const {currentPlayer, shortestRoundTripTime, players} = this.state;
     const {explode, gameEvent} = currentPlayer;
     if (!explode && gameEvent !== 'waiting') {
       const pressedKey = KEY_MAP[event.keyCode];
-      keyUpEventPayload(currentPlayer, pressedKey, this.handleGameEvent, this.updateState, this.updatePlayerState, shortestRoundTripTime)
+      keyUpEventPayload(currentPlayer, pressedKey, this.handleGameEvent, this.updateState, shortestRoundTripTime, players)
       this.setState({[pressedKey]: false});
     };
   };
@@ -235,17 +224,16 @@ class Layout extends React.Component {
       return <InformationModal updateState={this.updateState} />
     } else if (modal === 'credits') {
       return <CreditsModal updateState={this.updateState} />
-    } else {
+    } else if (modal === 'selection') {
       return (
         <SelectionModal
-          modal={modal}
           updateState={this.updateState}
           handleGameEvent={this.handleGameEvent}
           userId={userId}
           activeTab={activeTab}
           page={page}
           currentPlayer={currentPlayer}
-          updatePlayerState={this.updatePlayerState}
+          players={this.state.players}
         />
       );
     }

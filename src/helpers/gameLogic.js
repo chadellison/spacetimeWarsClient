@@ -132,7 +132,7 @@ const handleCollision = (weapon, players, handleGameEvent, currentPlayer) => {
       shipBoundingBoxes.forEach((center, index) => {
         const distance = findHypotenuse(center, weaponCenter);
         if ((index < 3 && distance < 18) || (index > 2 && distance < 23)) {
-          applyHit(player, weapon, players, handleGameEvent, currentPlayer);
+          applyHit(player, weapon, handleGameEvent, currentPlayer);
         }
       });
     };
@@ -140,27 +140,29 @@ const handleCollision = (weapon, players, handleGameEvent, currentPlayer) => {
   return weapon;
 }
 
-const applyHit = (player, weapon, players, handleGameEvent, currentPlayer) => {
+const applyHit = (player, weapon, handleGameEvent, currentPlayer) => {
   if (canAbsorbDamage(player.items)) {
     handleAbsorbDamage(player.items);
   } else {
     console.log('BLAM!');
-    updateCollisionData(player, weapon, players, handleGameEvent, currentPlayer)
+    updateCollisionData(player, weapon, handleGameEvent, currentPlayer)
   }
   weapon.removed = true
 };
 
-const updateCollisionData = (player, weapon, players, handleGameEvent, currentPlayer) => {
+const updateCollisionData = (player, weapon, handleGameEvent, currentPlayer) => {
   if (player.hitpoints > 0) {
     const damage = calculateDamage(weapon.damage, player.armor);
-    let bounty = Math.round(damage / 10);
-    player.hitpoints -= damage
-    if (player.hitpoints <= 0 && weapon.playerId === currentPlayer.id) {
-      bounty += Math.round(player.gold / 10 + 100);
-      handleGameEvent({id: player.id, gameEvent: 'remove'});
+    player.hitpoints -= damage;
+    if (weapon.playerId === currentPlayer.id) {
+      let bounty = Math.round(damage / 10);
+      if (player.hitpoints <= 0) {
+        bounty += Math.round(player.gold / 10 + 100);
+        handleGameEvent({id: player.id, gameEvent: 'remove'});
+      }
+      currentPlayer.gold += bounty;
+      currentPlayer.score += bounty;
     }
-    currentPlayer.gold += bounty
-    currentPlayer.score += bounty
   };
 };
 
@@ -258,4 +260,13 @@ const handleExplodeUpdate = (isExploding, explodeAnimation) => {
   } else {
     return {};
   }
+}
+
+export const getUpdatedPlayers = (updatedPlayer, players) => {
+  return players.map((player) => {
+    if (player.id === updatedPlayer.id) {
+      player = updatedPlayer;
+    }
+    return player;
+  });
 }

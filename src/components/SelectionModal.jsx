@@ -18,10 +18,10 @@ const handleClick = (updateState, handleGameEvent, currentPlayer) => {
     player = {...currentPlayer, gameEvent: 'shop'}
   }
   handleGameEvent(player);
-  updateState({currentPlayer: player, modal: null});
+  updateState({currentPlayer: player, modal: null, activeTab: 'Ships'});
 };
 
-const renderOptions = (updatePlayerState, activeTab, page, currentPlayer) => {
+const renderOptions = (activeTab, page, currentPlayer, players, updateState) => {
   switch (activeTab) {
     case 'Ships':
       const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
@@ -30,9 +30,10 @@ const renderOptions = (updatePlayerState, activeTab, page, currentPlayer) => {
           <Ship
             key={`ship${ship.index}`}
             imageSrc={ship.image}
-            updatePlayerState={updatePlayerState}
             currentPlayer={currentPlayer}
             ship={ship}
+            updateState={updateState}
+            players={players}
           />
         )
       });
@@ -43,9 +44,10 @@ const renderOptions = (updatePlayerState, activeTab, page, currentPlayer) => {
           <Weapon
             key={`weapon${weapon.index}`}
             imageSrc={weapon.selectionImage}
-            updatePlayerState={updatePlayerState}
-            currentPlayer={currentPlayer}
             weapon={weapon}
+            currentPlayer={currentPlayer}
+            players={players}
+            updateState={updateState}
           />
         )
       });
@@ -55,9 +57,10 @@ const renderOptions = (updatePlayerState, activeTab, page, currentPlayer) => {
           <Upgrade
             key={`upgrade${upgrade.index}`}
             imageSrc={upgrade.image}
-            updatePlayerState={updatePlayerState}
-            currentPlayer={currentPlayer}
             upgrade={upgrade}
+            currentPlayer={currentPlayer}
+            players={players}
+            updateState={updateState}
           />
         )
       });
@@ -67,9 +70,10 @@ const renderOptions = (updatePlayerState, activeTab, page, currentPlayer) => {
           <Item
             key={`item${item.index}`}
             imageSrc={item.image}
-            updatePlayerState={updatePlayerState}
-            currentPlayer={currentPlayer}
             item={item}
+            currentPlayer={currentPlayer}
+            players={players}
+            updateState={updateState}
           />
         )
       });
@@ -112,21 +116,20 @@ const renderTabs = (activeTab, updateState, currentPlayer) => {
 };
 
 const SelectionModal = ({
-  modal,
   updateState,
   handleGameEvent,
   activeTab,
   page,
   currentPlayer,
-  updatePlayerState
+  players
 }) => {
   return (
-    <div className="modal" hidden={!modal}>
+    <div className="modal">
       <div className="modalTabs">
         {renderTabs(activeTab, updateState, currentPlayer)}
       </div>
       {renderStart(updateState, handleGameEvent, currentPlayer)}
-      {renderOptions(updatePlayerState, activeTab, page, currentPlayer)}
+      {renderOptions(activeTab, page, currentPlayer, players, updateState)}
       <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />
     </div>
   );

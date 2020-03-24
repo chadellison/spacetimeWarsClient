@@ -1,9 +1,10 @@
 import React from 'react';
 import '../styles/ship.css';
+import {getUpdatedPlayers} from '../helpers/gameLogic.js';
 import {notEnoughResources, gong} from '../constants/settings.js';
 import {ITEMS} from '../constants/items.js';
 
-const handleClick = (updatePlayerState, currentPlayer, item) => {
+const handleClick = (currentPlayer, item, players, updateState) => {
   const gold = currentPlayer.gold - ITEMS[item.index].price;
   if (gold >= 0) {
     const player = {
@@ -15,17 +16,17 @@ const handleClick = (updatePlayerState, currentPlayer, item) => {
       gold: gold
     }
     gong.play();
-    updatePlayerState(player);
+    updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)});
   } else {
     notEnoughResources.play();
     console.log('Not enough gold');
   }
 };
 
-export const Item = ({updatePlayerState, imageSrc, currentPlayer, item}) => {
+export const Item = ({imageSrc, currentPlayer, item, players, updateState}) => {
   return (
     <div className="selection"
-      onClick={() => handleClick(updatePlayerState, currentPlayer, item)}>
+      onClick={() => handleClick(currentPlayer, item, players, updateState)}>
         <img id={item.index} src={imageSrc} alt="item" className="selectionImage"/>
         <div className="selectionData">
           {`${item.name}`}
