@@ -134,7 +134,7 @@ class Layout extends React.Component {
       modal: 'selection',
       currentPlayer: {
         id: this.state.userId,
-        gold: 1000,
+        gold: 10000,
         gameEvent: 'waiting',
         score: 0,
         items: {},

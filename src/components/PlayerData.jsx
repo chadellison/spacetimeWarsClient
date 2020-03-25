@@ -50,15 +50,25 @@ const renderGold = (type, value) => {
   };
 }
 
-const renderItems = (items) => {
+const renderItems = (items, clockDifference) => {
   return Object.values(items).map((item) => {
+    let elapsedTime = findElapsedTime(clockDifference, item.lastUpdated);
+    let countDown = 0;
+    if (elapsedTime < item.cooldown) {
+      countDown = Math.round((item.cooldown - elapsedTime) / 1000);
+    }
     return (
-      <img
-        key={'playerItem' + item.index}
-        src={ITEMS[item.index].image}
-        className="playerItem"
-        alt="playerItem"
-      />
+      <div className="playerItemData">
+        <div className="itemCountDown" hidden={countDown === 0 || countDown > 9}>
+          {countDown}
+        </div>
+        <img
+          key={'playerItem' + item.index}
+          className={`playerItemImage${countDown ? ' faded' : ''}`}
+          src={ITEMS[item.index].image}
+          alt="playerItem"
+        />
+      </div>
     )
   });
 }
@@ -102,7 +112,7 @@ const PlayerData = ({currentPlayer, clockDifference, updateState}) => {
           {renderData('Armor', currentPlayer.armor)}
           {renderData('Speed', currentPlayer.velocity)}
           {renderData('Score', currentPlayer.score)}
-          {renderItems(currentPlayer.items)}
+          {renderItems(currentPlayer.items, clockDifference)}
         </div>
       </div>
     );

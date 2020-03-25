@@ -61,8 +61,25 @@
   opacity: 0.5;
 }
 
-.playerItem {
+.playerItemData {
+  position: relative;
+  text-align: center;
+  display: inline-block;
+}
+
+.playerItemImage {
   width: 2em;
   border-radius: 7px;
-  display: inline-block;
+}
+
+.faded {
+  opacity: .5;
+}
+
+.itemCountDown {
+  margin-top: 0.85em;
+  margin-left: 0.75em;
+  color: red;
+  z-index: 1;
+  position: fixed;
 }

@@ -11,7 +11,7 @@ export const handleItems = (player) => {
       }
       break;
       case 1:
-      if (currentTime - item.lastUpdated >= item.cooldown) {
+      if (currentTime - item.lastUpdated >= item.cooldown && player.hitpoints < player.maxHitpoints) {
         item.lastUpdated = currentTime;
         const newHitpoints = Math.round(player.maxHitpoints * 0.01 + player.hitpoints);
         player.hitpoints = newHitpoints > player.maxHitpoints ? player.maxHitpoints : newHitpoints;
