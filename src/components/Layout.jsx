@@ -11,16 +11,9 @@ import {HeaderButtons} from './HeaderButtons';
 import '../styles/styles.css';
 import {ANAIMATION_FRAME_RATE, REQUEST_COUNT} from '../constants/settings.js';
 import {KEY_MAP} from '../constants/keyMap.js';
-import {
-  updatePlayer,
-  findElapsedTime,
-  updateGameState
-} from '../helpers/gameLogic.js';
-import {
-  keyDownEvent,
-  keyUpEventPayload
-} from '../helpers/sendEventHelpers.js';
-
+import {updatePlayer, findElapsedTime, updateGameState} from '../helpers/gameLogic.js';
+import {keyDownEvent, keyUpEventPayload} from '../helpers/sendEventHelpers.js';
+import {addPlayer} from '../helpers/playerHelpers.js';
 import {handleEventPayload} from '../helpers/receiveEventHelpers.js';
 import {handleAudio} from '../helpers/audioHelpers.js';
 
@@ -129,25 +122,11 @@ class Layout extends React.Component {
     this.setState(newState);
   }
 
-  addPlayer = () => {
-    return {
-      modal: 'selection',
-      currentPlayer: {
-        id: this.state.userId,
-        gold: 10000,
-        gameEvent: 'waiting',
-        score: 0,
-        items: {},
-        fire: false
-      }
-    };
-  }
-
   handleShopButton = () => {
     if (this.state.currentPlayer.id) {
       this.updateState({modal: 'selection'})
     } else {
-      this.updateState(this.addPlayer());
+      this.updateState(addPlayer(this.state.userId, this.state.players));
     };
   };
 
@@ -157,7 +136,7 @@ class Layout extends React.Component {
 
     if (!explode && !modal) {
       if (!currentPlayer.id) {
-        this.updateState(this.addPlayer());
+        this.updateState(addPlayer(this.state.userId, this.state.players));
       } else {
         const pressedKey = KEY_MAP[event.keyCode];
         if (!this.state[pressedKey]) {

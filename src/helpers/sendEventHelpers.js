@@ -83,7 +83,7 @@ const handleSpaceBarEvent = (currentPlayer, handleGameEvent, updateState, lastFi
     handleGameEvent({...currentPlayer, gameEvent: 'start', hitpoints: currentPlayer.maxHitpoints});
   } else {
     if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
-      handleGameEvent({...currentPlayer, gameEvent: 'fire', fire: true, gold: currentPlayer.gold + 1, score: currentPlayer.score + 1});
+      handleGameEvent({...currentPlayer, gameEvent: 'fire', fire: true});
       updateState({lastFired: Date.now()});
     };
   };
