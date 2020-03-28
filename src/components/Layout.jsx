@@ -83,14 +83,7 @@ class Layout extends React.Component {
   handleTimeResponse = (sentTime, timeData, iteration) => {
     const responseTime = Date.now();
     const roundTripTime = responseTime - sentTime;
-    console.log('round trip time ' + iteration, roundTripTime);
-    if (roundTripTime < this.state.shortestRoundTripTime) {
-      const clockDifference = timeData.difference - (roundTripTime / 2)
-      this.setState({
-        clockDifference: clockDifference,
-        shortestRoundTripTime: roundTripTime
-      });
-    }
+    this.handleClockUpdate(sentTime, timeData.difference);
 
     if (iteration > 0) {
       iteration -= 1
@@ -167,9 +160,23 @@ class Layout extends React.Component {
       currentPlayer
     );
 
+    this.handleClockUpdate(playerData.sentTime, playerData.timeDifference);
     handleAudio(playerData);
     this.setState(gameState);
   };
+
+  handleClockUpdate = (sentTime, difference) => {
+    const currentTime = Date.now();
+    const roundTripTime = currentTime - sentTime;
+    console.log('round trip time ', roundTripTime);
+    if (roundTripTime < this.state.shortestRoundTripTime) {
+      const clockDifference = difference - (roundTripTime / 2)
+      this.setState({
+        clockDifference: clockDifference,
+        shortestRoundTripTime: roundTripTime
+      });
+    }
+  }
 
   renderGame = () => {
     let players = [...this.state.players];

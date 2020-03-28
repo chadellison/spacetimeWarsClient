@@ -195,7 +195,7 @@ const findHypotenuse = (point, pointTwo) => {
 
 export const handleRepeatedFire = (player, handleGameEvent, lastFired, updateState) => {
   if (player.fire && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
-    handleGameEvent({...player, gameEvent: 'fire', fire: true});
+    handleGameEvent({...player, gameEvent: 'fire', fire: true, sentTime: Date.now()});
     updateState({lastFired: Date.now()});
   };
 };

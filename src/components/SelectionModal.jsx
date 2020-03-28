@@ -15,7 +15,7 @@ const handleClick = (updateState, handleGameEvent, currentPlayer) => {
   if (currentPlayer.gameEvent === 'waiting') {
     player = {...currentPlayer, gameEvent: 'start', hitpoints: currentPlayer.maxHitpoints}
   } else {
-    player = {...currentPlayer, gameEvent: 'shop'}
+    player = {...currentPlayer, gameEvent: 'shop', sentTime: Date.now()}
   }
   handleGameEvent(player);
   updateState({currentPlayer: player, modal: null, activeTab: 'Ships'});
