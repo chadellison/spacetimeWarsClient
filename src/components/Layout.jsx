@@ -22,7 +22,7 @@ const DEFAULT_STATE = {
   gameSocket: {},
   players: [],
   clockDifference: 0,
-  shortestRoundTripTime: 5000,
+  shortestRoundTripTime: 300,
   deployedWeapons: [],
   currentPlayer: {},
   lastFired: 0,
@@ -83,7 +83,7 @@ class Layout extends React.Component {
   handleTimeResponse = (sentTime, timeData, iteration) => {
     const responseTime = Date.now();
     const roundTripTime = responseTime - sentTime;
-    this.handleClockUpdate(sentTime, timeData.difference);
+    this.handleClockUpdate(roundTripTime, timeData.difference);
 
     if (iteration > 0) {
       iteration -= 1
@@ -152,22 +152,24 @@ class Layout extends React.Component {
 
   handleReceivedEvent = (playerData) => {
     const {players, clockDifference, deployedWeapons, currentPlayer} = this.state;
-    const gameState = handleEventPayload(
-      players,
-      playerData,
-      clockDifference,
-      deployedWeapons,
-      currentPlayer
-    );
+    const currentTime = Date.now();
+    const roundTripTime = currentTime - playerData.sentTime;
+    if (roundTripTime < 300 || !roundTripTime) {
+      const gameState = handleEventPayload(
+        players,
+        playerData,
+        clockDifference,
+        deployedWeapons,
+        currentPlayer
+      );
 
-    this.handleClockUpdate(playerData.sentTime, playerData.timeDifference);
-    handleAudio(playerData);
-    this.setState(gameState);
+      this.handleClockUpdate(roundTripTime, playerData.timeDifference);
+      handleAudio(playerData);
+      this.setState(gameState);
+    };
   };
 
-  handleClockUpdate = (sentTime, difference) => {
-    const currentTime = Date.now();
-    const roundTripTime = currentTime - sentTime;
+  handleClockUpdate = (roundTripTime, difference) => {
     console.log('round trip time ', roundTripTime);
     if (roundTripTime < this.state.shortestRoundTripTime) {
       const clockDifference = difference - (roundTripTime / 2)
