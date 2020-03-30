@@ -167,7 +167,7 @@ class Layout extends React.Component {
       handleAudio(playerData);
       this.setState(gameState);
     } else {
-      console.log('ROUND TRIP TIME: ' roundTripTime)
+      console.log('ROUND TRIP TIME: ', roundTripTime)
     };
   };
 
