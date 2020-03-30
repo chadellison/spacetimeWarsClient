@@ -124,7 +124,7 @@ class Layout extends React.Component {
   };
 
   handleKeyDown = (event) => {
-    const {currentPlayer, lastFired, modal, shortestRoundTripTime, players} = this.state;
+    const {currentPlayer, lastFired, modal, shortestRoundTripTime, players, clockDifference} = this.state;
     const {explode} = currentPlayer;
 
     if (!explode && !modal) {
@@ -133,7 +133,7 @@ class Layout extends React.Component {
       } else {
         const pressedKey = KEY_MAP[event.keyCode];
         if (!this.state[pressedKey]) {
-          keyDownEvent(pressedKey, lastFired, currentPlayer, this.handleGameEvent, this.updateState, shortestRoundTripTime, players);
+          keyDownEvent(pressedKey, lastFired, currentPlayer, this.handleGameEvent, this.updateState, shortestRoundTripTime, players, clockDifference);
           this.setState({[pressedKey]: true})
         };
       };
@@ -141,11 +141,11 @@ class Layout extends React.Component {
   };
 
   handleKeyUp = (event) => {
-    const {currentPlayer, shortestRoundTripTime, players} = this.state;
+    const {currentPlayer, shortestRoundTripTime, players, clockDifference} = this.state;
     const {explode, gameEvent} = currentPlayer;
     if (!explode && gameEvent !== 'waiting') {
       const pressedKey = KEY_MAP[event.keyCode];
-      keyUpEventPayload(currentPlayer, pressedKey, this.handleGameEvent, this.updateState, shortestRoundTripTime, players)
+      keyUpEventPayload(currentPlayer, pressedKey, this.handleGameEvent, this.updateState, shortestRoundTripTime, players, clockDifference)
       this.setState({[pressedKey]: false});
     };
   };
@@ -153,7 +153,7 @@ class Layout extends React.Component {
   handleReceivedEvent = (playerData) => {
     const {players, clockDifference, deployedWeapons, currentPlayer} = this.state;
     const currentTime = Date.now();
-    const roundTripTime = currentTime - playerData.sentTime;
+    const roundTripTime = currentTime + clockDifference - playerData.sentTime;
     if (roundTripTime < 300 || !roundTripTime) {
       const gameState = handleEventPayload(
         players,
@@ -166,6 +166,8 @@ class Layout extends React.Component {
       this.handleClockUpdate(roundTripTime, playerData.timeDifference);
       handleAudio(playerData);
       this.setState(gameState);
+    } else {
+      console.log('ROUND TRIP TIME: ' roundTripTime)
     };
   };
 
@@ -203,10 +205,10 @@ class Layout extends React.Component {
   renderModal = () => {
     const {
       page,
+      modal,
       userId,
       activeTab,
-      currentPlayer,
-      modal
+      currentPlayer
     } = this.state;
     if (modal === 'instructions') {
       return <InformationModal updateState={this.updateState} />

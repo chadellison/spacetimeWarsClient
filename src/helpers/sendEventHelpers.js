@@ -9,18 +9,19 @@ export const keyDownEvent = (
   handleGameEvent,
   updateState,
   shortestRoundTripTime,
-  players
+  players,
+  clockDifference
 ) => {
   switch (pressedKey) {
     case 'space':
-      handleSpaceBarEvent(currentPlayer, handleGameEvent, updateState, lastFired);
+      handleSpaceBarEvent(currentPlayer, handleGameEvent, updateState, lastFired, clockDifference);
       break;
     case 'left':
     case 'right':
-      handleRotateEvent(currentPlayer, pressedKey, handleGameEvent, shortestRoundTripTime, players, updateState);
+      handleRotateEvent(currentPlayer, pressedKey, handleGameEvent, shortestRoundTripTime, players, updateState, clockDifference);
       break;
     case 'up':
-      handleAccelerateEvent(currentPlayer, pressedKey, handleGameEvent, shortestRoundTripTime, players, updateState);
+      handleAccelerateEvent(currentPlayer, pressedKey, handleGameEvent, shortestRoundTripTime, players, updateState, clockDifference);
       break;
     default:
       break;
@@ -33,14 +34,15 @@ export const keyUpEventPayload = (
   handleGameEvent,
   updateState,
   shortestRoundTripTime,
-  players
+  players,
+  clockDifference
 ) => {
   if (['right', 'left'].includes(pressedKey) && currentPlayer) {
     handleGameEvent({
       ...currentPlayer,
       gameEvent: pressedKey + 'Stop',
       rotate: 'none',
-      sentTime: Date.now()
+      sentTime: Date.now() + clockDifference
     });
   };
 
@@ -50,7 +52,7 @@ export const keyUpEventPayload = (
       gameEvent: 'upStop',
       accelerate: false,
       trajectory: currentPlayer.angle,
-      sentTime: Date.now()
+      sentTime: Date.now() + clockDifference
     }
     handleGameEvent(player);
     setTimeout(() => updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)}), shortestRoundTripTime / 2);
@@ -61,43 +63,45 @@ export const keyUpEventPayload = (
       ...currentPlayer,
       gameEvent: 'fireStop',
       fire: false,
-      sentTime: Date.now()
+      sentTime: Date.now() + clockDifference
     };
     handleGameEvent(updatedPlayer);
     updateState({currentPlayer: updatedPlayer});
   };
 };
 
-const handleRotateEvent = (currentPlayer, pressedKey, handleGameEvent, shortestRoundTripTime, players, updateState) => {
+const handleRotateEvent = (currentPlayer, pressedKey, handleGameEvent, shortestRoundTripTime, players, updateState, clockDifference) => {
   if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
-    const player = {...currentPlayer, gameEvent: pressedKey, rotate: pressedKey, sentTime: Date.now()};
+    const player = {
+      ...currentPlayer,
+      gameEvent: pressedKey,
+      rotate: pressedKey,
+      sentTime: Date.now() + clockDifference};
     handleGameEvent(player);
     setTimeout(() => updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)}), shortestRoundTripTime / 2);
   };
 };
 
-const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent, shortestRoundTripTime, players, updateState) => {
+const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent, shortestRoundTripTime, players, updateState, clockDifference) => {
   if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
     const player = {
       ...currentPlayer,
       gameEvent: gameEvent,
       accelerate: true,
       trajectory: currentPlayer.angle,
-      sentTime: Date.now()
+      sentTime: Date.now() + clockDifference
     }
     handleGameEvent(player);
     setTimeout(() => updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)}), shortestRoundTripTime / 2);
   };
 };
 
-const handleSpaceBarEvent = (currentPlayer, handleGameEvent, updateState, lastFired) => {
+const handleSpaceBarEvent = (currentPlayer, handleGameEvent, updateState, lastFired, clockDifference) => {
   if (currentPlayer.gameEvent === 'waiting') {
     handleGameEvent({
       ...currentPlayer,
       gameEvent: 'start',
-      hitpoints:
-      currentPlayer.maxHitpoints,
-      sentTime: Date.now()
+      hitpoints: currentPlayer.maxHitpoints
     });
   } else {
     if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
@@ -105,9 +109,9 @@ const handleSpaceBarEvent = (currentPlayer, handleGameEvent, updateState, lastFi
         ...currentPlayer,
         gameEvent: 'fire',
         fire: true,
-        sentTime: Date.now()
+        sentTime: Date.now() + clockDifference
       });
-      updateState({lastFired: Date.now()});
+      updateState({lastFired: Date.now() + clockDifference});
     };
   };
 };

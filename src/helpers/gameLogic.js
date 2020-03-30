@@ -33,7 +33,7 @@ export const updateGameState = ({
       }
       player = updatePlayer(player, elapsedTime, clockDifference);
       if (player.id === currentPlayer.id) {
-        handleRepeatedFire(currentPlayer, handleGameEvent, lastFired, updateState);
+        handleRepeatedFire(currentPlayer, handleGameEvent, lastFired, updateState, clockDifference);
         currentPlayer = player;
       }
       handleWall(player);
@@ -193,9 +193,9 @@ const findHypotenuse = (point, pointTwo) => {
   return Math.round(Math.sqrt((point.x - pointTwo.x) ** 2 + (point.y - pointTwo.y) ** 2))
 };
 
-export const handleRepeatedFire = (player, handleGameEvent, lastFired, updateState) => {
+export const handleRepeatedFire = (player, handleGameEvent, lastFired, updateState, clockDifference) => {
   if (player.fire && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
-    handleGameEvent({...player, gameEvent: 'fire', fire: true, sentTime: Date.now()});
+    handleGameEvent({...player, gameEvent: 'fire', fire: true, sentTime: Date.now() + clockDifference});
     updateState({lastFired: Date.now()});
   };
 };
