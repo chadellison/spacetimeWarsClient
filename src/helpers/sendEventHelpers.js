@@ -3,17 +3,16 @@ import {canFire} from '../helpers/gameLogic.js';
 import {getUpdatedPlayers} from '../helpers/gameLogic.js';
 
 export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState) => {
-  const {currentPlayer, lastFired, clockDifference, players, shortestRoundTripTime} = gameState;
   switch (pressedKey) {
     case 'space':
       handleSpaceBarEvent(gameState, handleGameEvent, updateState);
       break;
     case 'left':
     case 'right':
-      handleRotateEvent(currentPlayer, pressedKey, handleGameEvent, shortestRoundTripTime, players, updateState, clockDifference);
+      handleRotateEvent(gameState, pressedKey, handleGameEvent, updateState);
       break;
     case 'up':
-      handleAccelerateEvent(currentPlayer, pressedKey, handleGameEvent, shortestRoundTripTime, players, updateState, clockDifference);
+      handleAccelerateEvent(gameState, pressedKey, handleGameEvent, updateState);
       break;
     default:
       break;
@@ -60,7 +59,8 @@ export const keyUpEventPayload = (
   };
 };
 
-const handleRotateEvent = (currentPlayer, pressedKey, handleGameEvent, shortestRoundTripTime, players, updateState, clockDifference) => {
+const handleRotateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
+  const {currentPlayer, clockDifference, shortestRoundTripTime, players} = gameState;
   if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
     const player = {
       ...currentPlayer,
@@ -68,15 +68,19 @@ const handleRotateEvent = (currentPlayer, pressedKey, handleGameEvent, shortestR
       rotate: pressedKey,
       sentTime: Date.now() + clockDifference};
     handleGameEvent(player);
-    setTimeout(() => updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)}), shortestRoundTripTime / 2);
+    setTimeout(() => updateState({
+      currentPlayer: player,
+      players: getUpdatedPlayers(player, players)
+    }), shortestRoundTripTime / 2);
   };
 };
 
-const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent, shortestRoundTripTime, players, updateState, clockDifference) => {
+const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
+  const {currentPlayer, clockDifference, shortestRoundTripTime, players} = gameState;
   if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
     const player = {
       ...currentPlayer,
-      gameEvent: gameEvent,
+      gameEvent: pressedKey,
       accelerate: true,
       trajectory: currentPlayer.angle,
       sentTime: Date.now() + clockDifference
