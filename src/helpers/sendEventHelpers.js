@@ -63,11 +63,7 @@ export const keyUpEventPayload = (
 const handleRotateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
   const {currentPlayer, clockDifference, shortestRoundTripTime, players} = gameState;
   if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
-    const player = {
-      ...currentPlayer,
-      gameEvent: pressedKey,
-      rotate: pressedKey,
-      sentTime: Date.now() + clockDifference};
+    const player = rotateEventPayload(currentPlayer, pressedKey, clockDifference);
     handleGameEvent(player);
     setTimeout(() => updateState({
       currentPlayer: player,
@@ -79,13 +75,7 @@ const handleRotateEvent = (gameState, pressedKey, handleGameEvent, updateState) 
 const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
   const {currentPlayer, clockDifference, shortestRoundTripTime, players} = gameState;
   if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
-    const player = {
-      ...currentPlayer,
-      gameEvent: pressedKey,
-      accelerate: true,
-      trajectory: currentPlayer.angle,
-      sentTime: Date.now() + clockDifference
-    }
+    const player = accelerateEventPayload(currentPlayer, pressedKey, clockDifference)
     handleGameEvent(player);
     setTimeout(() => updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)}), shortestRoundTripTime / 2);
   };
@@ -97,12 +87,7 @@ const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
     handleGameEvent(startEventPayload(currentPlayer))
   } else {
     if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
-      handleGameEvent({
-        ...currentPlayer,
-        gameEvent: 'fire',
-        fire: true,
-        sentTime: Date.now() + clockDifference
-      });
+      handleGameEvent(fireEventPayload(currentPlayer, clockDifference));
       updateState({lastFired: Date.now() + clockDifference});
     };
   };
@@ -117,5 +102,33 @@ export const startEventPayload = (player) => {
     angle: startData.angle,
     trajectory: startData.trajectory,
     hitpoints: player.maxHitpoints
+  };
+}
+
+export const fireEventPayload = (player, clockDifference) => {
+  return {
+    ...player,
+    gameEvent: 'fire',
+    fire: true,
+    sentTime: Date.now() + clockDifference
+  };
+}
+
+const accelerateEventPayload = (player, pressedKey, clockDifference) => {
+  return {
+    ...player,
+    gameEvent: pressedKey,
+    accelerate: true,
+    trajectory: player.angle,
+    sentTime: Date.now() + clockDifference
+  };
+}
+
+const rotateEventPayload = (player, pressedKey, clockDifference) => {
+  return {
+    ...player,
+    gameEvent: pressedKey,
+    rotate: pressedKey,
+    sentTime: Date.now() + clockDifference
   };
 }
