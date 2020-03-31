@@ -6,8 +6,7 @@ export const addPlayer = (userId, players) => {
       gold: handleStartingGold(players),
       gameEvent: 'waiting',
       score: 0,
-      items: {},
-      fire: false
+      items: {}
     }
   };
 }

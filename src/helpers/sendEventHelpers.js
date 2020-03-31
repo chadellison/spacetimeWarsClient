@@ -52,7 +52,6 @@ export const keyUpEventPayload = (
     const updatedPlayer = {
       ...currentPlayer,
       gameEvent: 'fireStop',
-      fire: false,
       sentTime: Date.now() + clockDifference
     };
     handleGameEvent(updatedPlayer);
@@ -109,7 +108,6 @@ export const fireEventPayload = (player, clockDifference) => {
   return {
     ...player,
     gameEvent: 'fire',
-    fire: true,
     sentTime: Date.now() + clockDifference
   };
 }

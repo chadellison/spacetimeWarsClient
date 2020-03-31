@@ -193,7 +193,8 @@ class Layout extends React.Component {
         handleGameEvent: this.handleGameEvent,
         lastFired: this.state.lastFired,
         updateState: this.updateState,
-        currentPlayer: currentPlayer
+        currentPlayer: currentPlayer,
+        spaceKeyPressed: this.state.space
       }
       const updatedGameState = updateGameState(gameData)
       this.setState(updatedGameState);
