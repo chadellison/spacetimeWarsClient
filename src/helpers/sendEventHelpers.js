@@ -2,19 +2,11 @@ import {WEAPONS} from '../constants/weapons.js';
 import {canFire} from '../helpers/gameLogic.js';
 import {getUpdatedPlayers} from '../helpers/gameLogic.js';
 
-export const keyDownEvent = (
-  pressedKey,
-  lastFired,
-  currentPlayer,
-  handleGameEvent,
-  updateState,
-  shortestRoundTripTime,
-  players,
-  clockDifference
-) => {
+export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState) => {
+  const {currentPlayer, lastFired, clockDifference, players, shortestRoundTripTime} = gameState;
   switch (pressedKey) {
     case 'space':
-      handleSpaceBarEvent(currentPlayer, handleGameEvent, updateState, lastFired, clockDifference);
+      handleSpaceBarEvent(gameState, handleGameEvent, updateState);
       break;
     case 'left':
     case 'right':
@@ -29,14 +21,12 @@ export const keyDownEvent = (
 }
 
 export const keyUpEventPayload = (
-  currentPlayer,
   pressedKey,
+  gameState,
   handleGameEvent,
-  updateState,
-  shortestRoundTripTime,
-  players,
-  clockDifference
+  updateState
 ) => {
+  const {currentPlayer, clockDifference, shortestRoundTripTime, players} = gameState;
   if (['right', 'left'].includes(pressedKey) && currentPlayer) {
     handleGameEvent({
       ...currentPlayer,
@@ -96,7 +86,8 @@ const handleAccelerateEvent = (currentPlayer, gameEvent, handleGameEvent, shorte
   };
 };
 
-const handleSpaceBarEvent = (currentPlayer, handleGameEvent, updateState, lastFired, clockDifference) => {
+const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
+  const {currentPlayer, lastFired, clockDifference} = gameState;
   if (currentPlayer.gameEvent === 'waiting') {
     handleGameEvent({
       ...currentPlayer,
