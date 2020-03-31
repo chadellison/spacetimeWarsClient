@@ -1,6 +1,7 @@
 import {WEAPONS} from '../constants/weapons.js';
 import {canFire} from '../helpers/gameLogic.js';
 import {getUpdatedPlayers} from '../helpers/gameLogic.js';
+import {START_DATA} from '../constants/settings.js';
 
 export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState) => {
   switch (pressedKey) {
@@ -93,11 +94,7 @@ const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateSta
 const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
   const {currentPlayer, lastFired, clockDifference} = gameState;
   if (currentPlayer.gameEvent === 'waiting') {
-    handleGameEvent({
-      ...currentPlayer,
-      gameEvent: 'start',
-      hitpoints: currentPlayer.maxHitpoints
-    });
+    handleGameEvent(startEventPayload(currentPlayer))
   } else {
     if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
       handleGameEvent({
@@ -110,3 +107,15 @@ const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
     };
   };
 };
+
+export const startEventPayload = (player) => {
+  const startData = START_DATA[Math.floor(Math.random() * START_DATA.length)];
+  return {
+    ...player,
+    gameEvent: 'start',
+    location: startData.location,
+    angle: startData.angle,
+    trajectory: startData.trajectory,
+    hitpoints: player.maxHitpoints
+  };
+}

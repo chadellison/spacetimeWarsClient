@@ -9,11 +9,12 @@ import {ITEMS} from '../constants/items.js';
 import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
 import {UPGRADES} from '../constants/upgrades.js';
+import {startEventPayload} from '../helpers/sendEventHelpers.js';
 
 const handleClick = (updateState, handleGameEvent, currentPlayer) => {
   let player;
   if (currentPlayer.gameEvent === 'waiting') {
-    player = {...currentPlayer, gameEvent: 'start', hitpoints: currentPlayer.maxHitpoints}
+    player = startEventPayload(currentPlayer);
   } else {
     player = {...currentPlayer, gameEvent: 'shop', sentTime: Date.now()}
   }

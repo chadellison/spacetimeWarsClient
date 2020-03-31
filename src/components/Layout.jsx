@@ -166,12 +166,11 @@ class Layout extends React.Component {
       handleAudio(playerData);
       this.setState(gameState);
     } else {
-      console.log('ROUND TRIP TIME: ', roundTripTime)
+      console.log('SLOW ROUND TRIP TIME: ', roundTripTime)
     };
   };
 
   handleClockUpdate = (roundTripTime, difference) => {
-    console.log('round trip time ', roundTripTime);
     if (roundTripTime < this.state.shortestRoundTripTime) {
       const clockDifference = difference - (roundTripTime / 2)
       this.setState({
