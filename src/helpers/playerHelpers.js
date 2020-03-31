@@ -1,4 +1,7 @@
+import {START_DATA} from '../constants/settings.js';
+
 export const addPlayer = (userId, players) => {
+  const startData = START_DATA[Math.floor(Math.random() * START_DATA.length)];
   return {
     modal: 'selection',
     currentPlayer: {
@@ -7,7 +10,10 @@ export const addPlayer = (userId, players) => {
       gameEvent: 'waiting',
       score: 0,
       items: {},
-      fire: false
+      fire: false,
+      location: startData.location,
+      angle: startData.angle,
+      trajectory: startData.trajectory
     }
   };
 }
