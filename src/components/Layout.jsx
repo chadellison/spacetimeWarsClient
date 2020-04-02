@@ -151,23 +151,16 @@ class Layout extends React.Component {
 
   handleReceivedEvent = (playerData) => {
     const {players, clockDifference, deployedWeapons, currentPlayer} = this.state;
-    const currentTime = Date.now();
-    const roundTripTime = currentTime + clockDifference - playerData.sentTime;
-    if (roundTripTime < 300 || !roundTripTime) {
-      const gameState = handleEventPayload(
-        players,
-        playerData,
-        clockDifference,
-        deployedWeapons,
-        currentPlayer
-      );
+    const gameState = handleEventPayload(
+      players,
+      playerData,
+      clockDifference,
+      deployedWeapons,
+      currentPlayer
+    );
 
-      this.handleClockUpdate(roundTripTime, playerData.timeDifference);
-      handleAudio(playerData);
-      this.setState(gameState);
-    } else {
-      console.log('SLOW ROUND TRIP TIME: ', roundTripTime)
-    };
+    handleAudio(playerData);
+    this.setState(gameState);
   };
 
   handleClockUpdate = (roundTripTime, difference) => {

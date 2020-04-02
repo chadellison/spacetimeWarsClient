@@ -16,7 +16,7 @@ const handleClick = (updateState, handleGameEvent, currentPlayer) => {
   if (currentPlayer.gameEvent === 'waiting') {
     player = startEventPayload(currentPlayer);
   } else {
-    player = {...currentPlayer, gameEvent: 'shop', sentTime: Date.now()}
+    player = {...currentPlayer, gameEvent: 'shop'}
   }
   handleGameEvent(player);
   updateState({currentPlayer: player, modal: null, activeTab: 'Ships'});

@@ -10,7 +10,6 @@ import {
 import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
-import {fireEventPayload} from '../helpers/sendEventHelpers';
 
 export const updateGameState = ({
   players,
@@ -193,7 +192,7 @@ const findHypotenuse = (point, pointTwo) => {
 
 export const handleRepeatedFire = (player, handleGameEvent, lastFired, updateState, clockDifference, spaceKeyPressed) => {
   if (spaceKeyPressed && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
-    handleGameEvent(fireEventPayload(player, clockDifference));
+    handleGameEvent({...player, gameEvent: 'fire'});
     updateState({lastFired: Date.now()});
   };
 };

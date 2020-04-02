@@ -26,13 +26,12 @@ export const keyUpEventPayload = (
   handleGameEvent,
   updateState
 ) => {
-  const {currentPlayer, clockDifference, shortestRoundTripTime, players} = gameState;
+  const {currentPlayer, shortestRoundTripTime, players} = gameState;
   if (['right', 'left'].includes(pressedKey) && currentPlayer) {
     handleGameEvent({
       ...currentPlayer,
       gameEvent: pressedKey + 'Stop',
-      rotate: 'none',
-      sentTime: Date.now() + clockDifference
+      rotate: 'none'
     });
   };
 
@@ -41,8 +40,7 @@ export const keyUpEventPayload = (
       ...currentPlayer,
       gameEvent: 'upStop',
       accelerate: false,
-      trajectory: currentPlayer.angle,
-      sentTime: Date.now() + clockDifference
+      trajectory: currentPlayer.angle
     }
     handleGameEvent(player);
     setTimeout(() => updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)}), shortestRoundTripTime / 2);
@@ -51,8 +49,7 @@ export const keyUpEventPayload = (
   if ('space' === pressedKey && currentPlayer) {
     const updatedPlayer = {
       ...currentPlayer,
-      gameEvent: 'fireStop',
-      sentTime: Date.now() + clockDifference
+      gameEvent: 'fireStop'
     };
     handleGameEvent(updatedPlayer);
     updateState({currentPlayer: updatedPlayer});
@@ -60,9 +57,9 @@ export const keyUpEventPayload = (
 };
 
 const handleRotateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
-  const {currentPlayer, clockDifference, shortestRoundTripTime, players} = gameState;
+  const {currentPlayer, shortestRoundTripTime, players} = gameState;
   if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
-    const player = rotateEventPayload(currentPlayer, pressedKey, clockDifference);
+    const player = rotateEventPayload(currentPlayer, pressedKey);
     handleGameEvent(player);
     setTimeout(() => updateState({
       currentPlayer: player,
@@ -72,22 +69,22 @@ const handleRotateEvent = (gameState, pressedKey, handleGameEvent, updateState) 
 };
 
 const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
-  const {currentPlayer, clockDifference, shortestRoundTripTime, players} = gameState;
+  const {currentPlayer, shortestRoundTripTime, players} = gameState;
   if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
-    const player = accelerateEventPayload(currentPlayer, pressedKey, clockDifference)
+    const player = accelerateEventPayload(currentPlayer, pressedKey)
     handleGameEvent(player);
     setTimeout(() => updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)}), shortestRoundTripTime / 2);
   };
 };
 
 const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
-  const {currentPlayer, lastFired, clockDifference} = gameState;
+  const {currentPlayer, lastFired} = gameState;
   if (currentPlayer.gameEvent === 'waiting') {
     handleGameEvent(startEventPayload(currentPlayer))
   } else {
     if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
-      handleGameEvent(fireEventPayload(currentPlayer, clockDifference));
-      updateState({lastFired: Date.now() + clockDifference});
+      handleGameEvent({...currentPlayer, gameEvent: 'fire'});
+      updateState({lastFired: Date.now()});
     };
   };
 };
@@ -104,29 +101,15 @@ export const startEventPayload = (player) => {
   };
 }
 
-export const fireEventPayload = (player, clockDifference) => {
-  return {
-    ...player,
-    gameEvent: 'fire',
-    sentTime: Date.now() + clockDifference
-  };
-}
-
-const accelerateEventPayload = (player, pressedKey, clockDifference) => {
+const accelerateEventPayload = (player, pressedKey) => {
   return {
     ...player,
     gameEvent: pressedKey,
     accelerate: true,
-    trajectory: player.angle,
-    sentTime: Date.now() + clockDifference
+    trajectory: player.angle
   };
-}
+};
 
-const rotateEventPayload = (player, pressedKey, clockDifference) => {
-  return {
-    ...player,
-    gameEvent: pressedKey,
-    rotate: pressedKey,
-    sentTime: Date.now() + clockDifference
-  };
+const rotateEventPayload = (player, pressedKey) => {
+  return {...player, gameEvent: pressedKey, rotate: pressedKey};
 }
