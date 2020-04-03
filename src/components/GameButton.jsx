@@ -1,8 +1,8 @@
 import React from 'react';
 import '../styles/gameButton.css';
 
-export const GameButton = ({handleShopButton, buttonText}) => {
+export const GameButton = ({onClick, buttonText, className}) => {
   return (
-    <div className="gameButton" onClick={handleShopButton}>{buttonText}</div>
+    <div className={className} onClick={onClick}>{buttonText}</div>
   );
 };

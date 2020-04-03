@@ -1,12 +1,20 @@
 import React from 'react';
 import '../styles/headerButtons.css';
-import {HeaderButton} from './HeaderButton';
+import {GameButton} from './GameButton';
 
 export const HeaderButtons = ({updateState}) => {
   return (
     <div className="headerButtons">
-      <HeaderButton buttonText={'instructions'} updateState={updateState} />
-      <HeaderButton buttonText={'credits'} updateState={updateState} />
+      <GameButton
+        buttonText={'instructions'}
+        onClick={() => updateState({modal: 'instructions'})}
+        className="headerButton"
+      />
+      <GameButton
+        buttonText={'credits'}
+        onClick={() => updateState({modal: 'credits'})}
+        className="headerButton"
+      />
     </div>
   );
 };

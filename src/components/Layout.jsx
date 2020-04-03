@@ -158,7 +158,8 @@ class Layout extends React.Component {
         playerData,
         clockDifference,
         deployedWeapons,
-        currentPlayer
+        currentPlayer,
+        elapsedTime
       );
 
       handleAudio(playerData);
@@ -241,7 +242,8 @@ class Layout extends React.Component {
           {this.renderModal()}
           <GameButton
             buttonText={currentPlayer.id ? 'shop' : 'start'}
-            handleShopButton={this.handleShopButton}
+            onClick={this.handleShopButton}
+            className={'gameButton'}
           />
           <HeaderButtons updateState={this.updateState} />
           <PlayerData

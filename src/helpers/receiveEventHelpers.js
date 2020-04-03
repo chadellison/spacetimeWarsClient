@@ -1,8 +1,4 @@
-import {
-  findElapsedTime,
-  handleFireWeapon,
-  updatePlayer
-} from '../helpers/gameLogic.js';
+import {handleFireWeapon, updatePlayer} from '../helpers/gameLogic.js';
 
 export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayer, elapsedTime) => {
   switch (playerData.gameEvent) {
