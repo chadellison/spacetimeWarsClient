@@ -11,7 +11,7 @@ const renderShip = (currentPlayer) => {
   if (currentPlayer.shipIndex || currentPlayer.shipIndex === 0) {
   let image = SHIPS[currentPlayer.shipIndex].image
     return (
-      <img className="playerLivesShip"
+      <img className="playerShip"
         src={image}
         alt="ship"
       />

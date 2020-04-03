@@ -34,18 +34,20 @@
   margin-bottom: 1rem;
 }
 
-.playerLivesShip {
-  width: 6em;
+.playerShip {
+  width: 3em;
   margin-top: 1.5em;
-  margin-bottom: .5em;
+  margin-bottom: 1em;
   display: inline-block;
+  transform: rotate(270deg);
 }
 
 .playerInfoWeapon {
-  width: 3.5em;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-  display: block;
+  width: 2.5em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  display: inline-block;
+  transform: rotate(270deg);
 }
 
 .waitCountDown {
