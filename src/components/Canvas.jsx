@@ -8,7 +8,7 @@ import {
   BOARD_WIDTH,
   BOARD_HEIGHT
 } from '../constants/settings.js';
-import {SHIPS} from '../constants/ships.js';
+import {SHIPS, SUPPLY_SHIP} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
 
 class Canvas extends React.Component {
@@ -40,6 +40,7 @@ class Canvas extends React.Component {
     const bomb = this.refs.bomb
     const laser = this.refs.laser
     const blueFire = this.refs.blueFire
+    const supplyShip = this.refs.supplyShip
     const explosion = this.refs.explosion
 
     this.setState({
@@ -65,13 +66,14 @@ class Canvas extends React.Component {
       laser: laser,
       blueFire: blueFire,
       explosion: explosion,
+      supplyShip: supplyShip,
       halfWindowWidth: Math.round(window.innerWidth / 2),
       halfWindowHeight: Math.round(window.innerHeight / 2)
     });
   }
 
   handleImage = (player) => {
-    let imageReference = SHIPS[player.shipIndex].name
+    let imageReference = player.id === 'ai' ? 'supplyShip' : SHIPS[player.shipIndex].name
     if (canAbsorbDamage(player.items)) {
       imageReference += 'Absorb';
     }
@@ -123,7 +125,8 @@ class Canvas extends React.Component {
               src={ship.image}
               className="hidden"
               alt={ship.name}
-              key={`ship${index}`}/>
+              key={`ship${index}`}
+            />
           );
         })}
         {SHIPS.map((ship, index) => {
@@ -132,7 +135,8 @@ class Canvas extends React.Component {
               src={ship.absorbImage}
               className="hidden"
               alt={`${ship.name} Absorb`}
-              key={`ship${index}Absorb`}/>
+              key={`ship${index}Absorb`}
+            />
           );
         })}
         {WEAPONS.map((weapon, index) => {
@@ -145,6 +149,7 @@ class Canvas extends React.Component {
             />
           );
         })}
+        <img ref={SUPPLY_SHIP.name} src={SUPPLY_SHIP.image} className="hidden" alt={SUPPLY_SHIP.name} />
         <img ref="explosion" src={explodeAnimation} className="hidden" alt="explosion" />
       </div>
     );

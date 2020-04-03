@@ -11,6 +11,7 @@ import carrierShip from '../images/carrierShip.png';
 import carrierShipAbsorb from '../images/carrierShipAbsorb.png';
 import stealthShip from '../images/stealthShip.png';
 import stealthShipAbsorb from '../images/stealthShipAbsorb.png';
+import supplyShip from '../images/supplyShip.png';
 
 export const SHIPS = [
   {
@@ -80,3 +81,11 @@ export const SHIPS = [
     absorbImage: stealthShipAbsorb
   }
 ];
+
+export const SUPPLY_SHIP = {
+  index: 5,
+  name: 'supplyShip',
+  armor: 0,
+  shipCenter: {x: 60, y: 34},
+  image: supplyShip
+}

@@ -17,9 +17,9 @@ export const SPRITE_ROW_COUNT = 8;
 export const SPRITE_COLUMN_COUNT = 6;
 export const START_DATA = [
   { location: {x: 60, y: 60}, angle: 0, trajectory: 0},
-  { location: {x: 60, y: BOARD_HEIGHT - 80}, angle: 0, trajectory: 0},
-  { location: {x: BOARD_WIDTH - 60, y: 60}, angle: 180, trajectory: 180},
-  { location: {x: BOARD_WIDTH - 60, y: BOARD_HEIGHT - 80}, angle: 180, trajectory: 180}
+  { location: {x: 60, y: BOARD_HEIGHT - 80}, angle: 1, trajectory: 0},
+  { location: {x: BOARD_WIDTH - 60, y: 60}, angle: 181, trajectory: 180},
+  { location: {x: BOARD_WIDTH - 60, y: BOARD_HEIGHT - 80}, angle: 181, trajectory: 180}
 ];
 
 export const thruster = new Audio(thrusterAudio);

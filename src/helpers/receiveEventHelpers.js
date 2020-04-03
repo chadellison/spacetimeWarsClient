@@ -7,11 +7,16 @@ import {
 export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
   switch (playerData.gameEvent) {
     case 'start':
+    case 'supplyShip':
       return {players: [...players, playerData]};
     case 'remove':
       return handleRemoveEvent(players, playerData, currentPlayer);
     default:
-      return handleUpdateEvent(players, playerData, clockDifference, deployedWeapons, currentPlayer);
+      let allPlayers = [...players];
+      if (players.filter((player => player.id === playerData.id)).length === 0) {
+        allPlayers = [...players, playerData];
+      };
+      return handleUpdateEvent(allPlayers, playerData, clockDifference, deployedWeapons, currentPlayer);
   };
 }
 

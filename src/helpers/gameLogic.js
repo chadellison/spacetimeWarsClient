@@ -25,8 +25,12 @@ export const updateGameState = ({
   let updatedPlayers = [];
   players.forEach((player) => {
     if (!removePlayer(player.explodeAnimation)) {
-      if (player.hitpoints <= 0 && !player.explode && currentPlayer.id === player.id) {
-        handleGameEvent({id: currentPlayer.id, gameEvent: 'remove'});
+      if (player.hitpoints <= 0 && !player.explode) {
+        if (currentPlayer.id === player.id) {
+          handleGameEvent({id: currentPlayer.id, gameEvent: 'remove'});
+        } else if (player.id === 'ai') {
+          handleGameEvent({id: 'ai', gameEvent: 'remove'});
+        };
       }
       player = updatePlayer(player, elapsedTime, clockDifference);
       if (player.id === currentPlayer.id) {
@@ -109,7 +113,7 @@ const removeOutOfBoundsShots = (weapons) => {
 };
 
 const findShipBoundingBoxes = (player) => {
-  const startCenter = SHIPS[player.shipIndex].shipCenter;
+  const startCenter = player.id === 'ai' ? {x: 60, y: 30} : SHIPS[player.shipIndex].shipCenter;
   const shipCenter = {x: player.location.x + startCenter.x, y: player.location.y + startCenter.y}
 
   return [
@@ -159,7 +163,7 @@ const updateCollisionData = (player, weapon, handleGameEvent, currentPlayer) => 
       }
       currentPlayer.gold += bounty;
       currentPlayer.score += bounty;
-    }
+    };
   };
 };
 
