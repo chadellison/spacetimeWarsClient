@@ -1,11 +1,10 @@
 import React from 'react';
-import '../styles/shipIcon.css';
 import {SHIPS} from '../constants/ships.js';
 
-export const ShipIcon = ({shipIndex}) => {
+export const ShipIcon = ({shipIndex, className}) => {
   let image = SHIPS[shipIndex].image
   return (
-    <img className="playerShip"
+    <img className={className}
       src={image}
       alt="ship"
     />

@@ -2,7 +2,7 @@
 
 }
 
-.playerHitpoins {
+.opponentInfo {
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   font-size: 14px;
   color: gray;
@@ -10,10 +10,14 @@
   padding-bottom: .75rem;
 }
 
-.playerScore {
-  font-family: 'Pacifico', Sans, Lato, Droid Sans;
-  font-size: 14px;
-  color: gray;
-  padding-top: .75rem;
-  padding-bottom: .75rem;
+.opponentShip {
+  width: 2em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  display: inline-block;
+  transform: rotate(270deg);
+}
+
+.opponentInfoWrapper {
+  display: inline-block;
 }
