@@ -1,0 +1,19 @@
+.playerStat {
+
+}
+
+.playerHitpoins {
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-size: 14px;
+  color: gray;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+}
+
+.playerScore {
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-size: 14px;
+  color: gray;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+}

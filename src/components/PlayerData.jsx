@@ -1,21 +1,17 @@
 import React from "react";
 import '../styles/playerData.css';
-import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
 import {ITEMS} from '../constants/items.js';
 import gold from "../images/gold.png";
-import {Hitpoints} from './Hitpoints'
+import {Hitpoints} from './Hitpoints';
+import {GameButton} from './GameButton';
+import {Stat} from './Stat';
+import {ShipIcon} from './ShipIcon';
 import {findElapsedTime} from '../helpers/gameLogic.js';
 
 const renderShip = (currentPlayer) => {
   if (currentPlayer.shipIndex || currentPlayer.shipIndex === 0) {
-  let image = SHIPS[currentPlayer.shipIndex].image
-    return (
-      <img className="playerShip"
-        src={image}
-        alt="ship"
-      />
-    );
+    return <ShipIcon shipIndex={currentPlayer.shipIndex}/>
   };
 }
 
@@ -92,7 +88,17 @@ const renderHitPoints = (currentPlayer) => {
   }
 };
 
-const PlayerData = ({currentPlayer, clockDifference, updateState}) => {
+const renderPlayerStats = (showPlayerStats, players, currentPlayerId) => {
+  if (showPlayerStats) {
+    return players.filter((player) => player.id !== currentPlayerId).map((player) => {
+      return <Stat player={player} key={`playerStats${player.id}`} />
+    });
+  } else {
+    return null;
+  }
+};
+
+const PlayerData = ({currentPlayer, clockDifference, updateState, showPlayerStats, players}) => {
   if (currentPlayer.id) {
     const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
     let countDown = 0;
@@ -113,6 +119,12 @@ const PlayerData = ({currentPlayer, clockDifference, updateState}) => {
           {renderData('Speed', currentPlayer.velocity)}
           {renderData('Score', currentPlayer.score)}
           {renderItems(currentPlayer.items, clockDifference)}
+          <GameButton
+            className={'playerStatsButton'}
+            onClick={() => updateState({showPlayerStats: !showPlayerStats})}
+            buttonText={showPlayerStats ? 'hide stats' : 'stats'}
+          />
+          {renderPlayerStats(showPlayerStats, players, currentPlayer.id)}
         </div>
       </div>
     );

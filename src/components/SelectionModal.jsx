@@ -4,6 +4,7 @@ import {Ship} from './Ship';
 import {Weapon} from './Weapon';
 import {Upgrade} from './Upgrade';
 import {Item} from './Item';
+import {GameButton} from './GameButton';
 import {PaginateButton} from './PaginateButton';
 import {ITEMS} from '../constants/items.js';
 import {SHIPS} from '../constants/ships.js';
@@ -86,10 +87,11 @@ const renderOptions = (activeTab, page, currentPlayer, players, updateState) => 
 const renderStart = (updateState, handleGameEvent, currentPlayer) => {
   if (currentPlayer.shipIndex !== undefined && currentPlayer.weaponIndex !== undefined && currentPlayer.gameEvent !== 'remove') {
     return (
-      <div className="selectionButton"
-        onClick={() => handleClick(updateState, handleGameEvent, currentPlayer)}>
-        Start
-      </div>
+      <GameButton
+        className={'selectionButton'}
+        onClick={() => handleClick(updateState, handleGameEvent, currentPlayer)}
+        buttonText={'Start'}
+      />
     );
   } else {
     return null;

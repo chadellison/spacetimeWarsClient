@@ -33,6 +33,7 @@ const DEFAULT_STATE = {
   modal: null,
   activeTab: 'Ships',
   page: 1,
+  showPlayerStats: false
 };
 
 class Layout extends React.Component {
@@ -229,11 +230,12 @@ class Layout extends React.Component {
 
   render = () => {
     const {
+      modal,
       players,
       currentPlayer,
       deployedWeapons,
       clockDifference,
-      modal
+      showPlayerStats
     } = this.state;
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
@@ -250,6 +252,8 @@ class Layout extends React.Component {
             currentPlayer={currentPlayer}
             clockDifference={clockDifference}
             updateState={this.updateState}
+            showPlayerStats={showPlayerStats}
+            players={players}
           />
           <Canvas
             players={players}
