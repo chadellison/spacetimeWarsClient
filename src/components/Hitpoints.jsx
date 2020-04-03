@@ -1,5 +1,5 @@
 import React from 'react';
-import {PieChart, Pie, Label} from 'recharts'
+import {PieChart, Pie, Label} from 'recharts';
 import '../styles/hitpoints.css';
 import {findColor} from '../helpers/colorHelpers.js';
 

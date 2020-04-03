@@ -1,23 +1,27 @@
 .playerStat {
-
+  margin-bottom: .3em;
 }
 
 .opponentInfo {
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   font-size: 14px;
-  color: gray;
-  padding-top: .75rem;
-  padding-bottom: .75rem;
+  color: white;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  display: inline-block;
 }
 
 .opponentShip {
   width: 2em;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
-  display: inline-block;
   transform: rotate(270deg);
 }
 
 .opponentInfoWrapper {
+  display: inline-block;
+}
+
+.opponentHitpoints {
   display: inline-block;
 }
