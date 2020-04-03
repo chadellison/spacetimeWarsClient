@@ -4,7 +4,7 @@ import {
   updatePlayer
 } from '../helpers/gameLogic.js';
 
-export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
+export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayer, elapsedTime) => {
   switch (playerData.gameEvent) {
     case 'start':
     case 'supplyShip':
@@ -16,11 +16,11 @@ export const handleEventPayload = (players, playerData, clockDifference, deploye
       if (players.filter((player => player.id === playerData.id)).length === 0) {
         allPlayers = [...players, playerData];
       };
-      return handleUpdateEvent(allPlayers, playerData, clockDifference, deployedWeapons, currentPlayer);
+      return handleUpdateEvent(allPlayers, playerData, clockDifference, deployedWeapons, currentPlayer, elapsedTime);
   };
 }
 
-const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, currentPlayer) => {
+const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, currentPlayer, elapsedTime) => {
   let updatedWeapons = [...deployedWeapons];
   let updatedPlayer;
 
@@ -32,7 +32,6 @@ const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons
       } else if (playerData.gameEvent === 'fireStop') {
         updatedPlayer = player
       } else {
-        const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
         updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
       }
       return updatedPlayer;

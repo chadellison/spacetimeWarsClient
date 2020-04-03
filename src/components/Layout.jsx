@@ -151,16 +151,21 @@ class Layout extends React.Component {
 
   handleReceivedEvent = (playerData) => {
     const {players, clockDifference, deployedWeapons, currentPlayer} = this.state;
-    const gameState = handleEventPayload(
-      players,
-      playerData,
-      clockDifference,
-      deployedWeapons,
-      currentPlayer
-    );
+    const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
+    if (elapsedTime < 200) {
+      const gameState = handleEventPayload(
+        players,
+        playerData,
+        clockDifference,
+        deployedWeapons,
+        currentPlayer
+      );
 
-    handleAudio(playerData);
-    this.setState(gameState);
+      handleAudio(playerData);
+      this.setState(gameState);
+    } else {
+      console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime)
+    };
   };
 
   handleClockUpdate = (roundTripTime, difference) => {

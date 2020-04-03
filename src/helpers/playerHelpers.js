@@ -18,6 +18,6 @@ const handleStartingGold = (players) => {
     }, 0);
     return Math.round((scoreSums / players.length) + 1000);
   } else {
-    return 1000;
+    return 10000;
   }
 }
