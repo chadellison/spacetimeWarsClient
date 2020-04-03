@@ -90,7 +90,7 @@ const renderHitPoints = (currentPlayer) => {
 
 const renderPlayerStats = (showPlayerStats, players, currentPlayerId) => {
   if (showPlayerStats) {
-    return players.filter((player) => player.id !== currentPlayerId).map((player) => {
+    return players.filter((player) => !['ai', currentPlayerId].includes(player.id)).map((player) => {
       return <Stat player={player} key={`playerStats${player.id}`} />
     });
   } else {

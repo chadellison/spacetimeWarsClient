@@ -153,7 +153,7 @@ class Layout extends React.Component {
   handleReceivedEvent = (playerData) => {
     const {players, clockDifference, deployedWeapons, currentPlayer} = this.state;
     const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
-    if (elapsedTime < 200) {
+    if (elapsedTime < 250) {
       const gameState = handleEventPayload(
         players,
         playerData,
