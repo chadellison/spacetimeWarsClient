@@ -153,9 +153,11 @@ const applyHit = (player, weapon, handleGameEvent, currentPlayer) => {
 
 const updateCollisionData = (player, weapon, handleGameEvent, currentPlayer) => {
   if (player.hitpoints > 0) {
-    const damage = calculateDamage(weapon.damage, player.armor);
+    const damage = calculateDamage(weapon, player.armor);
     player.hitpoints -= damage;
+    // handle negative buff (player, weapon)...
     if (weapon.playerId === currentPlayer.id) {
+      handlePositiveBuff(currentPlayer, weapon);
       let bounty = Math.round(damage / 10);
       if (player.hitpoints <= 0) {
         bounty += Math.round(player.gold / 10 + 100);
@@ -167,7 +169,25 @@ const updateCollisionData = (player, weapon, handleGameEvent, currentPlayer) => 
   };
 };
 
-const calculateDamage = (damage, armor) => {
+// const handleNegativeBuff = (player, weapon) => {
+// if weapon is of type... plasma or blue fire...
+// }
+
+const handlePositiveBuff = (player, weapon) => {
+  if (weapon.index === 3) {
+    let newHitpoints = player.hitpoints + Math.round(weapon.damage / 15);
+    if (newHitpoints > player.maxHitpoints) {
+      newHitpoints = player.maxHitpoints;
+    }
+    player.hitpoints = newHitpoints;
+  }
+}
+
+const calculateDamage = (weapon, armor) => {
+  let damage = weapon.damage;
+  if (weapon.index === 4 && Math.random() >= 0.8) {
+    damage *= 2
+  }
   return Math.round(damage * (10 - armor) / 10);
 }
 
