@@ -32,8 +32,7 @@ const DEFAULT_STATE = {
   space: false,
   modal: null,
   activeTab: 'Ships',
-  page: 1,
-  showPlayerStats: false
+  page: 1
 };
 
 class Layout extends React.Component {
@@ -153,7 +152,7 @@ class Layout extends React.Component {
   handleReceivedEvent = (playerData) => {
     const {players, clockDifference, deployedWeapons, currentPlayer} = this.state;
     const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
-    if (elapsedTime < 250) {
+    if (elapsedTime < 500) {
       const gameState = handleEventPayload(
         players,
         playerData,
@@ -184,17 +183,18 @@ class Layout extends React.Component {
     let players = [...this.state.players];
     let deployedWeapons = [...this.state.deployedWeapons]
     let currentPlayer = {...this.state.currentPlayer}
+
     if (players.length > 0) {
       const gameData = {
         players: players,
-        elapsedTime: ANAIMATION_FRAME_RATE,
-        clockDifference: this.state.clockDifference,
-        deployedWeapons: deployedWeapons,
-        handleGameEvent: this.handleGameEvent,
-        lastFired: this.state.lastFired,
-        updateState: this.updateState,
         currentPlayer: currentPlayer,
-        spaceKeyPressed: this.state.space
+        updateState: this.updateState,
+        lastFired: this.state.lastFired,
+        deployedWeapons: deployedWeapons,
+        spaceKeyPressed: this.state.space,
+        elapsedTime: ANAIMATION_FRAME_RATE,
+        handleGameEvent: this.handleGameEvent,
+        clockDifference: this.state.clockDifference
       }
       const updatedGameState = updateGameState(gameData)
       this.setState(updatedGameState);
@@ -235,7 +235,6 @@ class Layout extends React.Component {
       currentPlayer,
       deployedWeapons,
       clockDifference,
-      showPlayerStats
     } = this.state;
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
@@ -252,7 +251,6 @@ class Layout extends React.Component {
             currentPlayer={currentPlayer}
             clockDifference={clockDifference}
             updateState={this.updateState}
-            showPlayerStats={showPlayerStats}
             players={players}
           />
           <Canvas
