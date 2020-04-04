@@ -43,6 +43,6 @@ export const ITEMS = [
     image: absorbDamage,
     cooldown: 10000,
     lastUpdated: 0,
-    description: 'Provieds a shield that completely absorbs one hit -- negating all damage from it-- every 10 seconds.'
+    description: 'Provieds a shield that completely absorbs one hit -- negating all damage/effects from it-- every 10 seconds.'
   }
 ];

@@ -33,6 +33,7 @@ export const WEAPONS = [
     price: 200,
     width: 16,
     height: 16,
+    ability: 'none',
     sound: new Audio(cannonAudio),
     image: fireball,
     selectionImage: displayFireball
@@ -48,6 +49,7 @@ export const WEAPONS = [
     price: 300,
     width: 40,
     height: 15,
+    ability: 'none',
     sound: new Audio(missileAudio),
     image: missile,
     selectionImage: displayMissile
@@ -64,6 +66,7 @@ export const WEAPONS = [
     width: 50,
     height: 29,
     image: bomb,
+    ability: 'none',
     sound: new Audio(bombAudio),
     selectionImage: displayBomb
   },
@@ -79,6 +82,7 @@ export const WEAPONS = [
     width: 40,
     height: 16,
     image: laser,
+    ability: 'life steal: 10% of damage dealt will be added to your hitpoints',
     sound: new Audio(laserAudio),
     selectionImage: displayLaser
   },
@@ -93,6 +97,7 @@ export const WEAPONS = [
     price: 700,
     width: 32,
     height: 32,
+    ability: 'critical damage: 20% chance to do double damage',
     image: trifecta,
     sound: new Audio(trifectaAudio),
     selectionImage: displayTrifecta
@@ -108,6 +113,7 @@ export const WEAPONS = [
     price: 700,
     width: 16,
     height: 16,
+    ability: 'poison damage: deals 10% damage of total hitpoints over 3 seconds',
     image: plasmaCannon,
     sound: new Audio(plasmaCannonAudio),
     selectionImage: displayPlasmaCannon
@@ -123,6 +129,7 @@ export const WEAPONS = [
     price: 1000,
     width: 20,
     height: 20,
+    ability: 'cold damage: slows enemy speed by 50% for one second',
     image: blueFire,
     sound: new Audio(plasmaCannonAudio),
     selectionImage: displayBlueFire

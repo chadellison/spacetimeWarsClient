@@ -26,10 +26,10 @@ export const Weapon = ({imageSrc, weapon, currentPlayer, players, updateState}) 
     <div className={`selection ${currentPlayer.weaponIndex === weapon.index ? 'selected' : ''}`}
       onClick={() => handleClick(weapon.index, currentPlayer, players, updateState)}>
         <img id={weapon.index} src={imageSrc} alt="ship" className="selectionImage"/>
-        <div className="selectionData">
+        <div className="selectionTitle">
           {`${weapon.name}`}
         </div>
-        <div className="selectionData">
+        <div className="selectionPrice">
           {`Price: ${weapon.price}`}
         </div>
         <div className="selectionData">
@@ -40,6 +40,9 @@ export const Weapon = ({imageSrc, weapon, currentPlayer, players, updateState}) 
         </div>
         <div className="selectionData">
           {`Speed: ${weapon.speed}`}
+        </div>
+        <div className="selectionDescription">
+          {`Ability: ${weapon.ability}`}
         </div>
     </div>
   );

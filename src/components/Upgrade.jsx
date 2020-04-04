@@ -37,10 +37,10 @@ export const Upgrade = ({imageSrc, currentPlayer, upgrade, players, updateState}
     <div className="selection"
       onClick={() => handleClick(currentPlayer, upgrade, players, updateState)}>
         <img id={upgrade.index} src={imageSrc} alt="item" className="selectionImage"/>
-        <div className="selectionData">
+        <div className="selectionTitle">
           {`${upgrade.name}`}
         </div>
-        <div className="selectionData">
+        <div className="selectionPrice">
           {`Price: ${upgrade.price}`}
         </div>
         <div className="selectionDescription">
