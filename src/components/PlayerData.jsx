@@ -45,12 +45,11 @@ const renderGold = (type, value) => {
   };
 }
 
-const renderItems = (items, clockDifference) => {
+const renderItems = (items) => {
   return Object.values(items).map((item) => {
-    let elapsedTime = findElapsedTime(clockDifference, item.lastUpdated);
     let countDown = 0;
-    if (elapsedTime < item.cooldown) {
-      countDown = Math.round((item.cooldown - elapsedTime) / 1000);
+    if (item.durationCount < item.cooldown) {
+      countDown = Math.round((item.cooldown - item.durationCount) / 1000);
     }
     return (
       <div className="playerItemData">
@@ -107,7 +106,7 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, players}) => {
           {renderData('Armor', currentPlayer.armor)}
           {renderData('Speed', currentPlayer.velocity)}
           {renderData('Score', currentPlayer.score)}
-          {renderItems(currentPlayer.items, clockDifference)}
+          {renderItems(currentPlayer.items)}
           <PlayerStats players={players} currentPlayerId={currentPlayer.id} />
         </div>
       </div>

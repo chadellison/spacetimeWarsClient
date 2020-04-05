@@ -12,7 +12,7 @@ const handleClick = (currentPlayer, item, players, updateState) => {
       ...currentPlayer,
       items: {
         ...currentPlayer.items,
-        [item.id]: { index: item.index, lastUpdated: 0, cooldown: item.cooldown }
+        [item.id]: { index: item.index, durationCount: item.cooldown, cooldown: item.cooldown }
       },
       gold: gold
     }

@@ -12,7 +12,7 @@ export const ITEMS = [
     name: 'Health boost',
     image: healthBoost,
     cooldown: 120000,
-    lastUpdated: 0,
+    durationCount: 120000,
     description: 'Boosts hitpoints to %50 of max hitpoints when hitpoints drop below %25 (120 second cooldown)'
   },
   {
@@ -22,7 +22,7 @@ export const ITEMS = [
     name: 'Repair bots',
     image: repairBots,
     cooldown: 1000,
-    lastUpdated: 0,
+    durationCount: 1000,
     description: 'Repairs 1% of total hitpoints every second'
   },
   {
@@ -32,7 +32,7 @@ export const ITEMS = [
     name: 'Stealth Mode',
     image: stealthMode,
     cooldown: 0,
-    lastUpdated: 0,
+    durationCount: 0,
     description: 'Your enemies will not hear you comming. Your ship will make no sound when moving or firing.'
   },
   {
@@ -42,7 +42,7 @@ export const ITEMS = [
     name: 'Absorb damage',
     image: absorbDamage,
     cooldown: 10000,
-    lastUpdated: 0,
+    durationCount: 10000,
     description: 'Provieds a shield that completely absorbs one hit -- negating all damage/effects from it-- every 10 seconds.'
   }
 ];

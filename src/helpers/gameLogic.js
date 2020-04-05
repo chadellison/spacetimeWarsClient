@@ -9,7 +9,9 @@ import {
 } from '../constants/settings.js';
 import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
+import {EFFECTS} from '../constants/effects.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
+import {handleEffects} from '../helpers/effectHelpers';
 
 export const updateGameState = ({
   players,
@@ -25,13 +27,7 @@ export const updateGameState = ({
   let updatedPlayers = [];
   players.forEach((player) => {
     if (!removePlayer(player.explodeAnimation)) {
-      if (player.hitpoints <= 0 && !player.explode) {
-        if (currentPlayer.id === player.id) {
-          handleGameEvent({id: currentPlayer.id, gameEvent: 'remove'});
-        } else if (player.id === 'ai') {
-          handleGameEvent({id: 'ai', gameEvent: 'remove'});
-        };
-      }
+      handleHitpoints(player, currentPlayer, handleGameEvent)
       player = updatePlayer(player, elapsedTime, clockDifference);
       if (player.id === currentPlayer.id) {
         handleRepeatedFire(currentPlayer, handleGameEvent, lastFired, updateState, clockDifference, spaceKeyPressed);
@@ -55,6 +51,16 @@ export const updateGameState = ({
   };
 };
 
+const handleHitpoints = (player, currentPlayer, handleGameEvent) => {
+  if (player.hitpoints <= 0 && !player.explode) {
+    if (currentPlayer.id === player.id) {
+      handleGameEvent({id: currentPlayer.id, gameEvent: 'remove'});
+    } else if (player.id === 'ai') {
+      handleGameEvent({id: 'ai', gameEvent: 'remove'});
+    };
+  }
+}
+
 export const canFire = (lastFired, cooldown) => {
   return Date.now() - lastFired > cooldown;
 }
@@ -73,7 +79,11 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
   let currentVelocity = DRIFT;
 
   if (player.accelerate) {
-    currentVelocity += player.velocity;
+    let playerVelocity = player.velocity;
+    if (player.effects.filter((e) => e.index === 1).length > 0) {
+      playerVelocity /= 2;
+    }
+    currentVelocity += playerVelocity;
   } else {
     const timeSinceLastAcceleration = Date.now() + clockDifference - player.lastAccelerationTime;
     const momentum = ((player.velocity) * 1000) - timeSinceLastAcceleration;
@@ -92,6 +102,7 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   player.location = handleLocation(trajectory, player.location, distance);
   player.explodeAnimation = handleExplodeUpdate(player.explode, player.explodeAnimation);
   handleItems(player);
+  handleEffects(player);
   return player
 }
 
@@ -155,7 +166,8 @@ const updateCollisionData = (player, weapon, handleGameEvent, currentPlayer) => 
   if (player.hitpoints > 0) {
     const damage = calculateDamage(weapon, player.armor);
     player.hitpoints -= damage;
-    // handle negative buff (player, weapon)...
+    handleNegativeBuff(player, weapon)
+
     if (weapon.playerId === currentPlayer.id) {
       handlePositiveBuff(currentPlayer, weapon);
       let bounty = Math.round(damage / 10);
@@ -169,9 +181,18 @@ const updateCollisionData = (player, weapon, handleGameEvent, currentPlayer) => 
   };
 };
 
-// const handleNegativeBuff = (player, weapon) => {
-// if weapon is of type... plasma or blue fire...
-// }
+const handleNegativeBuff = (player, weapon) => {
+  switch (weapon.index) {
+    case 5:
+      player.effects.push({...EFFECTS[0]});
+      break;
+    case 6:
+      player.effects.push({...EFFECTS[1]});
+      break
+    default:
+      break;
+  }
+}
 
 const handlePositiveBuff = (player, weapon) => {
   if (weapon.index === 3) {
