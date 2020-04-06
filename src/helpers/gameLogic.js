@@ -56,11 +56,11 @@ const handleHitpoints = (player, currentPlayer, handleGameEvent) => {
     if (currentPlayer.id === player.id) {
       handleGameEvent({id: currentPlayer.id, gameEvent: 'remove'});
     } else if (player.id === 'ai') {
-      handleGameEvent({id: 'ai', gameEvent: 'remove'});
+      player.explodeAnimation = {x: 0, y: 0};
+      player.explode = true;
     };
-    // else if (player.updatedAt > 2 minutes send )
-  }
-}
+  };
+};
 
 export const canFire = (lastFired, cooldown) => {
   return Date.now() - lastFired > cooldown;
