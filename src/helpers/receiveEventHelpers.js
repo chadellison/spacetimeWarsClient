@@ -1,6 +1,7 @@
 import {handleFireWeapon, updatePlayer} from '../helpers/gameLogic.js';
 
-export const handleEventPayload = (players, playerData, clockDifference, deployedWeapons, currentPlayer, elapsedTime) => {
+export const handleEventPayload = (gameState, playerData, elapsedTime) => {
+  const {players, clockDifference, deployedWeapons, currentPlayer} = gameState;
   switch (playerData.gameEvent) {
     case 'start':
     case 'supplyShip':

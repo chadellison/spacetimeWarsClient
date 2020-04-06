@@ -150,17 +150,9 @@ class Layout extends React.Component {
   };
 
   handleReceivedEvent = (playerData) => {
-    const {players, clockDifference, deployedWeapons, currentPlayer} = this.state;
-    const elapsedTime = findElapsedTime(clockDifference, playerData.updatedAt);
+    const elapsedTime = findElapsedTime(this.state.clockDifference, playerData.updatedAt);
     if (elapsedTime < 500) {
-      const gameState = handleEventPayload(
-        players,
-        playerData,
-        clockDifference,
-        deployedWeapons,
-        currentPlayer,
-        elapsedTime
-      );
+      const gameState = handleEventPayload(this.state, playerData, elapsedTime);
 
       handleAudio(playerData);
       this.setState(gameState);
