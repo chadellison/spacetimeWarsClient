@@ -13,24 +13,19 @@ import {EFFECTS} from '../constants/effects.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
 import {handleEffects} from '../helpers/effectHelpers';
 
-export const updateGameState = ({
-  players,
-  elapsedTime,
-  clockDifference,
-  deployedWeapons,
-  handleGameEvent,
-  lastFired,
-  updateState,
-  currentPlayer,
-  spaceKeyPressed
-}) => {
+export const updateGameState = (gameState, updateState, handleGameEvent) => {
+  let players = [...gameState.players];
+  let deployedWeapons = [...gameState.deployedWeapons];
+  let currentPlayer = {...gameState.currentPlayer};
+  const {clockDifference, lastFired, space} = gameState;
+
   let updatedPlayers = [];
   players.forEach((player) => {
     if (!removePlayer(player.explodeAnimation)) {
       handleHitpoints(player, currentPlayer, handleGameEvent);
-      player = updatePlayer(player, elapsedTime, clockDifference);
+      player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
       if (player.id === currentPlayer.id) {
-        handleRepeatedFire(currentPlayer, handleGameEvent, lastFired, updateState, clockDifference, spaceKeyPressed);
+        handleRepeatedFire(currentPlayer, handleGameEvent, lastFired, updateState, clockDifference, space);
         currentPlayer = player;
       }
       handleWall(player);

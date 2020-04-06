@@ -168,29 +168,18 @@ class Layout extends React.Component {
         clockDifference: clockDifference,
         shortestRoundTripTime: roundTripTime
       });
-    }
-  }
+    };
+  };
 
   renderGame = () => {
-    let players = [...this.state.players];
-    let deployedWeapons = [...this.state.deployedWeapons]
-    let currentPlayer = {...this.state.currentPlayer}
-
-    if (players.length > 0) {
-      const gameData = {
-        players: players,
-        currentPlayer: currentPlayer,
-        updateState: this.updateState,
-        lastFired: this.state.lastFired,
-        deployedWeapons: deployedWeapons,
-        spaceKeyPressed: this.state.space,
-        elapsedTime: ANAIMATION_FRAME_RATE,
-        handleGameEvent: this.handleGameEvent,
-        clockDifference: this.state.clockDifference
-      }
-      const updatedGameState = updateGameState(gameData)
+    if (this.state.players.length > 0) {
+      const updatedGameState = updateGameState(
+        this.state,
+        this.updateState,
+        this.handleGameEvent
+      );
       this.setState(updatedGameState);
-    }
+    };
   };
 
   renderModal = () => {
