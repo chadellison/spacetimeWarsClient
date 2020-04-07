@@ -11,7 +11,7 @@ import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
 import {EFFECTS} from '../constants/effects.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
-import {handleEffects, updateGameBuff} from '../helpers/effectHelpers';
+import {handleEffects, updateGameBuff, randomBuffIndex} from '../helpers/effectHelpers';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   let players = [...gameState.players];
@@ -172,8 +172,7 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
       if (player.hitpoints <= 0) {
         bounty += Math.round(player.gold / 10 + 100);
         if (player.id === 'ai') {
-          // need to send specific buff
-          handleGameEvent({...currentPlayer, gameEvent: 'buff'});
+          handleGameEvent({...currentPlayer, gameEvent: 'buff', buffIndex: randomBuffIndex()});
         };
       };
       currentPlayer.gold += bounty;

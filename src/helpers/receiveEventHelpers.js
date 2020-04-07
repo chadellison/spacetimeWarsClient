@@ -1,5 +1,6 @@
 import {handleFireWeapon, updatePlayer} from '../helpers/gameLogic.js';
-import {applyGameBuff, randomGameEffect} from '../helpers/effectHelpers.js';
+import {applyGameBuff} from '../helpers/effectHelpers.js';
+import {GAME_EFFECTS} from '../constants/effects.js';
 
 export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   const {players, clockDifference, deployedWeapons, currentPlayer} = gameState;
@@ -21,7 +22,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
 }
 
 const handleBuffEvent = (playerData, players, elapsedTime) => {
-  const gameBuff = {...randomGameEffect(), durationCount: elapsedTime};
+  const gameBuff = {...GAME_EFFECTS[playerData.buffIndex], durationCount: elapsedTime};
 
   const updatedPlayers = applyGameBuff(playerData.id, [...players], elapsedTime, gameBuff);
   return {players: updatedPlayers, gameBuff: gameBuff};

@@ -15,8 +15,8 @@ export const handleEffects = (player) => {
   });
 };
 
-export const randomGameEffect = () => {
-  return GAME_EFFECTS[Math.floor(Math.random() * GAME_EFFECTS.length)];
+export const randomBuffIndex = () => {
+  return Math.floor(Math.random() * Math.floor(GAME_EFFECTS.length));
 }
 
 export const applyGameBuff = (buffedPlayerId, players, elapsedTime, gameBuff) => {
