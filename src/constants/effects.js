@@ -1,12 +1,12 @@
 export const EFFECTS = [
   {
-    index: 0,
+    id: 1,
     name: 'poisonDamage',
     duration: 3000,
     durationCount: 0
   },
   {
-    index: 1,
+    id: 2,
     name: 'coldDamage',
     duration: 1000,
     durationCount: 0
@@ -15,9 +15,38 @@ export const EFFECTS = [
 
 export const GAME_EFFECTS = [
   {
-    index: 0,
-    name: 'poisonDamage',
-    duration: 3000,
-    durationCount: 0
+    id: 1,
+    name: 'poison',
+    duration: 4000,
+    durationCount: 0,
+    color: 'rgba(7, 151, 24, 0.37)'
   },
+  {
+    id: 2,
+    name: 'slow',
+    duration: 7000,
+    durationCount: 0,
+    color: 'rgba(7, 33, 151, 0.37)'
+  },
+  // {
+  //   id: 3,
+  //   name: 'stun',
+  //   duration: 1500,
+  //   durationCount: 0,
+  //   color: 'rgba(151, 127, 7, 0.37)'
+  // },
+  // {
+  //   id: 4,
+  //   name: 'invulnerable',
+  //   duration: 3000,
+  //   durationCount: 0,
+  //   color: 'rgba(144, 7, 151, 0.37)'
+  // },
+  // {
+  //   id: 5,
+  //   name: 'invisible',
+  //   duration: 1000,
+  //   durationCount: 0,
+  //   color: 'rgba(151, 7, 7, 0.37)'
+  // }
 ]

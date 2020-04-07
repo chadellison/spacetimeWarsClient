@@ -11,13 +11,13 @@ import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
 import {EFFECTS} from '../constants/effects.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
-import {handleEffects} from '../helpers/effectHelpers';
+import {handleEffects, updateGameBuff} from '../helpers/effectHelpers';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   let players = [...gameState.players];
   let deployedWeapons = [...gameState.deployedWeapons];
   let currentPlayer = {...gameState.currentPlayer};
-  const {clockDifference, lastFired, space} = gameState;
+  const {clockDifference, lastFired, space, gameBuff} = gameState;
 
   let updatedPlayers = [];
   players.forEach((player) => {
@@ -37,12 +37,15 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
     const filteredWeapons = removeOutOfBoundsShots(deployedWeapons);
     deployedWeapons = handleWeapons(filteredWeapons, updatedPlayers, currentPlayer, handleGameEvent);
   };
+
+  updatedPlayers.forEach((player) => handleEffects(player));
   handleCountDownEnd(currentPlayer, clockDifference);
 
   return {
     players: updatedPlayers,
     deployedWeapons: deployedWeapons,
-    currentPlayer: currentPlayer
+    currentPlayer: currentPlayer,
+    gameBuff: updateGameBuff(gameBuff)
   };
 };
 
@@ -76,7 +79,7 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
 
   if (player.accelerate) {
     let playerVelocity = player.velocity;
-    if (player.effects.filter((e) => e.index === 1).length > 0) {
+    if (player.effects.filter((effect) => effect.id === 2).length > 0) {
       playerVelocity /= 2;
     }
     currentVelocity += playerVelocity;
@@ -98,7 +101,6 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   player.location = handleLocation(trajectory, player.location, distance);
   player.explodeAnimation = handleExplodeUpdate(player.explode, player.explodeAnimation);
   handleItems(player);
-  handleEffects(player);
   return player
 }
 
@@ -170,6 +172,7 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
       if (player.hitpoints <= 0) {
         bounty += Math.round(player.gold / 10 + 100);
         if (player.id === 'ai') {
+          // need to send specific buff
           handleGameEvent({...currentPlayer, gameEvent: 'buff'});
         };
       };

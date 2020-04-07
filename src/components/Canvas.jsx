@@ -87,6 +87,11 @@ class Canvas extends React.Component {
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
+    if (this.props.gameBuff.color) {
+      context.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
+      context.fillStyle = this.props.gameBuff.color;
+    }
+
     this.props.players.forEach((player) => {
       if (!player.explode) {
         drawShip(context, player, this.handleImage(player), this.state.thrusterAudio);
@@ -104,6 +109,7 @@ class Canvas extends React.Component {
         )
       };
     });
+
     this.props.deployedWeapons.forEach((weapon) => {
       handleDirection(context, this.state[weapon.name], weapon.location, weapon.trajectory)
       context.restore();

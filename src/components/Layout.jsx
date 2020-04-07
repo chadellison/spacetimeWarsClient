@@ -32,7 +32,8 @@ const DEFAULT_STATE = {
   space: false,
   modal: null,
   activeTab: 'Ships',
-  page: 1
+  page: 1,
+  gameBuff: {}
 };
 
 class Layout extends React.Component {
@@ -213,10 +214,12 @@ class Layout extends React.Component {
     const {
       modal,
       players,
+      gameBuff,
       currentPlayer,
       deployedWeapons,
       clockDifference,
     } = this.state;
+
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
         <h2>{modal ? null : 'Space Wars'}</h2>
@@ -238,6 +241,7 @@ class Layout extends React.Component {
             players={players}
             deployedWeapons={deployedWeapons}
             currentPlayer={currentPlayer}
+            gameBuff={gameBuff}
           />
         </div>
       </div>

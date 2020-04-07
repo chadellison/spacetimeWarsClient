@@ -7,24 +7,45 @@ export const handleEffects = (player) => {
   });
 
   player.effects.forEach((effect) => {
-    if (effect.index === 0) {
-      const damage = Math.round((player.maxHitpoints / 15) / (effect.duration / ANAIMATION_FRAME_RATE));
+    if (effect.id === 1) {
+      const damage = Math.round((player.maxHitpoints * 0.15) / (effect.duration / ANAIMATION_FRAME_RATE));
       player.hitpoints -= damage;
     };
     effect.durationCount += ANAIMATION_FRAME_RATE
   });
 };
 
-const randomGameEffect = () => {
+export const randomGameEffect = () => {
   return GAME_EFFECTS[Math.floor(Math.random() * GAME_EFFECTS.length)];
 }
 
-export const applyGameBuff = (buffedPlayerId, players, elapsedTime) => {
-  const gameEffect = randomGameEffect();
+export const applyGameBuff = (buffedPlayerId, players, elapsedTime, gameBuff) => {
   return players.map((player) => {
-    if (buffedPlayerId !== player.id) {
-      player.effects = [...player.effects, {...gameEffect, durationCount: elapsedTime}];
+    switch (gameBuff.id) {
+      case 1:
+      case 2:
+      case 3:
+        if (buffedPlayerId !== player.id && player.id !== 'ai') {
+          player.effects = [...player.effects, {...gameBuff}];
+        };
+        break;
+      case 4:
+        if (buffedPlayerId === player.id) {
+          player.effects = [...player.effects, {...gameBuff}];
+        }
+        break;
+      default:
+        break;
     };
+
     return player;
   });
+};
+
+export const updateGameBuff = (gameBuff) => {
+  if (gameBuff.durationCount > gameBuff.duration) {
+    return {};
+  } else {
+    return {...gameBuff, durationCount: gameBuff.durationCount + ANAIMATION_FRAME_RATE}
+  }
 };
