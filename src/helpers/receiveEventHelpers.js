@@ -1,4 +1,5 @@
 import {handleFireWeapon, updatePlayer} from '../helpers/gameLogic.js';
+import {applyGameBuff} from '../helpers/effectHelpers.js';
 
 export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   const {players, clockDifference, deployedWeapons, currentPlayer} = gameState;
@@ -8,6 +9,8 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
       return {players: [...players, playerData]};
     case 'remove':
       return handleRemoveEvent(players, playerData, currentPlayer);
+    case 'buff':
+      return handleBuffEvent(playerData, players, elapsedTime);
     default:
       let allPlayers = [...players];
       if (players.filter((player => player.id === playerData.id)).length === 0) {
@@ -16,6 +19,11 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
       return handleUpdateEvent(allPlayers, playerData, clockDifference, deployedWeapons, currentPlayer, elapsedTime);
   };
 }
+
+const handleBuffEvent = (playerData, players, elapsedTime) => {
+  const updatedPlayers = applyGameBuff(playerData.id, [...players], elapsedTime);
+  return {players: updatedPlayers};
+};
 
 const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, currentPlayer, elapsedTime) => {
   let updatedWeapons = [...deployedWeapons];

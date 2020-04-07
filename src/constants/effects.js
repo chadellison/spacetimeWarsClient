@@ -12,3 +12,12 @@ export const EFFECTS = [
     durationCount: 0
   }
 ];
+
+export const GAME_EFFECTS = [
+  {
+    index: 0,
+    name: 'poisonDamage',
+    duration: 3000,
+    durationCount: 0
+  },
+]
