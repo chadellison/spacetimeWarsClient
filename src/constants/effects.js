@@ -28,13 +28,13 @@ export const GAME_EFFECTS = [
     durationCount: 0,
     color: 'rgba(7, 33, 151, 0.37)'
   },
-  // {
-  //   id: 3,
-  //   name: 'stun',
-  //   duration: 1500,
-  //   durationCount: 0,
-  //   color: 'rgba(151, 127, 7, 0.37)'
-  // },
+  {
+    id: 3,
+    name: 'gold steal',
+    duration: 3000,
+    durationCount: 0,
+    color: 'rgba(151, 127, 7, 0.37)'
+  },
   // {
   //   id: 4,
   //   name: 'invulnerable',
