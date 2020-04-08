@@ -94,7 +94,7 @@ class Canvas extends React.Component {
 
     this.props.players.forEach((player) => {
       if (!player.explode) {
-        if (!player.effects.filter((e) => e.id === 4)[0] || player.id === this.props.currentPlayer.id) {
+        if (!player.effects[4] || player.id === this.props.currentPlayer.id) {
           drawShip(context, player, this.handleImage(player), this.state.thrusterAudio);
         }
       } else {

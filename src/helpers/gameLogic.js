@@ -79,7 +79,7 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
 
   if (player.accelerate) {
     let playerVelocity = player.velocity;
-    if (player.effects.filter((effect) => effect.id === 2).length > 0) {
+    if (player.effects[2]) {
       playerVelocity /= 2;
     }
     currentVelocity += playerVelocity;
@@ -184,10 +184,13 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
 const handleNegativeBuff = (player, weapon) => {
   switch (weapon.index) {
     case 5:
-      player.effects.push({...EFFECTS[0]});
+      // player.effects.push({...EFFECTS[0]});
+      player.effects[EFFECTS[0].id] = {...EFFECTS[0]}
+      // player.effects.push({...EFFECTS[0]});
       break;
     case 6:
-      player.effects.push({...EFFECTS[1]});
+      player.effects[EFFECTS[1].id] = {...EFFECTS[1]}
+      // player.effects.push({...EFFECTS[1]});
       break
     default:
       break;

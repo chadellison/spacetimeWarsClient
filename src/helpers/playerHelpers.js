@@ -7,7 +7,7 @@ export const addPlayer = (userId, players) => {
       gameEvent: 'waiting',
       score: 0,
       items: {},
-      effects: []
+      effects: {}
     }
   };
 }
