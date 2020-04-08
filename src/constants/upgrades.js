@@ -31,6 +31,6 @@ export const UPGRADES = [
     price: 500,
     name: 'Damage',
     image: damage,
-    description: 'Permanantly increases damage by 100'
+    description: 'Permanantly increases damage by 50'
   }
 ];
