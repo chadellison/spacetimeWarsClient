@@ -52,12 +52,11 @@ const renderItems = (items) => {
       countDown = Math.round((item.cooldown - item.durationCount) / 1000);
     }
     return (
-      <div className="playerItemData">
+      <div className="playerItemData" key={'playerItem' + item.index}>
         <div className="itemCountDown" hidden={countDown === 0 || countDown > 9}>
           {countDown}
         </div>
         <img
-          key={'playerItem' + item.index}
           className={`playerItemImage${countDown ? ' faded' : ''}`}
           src={ITEMS[item.index].image}
           alt="playerItem"
