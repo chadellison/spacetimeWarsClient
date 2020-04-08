@@ -151,8 +151,8 @@ const handleCollision = (weapon, players, currentPlayer, handleGameEvent) => {
 }
 
 const applyHit = (player, weapon, currentPlayer, handleGameEvent) => {
-  if (canAbsorbDamage(player.items)) {
-    handleAbsorbDamage(player.items);
+  if (canAbsorbDamage(player)) {
+    handleAbsorbDamage(player);
   } else {
     console.log('BLAM!');
     updateCollisionData(player, weapon, currentPlayer, handleGameEvent)
@@ -184,13 +184,10 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
 const handleNegativeBuff = (player, weapon) => {
   switch (weapon.index) {
     case 5:
-      // player.effects.push({...EFFECTS[0]});
       player.effects[EFFECTS[0].id] = {...EFFECTS[0]}
-      // player.effects.push({...EFFECTS[0]});
       break;
     case 6:
       player.effects[EFFECTS[1].id] = {...EFFECTS[1]}
-      // player.effects.push({...EFFECTS[1]});
       break
     default:
       break;

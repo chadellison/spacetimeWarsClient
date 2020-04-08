@@ -38,16 +38,16 @@ export const GAME_EFFECTS = [
   {
     id: 4,
     name: 'invisible',
-    duration: 9000,
+    duration: 11000,
     durationCount: 0,
     color: 'rgba(151, 7, 7, 0.37)'
 
   },
-  // {
-  //   id: 5,
-  //   name: 'invulnerable',
-  //   duration: 1000,
-  //   durationCount: 0,
-  //   color: 'rgba(144, 7, 151, 0.37)'
-  // }
+  {
+    id: 5,
+    name: 'invulnerable',
+    duration: 7000,
+    durationCount: 0,
+    color: 'rgba(144, 7, 151, 0.37)'
+  }
 ]

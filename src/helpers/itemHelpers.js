@@ -24,15 +24,17 @@ export const handleItems = (player) => {
   });
 };
 
-export const handleAbsorbDamage = (items) => {
-  let absorbDamageItem = getItem(items, 4);
-  absorbDamageItem.durationCount = 0;
-}
+export const handleAbsorbDamage = (player) => {
+  if (!player.effects[5]) {
+    let absorbDamageItem = getItem(player.items, 4);
+    absorbDamageItem.durationCount = 0;
+  };
+};
 
-export const canAbsorbDamage = (items) => {
-  let item = getItem(items, 4);
-  return item && item.durationCount >= item.cooldown
-}
+export const canAbsorbDamage = (player) => {
+  const item = getItem(player.items, 4);
+  return (player.effects[5]) || (item && item.durationCount >= item.cooldown)
+};
 
 export const getItem = (items, id) => {
   if (items) {
