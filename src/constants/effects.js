@@ -1,18 +1,3 @@
-export const EFFECTS = [
-  {
-    id: 1,
-    name: 'poisonDamage',
-    duration: 3000,
-    durationCount: 0
-  },
-  {
-    id: 2,
-    name: 'coldDamage',
-    duration: 1000,
-    durationCount: 0
-  }
-];
-
 export const GAME_EFFECTS = [
   {
     id: 1,

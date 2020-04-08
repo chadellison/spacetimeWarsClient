@@ -9,7 +9,7 @@ import {
 } from '../constants/settings.js';
 import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
-import {EFFECTS} from '../constants/effects.js';
+import {GAME_EFFECTS} from '../constants/effects.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
 import {handleEffects, updateGameBuff, randomBuffIndex} from '../helpers/effectHelpers';
 
@@ -184,10 +184,10 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
 const handleNegativeBuff = (player, weapon) => {
   switch (weapon.index) {
     case 5:
-      player.effects[EFFECTS[0].id] = {...EFFECTS[0]}
+      player.effects[GAME_EFFECTS[0].id] = {...GAME_EFFECTS[0], duration: 3000}
       break;
     case 6:
-      player.effects[EFFECTS[1].id] = {...EFFECTS[1]}
+      player.effects[GAME_EFFECTS[1].id] = {...GAME_EFFECTS[1], duration: 1000}
       break
     default:
       break;
