@@ -22,7 +22,7 @@ const DEFAULT_STATE = {
   gameSocket: {},
   players: [],
   clockDifference: 0,
-  shortestRoundTripTime: 300,
+  shortestRoundTripTime: 3000,
   deployedWeapons: [],
   currentPlayer: {},
   lastFired: 0,
@@ -152,12 +152,11 @@ class Layout extends React.Component {
 
   handleReceivedEvent = (playerData) => {
     const elapsedTime = findElapsedTime(this.state.clockDifference, playerData.updatedAt);
-    if (elapsedTime < 500) {
-      const gameState = handleEventPayload(this.state, playerData, elapsedTime);
+    const gameState = handleEventPayload(this.state, playerData, elapsedTime);
 
-      handleAudio(playerData);
-      this.setState(gameState);
-    } else {
+    handleAudio(playerData);
+    this.setState(gameState);
+    if (elapsedTime > 500) {
       console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime)
     };
   };
