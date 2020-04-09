@@ -1,3 +1,5 @@
+import {SPRITE_WIDTH} from '../constants/settings.js';
+
 export const drawShip = (context, player, ship) => {
   handleDirection(context, ship, player.location, player.angle)
   if (player.accelerate) {
@@ -38,4 +40,22 @@ const handleAcceleration = (context, player, ship) => {
   context.stroke();
   context.fillStyle = grd;
   context.fill();
+}
+
+export const shouldRenderShip = (player, currentPlayerId) => {
+  return (!player.explode) && (!player.effects[4] || player.id === currentPlayerId);
+}
+
+export const renderExplosion = (context, explosion, player) => {
+  context.drawImage(
+    explosion,
+    player.explodeAnimation.x,
+    player.explodeAnimation.y,
+    SPRITE_WIDTH,
+    SPRITE_WIDTH,
+    player.location.x,
+    player.location.y,
+    200,
+    200
+  );
 }

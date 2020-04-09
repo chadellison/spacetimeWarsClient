@@ -1,10 +1,14 @@
 import React from 'react';
-import {drawShip, handleDirection} from '../helpers/canvasHelper.js';
+import {
+  drawShip,
+  handleDirection,
+  shouldRenderShip,
+  renderExplosion
+} from '../helpers/canvasHelper.js';
 import {canAbsorbDamage} from '../helpers/itemHelpers.js';
 import '../styles/styles.css';
 import explodeAnimation from '../images/explosion.png';
 import {
-  SPRITE_WIDTH,
   BOARD_WIDTH,
   BOARD_HEIGHT
 } from '../constants/settings.js';
@@ -93,22 +97,10 @@ class Canvas extends React.Component {
     }
 
     this.props.players.forEach((player) => {
-      if (!player.explode) {
-        if (!player.effects[4] || player.id === this.props.currentPlayer.id) {
-          drawShip(context, player, this.handleImage(player), this.state.thrusterAudio);
-        }
+      if (shouldRenderShip(player, this.props.currentPlayer.id)) {
+        drawShip(context, player, this.handleImage(player), this.state.thrusterAudio);
       } else {
-        context.drawImage(
-          this.state.explosion,
-          player.explodeAnimation.x,
-          player.explodeAnimation.y,
-          SPRITE_WIDTH,
-          SPRITE_WIDTH,
-          player.location.x,
-          player.location.y,
-          200,
-          200
-        )
+        renderExplosion(context, this.state.explosion, player);
       };
     });
 
