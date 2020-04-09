@@ -9,7 +9,7 @@ export const GAME_EFFECTS = [
   {
     id: 2,
     name: 'slow',
-    duration: 7000,
+    duration: 9000,
     durationCount: 0,
     color: 'rgba(7, 33, 151, 0.37)'
   },
