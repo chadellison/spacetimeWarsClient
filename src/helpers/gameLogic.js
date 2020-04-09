@@ -33,10 +33,8 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
     };
   });
 
-  if (deployedWeapons.length > 0) {
-    const filteredWeapons = removeOutOfBoundsShots(deployedWeapons);
-    deployedWeapons = handleWeapons(filteredWeapons, updatedPlayers, currentPlayer, handleGameEvent);
-  };
+  const filteredWeapons = removeOutOfBoundsShots(deployedWeapons);
+  deployedWeapons = handleWeapons(filteredWeapons, updatedPlayers, currentPlayer, handleGameEvent);
 
   updatedPlayers.forEach((player) => handleEffects(player));
   handleCountDownEnd(currentPlayer, clockDifference);

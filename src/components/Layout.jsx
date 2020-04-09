@@ -172,14 +172,12 @@ class Layout extends React.Component {
   };
 
   renderGame = () => {
-    if (this.state.players.length > 0) {
-      const updatedGameState = updateGameState(
-        this.state,
-        this.updateState,
-        this.handleGameEvent
-      );
-      this.setState(updatedGameState);
-    };
+    const updatedGameState = updateGameState(
+      this.state,
+      this.updateState,
+      this.handleGameEvent
+    );
+    this.setState(updatedGameState);
   };
 
   renderModal = () => {
