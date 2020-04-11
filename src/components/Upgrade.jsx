@@ -22,7 +22,7 @@ const handleClick = (currentPlayer, upgrade, players, updateState) => {
       upgradeSound.play();
       updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)});
     } else if (upgrade.index === 3) {
-      player.damage += 100
+      player.damage += 50
       upgradeSound.play();
       updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)});
     }
