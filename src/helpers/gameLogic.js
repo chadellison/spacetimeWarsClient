@@ -49,11 +49,10 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
 
 const handleHitpoints = (player, currentPlayer, handleGameEvent) => {
   if (player.hitpoints <= 0 && !player.explode) {
+    player.explodeAnimation = {x: 0, y: 0};
+    player.explode = true;
     if (currentPlayer.id === player.id) {
       handleGameEvent({id: currentPlayer.id, gameEvent: 'remove'});
-    } else if (player.id === 'ai') {
-      player.explodeAnimation = {x: 0, y: 0};
-      player.explode = true;
     };
   };
 };
