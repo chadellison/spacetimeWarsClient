@@ -73,16 +73,17 @@ const handleCountDownEnd = (currentPlayer, clockDifference) => {
 
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
   let currentVelocity = DRIFT;
+  let playerVelocity = player.velocity;
+
+  if (player.effects[2]) {
+    playerVelocity = 1;
+  }
 
   if (player.accelerate) {
-    let playerVelocity = player.velocity;
-    if (player.effects[2]) {
-      playerVelocity /= 2;
-    }
     currentVelocity += playerVelocity;
   } else {
     const timeSinceLastAcceleration = Date.now() + clockDifference - player.lastAccelerationTime;
-    const momentum = ((player.velocity) * 1000) - timeSinceLastAcceleration;
+    const momentum = ((playerVelocity) * 1000) - timeSinceLastAcceleration;
     if (momentum > 0) {
       currentVelocity += (momentum / 1000);
     }
