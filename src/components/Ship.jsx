@@ -20,7 +20,7 @@ const handleClick = (shipIndex, currentPlayer, players, updateState) => {
     }
 
     const updatedPlayers = getUpdatedPlayers(player, players);
-    updateState({currentPlayer: player, players: updatedPlayers, activeTab: 'Weapons'});
+    updateState({currentPlayer: player, players: updatedPlayers, activeTab: 'Weapons', page: 1});
   } else {
     notEnoughResources.play();
     console.log('Not enough gold');
