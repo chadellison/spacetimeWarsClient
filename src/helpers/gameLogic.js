@@ -73,11 +73,7 @@ const handleCountDownEnd = (currentPlayer, clockDifference) => {
 
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
   let currentVelocity = DRIFT;
-  let playerVelocity = player.velocity;
-
-  if (player.effects[2]) {
-    playerVelocity = 1;
-  }
+  let playerVelocity = player.effects[2] ? 1 : player.velocity;
 
   if (player.accelerate) {
     currentVelocity += playerVelocity;
