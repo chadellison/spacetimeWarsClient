@@ -156,7 +156,7 @@ class Layout extends React.Component {
 
     handleAudio(playerData);
     this.setState(gameState);
-    if (elapsedTime > 500) {
+    if (elapsedTime > 400) {
       console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime);
       if (this.state.shortestRoundTripTime > 100) {
         this.syncClocks(REQUEST_COUNT, false);
