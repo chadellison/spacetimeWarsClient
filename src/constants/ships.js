@@ -74,7 +74,7 @@ export const SHIPS = [
     name: 'stealthShip',
     price: 800,
     armor: 1,
-    hitpoints: 900,
+    hitpoints: 800,
     speed: 4.5,
     shipCenter: {x: 60, y: 34},
     image: stealthShip,
