@@ -28,17 +28,17 @@ export const ITEMS = [
   {
     id: 3,
     index: 2,
-    price: 500,
+    price: 700,
     name: 'Stealth Mode',
     image: stealthMode,
-    cooldown: 0,
-    durationCount: 0,
-    description: 'Your enemies will not hear you comming. Your ship will make no sound when moving or firing.'
+    cooldown: 120000,
+    durationCount: 120000,
+    description: 'Renders your ship invisible for six seconds to other players when your hitpoints drop below 25% (120 second cooldown)'
   },
   {
     id: 4,
     index: 3,
-    price: 700,
+    price: 750,
     name: 'Absorb damage',
     image: absorbDamage,
     cooldown: 10000,

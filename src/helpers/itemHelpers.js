@@ -1,4 +1,5 @@
 import {ANAIMATION_FRAME_RATE} from '../constants/settings.js';
+import {GAME_EFFECTS} from '../constants/effects.js';
 
 export const handleItems = (player) => {
   Object.values(player.items).forEach((item) => {
@@ -17,6 +18,15 @@ export const handleItems = (player) => {
           const newHitpoints = Math.round(player.maxHitpoints * 0.01 + player.hitpoints);
           player.hitpoints = newHitpoints > player.maxHitpoints ? player.maxHitpoints : newHitpoints;
         }
+        break;
+      case 2:
+        if (item.durationCount >= item.cooldown) {
+          if (player.hitpoints < player.maxHitpoints / 4) {
+            item.durationCount = 0;
+            const gameBuff = {...GAME_EFFECTS[3], durationCount: 6000};
+            player.effects = {...player.effects, [gameBuff.id]: gameBuff}
+          };
+        };
         break;
       default:
     }

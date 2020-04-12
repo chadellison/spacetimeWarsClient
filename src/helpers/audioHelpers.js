@@ -1,10 +1,8 @@
 import {thruster} from '../constants/settings.js';
 import {WEAPONS} from '../constants/weapons.js';
-import {getItem} from '../helpers/itemHelpers.js';
 
 export const handleAudio = (player) => {
-  const hasStealth = getItem(player.items, 3);
-  if (player.gameEvent === 'up' && !hasStealth) {
+  if (player.gameEvent === 'up') {
     thruster.currentTime = 0
     const playPromise = thruster.play();
     if (playPromise !== undefined) {
@@ -17,7 +15,7 @@ export const handleAudio = (player) => {
     }
   };
 
-  if (player.gameEvent === 'fire' && !hasStealth) {
+  if (player.gameEvent === 'fire') {
     const audio = WEAPONS[player.weaponIndex].sound
     audio.currentTime = 0
     const audioPromise = audio.play();
