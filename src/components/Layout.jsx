@@ -43,7 +43,7 @@ class Layout extends React.Component {
   };
 
   componentDidMount() {
-    this.syncClocks(REQUEST_COUNT)
+    this.syncClocks(REQUEST_COUNT, true)
     this.createGameSocket();
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
@@ -73,27 +73,27 @@ class Layout extends React.Component {
     this.setState({gameSocket: gameSocket})
   };
 
-  syncClocks = (iteration) => {
+  syncClocks = (iteration, shouldFetchPlayers) => {
     const sentTime = Date.now();
     fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
       .then((response) => response.json())
-      .then((timeData) => this.handleTimeResponse(sentTime, timeData, iteration))
+      .then((timeData) => this.handleTimeResponse(sentTime, timeData, iteration, shouldFetchPlayers))
       .catch((error) => console.log('ERROR', error));
   }
 
-  handleTimeResponse = (sentTime, timeData, iteration) => {
+  handleTimeResponse = (sentTime, timeData, iteration, shouldFetchPlayers) => {
     const responseTime = Date.now();
     const roundTripTime = responseTime - sentTime;
     this.handleClockUpdate(roundTripTime, timeData.difference);
 
     if (iteration > 0) {
       iteration -= 1
-      this.syncClocks(iteration, roundTripTime)
-    } else {
+      this.syncClocks(iteration, shouldFetchPlayers)
+    } else if (shouldFetchPlayers) {
       console.log('clock difference: ***********', this.state.clockDifference);
-      console.log('shortest response time: ***********', this.state.shortestRoundTripTime);
       this.fetchPlayers();
     };
+    console.log('shortest response time: ***********', this.state.shortestRoundTripTime);
   };
 
   fetchPlayers() {
@@ -157,7 +157,10 @@ class Layout extends React.Component {
     handleAudio(playerData);
     this.setState(gameState);
     if (elapsedTime > 500) {
-      console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime)
+      console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime);
+      if (this.state.shortestRoundTripTime > 100) {
+        this.syncClocks(REQUEST_COUNT, false);
+      };
     };
   };
 
