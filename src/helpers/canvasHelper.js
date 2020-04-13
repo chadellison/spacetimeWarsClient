@@ -46,7 +46,8 @@ export const shouldRenderShip = (player, currentPlayerId) => {
   return (!player.explode) && (!player.effects[4] || player.id === currentPlayerId);
 }
 
-export const renderExplosion = (context, explosion, player) => {
+export const renderExplosion = (gameBuff, context, explosion, player) => {
+  renderText(gameBuff, context, player);
   context.drawImage(
     explosion,
     player.explodeAnimation.x,
@@ -58,4 +59,12 @@ export const renderExplosion = (context, explosion, player) => {
     200,
     200
   );
+}
+
+const renderText = (gameBuff, context, player) => {
+  if (!gameBuff.color) {
+    context.fillStyle = "#ab8432";
+    context.font = "12px Arial";
+    context.fillText(`+ ${Math.round(player.score * 0.01 + 100)}`, player.location.x + 75, player.location.y)
+  }
 }

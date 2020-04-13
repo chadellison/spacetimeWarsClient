@@ -164,7 +164,7 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
       handlePositiveBuff(currentPlayer, weapon);
       let bounty = Math.round(damage / 10);
       if (player.hitpoints <= 0) {
-        bounty += Math.round(player.gold / 10 + 100);
+        bounty += Math.round(player.score * 0.01 + 100);
         if (player.id === 'ai') {
           handleGameEvent({...currentPlayer, gameEvent: 'buff', buffIndex: randomBuffIndex()});
         };

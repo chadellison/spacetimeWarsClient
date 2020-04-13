@@ -100,7 +100,7 @@ class Canvas extends React.Component {
       if (shouldRenderShip(player, this.props.currentPlayer.id)) {
         drawShip(context, player, this.handleImage(player), this.state.thrusterAudio);
       } else {
-        renderExplosion(context, this.state.explosion, player);
+        renderExplosion(this.props.gameBuff, context, this.state.explosion, player);
       };
     });
 
