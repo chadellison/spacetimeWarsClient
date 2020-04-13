@@ -129,7 +129,7 @@ export const WEAPONS = [
     price: 925,
     width: 20,
     height: 20,
-    ability: 'cold damage: slows enemy speed by 50% for one second',
+    ability: 'cold damage: significanlty slows enemy speed for one second',
     image: blueFire,
     sound: new Audio(plasmaCannonAudio),
     selectionImage: displayBlueFire

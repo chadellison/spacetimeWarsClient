@@ -55,6 +55,7 @@ const handleHitpoints = (player, currentPlayer, handleGameEvent) => {
       player.explodeAnimation = {x: 0, y: 0};
       player.explode = true;
     };
+    // else if elapsedTime from player's last update is greater than x... blow up
   };
 };
 
@@ -238,7 +239,7 @@ export const handleRepeatedFire = (player, handleGameEvent, lastFired, updateSta
 };
 
 const removePlayer = (explodeAnimation) => {
-  return explodeAnimation && (explodeAnimation.x === (SPRITE_WIDTH * SPRITE_ROW_COUNT) && explodeAnimation.y === (SPRITE_WIDTH * SPRITE_COLUMN_COUNT));
+  return (explodeAnimation.x === (SPRITE_WIDTH * SPRITE_ROW_COUNT) && explodeAnimation.y === (SPRITE_WIDTH * SPRITE_COLUMN_COUNT));
 }
 
 export const findElapsedTime = (clockDifference, updatedAt) => {
