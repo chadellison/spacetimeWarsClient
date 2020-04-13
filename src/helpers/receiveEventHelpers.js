@@ -79,10 +79,6 @@ const handleRemoveEvent = (players, playerData, currentPlayer) => {
 
   return {
     players: updatedPlayers,
-    currentPlayer: updatedCurrentPlayer,
-    up: false,
-    left: false,
-    right: false,
-    space: false
+    currentPlayer: updatedCurrentPlayer
   };
 }
