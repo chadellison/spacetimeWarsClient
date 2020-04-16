@@ -30,6 +30,10 @@ export const randomBuffIndex = () => {
 
 export const applyGameBuff = (buffedPlayerId, players, elapsedTime, gameBuff) => {
   return players.map((player) => {
+    if (player.id === 'ai') {
+      player.explode = true
+      player.explodeAnimation = {x: 0, y: 0};
+    }
     if (gameBuff.id < 4 && buffedPlayerId !== player.id && player.id !== 'ai') {
       player.effects = {...player.effects, [gameBuff.id]: {...gameBuff}};
     } else if (gameBuff.id > 3 && buffedPlayerId === player.id) {
