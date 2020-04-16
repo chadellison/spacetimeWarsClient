@@ -28,7 +28,7 @@ export const randomBuffIndex = () => {
   return Math.floor(Math.random() * Math.floor(GAME_EFFECTS.length));
 }
 
-export const applyGameBuff = (buffedPlayerId, players, elapsedTime, gameBuff) => {
+export const applyGameBuff = (buffedPlayerId, players, gameBuff) => {
   return players.map((player) => {
     if (player.id === 'ai') {
       player.explode = true
