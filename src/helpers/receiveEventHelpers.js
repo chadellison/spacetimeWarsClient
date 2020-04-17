@@ -13,7 +13,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
       return handleBuffEvent(playerData, players, elapsedTime);
     default:
       let allPlayers = [...players];
-      if (players.filter((player => player.id === playerData.id)).length === 0) {
+      if (players.filter((player) => player.id === playerData.id).length === 0) {
         allPlayers = [...players, playerData];
       };
       return handleUpdateEvent(allPlayers, playerData, clockDifference, deployedWeapons, currentPlayer, elapsedTime);
@@ -68,6 +68,7 @@ const handleRemoveEvent = (players, playerData, currentPlayer) => {
         player.angle = 0;
         player.trajectory = 0;
         player.rotate = 'none';
+        player.effects = {};
         playerData = player;
       }
       if (playerData.id === currentPlayer.id) {

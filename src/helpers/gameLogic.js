@@ -51,7 +51,7 @@ const handleHitpoints = (player, currentPlayer, handleGameEvent) => {
   if (player.hitpoints <= 0 && !player.explode) {
     if (currentPlayer.id === player.id) {
       handleGameEvent({id: currentPlayer.id, gameEvent: 'remove'});
-    }
+    };
   };
 };
 
