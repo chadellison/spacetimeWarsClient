@@ -49,8 +49,8 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
 
 const handleHitpoints = (player, currentPlayer, handleGameEvent) => {
   if (player.hitpoints <= 0 && !player.explode) {
-    if (currentPlayer.id === player.id) {
-      handleGameEvent({id: currentPlayer.id, gameEvent: 'remove'});
+    if ([currentPlayer.id, 'ai'].includes(player.id)) {
+      handleGameEvent({id: player.id, gameEvent: 'remove'});
     };
   };
 };
