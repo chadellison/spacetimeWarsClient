@@ -11,6 +11,8 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
       return handleRemoveEvent(players, playerData, currentPlayer);
     case 'buff':
       return handleBuffEvent(playerData, players, elapsedTime);
+    case 'gameOver':
+      return handleGameOverEvent([...players])
     default:
       let allPlayers = [...players];
       if (players.filter((player) => player.id === playerData.id).length === 0) {
@@ -82,4 +84,16 @@ const handleRemoveEvent = (players, playerData, currentPlayer) => {
     players: updatedPlayers,
     currentPlayer: updatedCurrentPlayer
   };
+}
+
+const handleGameOverEvent = (players) => {
+  const updatedPlayers = players.map((player) => {
+    return {...player, explode: true, explodeAnimation: {x: 0, y: 0}}
+  });
+  return {
+    modal: 'gameOver',
+    gameOverStats: players,
+    currentPlayer: {},
+    players: updatedPlayers
+  }
 }

@@ -1,10 +1,10 @@
 import React from "react";
 import '../styles/playerData.css';
 import {WEAPONS} from '../constants/weapons.js';
-import {ITEMS} from '../constants/items.js';
 import gold from "../images/gold.png";
 import {Hitpoints} from './Hitpoints';
 import {PlayerStats} from './PlayerStats';
+import {PlayerItems} from './PlayerItems';
 import {ShipIcon} from './ShipIcon';
 import {findElapsedTime} from '../helpers/gameLogic.js';
 
@@ -45,26 +45,26 @@ const renderGold = (type, value) => {
   };
 }
 
-const renderItems = (items) => {
-  return Object.values(items).map((item) => {
-    let countDown = 0;
-    if (item.durationCount < item.cooldown) {
-      countDown = Math.round((item.cooldown - item.durationCount) / 1000);
-    }
-    return (
-      <div className="playerItemData" key={'playerItem' + item.index}>
-        <div className="itemCountDown" hidden={countDown === 0 || countDown > 9}>
-          {countDown}
-        </div>
-        <img
-          className={`playerItemImage${countDown ? ' faded' : ''}`}
-          src={ITEMS[item.index].image}
-          alt="playerItem"
-        />
-      </div>
-    )
-  });
-}
+// const renderItems = (items) => {
+//   return Object.values(items).map((item) => {
+//     let countDown = 0;
+//     if (item.durationCount < item.cooldown) {
+//       countDown = Math.round((item.cooldown - item.durationCount) / 1000);
+//     }
+//     return (
+//       <div className="playerItemData" key={'playerItem' + item.index}>
+//         <div className="itemCountDown" hidden={countDown === 0 || countDown > 9}>
+//           {countDown}
+//         </div>
+//         <img
+//           className={`playerItemImage${countDown ? ' faded' : ''}`}
+//           src={ITEMS[item.index].image}
+//           alt="playerItem"
+//         />
+//       </div>
+//     )
+//   });
+// }
 
 const handleWaitTime = (currentPlayer, countDown) => {
   if (countDown > 0) {
@@ -105,7 +105,7 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, players}) => {
           {renderData('Armor', currentPlayer.armor)}
           {renderData('Speed', currentPlayer.velocity)}
           {renderData('Score', currentPlayer.score)}
-          {renderItems(currentPlayer.items)}
+          <PlayerItems items={currentPlayer.items} />
           <PlayerStats players={players} currentPlayerId={currentPlayer.id} />
         </div>
       </div>

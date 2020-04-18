@@ -6,6 +6,7 @@ import PlayerData from './PlayerData';
 import SelectionModal from './SelectionModal';
 import {InformationModal} from './InformationModal';
 import {CreditsModal} from './CreditsModal';
+import {GameOverModal} from './GameOverModal';
 import {GameButton} from './GameButton';
 import {HeaderButtons} from './HeaderButtons';
 import '../styles/styles.css';
@@ -33,7 +34,8 @@ const DEFAULT_STATE = {
   modal: null,
   activeTab: 'Ships',
   page: 1,
-  gameBuff: {}
+  gameBuff: {},
+  gameOverStats: []
 };
 
 class Layout extends React.Component {
@@ -143,7 +145,7 @@ class Layout extends React.Component {
 
   handleKeyUp = (event) => {
     const {explode, gameEvent} = this.state.currentPlayer;
-    if (!explode && gameEvent !== 'waiting') {
+    if (!explode && gameEvent !== 'waiting' && !this.state.modal) {
       const pressedKey = KEY_MAP[event.keyCode];
       keyUpEventPayload(pressedKey, this.state, this.handleGameEvent, this.updateState)
       this.setState({[pressedKey]: false});
@@ -188,7 +190,9 @@ class Layout extends React.Component {
       page,
       modal,
       userId,
+      players,
       activeTab,
+      gameOverStats,
       currentPlayer
     } = this.state;
     if (modal === 'instructions') {
@@ -204,9 +208,11 @@ class Layout extends React.Component {
           activeTab={activeTab}
           page={page}
           currentPlayer={currentPlayer}
-          players={this.state.players}
+          players={players}
         />
       );
+    } else if (modal === 'gameOver') {
+      return <GameOverModal players={gameOverStats} updateState={this.updateState}/>
     }
   }
 

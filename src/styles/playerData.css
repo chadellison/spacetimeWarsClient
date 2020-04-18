@@ -7,6 +7,34 @@
   display: flex;
 }
 
+.gameOverStat {
+  width: 10em;
+  height: 10em;
+  margin-top: 2em;
+  margin-left: 1em;
+  margin-right: 1em;
+  transition: ease-out .5s;
+  display: inline-block;
+}
+
+.winningScore {
+  color: #ffa109;
+  font-size: 16px;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-weight: bold;
+}
+
+.finalScore {
+  color: white;
+  font-size: 16px;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-weight: bold;
+}
+
 .DamageInfo, .ArmorInfo, .SpeedInfo, .ScoreInfo, .playerInfo {
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   font-size: 14px;
@@ -76,21 +104,6 @@
   color: red;
   z-index: 1;
   position: fixed;
-}
-
-.playerStatsButton {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  font-size: 16px;
-  color: #2c66b2;
-  transition: ease-out .3s;
-  width: 16em;
-}
-
-.playerStatsButton:hover {
-  cursor: pointer;
-  opacity: 0.8;
-  transition: ease-in .3s;
 }
 
 .playerShip {

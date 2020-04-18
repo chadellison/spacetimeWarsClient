@@ -163,15 +163,24 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
       let bounty = Math.round(damage / 10);
       if (player.hitpoints <= 0) {
         bounty += Math.round(player.score * 0.01 + 100);
-        if (player.id === 'ai') {
-          handleGameEvent({...currentPlayer, gameEvent: 'buff', buffIndex: randomBuffIndex()});
-        };
+        handleKill(player, currentPlayer, handleGameEvent);
       };
       currentPlayer.gold += bounty;
       currentPlayer.score += bounty;
     };
   };
 };
+
+const handleKill = (player, currentPlayer, handleGameEvent) => {
+  if (player.id === 'ai') {
+    handleGameEvent({...currentPlayer, gameEvent: 'buff', buffIndex: randomBuffIndex()});
+  } else {
+    currentPlayer.consecutiveKills += 1
+    if (currentPlayer.consecutiveKills >= 5) {
+      handleGameEvent({...currentPlayer, gameEvent: 'gameOver'});
+    }
+  }
+}
 
 const handleNegativeBuff = (player, weapon) => {
   switch (weapon.index) {
