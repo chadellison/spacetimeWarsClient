@@ -17,7 +17,7 @@ export const UPGRADES = [
     price: 200,
     name: 'Hitpoints',
     image: hitpoints,
-    description: 'Permanantly increases hitpoints by 200'
+    description: 'Permanantly increases hitpoints by 200 up 4000'
   },
   {
     index: 2,
@@ -31,6 +31,6 @@ export const UPGRADES = [
     price: 500,
     name: 'Damage',
     image: damage,
-    description: 'Permanantly increases damage by 50'
+    description: 'Permanantly increases damage by 50 up to 1000'
   }
 ];

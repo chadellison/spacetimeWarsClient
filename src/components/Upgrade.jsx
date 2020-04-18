@@ -12,17 +12,20 @@ const handleClick = (currentPlayer, upgrade, players, updateState) => {
       player.armor += 1
       upgradeSound.play();
       updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)});
-    } else if (upgrade.index === 1) {
-      player.maxHitpoints += 200
-      player.hitpoints += 200
+    } else if (upgrade.index === 1 && player.maxHitpoints < 4000) {
+      const newHitpoints = player.maxHitpoints + 200
+      player.maxHitpoints = newHitpoints > 4000 ? 4000 : newHitpoints;
+      const hitpoints = player.hitpoints + 200;
+      player.hitpoints = hitpoints > player.maxHitpoints ? player.maxHitpoints : hitpoints;
       upgradeSound.play();
       updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)});
     } else if (upgrade.index === 2 && player.velocity < 6) {
       player.velocity += 1
       upgradeSound.play();
       updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)});
-    } else if (upgrade.index === 3) {
-      player.damage += 50
+    } else if (upgrade.index === 3 && player.damage < 1000) {
+      const newDamage =  player.damage + 50
+      player.damage = newDamage > 1000 ? 1000 : newDamage
       upgradeSound.play();
       updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)});
     }
