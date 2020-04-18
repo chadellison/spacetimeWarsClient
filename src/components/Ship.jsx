@@ -31,7 +31,9 @@ export const Ship = ({imageSrc, currentPlayer, ship, players, updateState}) => {
   return (
     <div className={`selection ${currentPlayer.shipIndex === ship.index ? 'selected' : ''}`}
       onClick={() => handleClick(ship.index, currentPlayer, players, updateState)}>
-        <img id={ship.index} src={imageSrc} alt="ship" className="selectionImage"/>
+        <div className="imageWrapper">
+          <img id={ship.index} src={imageSrc} alt="ship" className="selectionImage"/>
+        </div>
         <div className="selectionTitle">
           {`${ship.name}`}
         </div>

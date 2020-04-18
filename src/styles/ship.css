@@ -1,5 +1,6 @@
 .selection {
   width: 10em;
+  height: 10em;
   margin-top: 2em;
   margin-left: 1em;
   margin-right: 1em;
@@ -18,13 +19,24 @@
   transition: ease-in .5s;
 }
 
-.selectionImage {
-  border: 1px solid #ffa109;
+.imageWrapper {
   border: 1px solid #2c66b2;
   border-radius: 10%;
-  padding: 1em;
+  padding: 0.5em;
   margin-bottom: 1em;
   width: 8em;
+  height: 8em;
+  position: relative;
+}
+
+.selectionImage {
+  width: 8em;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 .selectionTitle {

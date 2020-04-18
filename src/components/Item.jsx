@@ -28,7 +28,9 @@ export const Item = ({imageSrc, currentPlayer, item, players, updateState}) => {
   return (
     <div className="selection"
       onClick={() => handleClick(currentPlayer, item, players, updateState)}>
-        <img id={item.index} src={imageSrc} alt="item" className="selectionImage"/>
+        <div className="imageWrapper">
+          <img id={item.index} src={imageSrc} alt="item" className="selectionImage"/>
+        </div>
         <div className="selectionTitle">
           {`${item.name}`}
         </div>
