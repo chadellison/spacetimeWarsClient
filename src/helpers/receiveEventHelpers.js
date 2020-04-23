@@ -6,7 +6,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   const {players, clockDifference, deployedWeapons, currentPlayer} = gameState;
   switch (playerData.gameEvent) {
     case 'start':
-      return {players: [...players, playerData]};
+      return handleStartEvent(players, playerData, currentPlayer.id);
     case 'remove':
       return handleRemoveEvent(players, playerData, currentPlayer);
     case 'buff':
@@ -20,6 +20,20 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
       };
       return handleUpdateEvent(allPlayers, playerData, clockDifference, deployedWeapons, currentPlayer, elapsedTime);
   };
+}
+
+const handleStartEvent = (players, playerData, currentPlayerId) => {
+  if (currentPlayerId === playerData.id) {
+    return {
+      up: false,
+      left: false,
+      right: false,
+      space: false,
+      players: [...players, playerData]
+    }
+  } else {
+    return {players: [...players, playerData]}
+  }
 }
 
 const handleBuffEvent = (playerData, players, elapsedTime) => {
