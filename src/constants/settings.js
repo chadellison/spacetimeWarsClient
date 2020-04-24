@@ -1,6 +1,7 @@
 
 // audio
 import thrusterAudio from '../audio/thruster.wav';
+import supplyPopAudio from '../audio/supplyPop.wav';
 import gongAudio from '../audio/gong.wav';
 import loadWeaponAudio from '../audio/loadWeapon.wav';
 import notEnoughResourcesAudio from '../audio/notEnoughResources.wav';
@@ -29,3 +30,4 @@ export const gong = new Audio(gongAudio);
 export const loadWeapon = new Audio(loadWeaponAudio);
 export const upgradeSound = new Audio(upgradeAudio);
 export const notEnoughResources = new Audio(notEnoughResourcesAudio);
+export const supplyPop = new Audio(supplyPopAudio);
