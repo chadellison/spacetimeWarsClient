@@ -47,7 +47,6 @@ export const shouldRenderShip = (player, currentPlayerId) => {
 }
 
 export const renderExplosion = (gameBuff, context, explosion, player) => {
-  renderText(gameBuff, context, player);
   context.drawImage(
     explosion,
     player.explodeAnimation.x,
@@ -58,13 +57,19 @@ export const renderExplosion = (gameBuff, context, explosion, player) => {
     player.location.y,
     200,
     200
-  );
-}
+  )
+};
 
-const renderText = (gameBuff, context, player) => {
+export const renderText = (gameBuff, context, player, showShip) => {
   if (!gameBuff.color) {
-    context.fillStyle = "#ab8432";
-    context.font = "12px Arial";
-    context.fillText(`+ ${Math.round(player.score * 0.01 + 100)}`, player.location.x + 75, player.location.y)
+    if (showShip && player.id !== 'ai') {
+      context.fillStyle = "#2c66b2";
+      context.font = "12px Arial";
+      context.fillText(player.name, player.location.x + 25, player.location.y + 110)
+    } else if (!showShip) {
+      context.fillStyle = "#ab8432";
+      context.font = "12px Arial";
+      context.fillText(`+ ${Math.round(player.score * 0.01 + 100)}`, player.location.x + 75, player.location.y)
+    }
   }
-}
+};

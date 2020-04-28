@@ -119,12 +119,12 @@ const renderTabs = (activeTab, updateState, currentPlayer) => {
 };
 
 const SelectionModal = ({
-  updateState,
-  handleGameEvent,
-  activeTab,
   page,
+  players,
+  activeTab,
+  updateState,
   currentPlayer,
-  players
+  handleGameEvent
 }) => {
   return (
     <div className="modal">

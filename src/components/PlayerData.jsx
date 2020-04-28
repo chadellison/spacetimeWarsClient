@@ -45,27 +45,6 @@ const renderGold = (type, value) => {
   };
 }
 
-// const renderItems = (items) => {
-//   return Object.values(items).map((item) => {
-//     let countDown = 0;
-//     if (item.durationCount < item.cooldown) {
-//       countDown = Math.round((item.cooldown - item.durationCount) / 1000);
-//     }
-//     return (
-//       <div className="playerItemData" key={'playerItem' + item.index}>
-//         <div className="itemCountDown" hidden={countDown === 0 || countDown > 9}>
-//           {countDown}
-//         </div>
-//         <img
-//           className={`playerItemImage${countDown ? ' faded' : ''}`}
-//           src={ITEMS[item.index].image}
-//           alt="playerItem"
-//         />
-//       </div>
-//     )
-//   });
-// }
-
 const handleWaitTime = (currentPlayer, countDown) => {
   if (countDown > 0) {
     return <span className="waitCountDown">{countDown}</span>;
@@ -97,6 +76,7 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, players}) => {
       <div className={`playerData column ${currentPlayer.explode ? 'waiting' : ''}`}>
         <div className="row">
           {handleWaitTime(currentPlayer, countDown)}
+          <div className="NameInfo">{currentPlayer.name}</div>
           {renderGold('Gold', currentPlayer.gold)}
           {renderHitPoints(currentPlayer)}
           {renderShip(currentPlayer)}

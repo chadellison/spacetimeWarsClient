@@ -45,6 +45,14 @@
   padding-bottom: .75rem;
 }
 
+.NameInfo {
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-size: 14px;
+  color: #2c66b2;
+  margin-top: 1.5em;
+  margin-bottom: .75rem;
+}
+
 .goldIcon {
   margin-bottom: -.25em;
 }

@@ -142,6 +142,19 @@
   transition: ease-in .3s;
 }
 
+.formLabel {
+  margin-top: 4em;
+  display: block;
+  font-size: 30px;
+  color: #2c66b2;
+}
+
+.formInput {
+  margin-top: 4em;
+  font-size: 20px;
+  padding: .15em;
+}
+
 @keyframes slideDown {
 	0% {
 		transform: translateY(-100%);

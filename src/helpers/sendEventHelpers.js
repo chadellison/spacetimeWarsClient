@@ -18,7 +18,7 @@ export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState
     default:
       break;
   }
-}
+};
 
 export const keyUpEventPayload = (
   pressedKey,

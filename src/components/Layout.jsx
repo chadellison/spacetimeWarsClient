@@ -7,6 +7,7 @@ import SelectionModal from './SelectionModal';
 import {InformationModal} from './InformationModal';
 import {CreditsModal} from './CreditsModal';
 import {GameOverModal} from './GameOverModal';
+import {NameFormModal} from './NameFormModal';
 import {GameButton} from './GameButton';
 import {HeaderButtons} from './HeaderButtons';
 import '../styles/styles.css';
@@ -119,7 +120,7 @@ class Layout extends React.Component {
   }
 
   handleShopButton = () => {
-    if (this.state.currentPlayer.id) {
+    if (this.state.currentPlayer.name) {
       this.updateState({modal: 'selection'})
     } else {
       this.updateState(addPlayer(this.state.userId, this.state.players));
@@ -131,7 +132,7 @@ class Layout extends React.Component {
     const {explode} = currentPlayer;
 
     if (!explode && !modal) {
-      if (!currentPlayer.id) {
+      if (!currentPlayer.name) {
         this.updateState(addPlayer(userId, players));
       } else {
         const pressedKey = KEY_MAP[event.keyCode];
@@ -195,24 +196,29 @@ class Layout extends React.Component {
       gameOverStats,
       currentPlayer
     } = this.state;
-    if (modal === 'instructions') {
-      return <InformationModal updateState={this.updateState} />
-    } else if (modal === 'credits') {
-      return <CreditsModal updateState={this.updateState} />
-    } else if (modal === 'selection') {
-      return (
-        <SelectionModal
-          updateState={this.updateState}
-          handleGameEvent={this.handleGameEvent}
-          userId={userId}
-          activeTab={activeTab}
-          page={page}
-          currentPlayer={currentPlayer}
-          players={players}
-        />
-      );
-    } else if (modal === 'gameOver') {
-      return <GameOverModal players={gameOverStats} updateState={this.updateState}/>
+    switch (modal) {
+      case 'selection':
+        return (
+          <SelectionModal
+            updateState={this.updateState}
+            handleGameEvent={this.handleGameEvent}
+            userId={userId}
+            activeTab={activeTab}
+            page={page}
+            currentPlayer={currentPlayer}
+            players={players}
+          />
+        );
+      case 'instructions':
+        return <InformationModal updateState={this.updateState} />
+      case 'credits':
+        return <CreditsModal updateState={this.updateState} />
+      case 'nameForm':
+        return <NameFormModal updateState={this.updateState} currentPlayer={currentPlayer} />
+      case 'gameOver':
+        return <GameOverModal players={gameOverStats} updateState={this.updateState}/>
+      default:
+        break;
     }
   }
 

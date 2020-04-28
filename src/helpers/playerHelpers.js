@@ -1,6 +1,6 @@
 export const addPlayer = (userId, players) => {
   return {
-    modal: 'selection',
+    modal: 'nameForm',
     currentPlayer: {
       id: userId,
       gold: handleStartingGold(players),
