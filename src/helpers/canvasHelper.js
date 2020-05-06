@@ -62,7 +62,7 @@ export const renderExplosion = (gameBuff, context, explosion, player) => {
 
 export const renderText = (gameBuff, context, player, showShip) => {
   if (!gameBuff.color) {
-    if (showShip && player.id !== 'ai') {
+    if (showShip && player.type !== 'ai') {
       context.fillStyle = "#2c66b2";
       context.font = "12px Arial";
       context.fillText(player.name, player.location.x + 25, player.location.y + 110)

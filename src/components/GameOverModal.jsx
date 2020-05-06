@@ -15,7 +15,7 @@ export const GameOverModal = ({players, updateState}) => {
           return 1
         }
         return 0;
-      }).filter((player) => player.id !== 'ai').map((player, index) => {
+      }).filter((player) => player.type !== 'ai').map((player, index) => {
         return (
           <GameOverStat player={player} key={`gameOver${index}`} index={index}/>
         );

@@ -5,6 +5,7 @@ import gold from "../images/gold.png";
 import {Hitpoints} from './Hitpoints';
 import {PlayerStats} from './PlayerStats';
 import {PlayerItems} from './PlayerItems';
+import {PlayerEffects} from './PlayerEffects';
 import {ShipIcon} from './ShipIcon';
 import {findElapsedTime} from '../helpers/gameLogic.js';
 
@@ -86,6 +87,7 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, players}) => {
           {renderData('Speed', currentPlayer.velocity)}
           {renderData('Score', currentPlayer.score)}
           <PlayerItems items={currentPlayer.items} />
+          <PlayerEffects effects={Object.values(currentPlayer.effects)} />
           <PlayerStats players={players} currentPlayerId={currentPlayer.id} />
         </div>
       </div>

@@ -5,9 +5,10 @@ import {Stat} from './Stat';
 export const PlayerStats = ({players, currentPlayerId}) => {
   return (
     <div className={'playerStats'}>
-      {players.filter((player) => !['ai', currentPlayerId].includes(player.id)).map((player) => {
-        return <Stat player={player} key={`playerStats${player.id}`} />
-      })}
+      {
+        players.filter((player) => currentPlayerId !== player.id && player.type !== 'ai')
+               .map((player) => <Stat player={player} key={`playerStats${player.id}`} />)
+      }
     </div>
   );
 };

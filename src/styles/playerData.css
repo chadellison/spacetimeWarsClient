@@ -123,3 +123,8 @@
   display: inline-block;
   transform: rotate(270deg);
 }
+
+.playerEffectData {
+  margin-top: .75em;
+  margin-bottom: .75em;
+}

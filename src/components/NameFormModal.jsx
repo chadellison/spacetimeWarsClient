@@ -13,7 +13,7 @@ export const NameFormModal = ({updateState, currentPlayer}) => {
       <label className="formLabel">
         Create a username
       </label>
-      <input type="text" maxlength={16} value={formValue} className="formInput" onChange={(e) => onChange(e, updateState, currentPlayer)}/>
+      <input type="text" maxLength={16} value={formValue} className="formInput" onChange={(e) => onChange(e, updateState, currentPlayer)}/>
       <GameButton
         onClick={() => updateState({modal: 'selection'})}
         buttonText={'Submit'}

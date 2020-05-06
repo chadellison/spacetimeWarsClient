@@ -78,7 +78,7 @@ class Canvas extends React.Component {
   }
 
   handleImage = (player) => {
-    let imageReference = player.id === 'ai' ? 'supplyShip' : SHIPS[player.shipIndex].name
+    let imageReference = player.type === 'ai' ? 'supplyShip' : SHIPS[player.shipIndex].name
     if (canAbsorbDamage(player)) {
       imageReference += 'Absorb';
     }

@@ -22,7 +22,7 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
   let updatedPlayers = [];
   players.forEach((player) => {
     if (!removePlayer(player.explodeAnimation)) {
-      handleHitpoints(player, currentPlayer, handleGameEvent);
+      handleHitpoints(player, currentPlayer.id, handleGameEvent);
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
       if (player.id === currentPlayer.id) {
         handleRepeatedFire(currentPlayer, handleGameEvent, lastFired, updateState, clockDifference, space);
@@ -47,11 +47,9 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
   };
 };
 
-const handleHitpoints = (player, currentPlayer, handleGameEvent) => {
-  if (player.hitpoints <= 0 && !player.explode) {
-    if ([currentPlayer.id, 'ai'].includes(player.id)) {
-      handleGameEvent({id: player.id, gameEvent: 'remove'});
-    };
+const handleHitpoints = (player, currentPlayerId, handleGameEvent) => {
+  if (player.hitpoints <= 0 && !player.explode && player.killedBy === currentPlayerId) {
+    handleGameEvent({id: player.id, gameEvent: 'remove'});
   };
 };
 
@@ -92,7 +90,9 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   const trajectory = player.accelerate ? player.angle : player.trajectory;
   player.location = handleLocation(trajectory, player.location, distance);
   player.explodeAnimation = handleExplodeUpdate(player.explode, player.explodeAnimation);
-  handleItems(player);
+  if (player.type !== 'ai') {
+    handleItems(player);
+  }
   return player
 }
 
@@ -114,7 +114,7 @@ const removeOutOfBoundsShots = (weapons) => {
 };
 
 const findShipBoundingBoxes = (player) => {
-  const startCenter = player.id === 'ai' ? {x: 60, y: 30} : SHIPS[player.shipIndex].shipCenter;
+  const startCenter = player.type === 'ai' ? {x: 60, y: 30} : SHIPS[player.shipIndex].shipCenter;
   const shipCenter = {x: player.location.x + startCenter.x, y: player.location.y + startCenter.y}
 
   return [
@@ -164,6 +164,7 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
       if (player.hitpoints <= 0) {
         bounty += Math.round(player.score * 0.01 + 100);
         handleKill(player, currentPlayer, handleGameEvent);
+        player.killedBy = weapon.playerId
       };
       currentPlayer.gold += bounty;
       currentPlayer.score += bounty;
@@ -172,7 +173,7 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
 };
 
 const handleKill = (player, currentPlayer, handleGameEvent) => {
-  if (player.id === 'ai') {
+  if (player.type === 'ai') {
     handleGameEvent({...currentPlayer, gameEvent: 'buff', buffIndex: randomBuffIndex()});
   } else {
     currentPlayer.consecutiveKills += 1

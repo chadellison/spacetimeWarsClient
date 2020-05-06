@@ -113,7 +113,7 @@ export const WEAPONS = [
     price: 950,
     width: 16,
     height: 16,
-    ability: 'poison damage: deals 15% damage of the total hitpoints over 3 seconds',
+    ability: 'poison damage: deals 17% damage of the total hitpoints over 3 seconds',
     image: plasmaCannon,
     sound: new Audio(plasmaCannonAudio),
     selectionImage: displayPlasmaCannon
