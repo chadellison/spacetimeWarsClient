@@ -5,8 +5,8 @@ import missile from '../images/missile.png';
 import displayMissile from '../images/displayMissile.png';
 import trifecta from '../images/trifecta.png';
 import displayTrifecta from '../images/displayTrifecta.png';
-import plasmaCannon from '../images/plasmaCannon.png';
-import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
+import poisonCannon from '../images/poisonCannon.png';
+import displayPoisonCannon from '../images/displayPoisonCannon.png';
 import bomb from '../images/bomb.png';
 import displayBomb from '../images/displayBomb.png';
 import laser from '../images/laser.png';
@@ -104,7 +104,7 @@ export const WEAPONS = [
   },
   {
     index: 5,
-    name: 'plasmaCannon',
+    name: 'poisonCannon',
     location: {x: 0, y: 0},
     trajectory: 0,
     cooldown: 400,
@@ -114,9 +114,9 @@ export const WEAPONS = [
     width: 16,
     height: 16,
     ability: 'poison damage: deals 17% damage of the total hitpoints over 3 seconds',
-    image: plasmaCannon,
+    image: poisonCannon,
     sound: new Audio(plasmaCannonAudio),
-    selectionImage: displayPlasmaCannon
+    selectionImage: displayPoisonCannon
   },
   {
     index: 6,

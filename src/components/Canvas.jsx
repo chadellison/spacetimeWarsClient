@@ -41,7 +41,7 @@ class Canvas extends React.Component {
     const fireball = this.refs.fireball
     const missile = this.refs.missile
     const trifecta = this.refs.trifecta
-    const plasmaCannon = this.refs.plasmaCannon
+    const poisonCannon = this.refs.poisonCannon
     const bomb = this.refs.bomb
     const laser = this.refs.laser
     const blueFire = this.refs.blueFire
@@ -66,7 +66,7 @@ class Canvas extends React.Component {
       fireball: fireball,
       missile: missile,
       trifecta: trifecta,
-      plasmaCannon: plasmaCannon,
+      poisonCannon: poisonCannon,
       bomb: bomb,
       laser: laser,
       blueFire: blueFire,
