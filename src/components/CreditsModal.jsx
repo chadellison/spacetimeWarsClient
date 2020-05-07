@@ -40,6 +40,9 @@ export const CreditsModal = ({updateState}) => {
         <span className="creditTitle">blue fire:</span>Zimniy/Shutterstock.com
       </div>
       <div className="informationText">
+        <span className="creditTitle">plasma cannon:</span>MillionthVector
+      </div>
+      <div className="informationText">
         <span className="creditTitle">Armor Upgrade:</span>anttoniart/Shutterstock.com
       </div>
       <div className="informationText">

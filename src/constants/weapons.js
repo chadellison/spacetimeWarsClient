@@ -13,6 +13,8 @@ import laser from '../images/laser.png';
 import displayLaser from '../images/displayLaser.png';
 import blueFire from '../images/blueFire.png';
 import displayBlueFire from '../images/displayBlueFire.png';
+import plasmaCannon from '../images/plasmaCannon.png';
+import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
 
 import cannonAudio from '../audio/cannon.wav';
 import missileAudio from '../audio/missile.wav';
@@ -133,5 +135,21 @@ export const WEAPONS = [
     image: blueFire,
     sound: new Audio(plasmaCannonAudio),
     selectionImage: displayBlueFire
+  },
+  {
+    index: 7,
+    name: 'plasmaCannon',
+    location: {x: 0, y: 0},
+    trajectory: 0,
+    cooldown: 450,
+    speed: 18,
+    damage: 180,
+    price: 800,
+    width: 20,
+    height: 20,
+    ability: 'armor piercing damage: disregards all armor on enemy ship',
+    image: plasmaCannon,
+    sound: new Audio(plasmaCannonAudio),
+    selectionImage: displayPlasmaCannon
   }
 ];

@@ -219,8 +219,14 @@ const handlePositiveBuff = (player, weapon) => {
 }
 
 const calculateDamage = (weapon, player) => {
-  const armor = player.effects[7] ? player.armor + 4 : player.armor;
-  console.log('armor********', armor)
+  let armor = player.armor;
+
+  if (player.effects[7]) {
+    armor += 4;
+  } else if (weapon.index === 7) {
+    armor = 0;
+  }
+  
   let damage = weapon.damage;
   if (weapon.index === 4 && Math.random() >= 0.8) {
     damage *= 2

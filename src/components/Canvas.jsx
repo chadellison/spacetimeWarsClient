@@ -45,6 +45,7 @@ class Canvas extends React.Component {
     const bomb = this.refs.bomb
     const laser = this.refs.laser
     const blueFire = this.refs.blueFire
+    const plasmaCannon = this.refs.plasmaCannon
     const supplyShip = this.refs.supplyShip
     const explosion = this.refs.explosion
 
@@ -70,6 +71,7 @@ class Canvas extends React.Component {
       bomb: bomb,
       laser: laser,
       blueFire: blueFire,
+      plasmaCannon: plasmaCannon,
       explosion: explosion,
       supplyShip: supplyShip,
       halfWindowWidth: Math.round(window.innerWidth / 2),
