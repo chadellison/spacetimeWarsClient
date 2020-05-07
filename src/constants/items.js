@@ -3,12 +3,13 @@ import repairBots from '../images/repairGears.png';
 import healthBoost from '../images/healthBoost.jpg';
 import stealthMode from '../images/stealthMode.png';
 import absorbDamage from '../images/absorbDamage.png';
+import armorBoost from '../images/armorBoost.png';
 
 export const ITEMS = [
   {
     id: 1,
     index: 0,
-    price: 700,
+    price: 800,
     name: 'Health boost',
     image: healthBoost,
     cooldown: 120000,
@@ -28,7 +29,7 @@ export const ITEMS = [
   {
     id: 3,
     index: 2,
-    price: 700,
+    price: 650,
     name: 'Stealth Mode',
     image: stealthMode,
     cooldown: 120000,
@@ -38,11 +39,21 @@ export const ITEMS = [
   {
     id: 4,
     index: 3,
-    price: 750,
+    price: 725,
     name: 'Absorb damage',
     image: absorbDamage,
     cooldown: 10000,
     durationCount: 10000,
     description: 'Provieds a shield that completely absorbs one hit -- negating all damage/effects from it-- every 10 seconds.'
+  },
+  {
+    id: 5,
+    index: 4,
+    price: 750,
+    name: 'Armor Boost',
+    image: armorBoost,
+    cooldown: 20000,
+    durationCount: 15000,
+    description: 'Adds 4 armor to player for 15 seconds when hitpoints drop below 33%. 20 second cooldown.'
   }
 ];

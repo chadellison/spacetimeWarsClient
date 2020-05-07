@@ -2,13 +2,10 @@ import React from "react";
 import '../styles/paginateButton.css';
 
 const resolveText = (activeTab, page) => {
-  switch (activeTab) {
-    case 'Ships':
-      return page === 1 ? 'Next' : 'Previous';
-    case 'Weapons':
-      return page === 1 ? 'Next' : 'Previous';
-    default:
-      return null;
+  if (['Ships', 'Weapons', 'Items'].includes(activeTab)) {
+    return page === 1 ? 'Next' : 'Previous';
+  } else {
+    return null;
   }
 }
 

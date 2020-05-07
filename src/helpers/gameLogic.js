@@ -36,7 +36,11 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
   const filteredWeapons = removeOutOfBoundsShots(deployedWeapons);
   deployedWeapons = handleWeapons(filteredWeapons, updatedPlayers, currentPlayer, handleGameEvent);
 
-  updatedPlayers.forEach((player) => handleEffects(player));
+  updatedPlayers.forEach((player) => {
+    if (player.type !== 'ai') {
+      handleEffects(player)
+    }
+  });
   handleCountDownEnd(currentPlayer, clockDifference);
 
   return {
@@ -48,9 +52,17 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
 };
 
 const handleHitpoints = (player, currentPlayerId, handleGameEvent) => {
-  if (player.hitpoints <= 0 && !player.explode && player.killedBy === currentPlayerId) {
-    handleGameEvent({id: player.id, gameEvent: 'remove'});
-  };
+  if (player.hitpoints <= 0 && !player.explode) {
+    if (player.killedBy) {
+      if (player.killedBy === currentPlayerId) {
+        handleGameEvent({id: player.id, gameEvent: 'remove'});
+      }
+    } else {
+      if (currentPlayerId === player.id) {
+        handleGameEvent({id: player.id, gameEvent: 'remove'});
+      }
+    }
+  }
 };
 
 export const canFire = (lastFired, cooldown) => {
@@ -154,7 +166,7 @@ const applyHit = (player, weapon, currentPlayer, handleGameEvent) => {
 
 const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => {
   if (player.hitpoints > 0) {
-    const damage = calculateDamage(weapon, player.armor);
+    const damage = calculateDamage(weapon, player);
     player.hitpoints -= damage;
     handleNegativeBuff(player, weapon)
 
@@ -206,7 +218,9 @@ const handlePositiveBuff = (player, weapon) => {
   }
 }
 
-const calculateDamage = (weapon, armor) => {
+const calculateDamage = (weapon, player) => {
+  const armor = player.effects[7] ? player.armor + 4 : player.armor;
+  console.log('armor********', armor)
   let damage = weapon.damage;
   if (weapon.index === 4 && Math.random() >= 0.8) {
     damage *= 2

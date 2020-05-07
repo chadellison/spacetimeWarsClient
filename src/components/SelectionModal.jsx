@@ -67,7 +67,8 @@ const renderOptions = (activeTab, page, currentPlayer, players, updateState) => 
         )
       });
     case 'Items':
-      return ITEMS.map((item) => {
+      const items = page === 1 ? ITEMS.slice(0, 4) : ITEMS.slice(4, 8);
+      return items.map((item) => {
         return (
           <Item
             key={`item${item.index}`}

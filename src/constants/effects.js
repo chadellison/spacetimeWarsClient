@@ -41,5 +41,12 @@ export const GAME_EFFECTS = [
     duration: 4000,
     durationCount: 0,
     color: 'rgba(19, 20, 22, 0.45)'
+  },
+  {
+    id: 7,
+    name: 'armor boost',
+    duration: 15000,
+    durationCount: 0,
+    color: 'blue'
   }
 ]

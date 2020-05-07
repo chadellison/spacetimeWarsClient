@@ -34,7 +34,7 @@ export const CreditsModal = ({updateState}) => {
         <span className="creditTitle">trifecta:</span>MillionthVector
       </div>
       <div className="informationText">
-        <span className="creditTitle">plasma cannon:</span>MillionthVector
+        <span className="creditTitle">poison cannon:</span>Samokhina Anna/Shutterstock.com
       </div>
       <div className="informationText">
         <span className="creditTitle">blue fire:</span>Zimniy/Shutterstock.com
@@ -62,6 +62,9 @@ export const CreditsModal = ({updateState}) => {
       </div>
       <div className="informationText">
         <span className="creditTitle">Absorb Damage Item:</span>benchart/Shutterstock.com
+      </div>
+      <div className="informationText">
+        <span className="creditTitle">Armor Boost Item:</span>kursi design/Shutterstock.com
       </div>
       <div className="informationText">
         <span className="creditTitle">Gold Icon:</span>AlexRoz/Shutterstock.com
