@@ -44,7 +44,7 @@ const renderArmor = (player) => {
 }
 const renderSpeed = (player) => {
   if (player.effects[2]) {
-    return <div className={'SpeedInfo'}>Speed: 1</div>
+    return <div className={'SpeedInfo'}>{`Speed: ${player.velocity} - ${player.velocity - 1}`}</div>
   } else {
     return <div className={'SpeedInfo'}>{`Speed: ${player.velocity}`}</div>
   }
