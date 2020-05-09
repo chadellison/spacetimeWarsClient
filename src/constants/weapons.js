@@ -93,7 +93,7 @@ export const WEAPONS = [
     name: 'trifecta',
     location: {x: 0, y: 0},
     trajectory: 0,
-    cooldown: 300,
+    cooldown: 400,
     speed: 24,
     damage: 150,
     price: 900,

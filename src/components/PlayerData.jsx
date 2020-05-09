@@ -36,17 +36,21 @@ const renderData = (type, value) => {
 }
 
 const renderArmor = (player) => {
-  if (player.effects[7]) {
-    return <div className={'ArmorInfo'}>{`Armor: ${player.armor} + 4`}</div>
-  } else {
-    return <div className={'ArmorInfo'}>{`Armor: ${player.armor}`}</div>
+  if (player.armor >= 0) {
+    if (player.effects[7]) {
+      return <div className={'ArmorInfo'}>{`Armor: ${player.armor} + 4`}</div>
+    } else {
+      return <div className={'ArmorInfo'}>{`Armor: ${player.armor}`}</div>
+    }
   }
 }
 const renderSpeed = (player) => {
-  if (player.effects[2]) {
-    return <div className={'SpeedInfo'}>{`Speed: ${player.velocity} - ${player.velocity - 1}`}</div>
-  } else {
-    return <div className={'SpeedInfo'}>{`Speed: ${player.velocity}`}</div>
+  if (player.velocity) {
+    if (player.effects[2]) {
+      return <div className={'SpeedInfo'}>{`Speed: ${player.velocity} - ${player.velocity - 1}`}</div>
+    } else {
+      return <div className={'SpeedInfo'}>{`Speed: ${player.velocity}`}</div>
+    }
   }
 }
 
