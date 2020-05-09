@@ -35,6 +35,21 @@ const renderData = (type, value) => {
   };
 }
 
+const renderArmor = (player) => {
+  if (player.effects[7]) {
+    return <div className={'ArmorInfo'}>{`Armor: ${player.armor} + 4`}</div>
+  } else {
+    return <div className={'ArmorInfo'}>{`Armor: ${player.armor}`}</div>
+  }
+}
+const renderSpeed = (player) => {
+  if (player.effects[2]) {
+    return <div className={'SpeedInfo'}>Speed: 1</div>
+  } else {
+    return <div className={'SpeedInfo'}>{`Speed: ${player.velocity}`}</div>
+  }
+}
+
 const renderGold = (type, value) => {
   if (value >= 0) {
     return (
@@ -83,8 +98,8 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, players}) => {
           {renderShip(currentPlayer)}
           {renderWeapon(currentPlayer.weaponIndex)}
           {renderData('Damage', currentPlayer.damage)}
-          {renderData('Armor', currentPlayer.armor)}
-          {renderData('Speed', currentPlayer.velocity)}
+          {renderArmor(currentPlayer)}
+          {renderSpeed(currentPlayer)}
           {renderData('Score', currentPlayer.score)}
           <PlayerItems items={currentPlayer.items} />
           <PlayerEffects effects={Object.values(currentPlayer.effects)} />
