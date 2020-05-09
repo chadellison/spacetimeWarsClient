@@ -11,7 +11,7 @@ export const GAME_EFFECTS = [
     name: 'slow',
     duration: 9000,
     durationCount: 0,
-    color: 'rgba(7, 33, 151, 0.37)'
+    color: 'rgba(142, 194, 215, 0.54)'
   },
   {
     id: 3,
@@ -47,6 +47,6 @@ export const GAME_EFFECTS = [
     name: 'armor boost',
     duration: 15000,
     durationCount: 0,
-    color: 'blue'
+    color: 'rgba(7, 33, 151, 0.37)'
   }
 ]
