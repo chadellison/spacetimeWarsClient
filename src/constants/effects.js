@@ -22,6 +22,13 @@ export const GAME_EFFECTS = [
   },
   {
     id: 4,
+    name: 'stun',
+    duration: 3000,
+    durationCount: 0,
+    color: 'blue'
+  },
+  {
+    id: 5,
     name: 'invisible',
     duration: 11000,
     durationCount: 0,
@@ -29,21 +36,21 @@ export const GAME_EFFECTS = [
 
   },
   {
-    id: 5,
+    id: 6,
     name: 'invulnerable',
     duration: 7000,
     durationCount: 0,
     color: 'rgba(144, 7, 151, 0.37)'
   },
   {
-    id: 6,
+    id: 7,
     name: 'heal',
     duration: 4000,
     durationCount: 0,
     color: 'rgba(19, 20, 22, 0.45)'
   },
   {
-    id: 7,
+    id: 8,
     name: 'armor boost',
     duration: 15000,
     durationCount: 0,

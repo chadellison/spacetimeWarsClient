@@ -97,10 +97,12 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
 }
 
 export const updatePlayer = (player, elapsedTime, clockDifference) => {
-  player.angle = handleAngle(player, elapsedTime);
-  const distance = distanceTraveled(player, elapsedTime, clockDifference);
-  const trajectory = player.accelerate ? player.angle : player.trajectory;
-  player.location = handleLocation(trajectory, player.location, distance);
+  if (!player.effects[4]) {
+    player.angle = handleAngle(player, elapsedTime);
+    const distance = distanceTraveled(player, elapsedTime, clockDifference);
+    const trajectory = player.accelerate ? player.angle : player.trajectory;
+    player.location = handleLocation(trajectory, player.location, distance);
+  }
   player.explodeAnimation = handleExplodeUpdate(player.explode, player.explodeAnimation);
   if (player.type !== 'ai') {
     handleItems(player);
@@ -168,7 +170,7 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
   if (player.hitpoints > 0) {
     const damage = calculateDamage(weapon, player);
     player.hitpoints -= damage;
-    handleNegativeBuff(player, weapon)
+    handleNegativeBuff(player, weapon);
 
     if (weapon.playerId === currentPlayer.id) {
       handlePositiveBuff(currentPlayer, weapon);
@@ -196,16 +198,15 @@ const handleKill = (player, currentPlayer, handleGameEvent) => {
 }
 
 const handleNegativeBuff = (player, weapon) => {
-  switch (weapon.index) {
-    case 5:
-      player.effects[GAME_EFFECTS[0].id] = {...GAME_EFFECTS[0], duration: 3000}
-      break;
-    case 6:
-      player.effects[GAME_EFFECTS[1].id] = {...GAME_EFFECTS[1], duration: 1000}
-      break
-    default:
-      break;
+  if (weapon.index === 5) {
+    player.effects[GAME_EFFECTS[0].id] = {...GAME_EFFECTS[0], duration: 3000}
+  } else if (weapon.index === 6) {
+    player.effects[GAME_EFFECTS[1].id] = {...GAME_EFFECTS[1], duration: 1000}
   }
+
+  if (weapon.canStun && Math.random() <= 0.1) {
+    player.effects[GAME_EFFECTS[3].id] = {...GAME_EFFECTS[3], duration: 2000}
+  };
 }
 
 const handlePositiveBuff = (player, weapon) => {
@@ -221,12 +222,12 @@ const handlePositiveBuff = (player, weapon) => {
 const calculateDamage = (weapon, player) => {
   let armor = player.armor;
 
-  if (player.effects[7]) {
+  if (player.effects[8]) {
     armor += 4;
   } else if (weapon.index === 7) {
     armor = 0;
   }
-  
+
   let damage = weapon.damage;
   if (weapon.index === 4 && Math.random() >= 0.8) {
     damage *= 2
@@ -249,6 +250,7 @@ export const handleFireWeapon = (player, clockDifference) => {
   weapon.trajectory = angle
   weapon.playerId = player.id
   weapon.damage = player.damage
+  weapon.canStun = player.items[6]
 
   return weapon;
 };

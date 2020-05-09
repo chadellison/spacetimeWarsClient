@@ -4,6 +4,7 @@ import healthBoost from '../images/healthBoost.jpg';
 import stealthMode from '../images/stealthMode.png';
 import absorbDamage from '../images/absorbDamage.png';
 import armorBoost from '../images/armorBoost.png';
+import stun from '../images/stun.png';
 
 export const ITEMS = [
   {
@@ -55,5 +56,15 @@ export const ITEMS = [
     cooldown: 20000,
     durationCount: 15000,
     description: 'Adds 4 armor to player for 15 seconds when hitpoints drop below 33%. 20 second cooldown.'
+  },
+  {
+    id: 6,
+    index: 5,
+    price: 600,
+    name: 'Stun',
+    image: stun,
+    cooldown: 0,
+    durationCount: 0,
+    description: 'Provieds your weapon a 10% chance to stun your opponent for two seconds'
   }
 ];
