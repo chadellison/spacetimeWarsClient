@@ -119,7 +119,7 @@ const renderTabs = (activeTab, updateState, currentPlayer) => {
   });
 };
 
-const SelectionModal = ({
+export const SelectionModal = ({
   page,
   players,
   activeTab,
@@ -138,5 +138,3 @@ const SelectionModal = ({
     </div>
   );
 };
-
-export default SelectionModal;

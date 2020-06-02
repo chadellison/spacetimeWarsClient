@@ -3,11 +3,7 @@ import { WEBSOCKET_HOST, API_HOST } from '../api';
 import Cable from 'actioncable';
 import Canvas from './Canvas';
 import PlayerData from './PlayerData';
-import SelectionModal from './SelectionModal';
-import {InformationModal} from './InformationModal';
-import {CreditsModal} from './CreditsModal';
-import {GameOverModal} from './GameOverModal';
-import {NameFormModal} from './NameFormModal';
+import {Modal} from './Modal';
 import {GameButton} from './GameButton';
 import {HeaderButtons} from './HeaderButtons';
 import '../styles/styles.css';
@@ -186,47 +182,15 @@ class Layout extends React.Component {
     this.setState(updatedGameState);
   };
 
-  renderModal = () => {
+  render = () => {
     const {
       page,
       modal,
       userId,
       players,
+      gameBuff,
       activeTab,
       gameOverStats,
-      currentPlayer
-    } = this.state;
-    switch (modal) {
-      case 'selection':
-        return (
-          <SelectionModal
-            updateState={this.updateState}
-            handleGameEvent={this.handleGameEvent}
-            userId={userId}
-            activeTab={activeTab}
-            page={page}
-            currentPlayer={currentPlayer}
-            players={players}
-          />
-        );
-      case 'instructions':
-        return <InformationModal updateState={this.updateState} />
-      case 'credits':
-        return <CreditsModal updateState={this.updateState} />
-      case 'nameForm':
-        return <NameFormModal updateState={this.updateState} currentPlayer={currentPlayer} />
-      case 'gameOver':
-        return <GameOverModal players={gameOverStats} updateState={this.updateState}/>
-      default:
-        break;
-    }
-  }
-
-  render = () => {
-    const {
-      modal,
-      players,
-      gameBuff,
       currentPlayer,
       deployedWeapons,
       clockDifference,
@@ -236,7 +200,15 @@ class Layout extends React.Component {
       <div className="layout" onKeyDown={this.handleKeyDown}>
         <h2>{modal ? null : 'Space Wars'}</h2>
         <div className='game row'>
-          {this.renderModal()}
+          <Modal page={page} modal={modal}
+            userId={userId}
+            players={players}
+            activeTab={activeTab}
+            gameOverStats={gameOverStats}
+            currentPlayer={currentPlayer}
+            updateState={this.updateState}
+            handleGameEvent={this.handleGameEvent}
+          />
           <GameButton
             buttonText={currentPlayer.id ? 'shop' : 'start'}
             onClick={this.handleShopButton}
