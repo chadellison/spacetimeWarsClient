@@ -25,7 +25,7 @@ export const GAME_EFFECTS = [
     name: 'stun',
     duration: 3000,
     durationCount: 0,
-    color: 'blue'
+    color: 'rgba(3, 2, 29, 0.62)'
   },
   {
     id: 5,
