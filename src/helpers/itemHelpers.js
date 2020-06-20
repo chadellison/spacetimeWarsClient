@@ -54,7 +54,7 @@ export const handleAbsorbDamage = (player) => {
 
 export const canAbsorbDamage = (player) => {
   const item = getItem(player.items, 4);
-  return (player.effects[5]) || (item && item.durationCount >= item.cooldown)
+  return (player.effects[6]) || (item && item.durationCount >= item.cooldown)
 };
 
 export const getItem = (items, id) => {

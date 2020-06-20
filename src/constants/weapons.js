@@ -128,7 +128,7 @@ export const WEAPONS = [
     cooldown: 350,
     speed: 20,
     damage: 200,
-    price: 825,
+    price: 525,
     width: 20,
     height: 20,
     ability: 'cold damage: significanlty slows enemy speed for one second',
