@@ -1,4 +1,5 @@
 import {SPRITE_WIDTH} from '../constants/settings.js';
+import {findColor} from '../helpers/colorHelpers.js';
 
 export const drawShip = (context, player, ship) => {
   handleDirection(context, ship, player.location, player.angle)
@@ -63,9 +64,11 @@ export const renderExplosion = (gameBuff, context, explosion, player) => {
 export const renderText = (gameBuff, context, player, showShip) => {
   if (!gameBuff.color) {
     if (showShip && player.type !== 'ai') {
-      context.fillStyle = "#2c66b2";
       context.font = "12px Arial";
+      context.fillStyle = findColor(player.hitpoints, player.maxHitpoints);
+      renderHealthBar(context, player);
       context.fillText(player.name, player.location.x + 25, player.location.y + 110)
+
     } else if (!showShip) {
       context.fillStyle = "#ab8432";
       context.font = "12px Arial";
@@ -73,3 +76,8 @@ export const renderText = (gameBuff, context, player, showShip) => {
     }
   }
 };
+
+const renderHealthBar = (context, player) => {
+  context.beginPath();
+  context.fillRect(player.location.x, player.location.y + 90, Math.round((player.hitpoints * 100) / player.maxHitpoints), 4);
+}

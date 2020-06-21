@@ -3,7 +3,6 @@ import '../styles/playerData.css';
 import {WEAPONS} from '../constants/weapons.js';
 import gold from "../images/gold.png";
 import {Hitpoints} from './Hitpoints';
-import {PlayerStats} from './PlayerStats';
 import {PlayerItems} from './PlayerItems';
 import {PlayerEffects} from './PlayerEffects';
 import {ShipIcon} from './ShipIcon';
@@ -107,7 +106,6 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, players}) => {
           {renderData('Score', currentPlayer.score)}
           <PlayerItems items={currentPlayer.items} />
           <PlayerEffects effects={Object.values(currentPlayer.effects)} />
-          <PlayerStats players={players} currentPlayerId={currentPlayer.id} />
         </div>
       </div>
     );
