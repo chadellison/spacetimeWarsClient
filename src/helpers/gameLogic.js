@@ -14,42 +14,44 @@ import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemH
 import {handleEffects, updateGameBuff, randomBuffIndex} from '../helpers/effectHelpers';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
-  let players = [...gameState.players];
   let deployedWeapons = [...gameState.deployedWeapons];
-  let currentPlayer = {...gameState.currentPlayer};
   const {clockDifference, lastFired, space, gameBuff} = gameState;
 
-  let updatedPlayers = [];
-  players.forEach((player) => {
-    if (!removePlayer(player.explodeAnimation)) {
-      handleHitpoints(player, currentPlayer.id, handleGameEvent);
-      player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
-      if (player.id === currentPlayer.id) {
-        handleRepeatedFire(currentPlayer, handleGameEvent, lastFired, updateState, clockDifference, space);
-        currentPlayer = player;
-      }
-      handleWall(player);
-      updatedPlayers.push(player);
-    };
-  });
+  let updatedPlayerData = {players: [...gameState.players], currentPlayer: {...gameState.currentPlayer}}
+  updatedPlayerData = updatePlayers(updatedPlayerData, handleGameEvent, clockDifference, lastFired, updateState, space);
 
   const filteredWeapons = removeOutOfBoundsShots(deployedWeapons);
-  deployedWeapons = handleWeapons(filteredWeapons, updatedPlayers, currentPlayer, handleGameEvent);
-
-  updatedPlayers.forEach((player) => {
-    if (player.type !== 'ai') {
-      handleEffects(player)
-    }
-  });
-  handleCountDownEnd(currentPlayer, clockDifference);
+  deployedWeapons = handleWeapons(filteredWeapons, updatedPlayerData.players, updatedPlayerData.currentPlayer, handleGameEvent);
+  handleCountDownEnd(updatedPlayerData.currentPlayer, clockDifference);
 
   return {
-    players: updatedPlayers,
+    players: updatedPlayerData.players,
     deployedWeapons: deployedWeapons,
-    currentPlayer: currentPlayer,
+    currentPlayer: updatedPlayerData.currentPlayer,
     gameBuff: updateGameBuff(gameBuff)
   };
 };
+
+const updatePlayers = (updatedPlayerData, handleGameEvent, clockDifference, lastFired, updateState, space) => {
+  let updatedPlayers = [];
+  updatedPlayerData.players.forEach((player) => {
+    if (!removePlayer(player.explodeAnimation)) {
+      handleHitpoints(player, updatedPlayerData.currentPlayer.id, handleGameEvent);
+      player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
+      if (player.id === updatedPlayerData.currentPlayer.id) {
+        handleRepeatedFire(updatedPlayerData.currentPlayer, handleGameEvent, lastFired, updateState, clockDifference, space);
+        updatedPlayerData.currentPlayer = player
+      }
+      handleWall(player);
+      if (player.type !== 'ai') {
+        handleEffects(player)
+      }
+      updatedPlayers.push(player);
+    };
+  });
+  updatedPlayerData.players = updatedPlayers;
+  return updatedPlayerData;
+}
 
 const handleHitpoints = (player, currentPlayerId, handleGameEvent) => {
   if (player.hitpoints <= 0 && !player.explode) {
