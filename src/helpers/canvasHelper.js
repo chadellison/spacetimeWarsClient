@@ -61,14 +61,13 @@ export const renderExplosion = (gameBuff, context, explosion, player) => {
   )
 };
 
-export const renderText = (gameBuff, context, player, showShip) => {
+export const renderPlayerData = (gameBuff, context, player, showShip) => {
   if (!gameBuff.color) {
     if (showShip && player.type !== 'ai') {
       context.font = "12px Arial";
       context.fillStyle = findColor(player.hitpoints, player.maxHitpoints);
       renderHealthBar(context, player);
       context.fillText(player.name, player.location.x + 25, player.location.y + 110)
-
     } else if (!showShip) {
       context.fillStyle = "#ab8432";
       context.font = "12px Arial";

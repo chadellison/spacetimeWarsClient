@@ -4,7 +4,7 @@ import {
   handleDirection,
   shouldRenderShip,
   renderExplosion,
-  renderText
+  renderPlayerData
 } from '../helpers/canvasHelper.js';
 import {canAbsorbDamage} from '../helpers/itemHelpers.js';
 import '../styles/styles.css';
@@ -106,7 +106,7 @@ class Canvas extends React.Component {
       } else {
         renderExplosion(this.props.gameBuff, context, this.state.explosion, player);
       };
-      renderText(this.props.gameBuff, context, player, showShip);
+      renderPlayerData(this.props.gameBuff, context, player, showShip);
     });
 
     this.props.deployedWeapons.forEach((weapon) => {
