@@ -4,7 +4,8 @@ import {
   handleDirection,
   shouldRenderShip,
   renderExplosion,
-  renderPlayerData
+  renderPlayerData,
+  renderAnimation
 } from '../helpers/canvasHelper.js';
 import {canAbsorbDamage} from '../helpers/itemHelpers.js';
 import '../styles/styles.css';
@@ -116,7 +117,8 @@ class Canvas extends React.Component {
         drawShip(context, player, this.handleImage(player), this.state.thrusterAudio);
         Object.values(player.effects)
           .filter((effect) => [1, 2, 4, 7, 8].includes(effect.id))
-          .forEach((effect) => context.drawImage(this.state[effect.name], player.location.x, player.location.y));
+          .forEach((effect) => renderAnimation(context, this.state[effect.name], effect, player))
+          // .forEach((effect) => context.drawImage(this.state[effect.name], player.location.x, player.location.y));
       } else {
         renderExplosion(context, this.state.explosion, player);
       };
@@ -172,7 +174,7 @@ class Canvas extends React.Component {
           .map((effect, index) => {
             return(
               <img ref={effect.name}
-                src={effect.image}
+                src={effect.image.spriteImage}
                 className="hidden"
                 alt={effect.name}
                 key={`shipEffect${index}`}
