@@ -7,7 +7,7 @@ export const GAME_EFFECTS = [
     name: 'poison',
     duration: 4000,
     durationCount: 0,
-    animation: new Animation(stunAnimation, 250, 223, 100),
+    animation: new Animation(stunAnimation, 250, 223, 100, 4, 3),
     color: 'rgba(7, 151, 24, 0.37)'
   },
   {
@@ -15,7 +15,7 @@ export const GAME_EFFECTS = [
     name: 'slow',
     duration: 9000,
     durationCount: 0,
-    animation: new Animation(stunAnimation, 250, 223, 100),
+    animation: new Animation(stunAnimation, 250, 223, 100, 4, 3),
     color: 'rgba(142, 194, 215, 0.54)'
   },
   {
@@ -23,7 +23,7 @@ export const GAME_EFFECTS = [
     name: 'gold steal',
     duration: 3000,
     durationCount: 0,
-    animation: new Animation(stunAnimation, 250, 223, 100),
+    animation: new Animation(stunAnimation, 250, 223, 100, 4, 3),
     color: 'rgba(151, 127, 7, 0.37)'
   },
   {
@@ -31,7 +31,7 @@ export const GAME_EFFECTS = [
     name: 'stun',
     duration: 3000,
     durationCount: 0,
-    animation: new Animation(stunAnimation, 250, 223, 100),
+    animation: new Animation(stunAnimation, 250, 223, 100, 4, 3),
     color: 'rgba(3, 2, 29, 0.62)'
   },
   {
@@ -39,7 +39,7 @@ export const GAME_EFFECTS = [
     name: 'invisible',
     duration: 11000,
     durationCount: 0,
-    animation: new Animation(stunAnimation, 250, 223, 100),
+    animation: new Animation(stunAnimation, 250, 223, 100, 4, 3),
     color: 'rgba(151, 7, 7, 0.37)'
 
   },
@@ -48,7 +48,7 @@ export const GAME_EFFECTS = [
     name: 'invulnerable',
     duration: 7000,
     durationCount: 0,
-    animation: new Animation(stunAnimation, 250, 223, 100),
+    animation: new Animation(stunAnimation, 250, 223, 100, 4, 3),
     color: 'rgba(144, 7, 151, 0.37)'
   },
   {
@@ -56,7 +56,7 @@ export const GAME_EFFECTS = [
     name: 'heal',
     duration: 4000,
     durationCount: 0,
-    animation: new Animation(stunAnimation, 250, 223, 100),
+    animation: new Animation(stunAnimation, 250, 223, 100, 4, 3),
     color: 'rgba(19, 20, 22, 0.45)'
   },
   {
@@ -64,7 +64,7 @@ export const GAME_EFFECTS = [
     name: 'armorBoost',
     duration: 15000,
     durationCount: 0,
-    animation: new Animation(stunAnimation, 250, 223, 100),
+    animation: new Animation(stunAnimation, 250, 223, 100, 4, 3),
     color: 'rgba(7, 33, 151, 0.37)'
   }
 ]
