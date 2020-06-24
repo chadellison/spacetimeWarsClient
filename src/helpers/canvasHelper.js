@@ -47,7 +47,7 @@ export const shouldRenderShip = (player, currentPlayerId) => {
   return (!player.explode) && (!player.effects[5] || player.id === currentPlayerId);
 }
 
-export const renderExplosion = (gameBuff, context, explosion, player) => {
+export const renderExplosion = (context, explosion, player) => {
   context.drawImage(
     explosion,
     player.explodeAnimation.x,

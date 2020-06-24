@@ -15,6 +15,7 @@ import {
 } from '../constants/settings.js';
 import {SHIPS, SUPPLY_SHIP} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
+import {GAME_EFFECTS} from '../constants/effects.js';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -48,6 +49,11 @@ class Canvas extends React.Component {
     const plasmaCannon = this.refs.plasmaCannon
     const supplyShip = this.refs.supplyShip
     const explosion = this.refs.explosion
+    const poison = this.refs.poison
+    const slow = this.refs.slow
+    const stun = this.refs.stun
+    const heal = this.refs.heal
+    const armorBoost = this.refs.armorBoost
 
     this.setState({
       canvas: canvas,
@@ -72,6 +78,11 @@ class Canvas extends React.Component {
       laser: laser,
       blueFire: blueFire,
       plasmaCannon: plasmaCannon,
+      poison: poison,
+      slow: slow,
+      stun: stun,
+      heal: heal,
+      armorBoost: armorBoost,
       explosion: explosion,
       supplyShip: supplyShip,
       halfWindowWidth: Math.round(window.innerWidth / 2),
@@ -103,8 +114,11 @@ class Canvas extends React.Component {
       const showShip = shouldRenderShip(player, this.props.currentPlayer.id);
       if (showShip) {
         drawShip(context, player, this.handleImage(player), this.state.thrusterAudio);
+        Object.values(player.effects)
+          .filter((effect) => [1, 2, 4, 7, 8].includes(effect.id))
+          .forEach((effect) => context.drawImage(this.state[effect.name], player.location.x, player.location.y));
       } else {
-        renderExplosion(this.props.gameBuff, context, this.state.explosion, player);
+        renderExplosion(context, this.state.explosion, player);
       };
       renderPlayerData(this.props.gameBuff, context, player, showShip);
     });
@@ -154,6 +168,17 @@ class Canvas extends React.Component {
             />
           );
         })}
+        {GAME_EFFECTS.filter((effect, index) => [1, 2, 4, 7, 8].includes(effect.id))
+          .map((effect, index) => {
+            return(
+              <img ref={effect.name}
+                src={effect.image}
+                className="hidden"
+                alt={effect.name}
+                key={`shipEffect${index}`}
+              />
+            );
+          })}
         <img ref={SUPPLY_SHIP.name} src={SUPPLY_SHIP.image} className="hidden" alt={SUPPLY_SHIP.name} />
         <img ref="explosion" src={explodeAnimation} className="hidden" alt="explosion" />
       </div>
