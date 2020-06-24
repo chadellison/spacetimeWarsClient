@@ -118,7 +118,6 @@ class Canvas extends React.Component {
         Object.values(player.effects)
           .filter((effect) => [1, 2, 4, 7, 8].includes(effect.id))
           .forEach((effect) => renderAnimation(context, this.state[effect.name], effect, player))
-          // .forEach((effect) => context.drawImage(this.state[effect.name], player.location.x, player.location.y));
       } else {
         renderExplosion(context, this.state.explosion, player);
       };
@@ -174,7 +173,7 @@ class Canvas extends React.Component {
           .map((effect, index) => {
             return(
               <img ref={effect.name}
-                src={effect.image.spriteImage}
+                src={effect.animation.spriteImage}
                 className="hidden"
                 alt={effect.name}
                 key={`shipEffect${index}`}

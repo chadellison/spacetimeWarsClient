@@ -20,7 +20,7 @@ export const handleEffects = (player) => {
       const newHitpoints = player.hitpoints + health;
       player.hitpoints = newHitpoints > player.maxHitpoints ? player.maxHitpoints : newHitpoints;
     };
-    effect.image.updateFrame()
+    effect.animation.updateFrame()
     effect.durationCount += ANAIMATION_FRAME_RATE
   });
 };

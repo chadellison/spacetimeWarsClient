@@ -64,14 +64,14 @@ export const renderExplosion = (context, explosion, player) => {
 export const renderAnimation = (context, spriteImage, effect, player) => {
   context.drawImage(
     spriteImage,
-    effect.image.coordinates.x,
-    effect.image.coordinates.y,
-    effect.image.width,
-    effect.image.height,
+    effect.animation.coordinates.x,
+    effect.animation.coordinates.y,
+    effect.animation.width,
+    effect.animation.height,
     player.location.x,
-    player.location.y,
-    effect.image.renderSize,
-    effect.image.renderSize
+    player.location.y - 50,
+    effect.animation.renderSize,
+    effect.animation.renderSize
   )
 }
 
