@@ -82,18 +82,7 @@ export const GAME_EFFECTS = [
     duration: 11000,
     durationCount: 0,
     color: 'rgba(151, 7, 7, 0.37)',
-    animation: {
-      coordinates: {x: 0, y: 0},
-      spriteImage: stunAnimation,
-      width: 250,
-      height: 223,
-      renderSize: 100,
-      rowCount: 4,
-      columnCount: 3,
-      rate: 1,
-      startRate: 1
-    }
-
+    animation: {}
   },
   {
     id: 6,
@@ -101,17 +90,7 @@ export const GAME_EFFECTS = [
     duration: 7000,
     durationCount: 0,
     color: 'rgba(144, 7, 151, 0.37)',
-    animation: {
-      coordinates: {x: 0, y: 0},
-      spriteImage: stunAnimation,
-      width: 250,
-      height: 223,
-      renderSize: 100,
-      rowCount: 4,
-      columnCount: 3,
-      rate: 1,
-      startRate: 1
-    }
+    animation: {}
   },
   {
     id: 7,
@@ -122,13 +101,13 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: healAnimation,
-      width: 1014,
-      height: 285,
+      width: 250,
+      height: 151,
       renderSize: 100,
       rowCount: 1,
       columnCount: 4,
-      rate: 2,
-      startRate: 2
+      rate: 1,
+      startRate: 1
     }
   },
   {
