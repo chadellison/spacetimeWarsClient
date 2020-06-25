@@ -1,4 +1,5 @@
 import stunAnimation from '../images/stunAnimation.png'
+import poisonAnimation from '../images/poisonAnimation.png'
 
 export const GAME_EFFECTS = [
   {
@@ -9,12 +10,12 @@ export const GAME_EFFECTS = [
     color: 'rgba(7, 151, 24, 0.37)',
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: stunAnimation,
-      width: 250,
-      height: 223,
+      spriteImage: poisonAnimation,
+      width: 176,
+      height: 195,
       renderSize: 100,
-      rowCount: 4,
-      columnCount: 3,
+      rowCount: 8,
+      columnCount: 2,
       rate: 1,
       startRate: 1
     }
