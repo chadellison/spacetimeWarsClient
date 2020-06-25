@@ -12,6 +12,7 @@ import {WEAPONS} from '../constants/weapons.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
 import {handleEffects, updateGameBuff, randomBuffIndex} from '../helpers/effectHelpers';
+import {handleExplodeUpdate} from '../helpers/animationHelpers';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   let deployedWeapons = [...gameState.deployedWeapons];
@@ -313,22 +314,6 @@ export const handleWall = (player) => {
     player.location.y = BOARD_HEIGHT;
   }
 };
-
-const handleExplodeUpdate = (isExploding, explodeAnimation) => {
-  if (isExploding) {
-    if (explodeAnimation.x < (SPRITE_WIDTH * SPRITE_ROW_COUNT)) {
-      explodeAnimation.x += SPRITE_WIDTH;
-    } else if (explodeAnimation.x === (SPRITE_WIDTH * SPRITE_ROW_COUNT) && explodeAnimation.y < (SPRITE_WIDTH * SPRITE_COLUMN_COUNT)) {
-      explodeAnimation.x = 0;
-      explodeAnimation.y += SPRITE_WIDTH;
-    } else {
-      explodeAnimation = {};
-    }
-    return explodeAnimation;
-  } else {
-    return {};
-  }
-}
 
 export const getUpdatedPlayers = (updatedPlayer, players) => {
   return players.map((player) => {
