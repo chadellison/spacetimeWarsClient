@@ -12,7 +12,7 @@ export const CreditsModal = ({updateState}) => {
       <div className="informationText">
         <span className="creditTitle">Spaceship art:</span> MillionthVector
         <a className="assetLink"
-          href="http://millionthvector.blogspot.com/p/free-sprites.html"
+          href="https://millionthvector.blogspot.com/p/free-sprites.html"
           target="_blank"
           rel="noopener noreferrer">
             millionth vector
@@ -71,6 +71,14 @@ export const CreditsModal = ({updateState}) => {
       </div>
       <div className="informationText">
         <span className="creditTitle">Gold Icon:</span>AlexRoz/Shutterstock.com
+      </div>
+      <div>Sound effects obtained from
+        <a className="assetLink"
+          href="https://www.zapsplat.com"
+          target="_blank"
+          rel="noopener noreferrer">
+            https://www.zapsplat.com
+        </a>
       </div>
       <div className="closeButton" onClick={() => updateState({modal: null})}>Close</div>
     </div>

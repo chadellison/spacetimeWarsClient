@@ -22,6 +22,8 @@ import trifectaAudio from '../audio/trifecta.wav';
 import bombAudio from '../audio/bomb.wav';
 import plasmaCannonAudio from '../audio/plasmaSound.wav';
 import laserAudio from '../audio/laser.wav';
+import lightLazer from '../audio/lightLazer.mp3';
+import mediumLaser from '../audio/mediumLaser.mp3';
 
 export const WEAPONS = [
   {
@@ -133,7 +135,7 @@ export const WEAPONS = [
     height: 20,
     ability: 'cold damage: significanlty slows enemy speed for one second',
     image: blueFire,
-    sound: new Audio(plasmaCannonAudio),
+    sound: new Audio(lightLazer),
     selectionImage: displayBlueFire
   },
   {
@@ -149,7 +151,7 @@ export const WEAPONS = [
     height: 20,
     ability: 'armor piercing damage: disregards all armor on enemy ship',
     image: plasmaCannon,
-    sound: new Audio(plasmaCannonAudio),
+    sound: new Audio(mediumLaser),
     selectionImage: displayPlasmaCannon
   }
 ];
