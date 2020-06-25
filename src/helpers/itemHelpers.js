@@ -8,7 +8,7 @@ export const handleItems = (player) => {
         if (item.durationCount >= item.cooldown) {
           if (player.hitpoints < player.maxHitpoints / 4) {
             item.durationCount = 0;
-            const gameBuff = {...GAME_EFFECTS[5], duration: 4000};
+            const gameBuff = {...GAME_EFFECTS[6], duration: 4000};
             player.effects = {...player.effects, [gameBuff.id]: gameBuff}
           }
         }
