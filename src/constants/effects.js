@@ -1,5 +1,6 @@
 import stunAnimation from '../images/stunAnimation.png'
 import poisonAnimation from '../images/poisonAnimation.png'
+import armorBoost from '../images/armorBoost.png'
 
 export const GAME_EFFECTS = [
   {
@@ -137,12 +138,12 @@ export const GAME_EFFECTS = [
     color: 'rgba(7, 33, 151, 0.37)',
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: stunAnimation,
-      width: 250,
-      height: 223,
-      renderSize: 100,
-      rowCount: 4,
-      columnCount: 3,
+      spriteImage: armorBoost,
+      width: 100,
+      height: 103,
+      renderSize: 50,
+      rowCount: 1,
+      columnCount: 1,
       rate: 1,
       startRate: 1
     }
