@@ -119,7 +119,7 @@ export const WEAPONS = [
     height: 16,
     ability: 'poison damage: deals 17% damage of the total hitpoints over 3 seconds',
     image: poisonCannon,
-    sound: new Audio(plasmaCannonAudio),
+    sound: new Audio(lightLazer),
     selectionImage: displayPoisonCannon
   },
   {
@@ -135,7 +135,7 @@ export const WEAPONS = [
     height: 20,
     ability: 'cold damage: significanlty slows enemy speed for one second',
     image: blueFire,
-    sound: new Audio(lightLazer),
+    sound: new Audio(plasmaCannonAudio),
     selectionImage: displayBlueFire
   },
   {

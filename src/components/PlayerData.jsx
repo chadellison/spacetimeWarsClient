@@ -4,7 +4,6 @@ import {WEAPONS} from '../constants/weapons.js';
 import gold from "../images/gold.png";
 import {Hitpoints} from './Hitpoints';
 import {PlayerItems} from './PlayerItems';
-import {PlayerEffects} from './PlayerEffects';
 import {ShipIcon} from './ShipIcon';
 import {findElapsedTime} from '../helpers/gameLogic.js';
 
@@ -105,7 +104,6 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, players}) => {
           {renderSpeed(currentPlayer)}
           {renderData('Score', currentPlayer.score)}
           <PlayerItems items={currentPlayer.items} />
-          <PlayerEffects effects={Object.values(currentPlayer.effects)} />
         </div>
       </div>
     );
