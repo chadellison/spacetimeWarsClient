@@ -38,7 +38,6 @@ const handleStartEvent = (players, playerData, currentPlayerId) => {
 
 const handleBuffEvent = (playerData, players, elapsedTime) => {
   const gameBuff = {...GAME_EFFECTS[playerData.buffIndex], durationCount: elapsedTime};
-
   const updatedPlayers = applyGameBuff(playerData.id, [...players], gameBuff);
   return {players: updatedPlayers, gameBuff: gameBuff};
 };
