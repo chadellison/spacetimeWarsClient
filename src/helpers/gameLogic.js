@@ -44,9 +44,7 @@ const updatePlayers = (updatedPlayerData, handleGameEvent, clockDifference, last
         updatedPlayerData.currentPlayer = player
       }
       handleWall(player);
-      if (player.type !== 'ai') {
-        handleEffects(player)
-      }
+      handleEffects(player)
       updatedPlayers.push(player);
     };
   });
@@ -171,9 +169,9 @@ const applyHit = (player, weapon, currentPlayer, handleGameEvent) => {
 
 const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => {
   if (player.hitpoints > 0) {
+    handleNegativeBuff(player, weapon);
     const damage = calculateDamage(weapon, player);
     player.hitpoints -= damage;
-    handleNegativeBuff(player, weapon);
 
     if (weapon.playerId === currentPlayer.id) {
       handlePositiveBuff(currentPlayer, weapon);

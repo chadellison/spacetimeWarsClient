@@ -9,7 +9,8 @@ export const handleEffects = (player) => {
     } else {
       if (effect.id === 1) {
         const damage = Math.round((player.maxHitpoints * 0.17) / (effect.duration / ANAIMATION_FRAME_RATE));
-        player.hitpoints -= damage;
+        const newHitpoints = player.hitpoints - damage;
+        player.hitpoints = newHitpoints > 1 ? newHitpoints : 1;
       } else if (effect.id === 3) {
         const goldReduction = Math.round((player.gold * 0.2) / (effect.duration / ANAIMATION_FRAME_RATE));
         player.gold -= goldReduction;
@@ -30,7 +31,7 @@ export const randomBuffIndex = () => {
 
 export const applyGameBuff = (buffedPlayerId, players, gameBuff) => {
   return players.map((player) => {
-    if (gameBuff.id < 5 && buffedPlayerId !== player.id && player.type !== 'ai') {
+    if (gameBuff.id < 5 && buffedPlayerId !== player.id) {
       player.effects = {...player.effects, [gameBuff.id]: {...gameBuff}};
     } else if (gameBuff.id > 4 && buffedPlayerId === player.id) {
       player.effects = {...player.effects, [gameBuff.id]: {...gameBuff}};
