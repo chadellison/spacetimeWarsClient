@@ -6,7 +6,7 @@ import gongAudio from '../audio/gong.wav';
 import goldSound from '../audio/goldSound.mp3';
 import loadWeaponAudio from '../audio/loadWeapon.wav';
 import notEnoughResourcesAudio from '../audio/notEnoughResources.wav';
-import upgradeAudio from '../audio/upgradeSound.mp3';
+import upgradeAudio from '../audio/upgradeSound.mov';
 
 // constants
 export const BOARD_WIDTH = 1800;
