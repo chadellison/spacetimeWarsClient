@@ -17,8 +17,8 @@ const handleStartingGold = (players) => {
     const scoreSums = players.filter((player) => player.type !== 'ai').reduce((accumulator, player) => {
       return accumulator + player.score
     }, 0);
-    return Math.round((scoreSums / players.length) + 10000);
+    return Math.round((scoreSums / players.length) + 1000);
   } else {
-    return 10000;
+    return 1000;
   }
 }
