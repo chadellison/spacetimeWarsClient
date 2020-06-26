@@ -1,4 +1,5 @@
 import stunAnimation from '../images/stunAnimation.png'
+import slowAnimation from '../images/slowAnimation.png'
 import poisonAnimation from '../images/poisonAnimation.png'
 import healAnimation from '../images/healAnimation.png'
 import armorBoost from '../images/armorBoost.png'
@@ -30,13 +31,13 @@ export const GAME_EFFECTS = [
     color: 'rgba(142, 194, 215, 0.54)',
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: stunAnimation,
+      spriteImage: slowAnimation,
       width: 250,
-      height: 223,
-      renderSize: 100,
+      height: 250,
+      renderSize: 75,
       rowCount: 4,
       columnCount: 3,
-      rate: 1,
+      rate: 2,
       startRate: 1
     }
   },
