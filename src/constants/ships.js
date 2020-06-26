@@ -5,7 +5,7 @@ import hunterShipAbsorb from '../images/hunterShipAbsorb.png';
 import destroyerShip from '../images/destroyerShip.png';
 import blueDestroyerShip from '../images/blueDestroyerShip.png';
 import destroyerShipAbsorb from '../images/destroyerShipAbsorb.png';
-import warShip from '../images/warShip.png';
+import redWarShip from '../images/redWarShip.png';
 import blueWarShip from '../images/blueWarShip.png';
 import warShipAbsorb from '../images/warShipAbsorb.png';
 import cruiserShip from '../images/cruiserShip.png';
@@ -14,7 +14,8 @@ import cruiserShipAbsorb from '../images/cruiserShipAbsorb.png';
 import carrierShip from '../images/carrierShip.png';
 import blueCarrierShip from '../images/blueCarrierShip.png';
 import carrierShipAbsorb from '../images/carrierShipAbsorb.png';
-import stealthShip from '../images/stealthShip.png';
+import redStealthShip from '../images/redStealthShip.png';
+import blueStealthShip from '../images/blueStealthShip.png';
 import stealthShipAbsorb from '../images/stealthShipAbsorb.png';
 import supplyShip from '../images/supplyShip.png';
 
@@ -51,7 +52,7 @@ export const SHIPS = [
     hitpoints: 700,
     speed: 4,
     shipCenter: {x: 60.5, y: 27},
-    image: warShip,
+    image: redWarShip,
     blueImage: blueWarShip,
     absorbImage: warShipAbsorb
   },
@@ -87,8 +88,8 @@ export const SHIPS = [
     hitpoints: 900,
     speed: 4.5,
     shipCenter: {x: 60, y: 34},
-    image: stealthShip,
-    blueImage: stealthShip,
+    image: redStealthShip,
+    blueImage: blueStealthShip,
     absorbImage: stealthShipAbsorb
   }
 ];
