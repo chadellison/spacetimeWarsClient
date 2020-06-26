@@ -5,6 +5,15 @@ export const InformationModal = ({updateState}) => {
   return (
     <div className="modal">
       <div className="informationTitle">How to play</div>
+      <div className="informationText">
+        There are two teams (Red and Blue).
+      </div>
+      <div className="informationText">
+        The object of the game is to prevent your opponents' "bombers"
+      </div>
+      <div className="informationText">
+        from crossing your edge of the screen.
+      </div>
         <div className="informationText">Press any key to start or click the Start button</div>
         <div className="informationText">Select a Ship from the menu</div>
         <div className="informationText">Select a weapon</div>

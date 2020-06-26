@@ -29,16 +29,22 @@ class Canvas extends React.Component {
     const context = canvas.getContext('2d');
     context.fillRect(0, 0, canvas.width, canvas.height);
     const hunterShip = this.refs.hunterShip
+    const hunterShipBlue = this.refs.hunterShipBlue
     const hunterShipAbsorb = this.refs.hunterShipAbsorb
     const destroyerShip = this.refs.destroyerShip
+    const destroyerShipBlue = this.refs.destroyerShipBlue
     const destroyerShipAbsorb = this.refs.destroyerShipAbsorb
     const warShip = this.refs.warShip
+    const warShipBlue = this.refs.warShipBlue
     const warShipAbsorb = this.refs.warShipAbsorb
     const cruiserShip = this.refs.cruiserShip
+    const cruiserShipBlue = this.refs.cruiserShipBlue
     const cruiserShipAbsorb = this.refs.cruiserShipAbsorb
     const carrierShip = this.refs.carrierShip
+    const carrierShipBlue = this.refs.carrierShipBlue
     const carrierShipAbsorb = this.refs.carrierShipAbsorb
     const stealthShip = this.refs.stealthShip
+    const stealthShipBlue = this.refs.stealthShipBlue
     const stealthShipAbsorb = this.refs.stealthShipAbsorb
     const fireball = this.refs.fireball
     const missile = this.refs.missile
@@ -60,16 +66,22 @@ class Canvas extends React.Component {
       canvas: canvas,
       context: context,
       hunterShip: hunterShip,
+      hunterShipBlue: hunterShipBlue,
       hunterShipAbsorb: hunterShipAbsorb,
       destroyerShip: destroyerShip,
+      destroyerShipBlue: destroyerShipBlue,
       destroyerShipAbsorb: destroyerShipAbsorb,
       warShip: warShip,
+      warShipBlue: warShipBlue,
       warShipAbsorb: warShipAbsorb,
       cruiserShip: cruiserShip,
+      cruiserShipBlue: cruiserShipBlue,
       cruiserShipAbsorb: cruiserShipAbsorb,
       carrierShip: carrierShip,
+      carrierShipBlue: carrierShipBlue,
       carrierShipAbsorb: carrierShipAbsorb,
       stealthShip: stealthShip,
+      stealthShipBlue: stealthShipBlue,
       stealthShipAbsorb: stealthShipAbsorb,
       fireball: fireball,
       missile: missile,
@@ -92,9 +104,16 @@ class Canvas extends React.Component {
   }
 
   handleImage = (player) => {
-    let imageReference = player.type === 'ai' ? 'supplyShip' : SHIPS[player.shipIndex].name
-    if (canAbsorbDamage(player)) {
-      imageReference += 'Absorb';
+    let imageReference = ''
+    if (player.type === 'ai') {
+      imageReference = 'supplyShip'
+    } else {
+      imageReference = SHIPS[player.shipIndex].name
+      if (canAbsorbDamage(player)) {
+        imageReference += 'Absorb';
+      } else if (player.team === 'blue') {
+          imageReference += 'Blue'
+      }
     }
     return this.state[imageReference];
   };
@@ -114,7 +133,7 @@ class Canvas extends React.Component {
     this.props.players.forEach((player) => {
       const showShip = shouldRenderShip(player, this.props.currentPlayer.id);
       if (showShip) {
-        drawShip(context, player, this.handleImage(player), this.state.thrusterAudio);
+        drawShip(context, player, this.handleImage(player));
         Object.values(player.effects)
           .filter((effect) => [1, 2, 4, 7, 8].includes(effect.id))
           .forEach((effect) => renderAnimation(context, this.state[effect.name], effect, player))
@@ -146,6 +165,16 @@ class Canvas extends React.Component {
               className="hidden"
               alt={ship.name}
               key={`ship${index}`}
+            />
+          );
+        })}
+        {SHIPS.map((ship, index) => {
+          return (
+            <img ref={`${ship.name}Blue`}
+              src={ship.blueImage}
+              className="hidden"
+              alt={`blue-${ship.name}`}
+              key={`blueShip${index}`}
             />
           );
         })}

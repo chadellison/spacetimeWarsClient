@@ -142,7 +142,7 @@ const findShipBoundingBoxes = (player) => {
 
 const handleCollision = (weapon, players, currentPlayer, handleGameEvent) => {
   players.forEach((player) => {
-    if (player.id !== weapon.playerId) {
+    if (player.team !== weapon.team) {
       const shipBoundingBoxes = findShipBoundingBoxes(player);
       const weaponCenter = {x: weapon.location.x + (weapon.width / 2), y: weapon.location.y + (weapon.height / 2)}
 
@@ -250,6 +250,7 @@ export const handleFireWeapon = (player, clockDifference) => {
   weapon.location = handleLocation(angle, {x, y}, 50);
   weapon.trajectory = angle
   weapon.playerId = player.id
+  weapon.team = player.team
   weapon.damage = player.damage
   weapon.canStun = player.items[6]
 

@@ -97,7 +97,8 @@ export const startEventPayload = (player) => {
     location: startData.location,
     angle: startData.angle,
     trajectory: startData.trajectory,
-    hitpoints: player.maxHitpoints
+    hitpoints: player.maxHitpoints,
+    team: player.team
   };
 }
 

@@ -1,13 +1,18 @@
 // ships
 import hunterShip from '../images/hunterShip.png';
+import blueHunterShip from '../images/blueHunterShip.png';
 import hunterShipAbsorb from '../images/hunterShipAbsorb.png';
 import destroyerShip from '../images/destroyerShip.png';
+import blueDestroyerShip from '../images/blueDestroyerShip.png';
 import destroyerShipAbsorb from '../images/destroyerShipAbsorb.png';
 import warShip from '../images/warShip.png';
+import blueWarShip from '../images/blueWarShip.png';
 import warShipAbsorb from '../images/warShipAbsorb.png';
 import cruiserShip from '../images/cruiserShip.png';
+import blueCruiserShip from '../images/blueCruiserShip.png';
 import cruiserShipAbsorb from '../images/cruiserShipAbsorb.png';
 import carrierShip from '../images/carrierShip.png';
+import blueCarrierShip from '../images/blueCarrierShip.png';
 import carrierShipAbsorb from '../images/carrierShipAbsorb.png';
 import stealthShip from '../images/stealthShip.png';
 import stealthShipAbsorb from '../images/stealthShipAbsorb.png';
@@ -23,6 +28,7 @@ export const SHIPS = [
     speed: 2,
     shipCenter: {x: 60.5, y: 36},
     image: destroyerShip,
+    blueImage: blueDestroyerShip,
     absorbImage: destroyerShipAbsorb
   },
   {
@@ -34,6 +40,7 @@ export const SHIPS = [
     speed: 3,
     shipCenter: {x: 60.5, y: 35},
     image: hunterShip,
+    blueImage: blueHunterShip,
     absorbImage: hunterShipAbsorb
   },
   {
@@ -45,6 +52,7 @@ export const SHIPS = [
     speed: 4,
     shipCenter: {x: 60.5, y: 27},
     image: warShip,
+    blueImage: blueWarShip,
     absorbImage: warShipAbsorb
   },
   {
@@ -56,6 +64,7 @@ export const SHIPS = [
     speed: 5.5,
     shipCenter: {x: 60.5, y: 22.5},
     image: cruiserShip,
+    blueImage: blueCruiserShip,
     absorbImage: cruiserShipAbsorb
   },
   {
@@ -67,6 +76,7 @@ export const SHIPS = [
     speed: 3,
     shipCenter: {x: 60.5, y: 29},
     image: carrierShip,
+    blueImage: blueCarrierShip,
     absorbImage: carrierShipAbsorb
   },
   {
@@ -78,6 +88,7 @@ export const SHIPS = [
     speed: 4.5,
     shipCenter: {x: 60, y: 34},
     image: stealthShip,
+    blueImage: stealthShip,
     absorbImage: stealthShipAbsorb
   }
 ];
