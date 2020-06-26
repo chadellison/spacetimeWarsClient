@@ -6,6 +6,7 @@
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   margin-left: 40%;
   width: 20%;
+  color: #c1cadb
 }
 
 .gameOverText {
@@ -33,6 +34,7 @@
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   font-size: 18px;
   padding: 0.25em;
+  color: #2c66b2;
 }
 
 .noteText {
@@ -40,6 +42,7 @@
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   font-size: 14px;
   padding: 0.25em;
+  color: gray;
 }
 
 .modal {
@@ -153,6 +156,22 @@
   margin-top: 4em;
   font-size: 20px;
   padding: .15em;
+}
+
+.infoImage {
+  margin-bottom: 1em;
+}
+
+.blueShipInfo {
+  transform: rotate(180deg);
+}
+
+.informationContext {
+  height: 1.25em;
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-size: 14px;
+  padding: 0.25em;
+  color: #2c66b2;
 }
 
 @keyframes slideDown {
