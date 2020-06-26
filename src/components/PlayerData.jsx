@@ -9,7 +9,7 @@ import {findElapsedTime} from '../helpers/gameLogic.js';
 
 const renderShip = (currentPlayer) => {
   if (currentPlayer.shipIndex || currentPlayer.shipIndex === 0) {
-    return <ShipIcon shipIndex={currentPlayer.shipIndex} className={'playerShip'}/>
+    return <ShipIcon shipIndex={currentPlayer.shipIndex} team={currentPlayer.team} className={'playerShip'}/>
   };
 }
 
