@@ -77,7 +77,7 @@ export const renderAnimation = (context, spriteImage, effect, player) => {
 
 export const renderPlayerData = (gameBuff, context, player, showShip) => {
   if (!gameBuff.color) {
-    if (showShip && player.type !== 'ai') {
+    if (showShip && player.type === 'human') {
       context.font = "12px Arial";
       context.fillStyle = findColor(player.hitpoints, player.maxHitpoints);
       renderHealthBar(context, player);

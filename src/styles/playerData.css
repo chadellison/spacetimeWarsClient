@@ -48,6 +48,7 @@
 .NameInfo {
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   font-size: 14px;
+  font-weight: bold;
   color: #2c66b2;
   margin-top: 1.5em;
   margin-bottom: .75rem;
@@ -60,6 +61,7 @@
 .GoldInfo {
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   font-size: 14px;
+  font-weight: bold;
   color: #ab8432;
   padding-top: .75rem;
   padding-bottom: .75em;

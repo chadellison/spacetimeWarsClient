@@ -39,17 +39,26 @@ const updatePlayers = (updatedPlayerData, handleGameEvent, clockDifference, last
     if (!removePlayer(player.explodeAnimation)) {
       handleHitpoints(player, updatedPlayerData.currentPlayer.id, handleGameEvent);
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
-      if (player.id === updatedPlayerData.currentPlayer.id) {
-        handleRepeatedFire(updatedPlayerData.currentPlayer, handleGameEvent, lastFired, updateState, clockDifference, space);
-        updatedPlayerData.currentPlayer = player
+
+      if (isLeak(player)) {
+        handleGameEvent({id: player.id, team: player.team, gameEvent: 'leak'});
+      } else {
+        if (player.id === updatedPlayerData.currentPlayer.id) {
+          handleRepeatedFire(updatedPlayerData.currentPlayer, handleGameEvent, lastFired, updateState, clockDifference, space);
+          updatedPlayerData.currentPlayer = player
+        }
+        handleWall(player, handleGameEvent);
+        handleEffects(player)
+        updatedPlayers.push(player);
       }
-      handleWall(player);
-      handleEffects(player)
-      updatedPlayers.push(player);
     };
   });
   updatedPlayerData.players = updatedPlayers;
   return updatedPlayerData;
+}
+
+const isLeak = (player) => {
+  return player.type === 'bomber' && ((player.team === 'red' && player.location.x > BOARD_WIDTH) || (player.team === 'blue' && player.location.x < 0));
 }
 
 const handleHitpoints = (player, currentPlayerId, handleGameEvent) => {
@@ -105,7 +114,7 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
     player.location = handleLocation(trajectory, player.location, distance);
   }
   player.explodeAnimation = handleExplodeUpdate(player.explode, player.explodeAnimation);
-  if (player.type !== 'ai') {
+  if (player.type === 'human') {
     handleItems(player);
   }
   return player
@@ -129,7 +138,7 @@ const removeOutOfBoundsShots = (weapons) => {
 };
 
 const findShipBoundingBoxes = (player) => {
-  const startCenter = player.type === 'ai' ? {x: 60, y: 30} : SHIPS[player.shipIndex].shipCenter;
+  const startCenter = ['supplyShip', 'bomber'].includes(player.type) ? {x: 60, y: 30} : SHIPS[player.shipIndex].shipCenter;
   const shipCenter = {x: player.location.x + startCenter.x, y: player.location.y + startCenter.y}
 
   return [
@@ -142,7 +151,7 @@ const findShipBoundingBoxes = (player) => {
 
 const handleCollision = (weapon, players, currentPlayer, handleGameEvent) => {
   players.forEach((player) => {
-    if (player.team !== weapon.team) {
+    if (player.team !== weapon.team && !player.explode) {
       const shipBoundingBoxes = findShipBoundingBoxes(player);
       const weaponCenter = {x: weapon.location.x + (weapon.width / 2), y: weapon.location.y + (weapon.height / 2)}
 
@@ -177,7 +186,11 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
       handlePositiveBuff(currentPlayer, weapon);
       let bounty = Math.round(damage / 10);
       if (player.hitpoints <= 0) {
-        bounty += Math.round(player.score * 0.01 + 100);
+        if (player.type === 'bomber') {
+          bounty += 10
+        } else {
+          bounty += Math.round(player.score * 0.01 + 100);
+        }
         handleKill(player, currentPlayer, handleGameEvent);
         player.killedBy = weapon.playerId
       };
@@ -188,13 +201,8 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
 };
 
 const handleKill = (player, currentPlayer, handleGameEvent) => {
-  if (player.type === 'ai') {
+  if (player.type === 'supplyShip') {
     handleGameEvent({...currentPlayer, gameEvent: 'buff', buffIndex: randomBuffIndex()});
-  } else {
-    currentPlayer.consecutiveKills += 1
-    if (currentPlayer.consecutiveKills >= 5) {
-      handleGameEvent({...currentPlayer, gameEvent: 'gameOver'});
-    }
   }
 }
 
@@ -296,7 +304,7 @@ export const handleAngle = (player, elapsedTime) => {
   };
 }
 
-export const handleWall = (player) => {
+export const handleWall = (player, handleGameEvent) => {
   if (player.location.x - 100 > BOARD_WIDTH) {
     player.location.x = 0;
   }

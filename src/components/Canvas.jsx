@@ -14,7 +14,7 @@ import {
   BOARD_WIDTH,
   BOARD_HEIGHT
 } from '../constants/settings.js';
-import {SHIPS, SUPPLY_SHIP} from '../constants/ships.js';
+import {SHIPS, SUPPLY_SHIP, RED_BOMBER, BLUE_BOMBER} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 
@@ -45,6 +45,8 @@ class Canvas extends React.Component {
     const carrierShipAbsorb = this.refs.carrierShipAbsorb
     const stealthShip = this.refs.stealthShip
     const stealthShipBlue = this.refs.stealthShipBlue
+    const redBomber = this.refs.redBomber
+    const blueBomber = this.refs.blueBomber
     const stealthShipAbsorb = this.refs.stealthShipAbsorb
     const fireball = this.refs.fireball
     const missile = this.refs.missile
@@ -83,6 +85,8 @@ class Canvas extends React.Component {
       stealthShip: stealthShip,
       stealthShipBlue: stealthShipBlue,
       stealthShipAbsorb: stealthShipAbsorb,
+      redBomber: redBomber,
+      blueBomber: blueBomber,
       fireball: fireball,
       missile: missile,
       trifecta: trifecta,
@@ -104,9 +108,11 @@ class Canvas extends React.Component {
   }
 
   handleImage = (player) => {
-    let imageReference = ''
-    if (player.type === 'ai') {
-      imageReference = 'supplyShip'
+    let imageReference = '';
+    if (player.type === 'supplyShip') {
+      imageReference = 'supplyShip';
+    } else if (player.type === 'bomber') {
+        imageReference = player.team + 'Bomber'
     } else {
       imageReference = SHIPS[player.shipIndex].name
       if (canAbsorbDamage(player)) {
@@ -210,6 +216,8 @@ class Canvas extends React.Component {
             );
           })}
         <img ref={SUPPLY_SHIP.name} src={SUPPLY_SHIP.image} className="hidden" alt={SUPPLY_SHIP.name} />
+        <img ref={RED_BOMBER.name} src={RED_BOMBER.image} className="hidden" alt={RED_BOMBER.name} />
+        <img ref={BLUE_BOMBER.name} src={BLUE_BOMBER.image} className="hidden" alt={BLUE_BOMBER.name} />
         <img ref="explosion" src={explodeAnimation} className="hidden" alt="explosion" />
       </div>
     );

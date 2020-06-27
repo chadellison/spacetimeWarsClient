@@ -11,6 +11,10 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
       return handleRemoveEvent(players, playerData, currentPlayer);
     case 'buff':
       return handleBuffEvent(playerData, players, elapsedTime);
+    case 'bombers':
+      return { players: players.concat(playerData.bombers) };
+    case 'leak':
+      return gameState
     case 'gameOver':
       return handleGameOverEvent([...players])
     default:

@@ -18,6 +18,8 @@ import redStealthShip from '../images/redStealthShip.png';
 import blueStealthShip from '../images/blueStealthShip.png';
 import stealthShipAbsorb from '../images/stealthShipAbsorb.png';
 import supplyShip from '../images/supplyShip.png';
+import redBomber from '../images/redBomber.png';
+import blueBomber from '../images/blueBomber.png';
 
 export const SHIPS = [
   {
@@ -95,9 +97,19 @@ export const SHIPS = [
 ];
 
 export const SUPPLY_SHIP = {
-  index: 5,
   name: 'supplyShip',
-  armor: 0,
   shipCenter: {x: 60, y: 34},
   image: supplyShip
+}
+
+export const RED_BOMBER = {
+  name: 'redBomber',
+  shipCenter: {x: 60, y: 36},
+  image: redBomber
+}
+
+export const BLUE_BOMBER = {
+  name: 'blueBomber',
+  shipCenter: {x: 60, y: 36},
+  image: blueBomber
 }
