@@ -67,7 +67,7 @@ const handleWaitTime = (currentPlayer, countDown) => {
   if (countDown > 0) {
     return <span className="waitCountDown">{countDown}</span>;
   } else {
-    return <img className="playerImage" src={`https://robohash.org/${currentPlayer.id}`} alt="player"/>;
+    return <img className="playerImage" src={`https://robohash.org/${currentPlayer.id}?color=${currentPlayer.team}`} alt="player"/>;
   };
 }
 
