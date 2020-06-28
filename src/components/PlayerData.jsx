@@ -43,7 +43,7 @@ const renderSpeed = (player) => {
   }
 }
 
-const handleWaitTime = (currentPlayer, countDown) => {
+const handlePlayerIcon = (currentPlayer, countDown) => {
   if (countDown > 0) {
     return <span className="waitCountDown">{countDown}</span>;
   } else {
@@ -74,11 +74,11 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, players, defen
   return (
     <div className={`playerData column ${currentPlayer.explode ? 'waiting' : ''}`}>
       <div className="row">
-        {handleWaitTime(currentPlayer, countDown)}
+        {currentPlayer.updatedAt && handlePlayerIcon(currentPlayer, countDown)}
         <div className="nameInfo">{currentPlayer.name}</div>
         {gold >= 0 && <PlayerStat image={goldIcon} alt={'gold'} value={gold} className="goldInfo"/>}
         {renderHitPoints(currentPlayer)}
-        {renderShip(currentPlayer)}
+        {currentPlayer.updatedAt && renderShip(currentPlayer)}
         {renderWeapon(currentPlayer.weaponIndex)}
         {damage > 0 && <PlayerStat image={UPGRADES[3].image} alt={'target'} value={damage} className="statInfo"/>}
         {renderArmor(currentPlayer)}
