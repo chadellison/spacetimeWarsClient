@@ -32,7 +32,8 @@ const DEFAULT_STATE = {
   activeTab: 'Ships',
   page: 1,
   gameBuff: {},
-  gameOverStats: []
+  gameOverStats: [],
+  defenseData: { red: 10, blue: 10 }
 };
 
 class Layout extends React.Component {
@@ -103,7 +104,7 @@ class Layout extends React.Component {
           const elapsedTime = findElapsedTime(this.state.clockDifference, player.updatedAt);
           return updatePlayer(player, elapsedTime, this.state.clockDifference)
         });
-        this.setState({players: players});
+        this.setState({players: players, defenseData: gameData.defenseData});
     }).catch((error) => console.log('ERROR', error));
   };
 
@@ -220,6 +221,7 @@ class Layout extends React.Component {
             clockDifference={clockDifference}
             updateState={this.updateState}
             players={players}
+            defenseData={this.state.defenseData}
           />}
           <Canvas
             players={players}

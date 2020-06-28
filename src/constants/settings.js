@@ -7,6 +7,7 @@ import goldSound from '../audio/goldSound.mp3';
 import loadWeaponAudio from '../audio/loadWeapon.wav';
 import notEnoughResourcesAudio from '../audio/notEnoughResources.wav';
 import upgradeAudio from '../audio/upgradeSound.mov';
+import leakAudio from '../audio/leakSound.mov';
 
 // constants
 export const BOARD_WIDTH = 1800;
@@ -31,5 +32,6 @@ export const gong = new Audio(gongAudio);
 export const goldAudio = new Audio(goldSound);
 export const loadWeapon = new Audio(loadWeaponAudio);
 export const upgradeSound = new Audio(upgradeAudio);
+export const leakSound = new Audio(leakAudio);
 export const notEnoughResources = new Audio(notEnoughResourcesAudio);
 export const supplyPop = new Audio(supplyPopAudio);

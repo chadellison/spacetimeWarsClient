@@ -1,6 +1,7 @@
 import {handleFireWeapon, updatePlayer} from '../helpers/gameLogic.js';
 import {applyGameBuff} from '../helpers/effectHelpers.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
+import {leakSound} from '../constants/settings.js';
 
 export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   const {players, clockDifference, deployedWeapons, currentPlayer} = gameState;
@@ -14,7 +15,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     case 'bombers':
       return { players: players.concat(playerData.bombers) };
     case 'leak':
-      return gameState
+      return handleLeak(playerData, gameState.defenseData);
     case 'gameOver':
       return handleGameOverEvent([...players])
     default:
@@ -24,6 +25,12 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
       };
       return handleUpdateEvent(allPlayers, playerData, clockDifference, deployedWeapons, currentPlayer, elapsedTime);
   };
+}
+
+const handleLeak = (playerData, defenseData) => {
+  const newValue = defenseData[playerData.team] - 1
+  leakSound.play();
+  return { defenseData: {...defenseData, [playerData.team]: newValue}}
 }
 
 const handleStartEvent = (players, playerData, currentPlayerId) => {
@@ -36,7 +43,7 @@ const handleStartEvent = (players, playerData, currentPlayerId) => {
       players: [...players, playerData]
     }
   } else {
-    return {players: [...players, playerData]}
+    return { players: [...players, playerData] }
   }
 }
 

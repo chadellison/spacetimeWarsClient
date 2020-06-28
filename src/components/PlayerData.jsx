@@ -62,7 +62,7 @@ const renderHitPoints = (currentPlayer) => {
   }
 };
 
-const PlayerData = ({currentPlayer, clockDifference, updateState, players}) => {
+const PlayerData = ({currentPlayer, clockDifference, updateState, players, defenseData}) => {
   const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
   let countDown = 0;
   if (currentPlayer.explode && elapsedSeconds < 10) {
@@ -86,8 +86,8 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, players}) => {
         <div className="ScoreInfo">{`Score: ${currentPlayer.score}`}</div>
         <PlayerItems items={currentPlayer.items} />
         <div className="defenseData">Defenses</div>
-        <div className="redDefenseData">8</div>
-        <div className="blueDefenseData">3</div>
+        <div className="redDefenseData">{defenseData.red}</div>
+        <div className="blueDefenseData">{defenseData.blue}</div>
       </div>
     </div>
   );
