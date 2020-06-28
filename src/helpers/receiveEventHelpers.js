@@ -17,7 +17,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     case 'leak':
       return handleLeak(playerData, gameState.defenseData);
     case 'gameOver':
-      return handleGameOverEvent([...players])
+      return handleGameOverEvent([...players], playerData)
     default:
       let allPlayers = [...players];
       if (players.filter((player) => player.id === playerData.id).length === 0) {
@@ -110,14 +110,14 @@ const handleRemoveEvent = (players, playerData, currentPlayer) => {
   };
 }
 
-const handleGameOverEvent = (players) => {
+const handleGameOverEvent = (players, playerData) => {
   const updatedPlayers = players.map((player) => {
     return {...player, explode: true, explodeAnimation: {x: 0, y: 0}}
   });
   return {
     modal: 'gameOver',
-    gameOverStats: players,
     currentPlayer: {},
-    players: updatedPlayers
+    players: updatedPlayers,
+    gameOverStats: playerData.gameOverStats
   }
 }

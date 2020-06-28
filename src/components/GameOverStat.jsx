@@ -9,7 +9,7 @@ import {PlayerStat} from './PlayerStat';
 export const GameOverStat = ({player, index}) => {
   return (
     <div className={`gameOverStat ${index === 0 ? 'winner' : ''}`}>
-      <ShipIcon shipIndex={player.shipIndex} className={'playerShip'} />
+      <ShipIcon shipIndex={player.shipIndex} className={'playerShip'} team={player.team} />
       <img className="playerInfoWeapon"
         src={WEAPONS[player.weaponIndex].selectionImage}
         alt="weapon"
