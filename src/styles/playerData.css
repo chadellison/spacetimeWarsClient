@@ -7,36 +7,6 @@
   display: flex;
 }
 
-.gameOverStat {
-  width: 10em;
-  height: 10em;
-  margin-top: 2em;
-  margin-left: 1em;
-  margin-right: 1em;
-  transition: ease-out .5s;
-  display: inline-block;
-}
-
-.winningScore {
-  color: #ffa109;
-  font-size: 16px;
-  padding-top: .75rem;
-  padding-bottom: .75rem;
-  font-family: 'Pacifico', Sans, Lato, Droid Sans;
-  font-weight: bold;
-  margin-bottom: 0.5em;
-}
-
-.finalScore {
-  color: white;
-  font-size: 16px;
-  padding-top: .75rem;
-  padding-bottom: .75rem;
-  font-family: 'Pacifico', Sans, Lato, Droid Sans;
-  font-weight: bold;
-  margin-bottom: 0.5em;
-}
-
 .ScoreInfo {
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   font-size: 14px;

@@ -13,7 +13,6 @@
   margin-top: 2em;
   font-size: 20px;
   height: 30px;
-  color: #2c66b2;
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   margin-left: 40%;
   width: 20%;
@@ -174,6 +173,13 @@
   color: #2c66b2;
 }
 
+.red {
+  color: #9c1616;
+}
+
+.blue {
+  color: #2c66b2;
+}
 @keyframes slideDown {
 	0% {
 		transform: translateY(-100%);

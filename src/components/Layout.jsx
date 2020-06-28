@@ -191,6 +191,7 @@ class Layout extends React.Component {
       players,
       gameBuff,
       activeTab,
+      defenseData,
       gameOverStats,
       currentPlayer,
       deployedWeapons,
@@ -206,6 +207,7 @@ class Layout extends React.Component {
             players={players}
             activeTab={activeTab}
             gameOverStats={gameOverStats}
+            defenseData={defenseData}
             currentPlayer={currentPlayer}
             updateState={this.updateState}
             handleGameEvent={this.handleGameEvent}

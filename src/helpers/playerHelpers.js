@@ -7,7 +7,14 @@ export const addPlayer = (userId, players) => {
       gameEvent: 'waiting',
       score: 0,
       items: {},
-      effects: {}
+      effects: {},
+      type: 'human',
+      accelerate: false,
+      lastAccelerationTime: 0,
+      kills: 0,
+      rotate: 'none',
+      explode: false,
+      explodeAnimation: {}
     }
   };
 }

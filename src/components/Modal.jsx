@@ -5,7 +5,18 @@ import {CreditsModal} from './CreditsModal';
 import {GameOverModal} from './GameOverModal';
 import {NameFormModal} from './NameFormModal';
 
-export const Modal = ({page, modal, userId, players, activeTab, gameOverStats, currentPlayer, updateState, handleGameEvent}) => {
+export const Modal = ({
+  page,
+  modal,
+  userId,
+  players,
+  activeTab,
+  gameOverStats,
+  currentPlayer,
+  defenseData,
+  updateState,
+  handleGameEvent
+}) => {
   switch (modal) {
     case 'selection':
       return (
@@ -26,7 +37,7 @@ export const Modal = ({page, modal, userId, players, activeTab, gameOverStats, c
     case 'nameForm':
       return <NameFormModal updateState={updateState} currentPlayer={currentPlayer} />
     case 'gameOver':
-      return <GameOverModal players={gameOverStats} updateState={updateState}/>
+      return <GameOverModal players={gameOverStats} updateState={updateState} defenseData={defenseData}/>
     default:
       return <div></div>
   }
