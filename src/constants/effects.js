@@ -102,11 +102,11 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: healAnimation,
-      width: 250,
-      height: 151,
+      width: 234,
+      height: 223,
       renderSize: 100,
-      rowCount: 1,
-      columnCount: 4,
+      rowCount: 4,
+      columnCount: 3,
       rate: 1,
       startRate: 1
     }

@@ -41,7 +41,8 @@ const updatePlayers = (updatedPlayerData, handleGameEvent, clockDifference, last
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
 
       if (isLeak(player)) {
-        handleGameEvent({id: player.id, team: player.team, gameEvent: 'leak'});
+        const opponentTeam = player.team === 'red' ? 'blue' : 'red'
+        handleGameEvent({id: player.id, team: opponentTeam, gameEvent: 'leak'});
       } else {
         if (player.id === updatedPlayerData.currentPlayer.id) {
           handleRepeatedFire(updatedPlayerData.currentPlayer, handleGameEvent, lastFired, updateState, clockDifference, space);
@@ -184,18 +185,14 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
 
     if (weapon.playerId === currentPlayer.id) {
       handlePositiveBuff(currentPlayer, weapon);
-      let bounty = Math.round(damage / 10);
       if (player.hitpoints <= 0) {
-        if (player.type === 'bomber') {
-          bounty += 10
-        } else {
-          bounty += Math.round(player.score * 0.01 + 100);
-        }
+        const bounty = Math.round(player.score * 0.01 + 100);
         handleKill(player, currentPlayer, handleGameEvent);
         player.killedBy = weapon.playerId
+        // update kills and deaths
+        currentPlayer.gold += bounty;
+        currentPlayer.score += bounty;
       };
-      currentPlayer.gold += bounty;
-      currentPlayer.score += bounty;
     };
   };
 };

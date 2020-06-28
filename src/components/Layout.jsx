@@ -215,12 +215,12 @@ class Layout extends React.Component {
             className={'gameButton'}
           />
           <HeaderButtons updateState={this.updateState} />
-          <PlayerData
+          {currentPlayer.id && <PlayerData
             currentPlayer={currentPlayer}
             clockDifference={clockDifference}
             updateState={this.updateState}
             players={players}
-          />
+          />}
           <Canvas
             players={players}
             deployedWeapons={deployedWeapons}

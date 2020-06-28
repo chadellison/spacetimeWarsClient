@@ -37,7 +37,7 @@
   margin-bottom: 0.5em;
 }
 
-.DamageInfo, .ArmorInfo, .SpeedInfo, .ScoreInfo, .playerInfo {
+.ScoreInfo {
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   font-size: 14px;
   color: gray;
@@ -45,26 +45,13 @@
   padding-bottom: .75rem;
 }
 
-.NameInfo {
+.nameInfo {
   font-family: 'Pacifico', Sans, Lato, Droid Sans;
   font-size: 14px;
   font-weight: bold;
   color: #2c66b2;
   margin-top: 1.5em;
   margin-bottom: .75rem;
-}
-
-.goldIcon {
-  margin-bottom: -.25em;
-}
-
-.GoldInfo {
-  font-family: 'Pacifico', Sans, Lato, Droid Sans;
-  font-size: 14px;
-  font-weight: bold;
-  color: #ab8432;
-  padding-top: .75rem;
-  padding-bottom: .75em;
 }
 
 .playerImage {
@@ -124,4 +111,30 @@
   margin-bottom: 1em;
   display: inline-block;
   transform: rotate(270deg);
+}
+
+.redDefenseData {
+  display: inline-block;
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-size: 20px;
+  font-weight: bold;
+  color: red;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  margin-right: 1em;
+}
+
+.blueDefenseData {
+  display: inline-block;
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-size: 20px;
+  font-weight: bold;
+  color: blue;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+}
+
+.defenseData {
+  margin-top: 2em;
+  margin-bottom: 1em;
 }
