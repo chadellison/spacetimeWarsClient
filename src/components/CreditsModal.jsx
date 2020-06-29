@@ -72,7 +72,7 @@ export const CreditsModal = ({updateState}) => {
       <div className="informationText">
         <span className="creditTitle">Gold Icon:</span>AlexRoz/Shutterstock.com
       </div>
-      <div>Sound effects obtained from
+      <div className="creditTitle">Sound effects obtained from
         <a className="assetLink"
           href="https://www.zapsplat.com"
           target="_blank"

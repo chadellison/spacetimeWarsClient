@@ -47,6 +47,14 @@ export const shouldRenderShip = (player, currentPlayerId) => {
   return (!player.explode) && (!player.effects[5] || player.id === currentPlayerId);
 }
 
+export const handleInvisibleFilter = (context, player, currentPlayerId) => {
+  if (player.effects[5] && player.id === currentPlayerId) {
+    context.filter = 'opacity(0.5)';
+  } else {
+    context.filter = 'none';
+  }
+}
+
 export const renderExplosion = (context, explosion, player) => {
   context.drawImage(
     explosion,

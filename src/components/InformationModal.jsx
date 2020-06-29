@@ -20,10 +20,13 @@ export const InformationModal = ({updateState}) => {
         from weakening your defenses by crossing your team's edge of the screen.
       </div>
       <div className="informationContext">
-        Each bomber that crosses the threshold reduces your team's defenses (starts at 100)
+        Each bomber that crosses the threshold reduces your team's defenses (starts at 10)
       </div>
       <div className="informationContext">
-        The defense values will be located on the left during game play.
+        The red team's goal is to stop the blue bombers and the blue team's goal is to stop the red bombers.
+      </div>
+      <div className="informationContext">
+        The defense values will be located on the lower left of the screen during game play.
       </div>
       <div className="informationContext">
         The first team to bring the opponents defenses down to 0 wins!

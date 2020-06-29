@@ -5,7 +5,8 @@ import {
   shouldRenderShip,
   renderExplosion,
   renderPlayerData,
-  renderAnimation
+  renderAnimation,
+  handleInvisibleFilter,
 } from '../helpers/canvasHelper.js';
 import {canAbsorbDamage} from '../helpers/itemHelpers.js';
 import '../styles/styles.css';
@@ -137,8 +138,10 @@ class Canvas extends React.Component {
     }
 
     this.props.players.forEach((player) => {
-      const showShip = shouldRenderShip(player, this.props.currentPlayer.id);
+      const {currentPlayer, gameBuff} = this.props;
+      const showShip = shouldRenderShip(player, currentPlayer.id);
       if (showShip) {
+        handleInvisibleFilter(context, player, currentPlayer.id);
         drawShip(context, player, this.handleImage(player));
         Object.values(player.effects)
           .filter((effect) => [1, 2, 4, 7, 8].includes(effect.id))
@@ -146,7 +149,7 @@ class Canvas extends React.Component {
       } else {
         renderExplosion(context, this.state.explosion, player);
       };
-      renderPlayerData(this.props.gameBuff, context, player, showShip);
+      renderPlayerData(gameBuff, context, player, showShip);
     });
 
     this.props.deployedWeapons.forEach((weapon) => {
