@@ -79,13 +79,9 @@ const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateSta
 
 const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
   const {currentPlayer, lastFired} = gameState;
-  if (currentPlayer.gameEvent === 'waiting') {
-    handleGameEvent(startEventPayload(currentPlayer))
-  } else {
-    if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
-      handleGameEvent({...currentPlayer, gameEvent: 'fire'});
-      updateState({lastFired: Date.now()});
-    };
+  if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
+    handleGameEvent({...currentPlayer, gameEvent: 'fire'});
+    updateState({lastFired: Date.now()});
   };
 };
 

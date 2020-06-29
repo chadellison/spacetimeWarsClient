@@ -37,7 +37,7 @@ export const Modal = ({
     case 'nameForm':
       return <NameFormModal updateState={updateState} currentPlayer={currentPlayer} />
     case 'gameOver':
-      return <GameOverModal players={gameOverStats} updateState={updateState} defenseData={defenseData}/>
+      return <GameOverModal gameOverStats={gameOverStats} updateState={updateState} defenseData={defenseData}/>
     default:
       return <div></div>
   }

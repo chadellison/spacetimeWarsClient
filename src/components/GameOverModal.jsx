@@ -3,19 +3,11 @@ import '../styles/modal.css';
 import {GameOverStat} from './GameOverStat';
 import {GameButton} from './GameButton';
 
-const gameOverText = (defenseData) => {
-  if (defenseData.red <= 0) {
-    return <div className="gameOverText blue">Blue Team Wins!</div>
-  } else {
-    return <div className="gameOverText red">Red Team Wins!</div>
-  }
-}
-
-export const GameOverModal = ({players, updateState, defenseData}) => {
+export const GameOverModal = ({gameOverStats, updateState}) => {
   return (
     <div className='modal'>
-      {gameOverText(defenseData)}
-      {players.sort((playerOne, playerTwo) => {
+      <div className={`gameOverText ${gameOverStats.winningTeam}`}>{`${gameOverStats.winningTeam} Team Wins!`}</div>
+      {gameOverStats.playerStats.sort((playerOne, playerTwo) => {
         if (playerOne.score > playerTwo.score) {
           return -1
         }
@@ -30,7 +22,7 @@ export const GameOverModal = ({players, updateState, defenseData}) => {
       })}
       <GameButton
         className={'exitButton'}
-        onClick={() => updateState({modal: null})}
+        onClick={() => updateState({modal: null, defenseData: { red: 10, blue: 10 }})}
         buttonText={'Exit'}
       />
     </div>

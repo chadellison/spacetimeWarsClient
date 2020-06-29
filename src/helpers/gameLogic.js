@@ -35,6 +35,8 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
 
 const updatePlayers = (updatedPlayerData, handleGameEvent, clockDifference, lastFired, updateState, space) => {
   let updatedPlayers = [];
+  let firstHumanId = null;
+  let leaked = {}
   updatedPlayerData.players.forEach((player) => {
     if (!removePlayer(player.explodeAnimation)) {
       handleHitpoints(player, updatedPlayerData.currentPlayer.id, handleGameEvent);
@@ -42,20 +44,35 @@ const updatePlayers = (updatedPlayerData, handleGameEvent, clockDifference, last
 
       if (isLeak(player)) {
         const opponentTeam = player.team === 'red' ? 'blue' : 'red'
-        handleGameEvent({id: player.id, team: opponentTeam, gameEvent: 'leak'});
+        leaked[player.id] = opponentTeam
+        // handleGameEvent({id: player.id, team: opponentTeam, gameEvent: 'leak'});
       } else {
         if (player.id === updatedPlayerData.currentPlayer.id) {
           handleRepeatedFire(updatedPlayerData.currentPlayer, handleGameEvent, lastFired, updateState, clockDifference, space);
           updatedPlayerData.currentPlayer = player
         }
+        if (player.type === 'human' && !firstHumanId) {
+          firstHumanId = player.id
+        }
+
         handleWall(player, handleGameEvent);
         handleEffects(player)
         updatedPlayers.push(player);
       }
     };
   });
+  handleLeak(handleGameEvent, leaked, updatedPlayerData.currentPlayer.id, firstHumanId)
   updatedPlayerData.players = updatedPlayers;
   return updatedPlayerData;
+}
+
+const handleLeak = (handleGameEvent, leaked, playerId, firstHumanId) => {
+  const leakedIds = Object.keys(leaked)
+  if (leakedIds.length > 0 && playerId === firstHumanId) {
+    leakedIds.forEach((id) => {
+      handleGameEvent({id: id, team: leaked[id], gameEvent: 'leak'});
+    })
+  };
 }
 
 const isLeak = (player) => {
@@ -189,7 +206,7 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
         const bounty = Math.round(player.score * 0.01 + 100);
         handleKill(player, currentPlayer, handleGameEvent);
         player.killedBy = weapon.playerId
-        // update kills and deaths
+        currentPlayer.kills += 1
         currentPlayer.gold += bounty;
         currentPlayer.score += bounty;
       };

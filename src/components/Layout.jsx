@@ -32,7 +32,7 @@ const DEFAULT_STATE = {
   activeTab: 'Ships',
   page: 1,
   gameBuff: {},
-  gameOverStats: [],
+  gameOverStats: {},
   defenseData: { red: 10, blue: 10 }
 };
 
