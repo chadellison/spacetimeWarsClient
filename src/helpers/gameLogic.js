@@ -45,7 +45,6 @@ const updatePlayers = (updatedPlayerData, handleGameEvent, clockDifference, last
       if (isLeak(player)) {
         const opponentTeam = player.team === 'red' ? 'blue' : 'red'
         leaked[player.id] = opponentTeam
-        // handleGameEvent({id: player.id, team: opponentTeam, gameEvent: 'leak'});
       } else {
         if (player.id === updatedPlayerData.currentPlayer.id) {
           handleRepeatedFire(updatedPlayerData.currentPlayer, handleGameEvent, lastFired, updateState, clockDifference, space);
