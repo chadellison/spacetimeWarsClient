@@ -1,8 +1,9 @@
 import stunAnimation from '../images/stunAnimation.png'
 import slowAnimation from '../images/slowAnimation.png'
 import poisonAnimation from '../images/poisonAnimation.png'
-import healAnimation from '../images/healAnimation.png'
+import healAnimation from '../images/healLightAnimation.png'
 import armorBoost from '../images/armorBoost.png'
+import impactAnimation from '../images/impactAnimation.png'
 
 export const GAME_EFFECTS = [
   {
@@ -32,12 +33,12 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: slowAnimation,
-      width: 250,
-      height: 250,
-      renderSize: 75,
+      width: 234,
+      height: 223,
+      renderSize: 100,
       rowCount: 4,
       columnCount: 3,
-      rate: 2,
+      rate: 1,
       startRate: 1
     }
   },
@@ -47,17 +48,6 @@ export const GAME_EFFECTS = [
     duration: 3000,
     durationCount: 0,
     color: 'rgba(151, 127, 7, 0.37)',
-    animation: {
-      coordinates: {x: 0, y: 0},
-      spriteImage: stunAnimation,
-      width: 250,
-      height: 223,
-      renderSize: 100,
-      rowCount: 4,
-      columnCount: 3,
-      rate: 1,
-      startRate: 1
-    }
   },
   {
     id: 4,
@@ -102,8 +92,8 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: healAnimation,
-      width: 234,
-      height: 223,
+      width: 207,
+      height: 267,
       renderSize: 100,
       rowCount: 4,
       columnCount: 3,
@@ -130,3 +120,15 @@ export const GAME_EFFECTS = [
     }
   }
 ]
+
+const IMPACT_ANIMATION = {
+  coordinates: {x: 0, y: 0},
+  spriteImage: impactAnimation,
+  width: 150,
+  height: 125,
+  renderSize: 50,
+  rowCount: 5,
+  columnCount: 4,
+  rate: 1,
+  startRate: 1
+}
