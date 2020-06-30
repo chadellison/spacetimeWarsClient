@@ -14,8 +14,8 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: poisonAnimation,
-      width: 256,
-      height: 256,
+      width: 128,
+      height: 128,
       renderSize: 100,
       rowCount: 4,
       columnCount: 7,
@@ -32,8 +32,8 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: coldAnimation,
-      width: 256,
-      height: 256,
+      width: 128,
+      height: 128,
       renderSize: 100,
       rowCount: 7,
       columnCount: 3,
@@ -58,8 +58,8 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: stunAnimation,
-      width: 256,
-      height: 256,
+      width: 128,
+      height: 128,
       renderSize: 100,
       rowCount: 4,
       columnCount: 3,
@@ -90,8 +90,8 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: healAnimation,
-      width: 256,
-      height: 256,
+      width: 128,
+      height: 128,
       renderSize: 100,
       rowCount: 4,
       columnCount: 6,
