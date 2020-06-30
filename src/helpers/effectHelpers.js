@@ -1,6 +1,7 @@
 import {ANAIMATION_FRAME_RATE} from '../constants/settings.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
+import {round} from '../helpers/mathHelpers.js';
 
 export const handleEffects = (player) => {
   Object.values(player.effects).forEach((effect) => {
@@ -8,14 +9,14 @@ export const handleEffects = (player) => {
       delete player.effects[effect.id];
     } else {
       if (effect.id === 1) {
-        const damage = Math.round((player.maxHitpoints * 0.17) / (effect.duration / ANAIMATION_FRAME_RATE));
+        const damage = round((player.maxHitpoints * 0.17) / (effect.duration / ANAIMATION_FRAME_RATE));
         const newHitpoints = player.hitpoints - damage;
         player.hitpoints = newHitpoints > 1 ? newHitpoints : 1;
       } else if (effect.id === 3) {
-        const goldReduction = Math.round((player.gold * 0.2) / (effect.duration / ANAIMATION_FRAME_RATE));
+        const goldReduction = round((player.gold * 0.2) / (effect.duration / ANAIMATION_FRAME_RATE));
         player.gold -= goldReduction;
       } else if (effect.id === 7) {
-        const health = Math.round((player.maxHitpoints * 0.5) / (effect.duration / ANAIMATION_FRAME_RATE))
+        const health = round((player.maxHitpoints * 0.5) / (effect.duration / ANAIMATION_FRAME_RATE))
         const newHitpoints = player.hitpoints + health;
         player.hitpoints = newHitpoints > player.maxHitpoints ? player.maxHitpoints : newHitpoints;
       };

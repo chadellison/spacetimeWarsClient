@@ -1,3 +1,5 @@
+import {round} from '../helpers/mathHelpers.js';
+
 export const addPlayer = (userId, players) => {
   return {
     modal: 'nameForm',
@@ -24,7 +26,7 @@ const handleStartingGold = (players) => {
     const scoreSums = players.filter((player) => player.type === 'human').reduce((accumulator, player) => {
       return accumulator + player.score
     }, 0);
-    return Math.round((scoreSums / players.length) + 1000);
+    return round((scoreSums / players.length) + 1000);
   } else {
     return 1000;
   }

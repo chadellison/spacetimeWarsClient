@@ -11,6 +11,7 @@ import {
 import {canAbsorbDamage} from '../helpers/itemHelpers.js';
 import '../styles/styles.css';
 import explodeAnimation from '../images/explosion.png';
+import {round} from '../helpers/mathHelpers.js';
 import {
   BOARD_WIDTH,
   BOARD_HEIGHT
@@ -103,8 +104,8 @@ class Canvas extends React.Component {
       armorBoost: armorBoost,
       explosion: explosion,
       supplyShip: supplyShip,
-      halfWindowWidth: Math.round(window.innerWidth / 2),
-      halfWindowHeight: Math.round(window.innerHeight / 2)
+      halfWindowWidth: round(window.innerWidth / 2),
+      halfWindowHeight: round(window.innerHeight / 2)
     });
   }
 

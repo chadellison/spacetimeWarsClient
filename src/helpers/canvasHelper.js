@@ -1,5 +1,6 @@
 import {SPRITE_WIDTH} from '../constants/settings.js';
 import {findColor} from '../helpers/colorHelpers.js';
+import {round} from '../helpers/mathHelpers.js';
 
 export const drawShip = (context, player, ship) => {
   handleDirection(context, ship, player.location, player.angle)
@@ -13,8 +14,8 @@ export const drawShip = (context, player, ship) => {
 export const handleDirection = (context, image, location, trajectory) => {
   const {x, y} = location;
   context.save();
-  const cx = x + 0.5 * image.width;
-  const cy = y + 0.5 * image.height;
+  const cx = round(x + 0.5 * image.width);
+  const cy = round(y + 0.5 * image.height);
 
   context.translate(cx, cy);
   context.rotate((Math.PI / 180) * trajectory);
@@ -24,16 +25,17 @@ export const handleDirection = (context, image, location, trajectory) => {
 
 const handleAcceleration = (context, player, ship) => {
   context.beginPath();
-  context.moveTo(player.location.x - 8, player.location.y + 4 + ship.height / 2);
-  context.lineTo(player.location.x - 8, player.location.y - 2 + ship.height / 2);
-  context.lineTo(player.location.x, player.location.y - 4 + ship.height / 2);
-  context.lineTo(player.location.x, player.location.y + 5 + ship.height / 2);
+  const halfShipHeight = round(ship.height / 2);
+  context.moveTo(player.location.x - 8, player.location.y + 4 + halfShipHeight);
+  context.lineTo(player.location.x - 8, player.location.y - 2 + halfShipHeight);
+  context.lineTo(player.location.x, player.location.y - 4 + halfShipHeight);
+  context.lineTo(player.location.x, player.location.y + 5 + halfShipHeight);
 
   let grd = context.createLinearGradient(
     player.location.x - 8,
-    player.location.y - 5 + ship.height / 2,
+    round(player.location.y - 5 + halfShipHeight),
     player.location.x,
-    player.location.y + 6 + ship.height / 2
+    round(player.location.y + 6 + halfShipHeight)
   );
   grd.addColorStop(0, "#5c93e6");
   grd.addColorStop(1, "#f0f6ff");
@@ -93,12 +95,12 @@ export const renderPlayerData = (gameBuff, context, player, showShip) => {
     } else if (!showShip) {
       context.fillStyle = "#ab8432";
       context.font = "12px Arial";
-      context.fillText(`+ ${Math.round(player.score * 0.01 + 100)}`, player.location.x + 75, player.location.y)
+      context.fillText(`+ ${round(player.score * 0.01 + 100)}`, player.location.x + 75, player.location.y)
     }
   }
 };
 
 const renderHealthBar = (context, player) => {
   context.beginPath();
-  context.fillRect(player.location.x, player.location.y + 90, Math.round((player.hitpoints * 100) / player.maxHitpoints), 4);
+  context.fillRect(player.location.x, player.location.y + 90, round((player.hitpoints * 100) / player.maxHitpoints), 4);
 }

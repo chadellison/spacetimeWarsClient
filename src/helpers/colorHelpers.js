@@ -1,3 +1,5 @@
+import {round} from '../helpers/mathHelpers.js';
+
 const hslToRgb = (h, s, l) => {
   let r, g, b;
 
@@ -11,7 +13,7 @@ const hslToRgb = (h, s, l) => {
     b = hue2rgb(p, q, h - 1/3);
   }
 
-  return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+  return [round(r * 255), round(g * 255), round(b * 255)];
 }
 
 const hue2rgb = (p, q, t) => {
@@ -24,7 +26,7 @@ const hue2rgb = (p, q, t) => {
 };
 
 export const findColor = (hitpoints, maxHitpoints) => {
-  const percentage = Math.round(hitpoints / maxHitpoints * 100);
+  const percentage = round(hitpoints / maxHitpoints * 100);
   const hue = percentage * 1.2 / 360;
   const rgb = hslToRgb(hue, 1, .5);
   return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';

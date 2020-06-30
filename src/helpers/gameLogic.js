@@ -13,6 +13,7 @@ import {GAME_EFFECTS} from '../constants/effects.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
 import {handleEffects, updateGameBuff, randomBuffIndex} from '../helpers/effectHelpers';
 import {handleExplodeUpdate} from '../helpers/animationHelpers';
+import {round} from '../helpers/mathHelpers.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   let deployedWeapons = [...gameState.deployedWeapons];
@@ -120,7 +121,7 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
     }
   }
   const gameTime = elapsedTime / ANAIMATION_FRAME_RATE;
-  return Math.round(currentVelocity * gameTime);
+  return round(currentVelocity * gameTime);
 }
 
 export const updatePlayer = (player, elapsedTime, clockDifference) => {
@@ -202,7 +203,7 @@ const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => 
     if (weapon.playerId === currentPlayer.id) {
       handlePositiveBuff(currentPlayer, weapon);
       if (player.hitpoints <= 0) {
-        const bounty = Math.round(player.score * 0.01 + 100);
+        const bounty = round(player.score * 0.01 + 100);
         handleKill(player, currentPlayer, handleGameEvent);
         player.killedBy = weapon.playerId
         currentPlayer.kills += 1
@@ -223,7 +224,7 @@ const handleNegativeBuff = (player, weapon) => {
   if (weapon.index === 5) {
     player.effects[GAME_EFFECTS[0].id] = {...GAME_EFFECTS[0], duration: 3000}
   } else if (weapon.index === 6) {
-    player.effects[GAME_EFFECTS[1].id] = {...GAME_EFFECTS[1], duration: 1000}
+    player.effects[GAME_EFFECTS[1].id] = {...GAME_EFFECTS[1], duration: 2000}
   }
 
   if (weapon.canStun && Math.random() <= 0.1) {
@@ -233,7 +234,7 @@ const handleNegativeBuff = (player, weapon) => {
 
 const handlePositiveBuff = (player, weapon) => {
   if (weapon.index === 3) {
-    let newHitpoints = player.hitpoints + Math.round(weapon.damage / 15);
+    let newHitpoints = player.hitpoints + round(weapon.damage / 15);
     if (newHitpoints > player.maxHitpoints) {
       newHitpoints = player.maxHitpoints;
     }
@@ -254,7 +255,7 @@ const calculateDamage = (weapon, player) => {
   if (weapon.index === 4 && Math.random() >= 0.8) {
     damage *= 2
   }
-  return Math.round(damage * (10 - armor) / 10);
+  return round(damage * (10 - armor) / 10);
 }
 
 export const handleFireWeapon = (player, clockDifference) => {
@@ -279,7 +280,7 @@ export const handleFireWeapon = (player, clockDifference) => {
 };
 
 const findHypotenuse = (point, pointTwo) => {
-  return Math.round(Math.sqrt((point.x - pointTwo.x) ** 2 + (point.y - pointTwo.y) ** 2))
+  return round(Math.sqrt((point.x - pointTwo.x) ** 2 + (point.y - pointTwo.y) ** 2))
 };
 
 export const handleRepeatedFire = (player, handleGameEvent, lastFired, updateState, clockDifference, spaceKeyPressed) => {
@@ -300,9 +301,9 @@ export const findElapsedTime = (clockDifference, updatedAt) => {
 
 export const handleLocation = (trajectory, location, distance) => {
   const radians = trajectory * Math.PI / 180
-  const x = Math.round(location.x + Math.cos(radians) * distance)
-  const y = Math.round(location.y + Math.sin(radians) * distance)
-  return {x: x, y: y}
+  const x = round(location.x + Math.cos(radians) * distance)
+  const y = round(location.y + Math.sin(radians) * distance)
+  return {x, y}
 }
 
 export const handleAngle = (player, elapsedTime) => {
