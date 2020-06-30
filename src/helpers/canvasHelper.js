@@ -77,7 +77,7 @@ export const renderAnimation = (context, spriteImage, effect, player) => {
     effect.animation.width,
     effect.animation.height,
     player.location.x,
-    player.location.y - 50,
+    player.location.y,
     effect.animation.renderSize,
     effect.animation.renderSize
   )
