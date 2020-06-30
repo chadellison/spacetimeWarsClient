@@ -47,6 +47,7 @@ export const GAME_EFFECTS = [
     duration: 3000,
     durationCount: 0,
     color: 'rgba(151, 127, 7, 0.37)',
+    animation: {}
   },
   {
     id: 4,
