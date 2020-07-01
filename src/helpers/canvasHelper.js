@@ -2,10 +2,14 @@ import {SPRITE_WIDTH} from '../constants/settings.js';
 import {findColor} from '../helpers/colorHelpers.js';
 import {round} from '../helpers/mathHelpers.js';
 
-export const drawShip = (context, player, ship) => {
+export const drawShip = (context, player, ship, warpSpeed) => {
   handleDirection(context, ship, player.location, player.angle)
   if (player.accelerate) {
-    handleAcceleration(context, player, ship);
+    if (player.effects[9]) {
+      renderAnimation(context, warpSpeed, player.effects[9], player)
+    } else {
+      handleAcceleration(context, player, ship);
+    }
   }
 
   context.restore();
@@ -78,7 +82,7 @@ export const renderAnimation = (context, spriteImage, effect, player) => {
     effect.animation.coordinates.y,
     effect.animation.width,
     effect.animation.height,
-    player.location.x,
+    player.location.x + effect.animation.xOffset,
     player.location.y,
     effect.animation.renderSize,
     effect.animation.renderSize

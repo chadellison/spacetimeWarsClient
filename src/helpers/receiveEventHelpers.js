@@ -3,7 +3,7 @@ import {applyGameBuff} from '../helpers/effectHelpers.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 import {leakSound} from '../constants/settings.js';
 import {playSound, stopSound} from '../helpers/audioHelpers.js';
-import {thruster, supplyPop, windSound} from '../constants/settings.js';
+import {thruster, supplyPop, windSound, warpSpeedSound} from '../constants/settings.js';
 import {WEAPONS} from '../constants/weapons.js';
 
 export const handleEventPayload = (gameState, playerData, elapsedTime) => {
@@ -166,7 +166,41 @@ const handleAbility = (gameState, playerData, elapsedTime) => {
         return player;
       });
       return {players: updatedPlayers};
-    case 2:
+      // case 2:
+        // nuclearBlast
+      //   let nuclearBlast = {...ABILITY_WEAPONS[0], firedAt: Date.now()}
+      //   const updatedWeapons = [
+      //     ...updatedWeapons,
+      //     handleFireWeapon(playerData, gameState.clockDifference, nuclearBlast, elapsedTime)
+        // ];
+        // updatedPlayer = player
+        // playSound(WEAPONS[player.weaponIndex].sound);
+        // nuclear blast
+        // const warpSpeedEffect = {...GAME_EFFECTS[8], durationCount: elapsedTime};
+        // updatedPlayers = [...players].map((player) => {
+        //   if (player.id === playerData.id) {
+        //     player.effects = {...player.effects, [warpSpeedEffect.id]: warpSpeedEffect};
+        //   }
+        //   return player;
+        // });
+        // return {deployedWeapons: updatedWeapons};
+      // case 4:
+        // redMeteor --> goes through everything
+        // const redMeteor = {...GAME_EFFECTS[9], durationCount: elapsedTime};
+        // updatedPlayers = updatedPlayers.map((player) => {
+        //   if (player.id === playerData.id) {
+        //     player.effects = {...player.effects, [immolationEffect.id]: immolationEffect};
+        //   }
+        //   return player;
+        // });
+        //
+        // let immolationWeapon = {...ABILITY_WEAPONS[1]}
+        // const updatedWeapons = [
+        //   ...gameState.deployedWeapons,
+        //   handleFireWeapon(playerData, gameState.clockDifference, immolationWeapon, elapsedTime)
+        // ];
+        //
+    case 3:
       const warpSpeedEffect = {...GAME_EFFECTS[8], durationCount: elapsedTime};
       updatedPlayers = updatedPlayers.map((player) => {
         if (player.id === playerData.id) {
@@ -174,26 +208,11 @@ const handleAbility = (gameState, playerData, elapsedTime) => {
         }
         return player;
       });
+      playSound(warpSpeedSound);
       return {players: updatedPlayers};
-    // case 3:
-    //   let nuclearBlast = {...ABILITY_WEAPONS[0], firedAt: Date.now()}
-    //   const updatedWeapons = [
-    //     ...updatedWeapons,
-    //     handleFireWeapon(playerData, gameState.clockDifference, nuclearBlast, elapsedTime)
-      // ];
-      // updatedPlayer = player
-      // playSound(WEAPONS[player.weaponIndex].sound);
-      // nuclear blast
-      // const warpSpeedEffect = {...GAME_EFFECTS[8], durationCount: elapsedTime};
-      // updatedPlayers = [...players].map((player) => {
-      //   if (player.id === playerData.id) {
-      //     player.effects = {...player.effects, [warpSpeedEffect.id]: warpSpeedEffect};
-      //   }
-      //   return player;
-      // });
-      // return {deployedWeapons: updatedWeapons};
-    // case 4:
-      // const immolationEffect = {...GAME_EFFECTS[9], durationCount: elapsedTime};
+    // case 5:
+      // mines
+      // const redMeteor = {...GAME_EFFECTS[9], durationCount: elapsedTime};
       // updatedPlayers = updatedPlayers.map((player) => {
       //   if (player.id === playerData.id) {
       //     player.effects = {...player.effects, [immolationEffect.id]: immolationEffect};
