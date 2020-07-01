@@ -2,6 +2,9 @@ import {handleFireWeapon, updatePlayer} from '../helpers/gameLogic.js';
 import {applyGameBuff} from '../helpers/effectHelpers.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 import {leakSound} from '../constants/settings.js';
+import {playSound, stopSound} from '../helpers/audioHelpers.js';
+import {thruster, supplyPop, windSound} from '../constants/settings.js';
+import {WEAPONS} from '../constants/weapons.js';
 
 export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   const {players, clockDifference, deployedWeapons, currentPlayer} = gameState;
@@ -12,6 +15,8 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
       return handleRemoveEvent(players, playerData, currentPlayer);
     case 'buff':
       return handleBuffEvent(playerData, players, elapsedTime);
+    case 'ability':
+      return handleAbility(gameState, playerData, elapsedTime);
     case 'bombers':
       return { players: players.concat(playerData.bombers) };
     case 'leak':
@@ -29,7 +34,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
 
 const handleLeak = (playerData, defenseData) => {
   const newValue = defenseData[playerData.team] - 1
-  leakSound.play();
+  playSound(leakSound)
   return { defenseData: {...defenseData, [playerData.team]: newValue}}
 }
 
@@ -50,6 +55,7 @@ const handleStartEvent = (players, playerData, currentPlayerId) => {
 const handleBuffEvent = (playerData, players, elapsedTime) => {
   const gameBuff = {...GAME_EFFECTS[playerData.buffIndex], durationCount: elapsedTime};
   const updatedPlayers = applyGameBuff(playerData.id, [...players], gameBuff);
+  playSound(supplyPop);
   return {players: updatedPlayers, gameBuff: gameBuff};
 };
 
@@ -59,13 +65,29 @@ const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons
 
   const updatedPlayers = [...players].map((player) => {
     if (playerData.id === player.id) {
-      if (playerData.gameEvent === 'fire') {
-        updatedWeapons = [...updatedWeapons, handleFireWeapon(playerData, clockDifference)];
-        updatedPlayer = player
-      } else if (playerData.gameEvent === 'fireStop') {
-        updatedPlayer = player
-      } else {
-        updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
+      switch (playerData.gameEvent) {
+        case 'fire':
+          updatedWeapons = [
+            ...updatedWeapons,
+            handleFireWeapon(playerData, clockDifference, {...WEAPONS[playerData.weaponIndex]}, elapsedTime)
+          ];
+          updatedPlayer = player
+          playSound(WEAPONS[player.weaponIndex].sound);
+          break;
+        case 'fireStop':
+          updatedPlayer = player
+          break;
+        case 'up':
+          updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
+          playSound(thruster);
+          break;
+        case 'upStop':
+          updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
+          stopSound(thruster);
+          break;
+        default:
+          updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
+          break;
       }
       return updatedPlayer;
     } else {
@@ -119,5 +141,74 @@ const handleGameOverEvent = (players, playerData) => {
     currentPlayer: {},
     players: updatedPlayers,
     gameOverStats: playerData.gameOverStats
+  }
+}
+
+const handleAbility = (gameState, playerData, elapsedTime) => {
+  let updatedPlayers = [...gameState.players];
+  switch (playerData.shipIndex) {
+    case 0:
+      const stealthEffect = {...GAME_EFFECTS[4], durationCount: elapsedTime};
+      updatedPlayers = updatedPlayers.map((player) => {
+        if (player.id === playerData.id) {
+          player.effects = {...player.effects, [stealthEffect.id]: stealthEffect};
+        }
+        return player;
+      });
+      playSound(windSound);
+      return {players: updatedPlayers};
+    case 1:
+      const invulnerableEffect = {...GAME_EFFECTS[5], durationCount: elapsedTime};
+      updatedPlayers = updatedPlayers.map((player) => {
+        if (player.id === playerData.id) {
+          player.effects = {...player.effects, [invulnerableEffect.id]: invulnerableEffect};
+        }
+        return player;
+      });
+      return {players: updatedPlayers};
+    case 2:
+      const warpSpeedEffect = {...GAME_EFFECTS[8], durationCount: elapsedTime};
+      updatedPlayers = updatedPlayers.map((player) => {
+        if (player.id === playerData.id) {
+          player.effects = {...player.effects, [warpSpeedEffect.id]: warpSpeedEffect};
+        }
+        return player;
+      });
+      return {players: updatedPlayers};
+    // case 3:
+    //   let nuclearBlast = {...ABILITY_WEAPONS[0], firedAt: Date.now()}
+    //   const updatedWeapons = [
+    //     ...updatedWeapons,
+    //     handleFireWeapon(playerData, gameState.clockDifference, nuclearBlast, elapsedTime)
+      // ];
+      // updatedPlayer = player
+      // playSound(WEAPONS[player.weaponIndex].sound);
+      // nuclear blast
+      // const warpSpeedEffect = {...GAME_EFFECTS[8], durationCount: elapsedTime};
+      // updatedPlayers = [...players].map((player) => {
+      //   if (player.id === playerData.id) {
+      //     player.effects = {...player.effects, [warpSpeedEffect.id]: warpSpeedEffect};
+      //   }
+      //   return player;
+      // });
+      // return {deployedWeapons: updatedWeapons};
+    // case 4:
+      // const immolationEffect = {...GAME_EFFECTS[9], durationCount: elapsedTime};
+      // updatedPlayers = updatedPlayers.map((player) => {
+      //   if (player.id === playerData.id) {
+      //     player.effects = {...player.effects, [immolationEffect.id]: immolationEffect};
+      //   }
+      //   return player;
+      // });
+      //
+      // let immolationWeapon = {...ABILITY_WEAPONS[1]}
+      // const updatedWeapons = [
+      //   ...gameState.deployedWeapons,
+      //   handleFireWeapon(playerData, gameState.clockDifference, immolationWeapon, elapsedTime)
+      // ];
+      //
+      // return {players: updatedPlayers, deployedWeapons: updatedWeapons}
+    default:
+      return {players: updatedPlayers}
   }
 }

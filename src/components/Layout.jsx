@@ -13,7 +13,6 @@ import {updatePlayer, findElapsedTime, updateGameState} from '../helpers/gameLog
 import {keyDownEvent, keyUpEventPayload} from '../helpers/sendEventHelpers.js';
 import {addPlayer} from '../helpers/playerHelpers.js';
 import {handleEventPayload} from '../helpers/receiveEventHelpers.js';
-import {handleAudio} from '../helpers/audioHelpers.js';
 
 const DEFAULT_STATE = {
   userId: new Date().getTime(),
@@ -33,7 +32,8 @@ const DEFAULT_STATE = {
   page: 1,
   gameBuff: {},
   gameOverStats: {},
-  defenseData: { red: 10, blue: 10 }
+  defenseData: { red: 10, blue: 10 },
+  abilityUsedAt: 0
 };
 
 class Layout extends React.Component {
@@ -154,7 +154,6 @@ class Layout extends React.Component {
     const elapsedTime = findElapsedTime(this.state.clockDifference, playerData.updatedAt);
     const gameState = handleEventPayload(this.state, playerData, elapsedTime);
 
-    handleAudio(playerData);
     this.setState(gameState);
     if (this.state.shortestRoundTripTime > 100) {
       this.syncClocks(2, false);

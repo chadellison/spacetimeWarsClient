@@ -1,7 +1,8 @@
 import {ANAIMATION_FRAME_RATE} from '../constants/settings.js';
-import {GAME_EFFECTS} from '../constants/effects.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
 import {round} from '../helpers/mathHelpers.js';
+
+const RANDOME_GAME_BUFF_INDEX_LENGTH = 8
 
 export const handleEffects = (player) => {
   Object.values(player.effects).forEach((effect) => {
@@ -29,7 +30,7 @@ export const handleEffects = (player) => {
 };
 
 export const randomBuffIndex = () => {
-  return Math.floor(Math.random() * Math.floor(GAME_EFFECTS.length));
+  return Math.floor(Math.random() * Math.floor(RANDOME_GAME_BUFF_INDEX_LENGTH));
 }
 
 export const applyGameBuff = (buffedPlayerId, players, gameBuff) => {

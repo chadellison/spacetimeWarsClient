@@ -16,6 +16,7 @@ export const addPlayer = (userId, players) => {
       kills: 0,
       rotate: 'none',
       explode: false,
+      ability: {},
       explodeAnimation: {}
     }
   };

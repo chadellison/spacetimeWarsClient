@@ -113,6 +113,9 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
 
   if (player.accelerate) {
     currentVelocity += playerVelocity;
+    if (player.effects[9]) {
+      currentVelocity += 4
+    }
   } else {
     const timeSinceLastAcceleration = Date.now() + clockDifference - player.lastAccelerationTime;
     const momentum = ((playerVelocity) * 1000) - timeSinceLastAcceleration;
@@ -258,13 +261,11 @@ const calculateDamage = (weapon, player) => {
   return round(damage * (10 - armor) / 10);
 }
 
-export const handleFireWeapon = (player, clockDifference) => {
-  const elapsedTime = findElapsedTime(clockDifference, player.updatedAt);
+export const handleFireWeapon = (player, clockDifference, weapon, elapsedTime) => {
   const angle = handleAngle(player, elapsedTime);
   const distance = distanceTraveled(player, elapsedTime, clockDifference);
   const location = handleLocation(angle, player.location, distance);
 
-  let weapon = {...WEAPONS[player.weaponIndex]}
   const shipCenter = SHIPS[player.shipIndex].shipCenter;
   const x = location.x + shipCenter.x;
   const y = location.y + shipCenter.y;

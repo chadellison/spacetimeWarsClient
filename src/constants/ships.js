@@ -32,7 +32,12 @@ export const SHIPS = [
     shipCenter: {x: 60.5, y: 36},
     image: destroyerShip,
     blueImage: blueDestroyerShip,
-    absorbImage: destroyerShipAbsorb
+    absorbImage: destroyerShipAbsorb,
+    ability: {
+      description: 'Stealth: Renders ship invisible for ten seconds. (Can be used once every 60 seconds).',
+      cooldown: 60000,
+      lastUsed: 0
+    }
   },
   {
     index: 1,
@@ -44,7 +49,12 @@ export const SHIPS = [
     shipCenter: {x: 60.5, y: 35},
     image: hunterShip,
     blueImage: blueHunterShip,
-    absorbImage: hunterShipAbsorb
+    absorbImage: hunterShipAbsorb,
+    ability: {
+      description: 'Invulnerable: Renders your ship impervious to attacks for seven seconds. (Can be used once every 60 seconds).',
+      cooldown: 60000,
+      lastUsed: 0
+    }
   },
   {
     index: 2,
@@ -56,7 +66,12 @@ export const SHIPS = [
     shipCenter: {x: 60.5, y: 27},
     image: redWarShip,
     blueImage: blueWarShip,
-    absorbImage: warShipAbsorb
+    absorbImage: warShipAbsorb,
+    ability: {
+      description: 'Warp Speed: allows the ship to travel extremely fast (+4) for eight seconds. (Can be used once every 60 seconds).',
+      cooldown: 60000,
+      lastUsed: 0
+    }
   },
   {
     index: 3,
@@ -68,7 +83,12 @@ export const SHIPS = [
     shipCenter: {x: 60.5, y: 22.5},
     image: cruiserShip,
     blueImage: blueCruiserShip,
-    absorbImage: cruiserShipAbsorb
+    absorbImage: cruiserShipAbsorb,
+    ability: {
+      description: 'Stealth: Renders ship invisible for ten seconds. (Can be used once every 60 seconds).',
+      cooldown: 60000,
+      lastUsed: 0
+    }
   },
   {
     index: 4,
@@ -80,7 +100,12 @@ export const SHIPS = [
     shipCenter: {x: 60.5, y: 29},
     image: carrierShip,
     blueImage: blueCarrierShip,
-    absorbImage: carrierShipAbsorb
+    absorbImage: carrierShipAbsorb,
+    ability: {
+      description: 'Immolation: burns nearby ships causing critical damage (500 damage / second). (Can be used once every 60 seconds).',
+      cooldown: 0,
+      lastUsed: 0
+    }
   },
   {
     index: 5,
@@ -92,7 +117,12 @@ export const SHIPS = [
     shipCenter: {x: 60, y: 34},
     image: redStealthShip,
     blueImage: blueStealthShip,
-    absorbImage: stealthShipAbsorb
+    absorbImage: stealthShipAbsorb,
+    ability: {
+      description: 'Stealth: Renders ship invisible for ten seconds. (Can be used once every 60 seconds).',
+      cooldown: 60000,
+      lastUsed: 0
+    }
   }
 ];
 

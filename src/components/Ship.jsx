@@ -17,6 +17,7 @@ const handleClick = (shipIndex, currentPlayer, players, updateState) => {
       hitpoints: SHIPS[shipIndex].hitpoints,
       maxHitpoints: SHIPS[shipIndex].hitpoints,
       velocity: SHIPS[shipIndex].speed,
+      ability: {...SHIPS[shipIndex].ability}
     }
 
     const updatedPlayers = getUpdatedPlayers(player, players);
@@ -48,6 +49,9 @@ export const Ship = ({imageSrc, currentPlayer, ship, players, updateState}) => {
         </div>
         <div className="selectionData">
           {`Speed: ${ship.speed}`}
+        </div>
+        <div className="selectionDescription">
+          {`Ability: ${ship.ability.description}`}
         </div>
     </div>
   );

@@ -15,6 +15,9 @@ export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState
     case 'up':
       handleAccelerateEvent(gameState, pressedKey, handleGameEvent, updateState);
       break;
+    case 'q':
+      handleAbility(gameState.currentPlayer, gameState.abilityUsedAt, handleGameEvent, updateState);
+      break;
     default:
       break;
   }
@@ -109,4 +112,11 @@ const accelerateEventPayload = (player, pressedKey) => {
 
 const rotateEventPayload = (player, pressedKey) => {
   return {...player, gameEvent: pressedKey, rotate: pressedKey};
+}
+
+const handleAbility = (player, abilityUsedAt, handleGameEvent, updateState) => {
+  if (Date.now() - abilityUsedAt > player.ability.cooldown) {
+    handleGameEvent({...player, gameEvent: 'ability'});
+    updateState({abilityUsedAt: Date.now()});
+  }
 }

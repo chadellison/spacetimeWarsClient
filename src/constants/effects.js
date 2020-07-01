@@ -116,5 +116,11 @@ export const GAME_EFFECTS = [
       rate: 1,
       startRate: 1
     }
+  },
+  {
+    id: 9,
+    name: 'warpSpeed',
+    duration: 8000,
+    durationCount: 0,
   }
 ]
