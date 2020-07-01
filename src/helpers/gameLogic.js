@@ -14,6 +14,7 @@ import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemH
 import {handleEffects, updateGameBuff, randomBuffIndex} from '../helpers/effectHelpers';
 import {handleExplodeUpdate} from '../helpers/animationHelpers';
 import {round} from '../helpers/mathHelpers.js';
+import {updateFrame} from '../helpers/animationHelpers.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   let deployedWeapons = [...gameState.deployedWeapons];
@@ -142,11 +143,32 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
 }
 
 export const handleWeapons = (weapons, players, currentPlayer, handleGameEvent) => {
-  return weapons.filter((weapon) => {
+  let newWeapons = [];
+  weapons.forEach((weapon) => {
     weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
-    weapon = handleCollision(weapon, players, currentPlayer, handleGameEvent)
-    return !weapon.removed
+    if (weapon.name === 'redMeteor') {
+      if (Date.now() - weapon.deployedAt > 2000) {
+        weapon.removed = true
+      }
+    } else {
+      weapon = handleCollision(weapon, players, currentPlayer, handleGameEvent)
+    }
+    if (weapon.animation) {
+      updateFrame(weapon.animation);
+    }
+    if (!weapon.removed) {
+      newWeapons.push(weapon);
+    }
+
+    // return !weapon.removed
+    // weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
+    // weapon = handleCollision(weapon, players, currentPlayer, handleGameEvent)
+    // if (weapon.animation) {
+    //   updateFrame(weapon.animation);
+    // }
+    // return !weapon.removed
   });
+  return newWeapons;
 };
 
 const removeOutOfBoundsShots = (weapons) => {

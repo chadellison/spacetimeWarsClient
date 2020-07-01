@@ -15,6 +15,38 @@ export const drawShip = (context, player, ship, warpSpeed) => {
   context.restore();
 }
 
+export const renderWeapon = (context, weapon, image) => {
+  if (weapon.animation) {
+    handleAnimatedWeapon(context, weapon, image);
+  } else {
+    handleDirection(context, image, weapon.location, weapon.trajectory)
+  }
+  context.restore();
+}
+
+export const handleAnimatedWeapon = (context, weapon, spriteImage) => {
+  const {x, y} = weapon.location;
+  context.save();
+  const cx = round(x + 0.5 * weapon.animation.renderWidth);
+  const cy = round(y + 0.5 * weapon.animation.renderHeight);
+
+  context.translate(cx, cy);
+  context.rotate((Math.PI / 180) * weapon.trajectory);
+  context.translate(-cx, -cy);
+
+  context.drawImage(
+    spriteImage,
+    weapon.animation.coordinates.x,
+    weapon.animation.coordinates.y,
+    weapon.animation.width,
+    weapon.animation.height,
+    weapon.location.x,
+    weapon.location.y,
+    weapon.animation.renderWidth,
+    weapon.animation.renderHeight
+  )
+}
+
 export const handleDirection = (context, image, location, trajectory) => {
   const {x, y} = location;
   context.save();
@@ -84,8 +116,8 @@ export const renderAnimation = (context, spriteImage, effect, player) => {
     effect.animation.height,
     player.location.x + effect.animation.xOffset,
     player.location.y,
-    effect.animation.renderSize,
-    effect.animation.renderSize
+    effect.animation.renderWidth,
+    effect.animation.renderHeight
   )
 }
 
@@ -96,7 +128,7 @@ export const renderPlayerData = (gameBuff, context, player, showShip) => {
       context.fillStyle = findColor(player.hitpoints, player.maxHitpoints);
       renderHealthBar(context, player);
       context.fillText(player.name, player.location.x + 25, player.location.y + 110)
-    } else if (!showShip) {
+    } else if (!showShip && !player.effects[5]) {
       context.fillStyle = "#ab8432";
       context.font = "12px Arial";
       context.fillText(`+ ${round(player.score * 0.01 + 100)}`, player.location.x + 75, player.location.y)

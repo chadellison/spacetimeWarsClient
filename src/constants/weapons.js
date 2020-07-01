@@ -15,6 +15,7 @@ import blueFire from '../images/blueFire.png';
 import displayBlueFire from '../images/displayBlueFire.png';
 import plasmaCannon from '../images/plasmaCannon.png';
 import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
+import redMeteorAnimation from '../images/redMeteorAnimation2.png';
 
 import cannonAudio from '../audio/cannon.wav';
 import missileAudio from '../audio/missile.wav';
@@ -155,3 +156,28 @@ export const WEAPONS = [
     selectionImage: displayPlasmaCannon
   }
 ];
+
+export const ABILITY_WEAPONS = [
+  {
+    index: 0,
+    name: 'redMeteor',
+    location: {x: 0, y: 0},
+    trajectory: 0,
+    speed: 7,
+    width: 50,
+    height: 50,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: redMeteorAnimation,
+      width: 128,
+      height: 64,
+      renderWidth: 80,
+      renderHeight: 40,
+      rowCount: 4,
+      columnCount: 2,
+      rate: 1,
+      startRate: 1,
+      xOffset: 0,
+    }
+  }
+]

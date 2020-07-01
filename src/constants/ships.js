@@ -102,8 +102,8 @@ export const SHIPS = [
     blueImage: blueCarrierShip,
     absorbImage: carrierShipAbsorb,
     ability: {
-      description: 'Immolation: burns nearby ships causing critical damage (500 damage / second). (Can be used once every 60 seconds).',
-      cooldown: 0,
+      description: 'Red Meteor: something. (Can be used once every 60 seconds).',
+      cooldown: 60000,
       lastUsed: 0
     }
   },

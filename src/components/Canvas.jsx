@@ -1,12 +1,12 @@
 import React from 'react';
 import {
   drawShip,
-  handleDirection,
   shouldRenderShip,
   renderExplosion,
   renderPlayerData,
   renderAnimation,
   handleInvisibleFilter,
+  renderWeapon
 } from '../helpers/canvasHelper.js';
 import {canAbsorbDamage} from '../helpers/itemHelpers.js';
 import '../styles/styles.css';
@@ -17,7 +17,7 @@ import {
   BOARD_HEIGHT
 } from '../constants/settings.js';
 import {SHIPS, SUPPLY_SHIP, RED_BOMBER, BLUE_BOMBER} from '../constants/ships.js';
-import {WEAPONS} from '../constants/weapons.js';
+import {WEAPONS, ABILITY_WEAPONS} from '../constants/weapons.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 
 class Canvas extends React.Component {
@@ -66,6 +66,7 @@ class Canvas extends React.Component {
     const heal = this.refs.heal
     const armorBoost = this.refs.armorBoost
     const warpSpeed = this.refs.warpSpeed
+    const redMeteor = this.refs.redMeteor
 
     this.setState({
       canvas: canvas,
@@ -104,6 +105,7 @@ class Canvas extends React.Component {
       heal: heal,
       armorBoost: armorBoost,
       warpSpeed: warpSpeed,
+      redMeteor: redMeteor,
       explosion: explosion,
       supplyShip: supplyShip,
       halfWindowWidth: round(window.innerWidth / 2),
@@ -156,8 +158,7 @@ class Canvas extends React.Component {
     });
 
     this.props.deployedWeapons.forEach((weapon) => {
-      handleDirection(context, this.state[weapon.name], weapon.location, weapon.trajectory)
-      context.restore();
+      renderWeapon(context, weapon, this.state[weapon.name])
     });
   }
 
@@ -207,6 +208,16 @@ class Canvas extends React.Component {
               className="hidden"
               alt={weapon.name}
               key={`weapon${index}`}
+            />
+          );
+        })}
+        {ABILITY_WEAPONS.map((weapon, index) => {
+          return(
+            <img ref={weapon.name}
+              src={weapon.animation.spriteImage}
+              className="hidden"
+              alt={weapon.name}
+              key={`abilityWeapon${index}`}
             />
           );
         })}
