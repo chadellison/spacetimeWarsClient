@@ -6,7 +6,8 @@ import {
   SPRITE_COLUMN_COUNT,
   BOARD_WIDTH,
   BOARD_HEIGHT,
-  explosionSound
+  explosionSound,
+  mineTriggerSound
 } from '../constants/settings.js';
 import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
@@ -215,6 +216,9 @@ const handleCollision = (weapon, players, currentPlayer, handleGameEvent) => {
 }
 
 const applyHit = (player, weapon, currentPlayer, handleGameEvent) => {
+  if (weapon.id === 3) {
+    playSound(mineTriggerSound);
+  }
   if (canAbsorbDamage(player)) {
     handleAbsorbDamage(player);
   } else {

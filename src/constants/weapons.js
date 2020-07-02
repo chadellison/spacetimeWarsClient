@@ -15,8 +15,7 @@ import blueFire from '../images/blueFire.png';
 import displayBlueFire from '../images/displayBlueFire.png';
 import plasmaCannon from '../images/plasmaCannon.png';
 import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
-import nuclearBlastAnimation from '../images/nuclearBlastAnimation2.png';
-// import lavaBlastAnimation from '../images/lavaBlastAnimation.png';
+import nuclearBlastAnimation from '../images/nuclearBlastAnimation.png';
 import spaceMineAnimation from '../images/redMeteorAnimation.png';
 import lavaBlastAnimation from '../images/stunGunAnimation.png';
 

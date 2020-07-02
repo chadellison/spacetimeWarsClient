@@ -9,7 +9,9 @@ import {
   warpSpeedSound,
   leakSound,
   toneSound,
-  invulnerableSound
+  invulnerableSound,
+  mineDropSound,
+  stunGunSound
 } from '../constants/settings.js';
 import {WEAPONS, ABILITY_WEAPONS} from '../constants/weapons.js';
 
@@ -166,8 +168,7 @@ const handleAbility = (gameState, playerData, elapsedTime) => {
         ...gameState.deployedWeapons,
         handleFireWeapon(playerData, gameState.clockDifference, lavaBlast, elapsedTime, lavaBlast.damage + playerData.damage)
       ];
-
-      // playSound(lavaBlast sound);
+      playSound(stunGunSound);
       return {deployedWeapons: updatedWeapons}
     case 1:
       const invulnerableEffect = {...GAME_EFFECTS[5], durationCount: elapsedTime};
@@ -185,7 +186,7 @@ const handleAbility = (gameState, playerData, elapsedTime) => {
         ...gameState.deployedWeapons,
         handleFireWeapon(playerData, gameState.clockDifference, spaceMine, elapsedTime, spaceMine.damage + playerData.damage)
       ];
-      // playSound(mineSound);
+      playSound(mineDropSound);
       return {deployedWeapons: updatedWeapons}
     case 3:
       const warpSpeedEffect = {...GAME_EFFECTS[8], durationCount: elapsedTime};
