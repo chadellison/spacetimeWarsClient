@@ -161,6 +161,7 @@ const handleGameOverEvent = (players, playerData) => {
 const handleAbility = (gameState, playerData, elapsedTime) => {
   let updatedPlayers = [...gameState.players];
   let updatedWeapons;
+  let currentPlayer = {...gameState.currentPlayer}
   switch (playerData.shipIndex) {
     case 0:
       let lavaBlast = {...ABILITY_WEAPONS[1]}
@@ -175,11 +176,12 @@ const handleAbility = (gameState, playerData, elapsedTime) => {
       updatedPlayers = updatedPlayers.map((player) => {
         if (player.id === playerData.id) {
           player.effects = {...player.effects, [invulnerableEffect.id]: invulnerableEffect};
+          currentPlayer = playerData.id === currentPlayer.id ? player : currentPlayer;
         }
         return player;
       });
       playSound(invulnerableSound);
-      return {players: updatedPlayers};
+      return {players: updatedPlayers, currentPlayer};
     case 2:
       let spaceMine = {...ABILITY_WEAPONS[2]}
       updatedWeapons = [
@@ -193,11 +195,12 @@ const handleAbility = (gameState, playerData, elapsedTime) => {
       updatedPlayers = updatedPlayers.map((player) => {
         if (player.id === playerData.id) {
           player.effects = {...player.effects, [warpSpeedEffect.id]: warpSpeedEffect};
+          currentPlayer = playerData.id === currentPlayer.id ? player : currentPlayer;
         }
         return player;
       });
       playSound(warpSpeedSound);
-      return {players: updatedPlayers};
+      return {players: updatedPlayers, currentPlayer};
     case 4:
       let nuclearBlast = {...ABILITY_WEAPONS[0], deployedAt: Date.now()}
       updatedWeapons = [
@@ -211,11 +214,12 @@ const handleAbility = (gameState, playerData, elapsedTime) => {
       updatedPlayers = updatedPlayers.map((player) => {
         if (player.id === playerData.id) {
           player.effects = {...player.effects, [stealthEffect.id]: stealthEffect};
+          currentPlayer = playerData.id === currentPlayer.id ? player : currentPlayer;
         }
         return player;
       });
       playSound(windSound);
-      return {players: updatedPlayers};
+      return {players: updatedPlayers, currentPlayer};
     default:
       return {players: updatedPlayers}
   }

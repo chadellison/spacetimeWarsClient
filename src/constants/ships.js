@@ -34,8 +34,8 @@ export const SHIPS = [
     blueImage: blueDestroyerShip,
     absorbImage: destroyerShipAbsorb,
     ability: {
-      description: 'Stealth: Renders ship invisible for ten seconds. (Can be used once every 60 seconds).',
-      cooldown: 60000,
+      description: 'Stun Gun: Stuns an enemy ship dealing 200 bonus damage. (Can be used once every 45 seconds).',
+      cooldown: 45000,
       lastUsed: 0
     }
   },
@@ -68,8 +68,8 @@ export const SHIPS = [
     blueImage: blueWarShip,
     absorbImage: warShipAbsorb,
     ability: {
-      description: 'Warp Speed: allows the ship to travel extremely fast (+4) for eight seconds. (Can be used once every 60 seconds).',
-      cooldown: 60000,
+      description: 'Space Mines: Drops mines invisible to enemy ships that deal 600 bonus damage when a ship lands on the mine. (Can be used once every 50 seconds).',
+      cooldown: 50000,
       lastUsed: 0
     }
   },
@@ -85,8 +85,8 @@ export const SHIPS = [
     blueImage: blueCruiserShip,
     absorbImage: cruiserShipAbsorb,
     ability: {
-      description: 'Stealth: Renders ship invisible for ten seconds. (Can be used once every 60 seconds).',
-      cooldown: 60000,
+      description: 'Warp Speed: allows the ship to travel extremely fast (+4) for eight seconds. (Can be used once every 45 seconds).',
+      cooldown: 45000,
       lastUsed: 0
     }
   },
@@ -102,8 +102,8 @@ export const SHIPS = [
     blueImage: blueCarrierShip,
     absorbImage: carrierShipAbsorb,
     ability: {
-      description: 'Red Meteor: something. (Can be used once every 60 seconds).',
-      cooldown: 60000,
+      description: 'Nuclear blast: Deploys a massive blast dealing 500 bonus damage to every opponent ship. (Can be used once every three minutes).',
+      cooldown: 180000,
       lastUsed: 0
     }
   },
