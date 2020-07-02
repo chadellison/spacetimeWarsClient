@@ -17,17 +17,10 @@ export const handleAbility = (gameState, playerData, elapsedTime) => {
     updatedPlayers = [...updatedPlayers, playerData];
   };
 
-  let updatedWeapons;
   let currentPlayer = {...gameState.currentPlayer}
   switch (playerData.shipIndex) {
     case 0:
-      let lavaBlast = {...ABILITY_WEAPONS[1]}
-      updatedWeapons = [
-        ...gameState.deployedWeapons,
-        handleFireWeapon(playerData, gameState.clockDifference, lavaBlast, elapsedTime, lavaBlast.damage + playerData.damage)
-      ];
-      playSound(stunGunSound);
-      return {deployedWeapons: updatedWeapons}
+      return addAbilityWeapon(1, gameState, playerData, stunGunSound, elapsedTime);
     case 1:
       const invulnerableEffect = {...GAME_EFFECTS[5], durationCount: elapsedTime};
       updatedPlayers = updatedPlayers.map((player) => {
@@ -40,13 +33,7 @@ export const handleAbility = (gameState, playerData, elapsedTime) => {
       playSound(invulnerableSound);
       return {players: updatedPlayers, currentPlayer};
     case 2:
-      let spaceMine = {...ABILITY_WEAPONS[2]}
-      updatedWeapons = [
-        ...gameState.deployedWeapons,
-        handleFireWeapon(playerData, gameState.clockDifference, spaceMine, elapsedTime, spaceMine.damage + playerData.damage)
-      ];
-      playSound(mineDropSound);
-      return {deployedWeapons: updatedWeapons}
+      return addAbilityWeapon(2, gameState, playerData, mineDropSound, elapsedTime);
     case 3:
       const warpSpeedEffect = {...GAME_EFFECTS[8], durationCount: elapsedTime};
       updatedPlayers = updatedPlayers.map((player) => {
@@ -59,13 +46,7 @@ export const handleAbility = (gameState, playerData, elapsedTime) => {
       playSound(warpSpeedSound);
       return {players: updatedPlayers, currentPlayer};
     case 4:
-      let nuclearBlast = {...ABILITY_WEAPONS[0], deployedAt: Date.now()}
-      updatedWeapons = [
-        ...gameState.deployedWeapons,
-        handleFireWeapon(playerData, gameState.clockDifference, nuclearBlast, elapsedTime, nuclearBlast.damage + playerData.damage)
-      ];
-      playSound(toneSound);
-      return {deployedWeapons: updatedWeapons}
+      return addAbilityWeapon(0, gameState, playerData, toneSound, elapsedTime);
     case 5:
       const stealthEffect = {...GAME_EFFECTS[4], durationCount: elapsedTime};
       updatedPlayers = updatedPlayers.map((player) => {
@@ -80,4 +61,14 @@ export const handleAbility = (gameState, playerData, elapsedTime) => {
     default:
       return {players: updatedPlayers}
   }
+}
+
+const addAbilityWeapon = (weaponIndex, gameState, playerData, sound, elapsedTime) => {
+  let weapon = {...ABILITY_WEAPONS[weaponIndex], deployedAt: Date.now()}
+  const updatedWeapons = [
+    ...gameState.deployedWeapons,
+    handleFireWeapon(playerData, gameState.clockDifference, weapon, elapsedTime, weapon.damage + playerData.damage)
+  ];
+  playSound(sound);
+  return {deployedWeapons: updatedWeapons}
 }
