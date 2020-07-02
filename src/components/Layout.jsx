@@ -15,7 +15,7 @@ import {addPlayer} from '../helpers/playerHelpers.js';
 import {handleEventPayload} from '../helpers/receiveEventHelpers.js';
 
 const DEFAULT_STATE = {
-  userId: new Date().getTime(),
+  userId: null,
   gameSocket: {},
   players: [],
   clockDifference: 0,
@@ -104,7 +104,7 @@ class Layout extends React.Component {
           const elapsedTime = findElapsedTime(this.state.clockDifference, player.updatedAt);
           return updatePlayer(player, elapsedTime, this.state.clockDifference)
         });
-        this.setState({players: players, defenseData: gameData.defenseData});
+        this.setState({players: players, defenseData: gameData.defenseData, userId: gameData.userId});
     }).catch((error) => console.log('ERROR', error));
   };
 
