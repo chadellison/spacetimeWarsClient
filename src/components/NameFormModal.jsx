@@ -20,16 +20,21 @@ export const NameFormModal = ({updateState, currentPlayer}) => {
       <label className="formLabel">
         Create a username
       </label>
-      <input type="text" maxLength={16} value={formValue} className="formInput" onChange={(e) => updateName(e, updateState, currentPlayer)}/>
-
+      <input type="text"
+        maxLength={16}
+        value={formValue}
+        className="formInput"
+        onChange={(e) => updateName(e, updateState, currentPlayer)}/>
       <label className="teamLabel">
         Select a team
       </label>
-      <div className={`redTeamButton ${currentPlayer.team === 'red' ? 'redBackground' : ''}`} onClick={() => updateTeam(updateState, currentPlayer, 'red')}>
-        red
+      <div className={`redTeamButton ${currentPlayer.team === 'red' ? 'redBackground' : ''}`}
+        onClick={() => updateTeam(updateState, currentPlayer, 'red')}>
+          red
       </div>
-      <div className={`blueTeamButton ${currentPlayer.team === 'blue' ? 'blueBackground' : ''}`} onClick={() => updateTeam(updateState, currentPlayer, 'blue')}>
-        blue
+      <div className={`blueTeamButton ${currentPlayer.team === 'blue' ? 'blueBackground' : ''}`}
+        onClick={() => updateTeam(updateState, currentPlayer, 'blue')}>
+          blue
       </div>
       <GameButton
         onClick={() => updateState({modal: 'selection'})}

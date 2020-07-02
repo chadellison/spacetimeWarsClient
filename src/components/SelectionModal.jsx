@@ -31,7 +31,7 @@ const renderOptions = (activeTab, page, currentPlayer, players, updateState) => 
         return (
           <Ship
             key={`ship${ship.index}`}
-            imageSrc={ship.image}
+            imageSrc={currentPlayer.team === 'red' ? ship.image : ship.blueImage }
             currentPlayer={currentPlayer}
             ship={ship}
             updateState={updateState}
