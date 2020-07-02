@@ -175,14 +175,6 @@ export const handleWeapons = (weapons, players, currentPlayer, handleGameEvent) 
     if (!weapon.removed) {
       newWeapons.push(weapon);
     }
-
-    // return !weapon.removed
-    // weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
-    // weapon = handleCollision(weapon, players, currentPlayer, handleGameEvent)
-    // if (weapon.animation) {
-    //   updateFrame(weapon.animation);
-    // }
-    // return !weapon.removed
   });
   return newWeapons;
 };
@@ -268,8 +260,8 @@ const handleNegativeBuff = (player, weapon) => {
     player.effects[GAME_EFFECTS[1].id] = {...GAME_EFFECTS[1], duration: 2000}
   }
 
-  if (weapon.canStun && Math.random() <= 0.1) {
-    player.effects[GAME_EFFECTS[3].id] = {...GAME_EFFECTS[3], duration: 2000}
+  if ((weapon.canStun && Math.random() <= 0.1) || weapon.name === 'lavaBlast') {
+    player.effects[GAME_EFFECTS[3].id] = {...GAME_EFFECTS[3], duration: 3000}
   };
 }
 

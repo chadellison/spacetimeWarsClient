@@ -16,6 +16,9 @@ import displayBlueFire from '../images/displayBlueFire.png';
 import plasmaCannon from '../images/plasmaCannon.png';
 import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
 import nuclearBlastAnimation from '../images/nuclearBlastAnimation2.png';
+// import lavaBlastAnimation from '../images/lavaBlastAnimation.png';
+// import lavaBlastAnimation from '../images/redMeteorAnimation.png';
+import lavaBlastAnimation from '../images/stunGunAnimation.png';
 
 import cannonAudio from '../audio/cannon.wav';
 import missileAudio from '../audio/missile.wav';
@@ -166,6 +169,7 @@ export const ABILITY_WEAPONS = [
     speed: 7,
     width: 50,
     height: 50,
+    damage: 0,
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: nuclearBlastAnimation,
@@ -173,6 +177,29 @@ export const ABILITY_WEAPONS = [
       height: 64,
       renderWidth: 80,
       renderHeight: 40,
+      rowCount: 4,
+      columnCount: 2,
+      rate: 1,
+      startRate: 1,
+      xOffset: 0,
+    }
+  },
+  {
+    index: 1,
+    name: 'lavaBlast',
+    location: {x: 0, y: 0},
+    trajectory: 0,
+    speed: 14,
+    width: 50,
+    height: 50,
+    damage: 500,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: lavaBlastAnimation,
+      width: 128,
+      height: 64,
+      renderWidth: 120,
+      renderHeight: 60,
       rowCount: 4,
       columnCount: 2,
       rate: 1,
