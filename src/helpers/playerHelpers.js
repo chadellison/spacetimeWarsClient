@@ -5,6 +5,7 @@ export const addPlayer = (userId, players) => {
     modal: 'nameForm',
     currentPlayer: {
       id: userId,
+      team: 'red',
       gold: handleStartingGold(players),
       gameEvent: 'waiting',
       score: 0,
@@ -27,8 +28,8 @@ const handleStartingGold = (players) => {
     const scoreSums = players.filter((player) => player.type === 'human').reduce((accumulator, player) => {
       return accumulator + player.score
     }, 0);
-    return round((scoreSums / players.length) + 10000);
+    return round((scoreSums / players.length) + 1000);
   } else {
-    return 10000;
+    return 1000;
   }
 }

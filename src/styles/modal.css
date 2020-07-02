@@ -180,6 +180,62 @@
 .blue {
   color: #2c66b2;
 }
+
+.teamLabel {
+  margin-top: 2em;
+  display: block;
+  font-size: 24px;
+  color: #2c66b2;
+}
+
+.blueBackground {
+  background: #2c66b2;
+}
+
+.redBackground {
+  background: #9c1616;
+}
+
+.redTeamButton {
+  padding: 12px;
+  font-size: 16px;
+  color: white;
+  border: 1px solid #9c1616;
+  border-radius: 5px;
+  transition: ease-out .3s;
+  display: inline-block;
+  width: 3em;
+  margin-top: 3em;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.blueTeamButton {
+  padding: 12px;
+  font-size: 16px;
+  color: white;
+  border: 1px solid #2c66b2;
+  border-radius: 5px;
+  transition: ease-out .3s;
+  display: inline-block;
+  width: 3em;
+  margin-top: 3em;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.redTeamButton:hover {
+  background: #9c1616;
+  color: white;
+  cursor: pointer;
+}
+
+.blueTeamButton:hover {
+  background: #2c66b2;
+  color: white;
+  cursor: pointer;
+}
+
 @keyframes slideDown {
 	0% {
 		transform: translateY(-100%);
