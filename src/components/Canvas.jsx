@@ -68,6 +68,7 @@ class Canvas extends React.Component {
     const warpSpeed = this.refs.warpSpeed
     const nuclearBlast = this.refs.nuclearBlast
     const lavaBlast = this.refs.lavaBlast
+    const spaceMine = this.refs.spaceMine
 
     this.setState({
       canvas: canvas,
@@ -108,6 +109,7 @@ class Canvas extends React.Component {
       warpSpeed: warpSpeed,
       nuclearBlast: nuclearBlast,
       lavaBlast: lavaBlast,
+      spaceMine: spaceMine,
       explosion: explosion,
       supplyShip: supplyShip,
       halfWindowWidth: round(window.innerWidth / 2),
@@ -160,7 +162,9 @@ class Canvas extends React.Component {
     });
 
     this.props.deployedWeapons.forEach((weapon) => {
-      renderWeapon(context, weapon, this.state[weapon.name])
+      if (weapon.id !== 3 || weapon.team === this.props.currentPlayer.team) {
+        renderWeapon(context, weapon, this.state[weapon.name])
+      }
     });
   }
 

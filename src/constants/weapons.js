@@ -17,7 +17,7 @@ import plasmaCannon from '../images/plasmaCannon.png';
 import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
 import nuclearBlastAnimation from '../images/nuclearBlastAnimation2.png';
 // import lavaBlastAnimation from '../images/lavaBlastAnimation.png';
-// import lavaBlastAnimation from '../images/redMeteorAnimation.png';
+import spaceMineAnimation from '../images/redMeteorAnimation.png';
 import lavaBlastAnimation from '../images/stunGunAnimation.png';
 
 import cannonAudio from '../audio/cannon.wav';
@@ -162,14 +162,14 @@ export const WEAPONS = [
 
 export const ABILITY_WEAPONS = [
   {
-    index: 0,
+    id: 1,
     name: 'nuclearBlast',
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 7,
     width: 50,
     height: 50,
-    damage: 0,
+    damage: 500,
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: nuclearBlastAnimation,
@@ -185,14 +185,14 @@ export const ABILITY_WEAPONS = [
     }
   },
   {
-    index: 1,
+    id: 2,
     name: 'lavaBlast',
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 14,
     width: 50,
     height: 50,
-    damage: 500,
+    damage: 200,
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: lavaBlastAnimation,
@@ -200,6 +200,29 @@ export const ABILITY_WEAPONS = [
       height: 64,
       renderWidth: 120,
       renderHeight: 60,
+      rowCount: 4,
+      columnCount: 2,
+      rate: 1,
+      startRate: 1,
+      xOffset: 0,
+    }
+  },
+  {
+    id: 3,
+    name: 'spaceMine',
+    location: {x: 0, y: 0},
+    trajectory: 0,
+    speed: 0,
+    width: 30,
+    height: 30,
+    damage: 600,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: spaceMineAnimation,
+      width: 128,
+      height: 64,
+      renderWidth: 60,
+      renderHeight: 30,
       rowCount: 4,
       columnCount: 2,
       rate: 1,

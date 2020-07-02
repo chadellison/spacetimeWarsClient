@@ -153,14 +153,11 @@ export const handleWeapons = (weapons, players, currentPlayer, handleGameEvent) 
   let newWeapons = [];
   weapons.forEach((weapon) => {
     weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
-    if (weapon.name === 'nuclearBlast') {
+    if (weapon.id === 1) {
       if (Date.now() - weapon.deployedAt > 2000) {
         players.forEach((player) => {
           if (player.team !== weapon.team) {
-            player.hitpoints -= 500;
-            if (player.hitpoints < 0) {
-              player.killedBy = weapon.playerId
-            }
+            applyHit(player, weapon, currentPlayer, handleGameEvent)
           }
         });
         playSound(explosionSound);
@@ -260,7 +257,7 @@ const handleNegativeBuff = (player, weapon) => {
     player.effects[GAME_EFFECTS[1].id] = {...GAME_EFFECTS[1], duration: 2000}
   }
 
-  if ((weapon.canStun && Math.random() <= 0.1) || weapon.name === 'lavaBlast') {
+  if ((weapon.canStun && Math.random() <= 0.1) || weapon.id === 2) {
     player.effects[GAME_EFFECTS[3].id] = {...GAME_EFFECTS[3], duration: 3000}
   };
 }
@@ -291,7 +288,7 @@ const calculateDamage = (weapon, player) => {
   return round(damage * (10 - armor) / 10);
 }
 
-export const handleFireWeapon = (player, clockDifference, weapon, elapsedTime) => {
+export const handleFireWeapon = (player, clockDifference, weapon, elapsedTime, damage) => {
   const angle = handleAngle(player, elapsedTime);
   const distance = distanceTraveled(player, elapsedTime, clockDifference);
   const location = handleLocation(angle, player.location, distance);
@@ -304,7 +301,7 @@ export const handleFireWeapon = (player, clockDifference, weapon, elapsedTime) =
   weapon.trajectory = angle
   weapon.playerId = player.id
   weapon.team = player.team
-  weapon.damage = player.damage
+  weapon.damage = damage
   weapon.canStun = player.items[6]
 
   return weapon;
