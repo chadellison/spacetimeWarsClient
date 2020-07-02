@@ -12,6 +12,7 @@ import leakAudio from '../audio/leakSound.mov';
 import warpSpeedAudio from '../audio/warpSpeedSound.mov';
 import toneAudio from '../audio/toneSound.mov';
 import invulnerableAudio from '../audio/invulnerableSound.mp3';
+import explosionAudio from '../audio/explosionSound.mov';
 
 // constants
 export const BOARD_WIDTH = 1800;
@@ -43,3 +44,4 @@ export const windSound = new Audio(windAudio);
 export const warpSpeedSound = new Audio(warpSpeedAudio);
 export const toneSound = new Audio(toneAudio);
 export const invulnerableSound = new Audio(invulnerableAudio);
+export const explosionSound = new Audio(explosionAudio);

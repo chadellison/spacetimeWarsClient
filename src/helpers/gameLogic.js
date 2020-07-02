@@ -5,7 +5,8 @@ import {
   SPRITE_ROW_COUNT,
   SPRITE_COLUMN_COUNT,
   BOARD_WIDTH,
-  BOARD_HEIGHT
+  BOARD_HEIGHT,
+  explosionSound
 } from '../constants/settings.js';
 import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
@@ -15,6 +16,7 @@ import {handleEffects, updateGameBuff, randomBuffIndex} from '../helpers/effectH
 import {handleExplodeUpdate} from '../helpers/animationHelpers';
 import {round} from '../helpers/mathHelpers.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
+import {playSound} from '../helpers/audioHelpers.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   let deployedWeapons = [...gameState.deployedWeapons];
@@ -24,7 +26,12 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
   updatedPlayerData = updatePlayers(updatedPlayerData, handleGameEvent, clockDifference, lastFired, updateState, space);
 
   const filteredWeapons = removeOutOfBoundsShots(deployedWeapons);
-  deployedWeapons = handleWeapons(filteredWeapons, updatedPlayerData.players, updatedPlayerData.currentPlayer, handleGameEvent);
+  deployedWeapons = handleWeapons(
+    filteredWeapons,
+    updatedPlayerData.players,
+    updatedPlayerData.currentPlayer,
+    handleGameEvent
+  );
   handleCountDownEnd(updatedPlayerData.currentPlayer, clockDifference);
 
   return {
@@ -146,8 +153,17 @@ export const handleWeapons = (weapons, players, currentPlayer, handleGameEvent) 
   let newWeapons = [];
   weapons.forEach((weapon) => {
     weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
-    if (weapon.name === 'redMeteor') {
+    if (weapon.name === 'nuclearBlast') {
       if (Date.now() - weapon.deployedAt > 2000) {
+        players.forEach((player) => {
+          if (player.team !== weapon.team) {
+            player.hitpoints -= 500;
+            if (player.hitpoints < 0) {
+              player.killedBy = weapon.playerId
+            }
+          }
+        });
+        playSound(explosionSound);
         weapon.removed = true
       }
     } else {

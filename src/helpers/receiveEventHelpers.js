@@ -155,6 +155,7 @@ const handleAbility = (gameState, playerData, elapsedTime) => {
   let updatedPlayers = [...gameState.players];
   switch (playerData.shipIndex) {
     // case 0:
+    // stun
       // const stealthEffect = {...GAME_EFFECTS[4], durationCount: elapsedTime};
       // updatedPlayers = updatedPlayers.map((player) => {
       //   if (player.id === playerData.id) {
@@ -175,7 +176,7 @@ const handleAbility = (gameState, playerData, elapsedTime) => {
       playSound(invulnerableSound);
       return {players: updatedPlayers};
       // case 2:
-        // nuclearBlast
+        // mines
       //   let nuclearBlast = {...ABILITY_WEAPONS[0], firedAt: Date.now()}
       //   const updatedWeapons = [
       //     ...updatedWeapons,
@@ -203,7 +204,7 @@ const handleAbility = (gameState, playerData, elapsedTime) => {
       playSound(warpSpeedSound);
       return {players: updatedPlayers};
     case 4:
-      let redMeteor = {...ABILITY_WEAPONS[0], damage: 0, deployedAt: Date.now()}
+      let redMeteor = {...ABILITY_WEAPONS[0], damage: 0, deployedAt: Date.now(), team: playerData.team}
       const updatedWeapons = [
         ...gameState.deployedWeapons,
         handleFireWeapon(playerData, gameState.clockDifference, redMeteor, elapsedTime)

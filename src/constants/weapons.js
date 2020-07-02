@@ -15,7 +15,7 @@ import blueFire from '../images/blueFire.png';
 import displayBlueFire from '../images/displayBlueFire.png';
 import plasmaCannon from '../images/plasmaCannon.png';
 import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
-import redMeteorAnimation from '../images/redMeteorAnimation2.png';
+import nuclearBlastAnimation from '../images/nuclearBlastAnimation2.png';
 
 import cannonAudio from '../audio/cannon.wav';
 import missileAudio from '../audio/missile.wav';
@@ -160,7 +160,7 @@ export const WEAPONS = [
 export const ABILITY_WEAPONS = [
   {
     index: 0,
-    name: 'redMeteor',
+    name: 'nuclearBlast',
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 7,
@@ -168,7 +168,7 @@ export const ABILITY_WEAPONS = [
     height: 50,
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: redMeteorAnimation,
+      spriteImage: nuclearBlastAnimation,
       width: 128,
       height: 64,
       renderWidth: 80,

@@ -66,7 +66,7 @@ class Canvas extends React.Component {
     const heal = this.refs.heal
     const armorBoost = this.refs.armorBoost
     const warpSpeed = this.refs.warpSpeed
-    const redMeteor = this.refs.redMeteor
+    const nuclearBlast = this.refs.nuclearBlast
 
     this.setState({
       canvas: canvas,
@@ -105,7 +105,7 @@ class Canvas extends React.Component {
       heal: heal,
       armorBoost: armorBoost,
       warpSpeed: warpSpeed,
-      redMeteor: redMeteor,
+      nuclearBlast: nuclearBlast,
       explosion: explosion,
       supplyShip: supplyShip,
       halfWindowWidth: round(window.innerWidth / 2),
