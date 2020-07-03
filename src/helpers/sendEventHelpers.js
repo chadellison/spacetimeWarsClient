@@ -1,4 +1,5 @@
 import {WEAPONS} from '../constants/weapons.js';
+import {SHIPS} from '../constants/ships.js';
 import {canFire} from '../helpers/gameLogic.js';
 import {getUpdatedPlayers} from '../helpers/gameLogic.js';
 import {START_DATA} from '../constants/settings.js';
@@ -115,7 +116,7 @@ const rotateEventPayload = (player, pressedKey) => {
 }
 
 const handleAbility = (player, abilityUsedAt, handleGameEvent, updateState) => {
-  if (Date.now() - abilityUsedAt > player.ability.cooldown) {
+  if (Date.now() - abilityUsedAt > SHIPS[player.shipIndex].ability.cooldown) {
     handleGameEvent({...player, gameEvent: 'ability'});
     updateState({abilityUsedAt: Date.now()});
   }

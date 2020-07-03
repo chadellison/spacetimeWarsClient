@@ -17,7 +17,6 @@ const handleClick = (shipIndex, currentPlayer, players, updateState) => {
       hitpoints: SHIPS[shipIndex].hitpoints,
       maxHitpoints: SHIPS[shipIndex].hitpoints,
       velocity: SHIPS[shipIndex].speed,
-      ability: {...SHIPS[shipIndex].ability}
     }
 
     const updatedPlayers = getUpdatedPlayers(player, players);

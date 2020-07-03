@@ -28,7 +28,7 @@ export const handleExplodeUpdate = (isExploding, explodeAnimation) => {
       explodeAnimation.x = 0;
       explodeAnimation.y += SPRITE_WIDTH;
     } else {
-      explodeAnimation = {};
+      explodeAnimation = 'complete';
     }
     return explodeAnimation;
   } else {

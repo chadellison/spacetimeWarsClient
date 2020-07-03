@@ -14,6 +14,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   const {players, clockDifference, deployedWeapons, currentPlayer} = gameState;
   switch (playerData.gameEvent) {
     case 'start':
+    case 'supplyShip':
       return handleStartEvent(players, playerData, currentPlayer.id);
     case 'remove':
       return handleRemoveEvent(players, playerData, currentPlayer);

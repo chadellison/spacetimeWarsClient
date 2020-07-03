@@ -1,9 +1,6 @@
 import {
   ANAIMATION_FRAME_RATE,
   DRIFT,
-  SPRITE_WIDTH,
-  SPRITE_ROW_COUNT,
-  SPRITE_COLUMN_COUNT,
   BOARD_WIDTH,
   BOARD_HEIGHT,
   explosionSound,
@@ -48,7 +45,7 @@ const updatePlayers = (updatedPlayerData, handleGameEvent, clockDifference, last
   let firstHumanId = null;
   let leaked = {}
   updatedPlayerData.players.forEach((player) => {
-    if (!removePlayer(player.explodeAnimation)) {
+    if (player.explodeAnimation !== 'complete') {
       handleHitpoints(player, updatedPlayerData.currentPlayer.id, handleGameEvent);
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
 
@@ -85,11 +82,13 @@ const handleLeak = (handleGameEvent, leaked, playerId, firstHumanId) => {
 }
 
 const isLeak = (player) => {
-  return player.type === 'bomber' && ((player.team === 'red' && player.location.x > BOARD_WIDTH) || (player.team === 'blue' && player.location.x < 0));
+  return player.type === 'bomber' && !player.explode && ((player.team === 'red' && player.location.x > BOARD_WIDTH) || (player.team === 'blue' && player.location.x < 0));
 }
 
 const handleHitpoints = (player, currentPlayerId, handleGameEvent) => {
   if (player.hitpoints <= 0 && !player.explode) {
+    player.explode = true
+    player.explodeAnimation = {x: 0, y: 0};
     if (player.killedBy) {
       if (player.killedBy === currentPlayerId) {
         handleGameEvent({id: player.id, gameEvent: 'remove'});
@@ -321,10 +320,6 @@ export const handleRepeatedFire = (player, handleGameEvent, lastFired, updateSta
     updateState({lastFired: Date.now()});
   };
 };
-
-const removePlayer = (explodeAnimation) => {
-  return (explodeAnimation.x === (SPRITE_WIDTH * SPRITE_ROW_COUNT) && explodeAnimation.y === (SPRITE_WIDTH * SPRITE_COLUMN_COUNT));
-}
 
 export const findElapsedTime = (clockDifference, updatedAt) => {
   const currentTime = Date.now();
