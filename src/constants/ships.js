@@ -20,6 +20,7 @@ import stealthShipAbsorb from '../images/stealthShipAbsorb.png';
 import supplyShip from '../images/supplyShip.png';
 import redBomber from '../images/redBomber.png';
 import blueBomber from '../images/blueBomber.png';
+import stealthMode from '../images/stealthMode.png';
 
 export const SHIPS = [
   {
@@ -36,7 +37,8 @@ export const SHIPS = [
     ability: {
       description: 'Stun Gun: Stuns an enemy ship dealing 200 bonus damage. (Can be used once every 45 seconds).',
       cooldown: 45000,
-      lastUsed: 0
+      lastUsed: 0,
+      image: stealthMode,
     }
   },
   {
@@ -53,7 +55,8 @@ export const SHIPS = [
     ability: {
       description: 'Invulnerable: Renders your ship impervious to attacks for seven seconds. (Can be used once every 60 seconds).',
       cooldown: 60000,
-      lastUsed: 0
+      lastUsed: 0,
+      image: stealthMode,
     }
   },
   {
@@ -70,7 +73,8 @@ export const SHIPS = [
     ability: {
       description: 'Space Mines: Drops mines invisible to enemy ships that deal 600 bonus damage when a ship lands on the mine. (Can be used once every 50 seconds).',
       cooldown: 50000,
-      lastUsed: 0
+      lastUsed: 0,
+      image: stealthMode,
     }
   },
   {
@@ -87,7 +91,8 @@ export const SHIPS = [
     ability: {
       description: 'Warp Speed: allows the ship to travel extremely fast (+4) for eight seconds. (Can be used once every 45 seconds).',
       cooldown: 45000,
-      lastUsed: 0
+      lastUsed: 0,
+      image: stealthMode,
     }
   },
   {
@@ -104,7 +109,8 @@ export const SHIPS = [
     ability: {
       description: 'Nuclear blast: Deploys a massive blast dealing 500 bonus damage to every opponent ship. (Can be used once every three minutes).',
       cooldown: 180000,
-      lastUsed: 0
+      lastUsed: 0,
+      image: stealthMode,
     }
   },
   {
@@ -121,7 +127,8 @@ export const SHIPS = [
     ability: {
       description: 'Stealth: Renders ship invisible for ten seconds. (Can be used once every 60 seconds).',
       cooldown: 60000,
-      lastUsed: 0
+      lastUsed: 0,
+      image: stealthMode,
     }
   }
 ];

@@ -1,0 +1,18 @@
+.abilityIcon {
+  width: 45px;
+  height: 45px;
+  margin-bottom: 0.5em;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  border-radius: 50%;
+  margin-top: -2.36em;
+  margin-left: .474em;
+}
+
+.transparent {
+  opacity: 0.5;
+}

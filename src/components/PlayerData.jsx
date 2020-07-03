@@ -7,7 +7,9 @@ import {Hitpoints} from './Hitpoints';
 import {PlayerItems} from './PlayerItems';
 import {PlayerStat} from './PlayerStat';
 import {ShipIcon} from './ShipIcon';
+import {AbilityIcon} from './AbilityIcon';
 import {findElapsedTime} from '../helpers/gameLogic.js';
+import {SHIPS} from '../constants/ships';
 
 const renderShip = (currentPlayer) => {
   if (currentPlayer.shipIndex || currentPlayer.shipIndex === 0) {
@@ -62,7 +64,16 @@ const renderHitPoints = (currentPlayer) => {
   }
 };
 
-const PlayerData = ({currentPlayer, clockDifference, updateState, players, defenseData}) => {
+const renderAbilityIcon = (currentPlayer, abilityUsedAt) => {
+  if (currentPlayer.shipIndex === 0 || currentPlayer.shipIndex) {
+    return (
+      <AbilityIcon ability={SHIPS[currentPlayer.shipIndex].ability}
+        abilityUsedAt={abilityUsedAt}/>
+    );
+  }
+};
+
+const PlayerData = ({currentPlayer, clockDifference, updateState, players, defenseData, abilityUsedAt}) => {
   const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
   let countDown = 0;
   if (currentPlayer.explode && elapsedSeconds < 10) {
@@ -80,6 +91,7 @@ const PlayerData = ({currentPlayer, clockDifference, updateState, players, defen
         {renderHitPoints(currentPlayer)}
         {currentPlayer.updatedAt && renderShip(currentPlayer)}
         {renderWeapon(currentPlayer.weaponIndex)}
+        {renderAbilityIcon(currentPlayer, abilityUsedAt)}
         {damage > 0 && <PlayerStat image={UPGRADES[3].image} alt={'target'} value={damage} className="statInfo"/>}
         {renderArmor(currentPlayer)}
         {renderSpeed(currentPlayer)}

@@ -2,11 +2,7 @@ import React from 'react';
 import {PieChart, Pie, Label} from 'recharts';
 import '../styles/hitpoints.css';
 import {findColor} from '../helpers/colorHelpers.js';
-
-const calculateAngle = (hitpoints, maxHitpoints) => {
-  const value = Math.round(hitpoints * 360 / maxHitpoints)
-  return value > 0 ? value : 0;
-};
+import {calculateAngle} from '../helpers/mathHelpers';
 
 export const Hitpoints = ({hitpoints, maxHitpoints}) => {
   const color = findColor(hitpoints, maxHitpoints);

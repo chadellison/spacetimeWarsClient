@@ -222,6 +222,7 @@ class Layout extends React.Component {
             updateState={this.updateState}
             players={players}
             defenseData={this.state.defenseData}
+            abilityUsedAt={this.state.abilityUsedAt}
           />}
           <Canvas
             players={players}
