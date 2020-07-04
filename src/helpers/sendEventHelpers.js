@@ -2,7 +2,10 @@ import {WEAPONS} from '../constants/weapons.js';
 import {SHIPS} from '../constants/ships.js';
 import {canFire} from '../helpers/gameLogic.js';
 import {getUpdatedPlayers} from '../helpers/gameLogic.js';
-import {START_DATA} from '../constants/settings.js';
+import {
+  BOARD_WIDTH,
+  BOARD_HEIGHT,
+} from '../constants/settings.js';
 
 export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState) => {
   switch (pressedKey) {
@@ -90,7 +93,8 @@ const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
 };
 
 export const startEventPayload = (player) => {
-  const startData = START_DATA[Math.floor(Math.random() * START_DATA.length)];
+  // const startData = START_DATA[Math.floor(Math.random() * START_DATA.length)];
+  const startData = getStartData(player.team);
   return {
     ...player,
     gameEvent: 'start',
@@ -100,6 +104,22 @@ export const startEventPayload = (player) => {
     hitpoints: player.maxHitpoints,
     team: player.team
   };
+}
+
+export const getStartData = (team) => {
+  if (team === 'red') {
+    return {
+      location: {x: 60, y: [80, BOARD_HEIGHT - 80][Math.floor(Math.random() * 2)]},
+      angle: 1,
+      trajectory: 0
+    }
+  } else {
+    return {
+      location: {x: BOARD_WIDTH - 60, y: [80, BOARD_HEIGHT - 80][Math.floor(Math.random() * 2)]},
+      angle: 181,
+      trajectory: 180
+    }
+  }
 }
 
 const accelerateEventPayload = (player, pressedKey) => {

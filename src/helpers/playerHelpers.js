@@ -25,7 +25,8 @@ export const addPlayer = (userId, players) => {
 
 const handleStartingGold = (players) => {
   if (players.length > 0) {
-    const scoreSums = players.filter((player) => player.type === 'human').reduce((accumulator, player) => {
+    const scoreSums = players.filter((player) => player.type === 'human')
+                             .reduce((accumulator, player) => {
       return accumulator + player.score
     }, 0);
     return round((scoreSums / players.length) + 1000);
