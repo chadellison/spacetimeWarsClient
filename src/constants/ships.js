@@ -40,7 +40,7 @@ export const SHIPS = [
     blueImage: blueDestroyerShip,
     absorbImage: destroyerShipAbsorb,
     ability: {
-      description: 'Stun Gun: Stuns an enemy ship dealing 200 bonus damage. (Can be used once every 45 seconds).',
+      description: 'Stuns an enemy ship dealing 200 bonus damage (45s cooldown).',
       cooldown: 45000,
       lastUsed: 0,
       image: stunGunIcon,
@@ -58,7 +58,7 @@ export const SHIPS = [
     blueImage: blueHunterShip,
     absorbImage: hunterShipAbsorb,
     ability: {
-      description: 'Invulnerable: Renders your ship impervious to attacks for seven seconds. (Can be used once every 60 seconds).',
+      description: 'Renders your ship impervious to attacks for seven seconds (60s cooldown).',
       cooldown: 60000,
       lastUsed: 0,
       image: invulnerabilityIcon,
@@ -76,7 +76,7 @@ export const SHIPS = [
     blueImage: blueWarShip,
     absorbImage: warShipAbsorb,
     ability: {
-      description: 'Space Mines: Drops mines invisible to enemy ships that deal 600 bonus damage when a ship lands on the mine. (Can be used once every 50 seconds).',
+      description: 'Drops mines invisible to enemy ships that deal 600 bonus damage when a ship lands on the mine (50s cooldown).',
       cooldown: 50000,
       lastUsed: 0,
       image: mineIcon,
@@ -94,7 +94,7 @@ export const SHIPS = [
     blueImage: blueCruiserShip,
     absorbImage: cruiserShipAbsorb,
     ability: {
-      description: 'Warp Speed: allows the ship to travel extremely fast (+4) for eight seconds. (Can be used once every 45 seconds).',
+      description: 'Allows the ship to travel extremely fast (+4) for eight seconds (45s cooldown).',
       cooldown: 45000,
       lastUsed: 0,
       image: warpSpeedIcon,
@@ -112,7 +112,7 @@ export const SHIPS = [
     blueImage: blueCarrierShip,
     absorbImage: carrierShipAbsorb,
     ability: {
-      description: 'Nuclear blast: Deploys a massive blast dealing 500 bonus damage to every opponent ship. (Can be used once every three minutes).',
+      description: 'Deploys a massive blast dealing 500 bonus damage to every opponent ship (3 minute cooldown).',
       cooldown: 180000,
       lastUsed: 0,
       image: nuclearExplosionIcon,
@@ -130,7 +130,7 @@ export const SHIPS = [
     blueImage: blueStealthShip,
     absorbImage: stealthShipAbsorb,
     ability: {
-      description: 'Stealth: Renders ship invisible for ten seconds. (Can be used once every 60 seconds).',
+      description: 'Renders ship invisible for ten seconds (60s cooldown).',
       cooldown: 60000,
       lastUsed: 0,
       image: stealthMode,

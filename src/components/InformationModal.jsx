@@ -49,6 +49,9 @@ export const InformationModal = ({updateState}) => {
       <div className="informationText">
         <span className="instructionControl">"Space":</span> fire weapon
       </div>
+      <div className="informationText">
+        <span className="instructionControl">"Q":</span> use ship ability
+      </div>
       <div className="noteText">Note the other tabs, "Upgrades" and "Items". As you collect more gold you</div>
       <div className="noteText">may return to this menu at any time to purchase ships, weapons, upgrades and items.</div>
       <div className="noteText">Information about each is listed below the icon (price, description, etc.).</div>

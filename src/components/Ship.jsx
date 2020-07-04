@@ -49,8 +49,12 @@ export const Ship = ({imageSrc, currentPlayer, ship, players, updateState}) => {
         <div className="selectionData">
           {`Speed: ${ship.speed}`}
         </div>
+        <div className="shipAbilityIcon">
+          <img src={ship.ability.image} className="QAbilityIcon" alt="ship ability"/>
+          <div className="QKey">Q</div>
+        </div>
         <div className="selectionDescription">
-          {`Ability: ${ship.ability.description}`}
+          {ship.ability.description}
         </div>
     </div>
   );
