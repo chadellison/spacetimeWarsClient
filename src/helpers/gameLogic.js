@@ -293,12 +293,12 @@ const calculateDamage = (weapon, player) => {
 
 export const handleFireWeapon = (player, clockDifference, weapon, elapsedTime, damage) => {
   const angle = handleAngle(player, elapsedTime);
-  const distance = distanceTraveled(player, elapsedTime, clockDifference);
-  const location = handleLocation(angle, player.location, distance);
-
+  // const distance = distanceTraveled(player, elapsedTime, clockDifference);
+  // const location = handleLocation(angle, player.location, distance);
+  const location = player.location;
   const shipCenter = SHIPS[player.shipIndex].shipCenter;
-  const x = location.x + shipCenter.x;
-  const y = location.y + shipCenter.y;
+  const x = location.x + shipCenter.x - (weapon.width / 2);
+  const y = location.y + shipCenter.y - (weapon.height / 2);
 
   weapon.location = handleLocation(angle, {x, y}, 50);
   weapon.trajectory = angle

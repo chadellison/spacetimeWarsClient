@@ -76,11 +76,13 @@ const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons
             ...updatedWeapons,
             handleFireWeapon(
               playerData,
-              clockDifference, {...WEAPONS[playerData.weaponIndex]},
+              clockDifference,
+              {...WEAPONS[playerData.weaponIndex]},
               elapsedTime,
               player.damage
             )
           ];
+
           updatedPlayer = player
           playSound(WEAPONS[player.weaponIndex].sound);
           break;

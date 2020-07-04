@@ -27,8 +27,8 @@ export const renderWeapon = (context, weapon, image) => {
 export const handleAnimatedWeapon = (context, weapon, spriteImage) => {
   const {x, y} = weapon.location;
   context.save();
-  const cx = round(x + 0.5 * weapon.animation.renderWidth);
-  const cy = round(y + 0.5 * weapon.animation.renderHeight);
+  const cx = round(x + 0.5 * weapon.width);
+  const cy = round(y + 0.5 * weapon.height);
 
   context.translate(cx, cy);
   context.rotate((Math.PI / 180) * weapon.trajectory);
@@ -42,8 +42,8 @@ export const handleAnimatedWeapon = (context, weapon, spriteImage) => {
     weapon.animation.height,
     weapon.location.x,
     weapon.location.y,
-    weapon.animation.renderWidth,
-    weapon.animation.renderHeight
+    weapon.width,
+    weapon.height
   )
 }
 

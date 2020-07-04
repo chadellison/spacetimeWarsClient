@@ -39,7 +39,12 @@ const addAbilityWeapon = (weaponIndex, gameState, playerData, sound, elapsedTime
   let weapon = {...ABILITY_WEAPONS[weaponIndex], deployedAt: Date.now()}
   const updatedWeapons = [
     ...gameState.deployedWeapons,
-    handleFireWeapon(playerData, gameState.clockDifference, weapon, elapsedTime, weapon.damage + playerData.damage)
+    handleFireWeapon(
+      playerData,
+      gameState.clockDifference,
+      weapon, elapsedTime,
+      weapon.damage + playerData.damage
+    )
   ];
   playSound(sound);
   return {deployedWeapons: updatedWeapons}
