@@ -21,6 +21,11 @@ import supplyShip from '../images/supplyShip.png';
 import redBomber from '../images/redBomber.png';
 import blueBomber from '../images/blueBomber.png';
 import stealthMode from '../images/stealthMode.png';
+import nuclearExplosionIcon from '../images/nuclearExplosionIcon.png';
+import warpSpeedIcon from '../images/warpSpeedIcon.png';
+import mineIcon from '../images/mineIcon.png';
+import stunGunIcon from '../images/stunGunIcon.png';
+import invulnerabilityIcon from '../images/invulnerabilityIcon.png';
 
 export const SHIPS = [
   {
@@ -38,7 +43,7 @@ export const SHIPS = [
       description: 'Stun Gun: Stuns an enemy ship dealing 200 bonus damage. (Can be used once every 45 seconds).',
       cooldown: 45000,
       lastUsed: 0,
-      image: stealthMode,
+      image: stunGunIcon,
     }
   },
   {
@@ -56,7 +61,7 @@ export const SHIPS = [
       description: 'Invulnerable: Renders your ship impervious to attacks for seven seconds. (Can be used once every 60 seconds).',
       cooldown: 60000,
       lastUsed: 0,
-      image: stealthMode,
+      image: invulnerabilityIcon,
     }
   },
   {
@@ -74,7 +79,7 @@ export const SHIPS = [
       description: 'Space Mines: Drops mines invisible to enemy ships that deal 600 bonus damage when a ship lands on the mine. (Can be used once every 50 seconds).',
       cooldown: 50000,
       lastUsed: 0,
-      image: stealthMode,
+      image: mineIcon,
     }
   },
   {
@@ -92,7 +97,7 @@ export const SHIPS = [
       description: 'Warp Speed: allows the ship to travel extremely fast (+4) for eight seconds. (Can be used once every 45 seconds).',
       cooldown: 45000,
       lastUsed: 0,
-      image: stealthMode,
+      image: warpSpeedIcon,
     }
   },
   {
@@ -110,7 +115,7 @@ export const SHIPS = [
       description: 'Nuclear blast: Deploys a massive blast dealing 500 bonus damage to every opponent ship. (Can be used once every three minutes).',
       cooldown: 180000,
       lastUsed: 0,
-      image: stealthMode,
+      image: nuclearExplosionIcon,
     }
   },
   {

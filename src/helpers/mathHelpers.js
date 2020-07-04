@@ -1,5 +1,6 @@
 export const round = (value) => {
-  return ~~ (value + 0.5)
+  return Math.round(value);
+  // return ~~ (value + 0.5)
 }
 
 export const calculateAngle = (part, whole) => {

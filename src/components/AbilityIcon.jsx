@@ -20,7 +20,7 @@ export const AbilityIcon = ({ability, abilityUsedAt}) => {
           activeIndex={0}
           startAngle={0}
           endAngle={calculateAngle(part, whole)}
-          outerRadius={20}
+          outerRadius={17}
           fill={'#2c66b2'}
           stroke={'#2c66b2'}
           text={'hp'}
