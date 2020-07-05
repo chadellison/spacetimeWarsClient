@@ -93,7 +93,6 @@ const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
 };
 
 export const startEventPayload = (player) => {
-  // const startData = START_DATA[Math.floor(Math.random() * START_DATA.length)];
   const startData = getStartData(player.team);
   return {
     ...player,
