@@ -10,7 +10,7 @@ import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
-import {handleEffects, updateGameBuff, randomBuffIndex} from '../helpers/effectHelpers';
+import {handleEffects, updateGameBuff} from '../helpers/effectHelpers';
 import {handleExplodeUpdate} from '../helpers/animationHelpers';
 import {round} from '../helpers/mathHelpers.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
@@ -263,15 +263,8 @@ const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
     attacker.kills += 1
     attacker.gold += bounty;
     attacker.score += bounty;
-    handleAiKill(player, attacker, handleGameEvent);
   };
 };
-
-const handleAiKill = (player, attacker, handleGameEvent) => {
-  if (player.type === 'supplyShip') {
-    handleGameEvent({...attacker, gameEvent: 'buff', buffIndex: randomBuffIndex()});
-  }
-}
 
 const handleNegativeBuff = (player, weapon) => {
   if (weapon.index === 5) {

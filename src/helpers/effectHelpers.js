@@ -2,8 +2,6 @@ import {ANAIMATION_FRAME_RATE} from '../constants/settings.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
 import {round} from '../helpers/mathHelpers.js';
 
-const RANDOME_GAME_BUFF_INDEX_LENGTH = 8
-
 export const handleEffects = (player) => {
   Object.values(player.effects).forEach((effect) => {
     if (effect.durationCount > effect.duration) {
@@ -28,10 +26,6 @@ export const handleEffects = (player) => {
     }
   });
 };
-
-export const randomBuffIndex = () => {
-  return Math.floor(Math.random() * Math.floor(RANDOME_GAME_BUFF_INDEX_LENGTH));
-}
 
 export const applyGameBuff = (team, players, gameBuff) => {
   return players.map((player) => {

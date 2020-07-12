@@ -16,13 +16,11 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     case 'start':
       return handleStartEvent(players, playerData, userId);
     case 'explode':
-      return handleExplodeEvent(players, playerData);
+      return handleExplodeEvent(players, aiShips, playerData, elapsedTime);
     case 'supplyShip':
       return {aiShips: [...aiShips, playerData]}
     case 'bombers':
       return {aiShips: aiShips.concat(playerData.bombers)}
-    case 'buff':
-      return handleBuffEvent(playerData, players, elapsedTime);
     case 'ability':
       return handleAbility(gameState, playerData, elapsedTime);
     case 'leak':
@@ -32,23 +30,51 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   };
 }
 
-const handleExplodeEvent = (players, playerData) => {
-  let updatedPlayers = [...players];
-  let player = updatedPlayers[playerData.index]
-  if (!player.explode) {
-    player.hitpoints = 0;
-    player.explodeAnimation = {x: 0, y: 0};
-    player.explode = true;
-    player.updatedAt = playerData.updatedAt;
-    player.accelerate = false;
-    player.angle = 0;
-    player.trajectory = 0;
-    player.rotate = 'none';
-    player.effects = {};
-    playerData = player;
+const handleExplodeEvent = (players, aiShips, playerData, elapsedTime) => {
+  if (playerData.type === 'human') {
+    let updatedPlayers = [...players];
+    let player = updatedPlayers[playerData.index]
+    if (!player.explode) {
+      player = explodePlayer(player, playerData.updatedAt);
+    }
+    updatedPlayers[playerData.index] = player
+    return {players: updatedPlayers}
+  } else {
+    let updatedAiShips = [...aiShips].map((ship) => {
+      if (playerData.id === ship.id && !ship.explode) {
+        ship = explodePlayer(ship, ship.updatedAt)
+      };
+      return ship;
+    });
+
+    if (playerData.type === 'supplyShip') {
+      return handleBuff(playerData, players, updatedAiShips, elapsedTime);
+    } else {
+      return {aiShips: updatedAiShips};
+    }
   }
-  updatedPlayers[playerData.index] = player
-  return {players: updatedPlayers}
+}
+
+const handleBuff = (playerData, players, aiShips, elapsedTime) => {
+  const gameBuff = {...GAME_EFFECTS[playerData.buffIndex], durationCount: elapsedTime};
+  const team = players[playerData.killedBy].team;
+  const updatedPlayers = applyGameBuff(team, [...players], gameBuff);
+  const updatedAiShips = applyGameBuff(team, aiShips, gameBuff);
+  playSound(supplyPop);
+  return {players: updatedPlayers, gameBuff: gameBuff, aiShips: updatedAiShips};
+}
+
+const explodePlayer = (player, updatedAt) => {
+  player.hitpoints = 0;
+  player.explodeAnimation = {x: 0, y: 0};
+  player.explode = true;
+  player.updatedAt = updatedAt;
+  player.accelerate = false;
+  player.angle = 0;
+  player.trajectory = 0;
+  player.rotate = 'none';
+  player.effects = {};
+  return player;
 }
 
 const handleLeakEvent = (playerData, players) => {
@@ -89,13 +115,6 @@ const handleStartEvent = (players, playerData, userId) => {
     return { players: newPlayers }
   }
 }
-
-const handleBuffEvent = (playerData, players, elapsedTime) => {
-  const gameBuff = {...GAME_EFFECTS[playerData.buffIndex], durationCount: elapsedTime};
-  const updatedPlayers = applyGameBuff(playerData.team, [...players], gameBuff);
-  playSound(supplyPop);
-  return {players: updatedPlayers, gameBuff: gameBuff};
-};
 
 const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, elapsedTime) => {
   let updatedWeapons = [...deployedWeapons];
