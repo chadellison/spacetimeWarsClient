@@ -135,8 +135,12 @@ class Canvas extends React.Component {
   };
 
   componentDidUpdate() {
-    if (this.props.currentPlayer.location) {
-      window.scrollTo(this.props.currentPlayer.location.x - this.state.halfWindowWidth, this.props.currentPlayer.location.y - this.state.halfWindowHeight)
+    const currentPlayer = this.props.players[this.props.index]
+    if (currentPlayer && currentPlayer.location) {
+      window.scrollTo(
+        currentPlayer.location.x - this.state.halfWindowWidth,
+        currentPlayer.location.y - this.state.halfWindowHeight
+      )
     }
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
@@ -146,23 +150,25 @@ class Canvas extends React.Component {
       context.fillStyle = this.props.gameBuff.color;
     }
 
-    this.props.players.forEach((player) => {
-      const {currentPlayer, gameBuff} = this.props;
-      const showShip = shouldRenderShip(player, currentPlayer.id);
-      if (showShip) {
-        handleInvisibleFilter(context, player, currentPlayer.id);
-        drawShip(context, player, this.handleImage(player), this.state.warpSpeed);
-        Object.values(player.effects)
+    this.props.players.concat(this.props.aiShips).forEach((player) => {
+      if (player.active || player.explode) {
+        const {gameBuff, index} = this.props;
+        const showShip = shouldRenderShip(player, index);
+        if (showShip) {
+          handleInvisibleFilter(context, player, index);
+          drawShip(context, player, this.handleImage(player), this.state.warpSpeed);
+          Object.values(player.effects)
           .filter((effect) => [1, 2, 4, 7, 8].includes(effect.id))
           .forEach((effect) => renderAnimation(context, this.state[effect.name], effect, player))
-      } else {
-        renderExplosion(context, this.state.explosion, player);
+        } else if (player.explode) {
+          renderExplosion(context, this.state.explosion, player);
+        };
+        renderPlayerData(gameBuff, context, player, showShip);
       };
-      renderPlayerData(gameBuff, context, player, showShip);
-    });
+    })
 
     this.props.deployedWeapons.forEach((weapon) => {
-      if (weapon.id !== 3 || weapon.team === this.props.currentPlayer.team) {
+      if (weapon.id !== 3 || (currentPlayer && weapon.team === currentPlayer.team)) {
         renderWeapon(context, weapon, this.state[weapon.name])
       }
     });

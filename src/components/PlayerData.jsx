@@ -11,9 +11,9 @@ import {AbilityIcon} from './AbilityIcon';
 import {findElapsedTime} from '../helpers/gameLogic.js';
 import {SHIPS} from '../constants/ships';
 
-const renderShip = (currentPlayer) => {
-  if (currentPlayer.shipIndex || currentPlayer.shipIndex === 0) {
-    return <ShipIcon shipIndex={currentPlayer.shipIndex} team={currentPlayer.team} className={'playerShip'}/>
+const renderShip = (activePlayer) => {
+  if (activePlayer.shipIndex || activePlayer.shipIndex === 0) {
+    return <ShipIcon shipIndex={activePlayer.shipIndex} team={activePlayer.team} className={'playerShip'}/>
   };
 }
 
@@ -45,58 +45,57 @@ const renderSpeed = (player) => {
   }
 }
 
-const handlePlayerIcon = (currentPlayer, countDown) => {
+const handlePlayerIcon = (activePlayer, countDown) => {
   if (countDown > 0) {
     return <span className="waitCountDown">{countDown}</span>;
   } else {
-    return <img className="playerImage" src={`https://robohash.org/${currentPlayer.id}?color=${currentPlayer.team}`} alt="player"/>;
+    return <img className="playerImage" src={`https://robohash.org/${activePlayer.index}?color=${activePlayer.team}`} alt="player"/>;
   };
 }
 
-const renderHitPoints = (currentPlayer) => {
-  if (currentPlayer.hitpoints > 0) {
+const renderHitPoints = (activePlayer) => {
+  if (activePlayer.hitpoints > 0) {
     return (
       <Hitpoints
-        hitpoints={currentPlayer.hitpoints}
-        maxHitpoints={currentPlayer.maxHitpoints}
+        hitpoints={activePlayer.hitpoints}
+        maxHitpoints={activePlayer.maxHitpoints}
       />
     );
   }
 };
 
-const renderAbilityIcon = (currentPlayer, abilityUsedAt) => {
-  if (currentPlayer.shipIndex === 0 || currentPlayer.shipIndex) {
+const renderAbilityIcon = (activePlayer, abilityUsedAt) => {
+  if (activePlayer.shipIndex === 0 || activePlayer.shipIndex) {
     return (
-      <AbilityIcon ability={SHIPS[currentPlayer.shipIndex].ability}
+      <AbilityIcon ability={SHIPS[activePlayer.shipIndex].ability}
         abilityUsedAt={abilityUsedAt}/>
     );
   }
 };
 
-const PlayerData = ({currentPlayer, clockDifference, updateState, players, defenseData, abilityUsedAt}) => {
-  const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
+const PlayerData = ({activePlayer, clockDifference, updateState, players, defenseData, abilityUsedAt}) => {
+  const elapsedSeconds = findElapsedTime(clockDifference, activePlayer.updatedAt) / 1000;
   let countDown = 0;
-  if (currentPlayer.explode && elapsedSeconds < 10) {
+  if (activePlayer.explode && elapsedSeconds < 10) {
     countDown = Math.round(10 - elapsedSeconds);
   }
 
-  const {gold, damage} = currentPlayer;
-
+  const {gold, damage} = activePlayer;
   return (
-    <div className={`playerData column ${currentPlayer.explode ? 'waiting' : ''}`}>
+    <div className={`playerData column ${activePlayer.explode ? 'waiting' : ''}`}>
       <div className="row">
-        {currentPlayer.updatedAt && handlePlayerIcon(currentPlayer, countDown)}
-        <div className="nameInfo">{currentPlayer.name}</div>
+        {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown)}
+        <div className="nameInfo">{activePlayer.name}</div>
         {gold >= 0 && <PlayerStat image={goldIcon} alt={'gold'} value={gold} className="goldInfo"/>}
-        {renderHitPoints(currentPlayer)}
-        {currentPlayer.updatedAt && renderShip(currentPlayer)}
-        {renderWeapon(currentPlayer.weaponIndex)}
-        {renderAbilityIcon(currentPlayer, abilityUsedAt)}
+        {renderHitPoints(activePlayer)}
+        {activePlayer.updatedAt && renderShip(activePlayer)}
+        {renderWeapon(activePlayer.weaponIndex)}
+        {renderAbilityIcon(activePlayer, abilityUsedAt)}
         {damage > 0 && <PlayerStat image={UPGRADES[3].image} alt={'target'} value={damage} className="statInfo"/>}
-        {renderArmor(currentPlayer)}
-        {renderSpeed(currentPlayer)}
-        <div className="ScoreInfo">{`Score: ${currentPlayer.score}`}</div>
-        <PlayerItems items={currentPlayer.items} />
+        {renderArmor(activePlayer)}
+        {renderSpeed(activePlayer)}
+        <div className="ScoreInfo">{`Score: ${activePlayer.score}`}</div>
+        <PlayerItems items={activePlayer.items} />
         <div className="defenseData">Defenses</div>
         <div className="redDefenseData">{defenseData.red}</div>
         <div className="blueDefenseData">{defenseData.blue}</div>

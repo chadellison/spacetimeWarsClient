@@ -4,17 +4,17 @@ import {GameButton} from './GameButton';
 import {playSound} from '../helpers/audioHelpers.js';
 import {mineDropSound} from '../constants/settings.js';
 
-const updateName = (event, updateState, currentPlayer) => {
-  updateState({currentPlayer: {...currentPlayer, name: event.target.value}})
+const updateName = (event, updateState, activePlayer) => {
+  updateState({startingPlayer: {...activePlayer, name: event.target.value}})
 }
 
-const updateTeam = (updateState, currentPlayer, team) => {
+const updateTeam = (updateState, activePlayer, team) => {
   playSound(mineDropSound)
-  updateState({currentPlayer: {...currentPlayer, team}})
+  updateState({startingPlayer: {...activePlayer, team: team}})
 }
 
-export const NameFormModal = ({updateState, currentPlayer}) => {
-  const formValue = currentPlayer.name ? currentPlayer.name : ''
+export const NameFormModal = ({updateState, activePlayer}) => {
+  const formValue = activePlayer.name ? activePlayer.name : ''
   return (
     <div className='modal'>
       <label className="formLabel">
@@ -24,16 +24,16 @@ export const NameFormModal = ({updateState, currentPlayer}) => {
         maxLength={16}
         value={formValue}
         className="formInput"
-        onChange={(e) => updateName(e, updateState, currentPlayer)}/>
+        onChange={(e) => updateName(e, updateState, activePlayer)}/>
       <label className="teamLabel">
         Select a team
       </label>
-      <div className={`redTeamButton ${currentPlayer.team === 'red' ? 'redBackground' : ''}`}
-        onClick={() => updateTeam(updateState, currentPlayer, 'red')}>
+      <div className={`redTeamButton ${activePlayer.team === 'red' ? 'redBackground' : ''}`}
+        onClick={() => updateTeam(updateState, activePlayer, 'red')}>
           red
       </div>
-      <div className={`blueTeamButton ${currentPlayer.team === 'blue' ? 'blueBackground' : ''}`}
-        onClick={() => updateTeam(updateState, currentPlayer, 'blue')}>
+      <div className={`blueTeamButton ${activePlayer.team === 'blue' ? 'blueBackground' : ''}`}
+        onClick={() => updateTeam(updateState, activePlayer, 'blue')}>
           blue
       </div>
       <GameButton

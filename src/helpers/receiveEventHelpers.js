@@ -11,147 +11,130 @@ import {
 import {WEAPONS} from '../constants/weapons.js';
 
 export const handleEventPayload = (gameState, playerData, elapsedTime) => {
-  const {players, clockDifference, deployedWeapons, currentPlayer} = gameState;
+  const {players, clockDifference, deployedWeapons, userId, aiShips} = gameState;
   switch (playerData.gameEvent) {
     case 'start':
+      return handleStartEvent(players, playerData, userId);
+    case 'explode':
+      return handleExplodeEvent(players, playerData);
     case 'supplyShip':
-      return handleStartEvent(players, playerData, currentPlayer.id);
-    case 'remove':
-      return handleRemoveEvent(players, playerData, currentPlayer);
+      return {aiShips: [...aiShips, playerData]}
+    case 'bombers':
+      return {aiShips: aiShips.concat(playerData.bombers)}
     case 'buff':
       return handleBuffEvent(playerData, players, elapsedTime);
     case 'ability':
       return handleAbility(gameState, playerData, elapsedTime);
-    case 'bombers':
-      return { players: players.concat(playerData.bombers) };
     case 'leak':
-      return handleLeak(playerData, gameState.defenseData);
-    case 'gameOver':
-      return handleGameOverEvent([...players], playerData)
+      return handleLeakEvent(playerData, gameState.players);
     default:
-      let allPlayers = [...players];
-      if (players.filter((player) => player.id === playerData.id).length === 0) {
-        allPlayers = [...players, playerData];
-      };
-      return handleUpdateEvent(allPlayers, playerData, clockDifference, deployedWeapons, currentPlayer, elapsedTime);
+      return handleUpdateEvent([...players], playerData, clockDifference, deployedWeapons, elapsedTime);
   };
 }
 
-const handleLeak = (playerData, defenseData) => {
-  const newValue = defenseData[playerData.team] - 1
-  playSound(leakSound)
-  return { defenseData: {...defenseData, [playerData.team]: newValue}}
+const handleExplodeEvent = (players, playerData) => {
+  let updatedPlayers = [...players];
+  let player = updatedPlayers[playerData.index]
+  if (!player.explode) {
+    player.hitpoints = 0;
+    player.explodeAnimation = {x: 0, y: 0};
+    player.explode = true;
+    player.updatedAt = playerData.updatedAt;
+    player.accelerate = false;
+    player.angle = 0;
+    player.trajectory = 0;
+    player.rotate = 'none';
+    player.effects = {};
+    playerData = player;
+  }
+  updatedPlayers[playerData.index] = player
+  return {players: updatedPlayers}
 }
 
-const handleStartEvent = (players, playerData, currentPlayerId) => {
-  if (currentPlayerId === playerData.id) {
+const handleLeakEvent = (playerData, players) => {
+  playSound(leakSound)
+  if (playerData.defenseData[playerData.team] < 1) {
+    return handleGameOver(players, playerData);
+  } else {
+    return { defenseData: playerData.defenseData }
+  }
+}
+
+const handleGameOver = (players, playerData) => {
+  const updatedPlayers = players.map((player) => {
+    return {...player, explode: true, active: false, explodeAnimation: {x: 0, y: 0}}
+  });
+  const winningTeam = playerData.team === 'red' ? 'blue' : 'red'
+  return {
+    modal: 'gameOver',
+    players: updatedPlayers,
+    gameOverStats: {playerStats: players, winningTeam: winningTeam}
+  }
+}
+
+const handleStartEvent = (players, playerData, userId) => {
+  let newPlayers = [...players];
+  newPlayers[playerData.index] = playerData
+
+  if (userId === playerData.userId) {
     return {
       up: false,
       left: false,
       right: false,
       space: false,
-      players: [...players, playerData]
+      players: newPlayers,
+      index: playerData.index
     }
   } else {
-    return { players: [...players, playerData] }
+    return { players: newPlayers }
   }
 }
 
 const handleBuffEvent = (playerData, players, elapsedTime) => {
   const gameBuff = {...GAME_EFFECTS[playerData.buffIndex], durationCount: elapsedTime};
-  const updatedPlayers = applyGameBuff(playerData.id, [...players], gameBuff);
+  const updatedPlayers = applyGameBuff(playerData.team, [...players], gameBuff);
   playSound(supplyPop);
   return {players: updatedPlayers, gameBuff: gameBuff};
 };
 
-const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, currentPlayer, elapsedTime) => {
+const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, elapsedTime) => {
   let updatedWeapons = [...deployedWeapons];
-  let updatedPlayer;
+  let updatedPlayers = [...players];
+  let updatedPlayer = players[playerData.index];
 
-  const updatedPlayers = [...players].map((player) => {
-    if (playerData.id === player.id) {
-      switch (playerData.gameEvent) {
-        case 'fire':
-          updatedWeapons = [
-            ...updatedWeapons,
-            handleFireWeapon(
-              playerData,
-              clockDifference,
-              {...WEAPONS[playerData.weaponIndex]},
-              elapsedTime,
-              player.damage
-            )
-          ];
+  switch (playerData.gameEvent) {
+    case 'fire':
+      updatedWeapons = [
+        ...updatedWeapons,
+        handleFireWeapon(
+          playerData,
+          clockDifference,
+          {...WEAPONS[playerData.weaponIndex]},
+          elapsedTime,
+          updatedPlayer.damage
+        )
+      ];
 
-          updatedPlayer = player
-          playSound(WEAPONS[player.weaponIndex].sound);
-          break;
-        case 'fireStop':
-          updatedPlayer = player
-          break;
-        case 'up':
-          updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
-          playSound(thruster);
-          break;
-        case 'upStop':
-          updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
-          stopSound(thruster);
-          break;
-        default:
-          updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
-          break;
-      }
-      return updatedPlayer;
-    } else {
-      return player;
-    };
-  });
+      playSound(WEAPONS[updatedPlayer.weaponIndex].sound);
+      break;
+    case 'fireStop':
+      break;
+    case 'up':
+      updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
+      playSound(thruster);
+      break;
+    case 'upStop':
+      updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
+      stopSound(thruster);
+      break;
+    default:
+      updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
+      break;
+  }
+  updatedPlayers[playerData.index] = updatedPlayer
 
   return {
     players: updatedPlayers,
     deployedWeapons: updatedWeapons,
-    currentPlayer: (currentPlayer.id === playerData.id ? updatedPlayer : currentPlayer)
   };
-}
-
-const handleRemoveEvent = (players, playerData, currentPlayer) => {
-  let updatedCurrentPlayer = {...currentPlayer};
-  const updatedPlayers = [...players].map((player) => {
-    if (player.id === playerData.id) {
-      if (!player.explode) {
-        player.gameEvent = 'remove';
-        player.hitpoints = 0;
-        player.explodeAnimation = {x: 0, y: 0};
-        player.explode = true;
-        player.updatedAt = playerData.updatedAt;
-        player.accelerate = false;
-        player.angle = 0;
-        player.trajectory = 0;
-        player.rotate = 'none';
-        player.effects = {};
-        playerData = player;
-      }
-      if (playerData.id === currentPlayer.id) {
-        updatedCurrentPlayer = player;
-      };
-    };
-    return player;
-  });
-
-  return {
-    players: updatedPlayers,
-    currentPlayer: updatedCurrentPlayer
-  };
-}
-
-const handleGameOverEvent = (players, playerData) => {
-  const updatedPlayers = players.map((player) => {
-    return {...player, explode: true, explodeAnimation: {x: 0, y: 0}}
-  });
-  return {
-    modal: 'gameOver',
-    currentPlayer: {},
-    players: updatedPlayers,
-    gameOverStats: playerData.gameOverStats
-  }
 }

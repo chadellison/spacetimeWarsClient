@@ -8,14 +8,14 @@ import {NameFormModal} from './NameFormModal';
 export const Modal = ({
   page,
   modal,
-  userId,
+  index,
   players,
   activeTab,
-  gameOverStats,
-  currentPlayer,
   defenseData,
   updateState,
-  handleGameEvent
+  activePlayer,
+  gameOverStats,
+  handleGameEvent,
 }) => {
   switch (modal) {
     case 'selection':
@@ -23,11 +23,11 @@ export const Modal = ({
         <SelectionModal
           updateState={updateState}
           handleGameEvent={handleGameEvent}
-          userId={userId}
           activeTab={activeTab}
           page={page}
-          currentPlayer={currentPlayer}
+          index={index}
           players={players}
+          activePlayer={activePlayer}
         />
       );
     case 'instructions':
@@ -35,7 +35,7 @@ export const Modal = ({
     case 'credits':
       return <CreditsModal updateState={updateState} />
     case 'nameForm':
-      return <NameFormModal updateState={updateState} currentPlayer={currentPlayer} />
+      return <NameFormModal updateState={updateState} activePlayer={activePlayer} />
     case 'gameOver':
       return <GameOverModal gameOverStats={gameOverStats} updateState={updateState} defenseData={defenseData}/>
     default:

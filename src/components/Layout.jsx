@@ -16,12 +16,13 @@ import {handleEventPayload} from '../helpers/receiveEventHelpers.js';
 
 const DEFAULT_STATE = {
   userId: Date.now(),
+  index: null,
+  startingPlayer: {},
   gameSocket: {},
   players: [],
   clockDifference: 0,
   shortestRoundTripTime: 3000,
   deployedWeapons: [],
-  currentPlayer: {},
   lastFired: 0,
   up: false,
   left: false,
@@ -34,6 +35,7 @@ const DEFAULT_STATE = {
   gameOverStats: {},
   defenseData: { red: 10, blue: 10 },
   abilityUsedAt: 0,
+  aiShips: [],
 };
 
 class Layout extends React.Component {
@@ -43,8 +45,8 @@ class Layout extends React.Component {
   };
 
   componentDidMount() {
+    this.createGameSocket()
     this.syncClocks(REQUEST_COUNT, true)
-    this.createGameSocket();
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
     this.interval = setInterval(() => this.renderGame(), ANAIMATION_FRAME_RATE);
@@ -96,14 +98,23 @@ class Layout extends React.Component {
   };
 
   fetchPlayers() {
+    const {clockDifference} = this.state;
     fetch(`${API_HOST}/api/v1/players`)
       .then((response) => response.json())
       .then((gameData) => {
         const players = gameData.players.map((player) => {
-          const elapsedTime = findElapsedTime(this.state.clockDifference, player.updatedAt);
-          return updatePlayer(player, elapsedTime, this.state.clockDifference)
+          const elapsedTime = findElapsedTime(clockDifference, player.updatedAt);
+          if (player.active) {
+            return updatePlayer(player, elapsedTime, clockDifference)
+          } else {
+            return player;
+          }
         });
-        this.setState({players: players, defenseData: gameData.defenseData});
+        const aiShips = gameData.aiShips.map((ship) => {
+          const elapsedTime = findElapsedTime(clockDifference, ship.updatedAt);
+          return updatePlayer(ship, elapsedTime, clockDifference);
+        });
+        this.setState({players, aiShips, defenseData: gameData.defenseData});
     }).catch((error) => console.log('ERROR', error));
   };
 
@@ -116,34 +127,39 @@ class Layout extends React.Component {
   }
 
   handleShopButton = () => {
-    if (this.state.currentPlayer.name) {
+    const currentPlayer = this.state.players[this.state.index]
+    if (currentPlayer) {
       this.updateState({modal: 'selection'})
     } else {
       this.updateState(addPlayer(this.state.userId, this.state.players));
     };
   };
 
-  handleKeyDown = (event) => {
-    const {currentPlayer, modal, players, userId} = this.state;
-    const {explode} = currentPlayer;
+  findActivePlayer = () => {
+    const {index, players, startingPlayer} = this.state
+    return (index || index === 0) ? players[index] : startingPlayer;
+  }
 
-    if (!explode && !modal) {
-      if (!currentPlayer.name) {
-        this.updateState(addPlayer(userId, players));
+  handleKeyDown = (event) => {
+    const {modal, players, index, startingPlayer} = this.state;
+    if (!modal) {
+      const pressedKey = KEY_MAP[event.keyCode];
+      if (!startingPlayer.name) {
+        this.updateState(addPlayer(this.state.userId, players));
       } else {
-        const pressedKey = KEY_MAP[event.keyCode];
-        if (!this.state[pressedKey]) {
+        const currentPlayer = players[index]
+        if (currentPlayer && currentPlayer.active && !this.state[pressedKey]) {
           keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState);
           this.setState({[pressedKey]: true})
-        };
+        }
       };
     }
   };
 
   handleKeyUp = (event) => {
-    const {explode, gameEvent} = this.state.currentPlayer;
-    if (!explode && gameEvent !== 'waiting' && !this.state.modal) {
-      const pressedKey = KEY_MAP[event.keyCode];
+    const currentPlayer = this.state.players[this.state.index]
+    const pressedKey = KEY_MAP[event.keyCode];
+    if (currentPlayer && currentPlayer.active && !this.state.modal && this.state[pressedKey]) {
       keyUpEventPayload(pressedKey, this.state, this.handleGameEvent, this.updateState)
       this.setState({[pressedKey]: false});
     };
@@ -185,49 +201,53 @@ class Layout extends React.Component {
     const {
       page,
       modal,
-      userId,
+      index,
+      aiShips,
       players,
       gameBuff,
       activeTab,
       defenseData,
+      abilityUsedAt,
       gameOverStats,
-      currentPlayer,
       deployedWeapons,
       clockDifference,
     } = this.state;
 
+    const activePlayer = this.findActivePlayer();
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
         <h2>{modal ? null : 'Space Wars'}</h2>
         <div className='game row'>
-          <Modal page={page} modal={modal}
-            userId={userId}
+          {modal && <Modal
+            page={page}
+            modal={modal}
+            index={index}
             players={players}
             activeTab={activeTab}
-            gameOverStats={gameOverStats}
             defenseData={defenseData}
-            currentPlayer={currentPlayer}
+            activePlayer={activePlayer}
+            gameOverStats={gameOverStats}
             updateState={this.updateState}
             handleGameEvent={this.handleGameEvent}
-          />
-          <GameButton
-            buttonText={currentPlayer.id ? 'shop' : 'start'}
+          />}
+          {activePlayer && <GameButton
+            buttonText={activePlayer.name ? 'shop' : 'start'}
             onClick={this.handleShopButton}
             className={'gameButton'}
-          />
+          />}
           <HeaderButtons updateState={this.updateState} />
-          {currentPlayer.id && <PlayerData
-            currentPlayer={currentPlayer}
+          {activePlayer.name && <PlayerData
             clockDifference={clockDifference}
             updateState={this.updateState}
-            players={players}
-            defenseData={this.state.defenseData}
-            abilityUsedAt={this.state.abilityUsedAt}
+            activePlayer={activePlayer}
+            defenseData={defenseData}
+            abilityUsedAt={abilityUsedAt}
           />}
           <Canvas
             players={players}
             deployedWeapons={deployedWeapons}
-            currentPlayer={currentPlayer}
+            index={index}
+            aiShips={aiShips}
             gameBuff={gameBuff}
           />
         </div>

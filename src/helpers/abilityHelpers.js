@@ -42,7 +42,8 @@ const addAbilityWeapon = (weaponIndex, gameState, playerData, sound, elapsedTime
     handleFireWeapon(
       playerData,
       gameState.clockDifference,
-      weapon, elapsedTime,
+      weapon,
+      elapsedTime,
       weapon.damage + playerData.damage
     )
   ];
@@ -52,14 +53,10 @@ const addAbilityWeapon = (weaponIndex, gameState, playerData, sound, elapsedTime
 
 const addAbilityEffect = (effectIndex, players, gameState, playerData, sound, elapsedTime) => {
   const effect = {...GAME_EFFECTS[effectIndex], durationCount: elapsedTime};
-  let currentPlayer = gameState.currentPlayer;
-  const updatedPlayers = players.map((player) => {
-    if (player.id === playerData.id) {
-      player.effects = {...player.effects, [effect.id]: effect};
-      currentPlayer = playerData.id === currentPlayer.id ? player : currentPlayer;
-    }
-    return player;
-  });
+  let updatedPlayers = [...players]
+  let player = updatedPlayers[playerData.index]
+  player.effects = {...player.effects, [effect.id]: effect};
+  updatedPlayers[playerData.index] = player;
   playSound(sound);
-  return {players: updatedPlayers, currentPlayer};
+  return {players: updatedPlayers};
 }

@@ -81,12 +81,12 @@ const handleAcceleration = (context, player, ship) => {
   context.fill();
 }
 
-export const shouldRenderShip = (player, currentPlayerId) => {
-  return (!player.explode) && (!player.effects[5] || player.id === currentPlayerId);
+export const shouldRenderShip = (player, index) => {
+  return (player.active) && (!player.effects[5] || (player.index === index));
 }
 
-export const handleInvisibleFilter = (context, player, currentPlayerId) => {
-  if (player.effects[5] && player.id === currentPlayerId) {
+export const handleInvisibleFilter = (context, player, index) => {
+  if (player.effects[5] && player.index === index) {
     context.filter = 'opacity(0.5)';
   } else {
     context.filter = 'none';
@@ -128,7 +128,7 @@ export const renderPlayerData = (gameBuff, context, player, showShip) => {
       context.fillStyle = findColor(player.hitpoints, player.maxHitpoints);
       renderHealthBar(context, player);
       context.fillText(player.name, player.location.x + 25, player.location.y + 110)
-    } else if (!showShip && !player.effects[5]) {
+    } else if (player.explode && player.explodeAnimation !== 'complete') {
       context.fillStyle = "#ab8432";
       context.font = "12px Arial";
       context.fillText(`+ ${round(player.score * 0.01 + 100)}`, player.location.x + 75, player.location.y)

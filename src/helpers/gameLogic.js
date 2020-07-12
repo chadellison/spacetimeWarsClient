@@ -18,63 +18,69 @@ import {playSound} from '../helpers/audioHelpers.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   let deployedWeapons = [...gameState.deployedWeapons];
-  const {clockDifference, lastFired, space, gameBuff} = gameState;
+  const {clockDifference, gameBuff, index, aiShips} = gameState;
 
-  let updatedPlayerData = {players: [...gameState.players], currentPlayer: {...gameState.currentPlayer}}
-  updatedPlayerData = updatePlayers(updatedPlayerData, handleGameEvent, clockDifference, lastFired, updateState, space);
+  let updatedPlayers = updatePlayers(gameState, handleGameEvent, updateState);
+  let updatedAiShips = updateAiShips(aiShips, index, handleGameEvent, clockDifference);
 
   const filteredWeapons = removeOutOfBoundsShots(deployedWeapons);
-  deployedWeapons = handleWeapons(
-    filteredWeapons,
-    updatedPlayerData.players,
-    updatedPlayerData.currentPlayer,
-    handleGameEvent
-  );
-  handleCountDownEnd(updatedPlayerData.currentPlayer, clockDifference);
+  let gameData = {players: updatedPlayers, weapons: filteredWeapons, aiShips: updatedAiShips}
+  gameData = handleWeapons(gameData, handleGameEvent);
+
+  handleCountDownEnd(gameData.players[index], clockDifference);
 
   return {
-    players: updatedPlayerData.players,
-    deployedWeapons: deployedWeapons,
-    currentPlayer: updatedPlayerData.currentPlayer,
+    players: gameData.players,
+    aiShips: gameData.aiShips,
+    deployedWeapons: gameData.weapons,
     gameBuff: updateGameBuff(gameBuff)
   };
 };
 
-const updatePlayers = (updatedPlayerData, handleGameEvent, clockDifference, lastFired, updateState, space) => {
-  let updatedPlayers = [];
-  let firstHumanId = null;
-  let leaked = {}
-  updatedPlayerData.players.forEach((player) => {
-    if (player.explodeAnimation !== 'complete') {
-      handleHitpoints(player, updatedPlayerData.currentPlayer.id, handleGameEvent);
-      player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
-
-      if (isLeak(player)) {
-        const opponentTeam = player.team === 'red' ? 'blue' : 'red'
-        leaked[player.id] = opponentTeam
+const updateAiShips = (aiShips, index, handleGameEvent, clockDifference) => {
+  let updatedAiShips = [];
+  let leaked = {};
+  [...aiShips].forEach((ship) => {
+    if (ship.explodeAnimation !== 'complete') {
+      if (isLeak(ship)) {
+        const opponentTeam = ship.team === 'red' ? 'blue' : 'red'
+        leaked[ship.id] = opponentTeam
       } else {
-        if (player.id === updatedPlayerData.currentPlayer.id) {
-          handleRepeatedFire(updatedPlayerData.currentPlayer, handleGameEvent, lastFired, updateState, clockDifference, space);
-          updatedPlayerData.currentPlayer = player
-        }
-        if (player.type === 'human' && !firstHumanId) {
-          firstHumanId = player.id
-        }
-
-        handleWall(player, handleGameEvent);
-        handleEffects(player)
-        updatedPlayers.push(player);
+        ship = handleHitpoints(ship, index, handleGameEvent)
+        updatePlayer(ship, ANAIMATION_FRAME_RATE, clockDifference)
+        handleWall(ship);
+        handleEffects(ship)
+        updatedAiShips.push(ship);
       }
-    };
+    }
   });
-  handleLeak(handleGameEvent, leaked, updatedPlayerData.currentPlayer.id, firstHumanId)
-  updatedPlayerData.players = updatedPlayers;
-  return updatedPlayerData;
+  handleLeak(handleGameEvent, leaked, index)
+  return updatedAiShips;
 }
 
-const handleLeak = (handleGameEvent, leaked, playerId, firstHumanId) => {
+const updatePlayers = (gameState, handleGameEvent, updateState) => {
+  const {players, clockDifference, space, index, lastFired} = gameState;
+  const updatedPlayers = [...players].map((player) => {
+    if (player.active) {
+      player = handleHitpoints(player, index, handleGameEvent);
+      player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
+      if (player.index === index) {
+        handleRepeatedFire(player, handleGameEvent, lastFired, updateState, clockDifference, space);
+      }
+      handleWall(player);
+      handleEffects(player)
+    } else if (player.explode && player.explodeAnimation !== 'complete') {
+      player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
+    }
+    return player
+  });
+
+  return updatedPlayers;
+}
+
+const handleLeak = (handleGameEvent, leaked, index) => {
   const leakedIds = Object.keys(leaked)
-  if (leakedIds.length > 0 && playerId === firstHumanId) {
+  if (leakedIds.length > 0 && index === 0) {
     leakedIds.forEach((id) => {
       handleGameEvent({id: id, team: leaked[id], gameEvent: 'leak'});
     })
@@ -85,19 +91,27 @@ const isLeak = (player) => {
   return player.type === 'bomber' && !player.explode && ((player.team === 'red' && player.location.x > BOARD_WIDTH) || (player.team === 'blue' && player.location.x < 0));
 }
 
-const handleHitpoints = (player, currentPlayerId, handleGameEvent) => {
+const handleHitpoints = (player, index, handleGameEvent) => {
   if (player.hitpoints <= 0 && !player.explode) {
-    player.explode = true
-    player.explodeAnimation = {x: 0, y: 0};
-    if (player.killedBy) {
-      if (player.killedBy === currentPlayerId) {
-        handleGameEvent({id: player.id, gameEvent: 'remove'});
-      }
-    } else {
-      if (currentPlayerId === player.id) {
-        handleGameEvent({id: player.id, gameEvent: 'remove'});
-      }
+    const exploadedPlayer = {
+      ...player,
+      explode: true,
+      active: false,
+      gameEvent: 'explode',
+      explodeAnimation: {x: 0, y: 0},
+      effects: {},
+      hitpoints: 0,
+      accelerate: false,
+      angle: 0,
+      trajectory: 0,
+      rotate: 'none',
     }
+    if (player.killedBy === index) {
+      handleGameEvent(exploadedPlayer);
+    }
+    return exploadedPlayer;
+  } else {
+    return player;
   }
 };
 
@@ -106,7 +120,7 @@ export const canFire = (lastFired, cooldown) => {
 }
 
 const handleCountDownEnd = (currentPlayer, clockDifference) => {
-  if (currentPlayer.explode) {
+  if (currentPlayer && currentPlayer.explode) {
     const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
     if (elapsedSeconds >= 10) {
       currentPlayer.explode = false;
@@ -149,22 +163,30 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   return player
 }
 
-export const handleWeapons = (weapons, players, currentPlayer, handleGameEvent) => {
+const applyHitToAll = (players, weapon, attacker, handleGameEvent) => {
+  players.forEach((player) => {
+    if (player.team !== weapon.team) {
+      applyHit(player, weapon, attacker, handleGameEvent)
+    }
+  });
+}
+
+export const handleWeapons = (gameData, handleGameEvent) => {
   let newWeapons = [];
-  weapons.forEach((weapon) => {
+  gameData.weapons.forEach((weapon) => {
+    let attacker = gameData.players[weapon.playerIndex];
     weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
     if (weapon.id === 1) {
       if (Date.now() - weapon.deployedAt > 2000) {
-        players.forEach((player) => {
-          if (player.team !== weapon.team) {
-            applyHit(player, weapon, currentPlayer, handleGameEvent)
-          }
-        });
+        applyHitToAll(gameData.players, weapon, attacker, handleGameEvent)
+        applyHitToAll(gameData.aiShips, weapon, attacker, handleGameEvent)
+
         playSound(explosionSound);
         weapon.removed = true
       }
     } else {
-      weapon = handleCollision(weapon, players, currentPlayer, handleGameEvent)
+      handleCollision(gameData.players, weapon, attacker, handleGameEvent)
+      handleCollision(gameData.aiShips, weapon, attacker, handleGameEvent)
     }
     if (weapon.animation) {
       updateFrame(weapon.animation);
@@ -173,7 +195,9 @@ export const handleWeapons = (weapons, players, currentPlayer, handleGameEvent) 
       newWeapons.push(weapon);
     }
   });
-  return newWeapons;
+  gameData.weapons = newWeapons;
+
+  return gameData;
 };
 
 const removeOutOfBoundsShots = (weapons) => {
@@ -197,7 +221,7 @@ const findShipBoundingBoxes = (player) => {
   ];
 }
 
-const handleCollision = (weapon, players, currentPlayer, handleGameEvent) => {
+const handleCollision = (players, weapon, attacker, handleGameEvent) => {
   players.forEach((player) => {
     if (player.team !== weapon.team && !player.explode) {
       const shipBoundingBoxes = findShipBoundingBoxes(player);
@@ -206,50 +230,46 @@ const handleCollision = (weapon, players, currentPlayer, handleGameEvent) => {
       shipBoundingBoxes.forEach((center, index) => {
         const distance = findHypotenuse(center, weaponCenter);
         if ((index < 3 && distance < 18) || (index > 2 && distance < 23)) {
-          applyHit(player, weapon, currentPlayer, handleGameEvent);
+          applyHit(player, weapon, attacker, handleGameEvent);
         }
       });
     };
   });
-  return weapon;
 }
 
-const applyHit = (player, weapon, currentPlayer, handleGameEvent) => {
+const applyHit = (player, weapon, attacker, handleGameEvent) => {
   if (weapon.id === 3) {
     playSound(mineTriggerSound);
   }
+
   if (canAbsorbDamage(player)) {
     handleAbsorbDamage(player);
   } else {
     console.log('BLAM!');
-    updateCollisionData(player, weapon, currentPlayer, handleGameEvent)
+    updateCollisionData(player, weapon, attacker, handleGameEvent)
   }
   weapon.removed = true
 };
 
-const updateCollisionData = (player, weapon, currentPlayer, handleGameEvent) => {
+const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
   if (player.hitpoints > 0) {
-    handleNegativeBuff(player, weapon);
-    const damage = calculateDamage(weapon, player);
-    player.hitpoints -= damage;
-
-    if (weapon.playerId === currentPlayer.id) {
-      handlePositiveBuff(currentPlayer, weapon);
-      if (player.hitpoints <= 0) {
-        const bounty = round(player.score * 0.01 + 100);
-        handleKill(player, currentPlayer, handleGameEvent);
-        player.killedBy = weapon.playerId
-        currentPlayer.kills += 1
-        currentPlayer.gold += bounty;
-        currentPlayer.score += bounty;
-      };
-    };
+    player = handleNegativeBuff(player, weapon);
+    player.hitpoints -= calculateDamage(weapon, player);
+    attacker = handlePositiveBuff(attacker, weapon);
+  }
+  if (player.hitpoints <= 0) {
+    const bounty = round(player.score * 0.01 + 100);
+    player.killedBy = weapon.playerIndex
+    attacker.kills += 1
+    attacker.gold += bounty;
+    attacker.score += bounty;
+    handleAiKill(player, attacker, handleGameEvent);
   };
 };
 
-const handleKill = (player, currentPlayer, handleGameEvent) => {
+const handleAiKill = (player, attacker, handleGameEvent) => {
   if (player.type === 'supplyShip') {
-    handleGameEvent({...currentPlayer, gameEvent: 'buff', buffIndex: randomBuffIndex()});
+    handleGameEvent({...attacker, gameEvent: 'buff', buffIndex: randomBuffIndex()});
   }
 }
 
@@ -263,6 +283,7 @@ const handleNegativeBuff = (player, weapon) => {
   if ((weapon.canStun && Math.random() <= 0.1) || weapon.id === 2) {
     player.effects[GAME_EFFECTS[3].id] = {...GAME_EFFECTS[3], duration: 3000}
   };
+  return player;
 }
 
 const handlePositiveBuff = (player, weapon) => {
@@ -273,6 +294,7 @@ const handlePositiveBuff = (player, weapon) => {
     }
     player.hitpoints = newHitpoints;
   }
+  return player
 }
 
 const calculateDamage = (weapon, player) => {
@@ -293,8 +315,6 @@ const calculateDamage = (weapon, player) => {
 
 export const handleFireWeapon = (player, clockDifference, weapon, elapsedTime, damage) => {
   const angle = handleAngle(player, elapsedTime);
-  // const distance = distanceTraveled(player, elapsedTime, clockDifference);
-  // const location = handleLocation(angle, player.location, distance);
   const location = player.location;
   const shipCenter = SHIPS[player.shipIndex].shipCenter;
   const x = location.x + shipCenter.x - (weapon.width / 2);
@@ -302,7 +322,7 @@ export const handleFireWeapon = (player, clockDifference, weapon, elapsedTime, d
 
   weapon.location = handleLocation(angle, {x, y}, 50);
   weapon.trajectory = angle
-  weapon.playerId = player.id
+  weapon.playerIndex = player.index
   weapon.team = player.team
   weapon.damage = damage
   weapon.canStun = player.items[6]
@@ -345,7 +365,7 @@ export const handleAngle = (player, elapsedTime) => {
   };
 }
 
-export const handleWall = (player, handleGameEvent) => {
+export const handleWall = (player) => {
   if (player.location.x - 100 > BOARD_WIDTH) {
     player.location.x = 0;
   }
@@ -362,12 +382,3 @@ export const handleWall = (player, handleGameEvent) => {
     player.location.y = BOARD_HEIGHT;
   }
 };
-
-export const getUpdatedPlayers = (updatedPlayer, players) => {
-  return players.map((player) => {
-    if (player.id === updatedPlayer.id) {
-      player = updatedPlayer;
-    }
-    return player;
-  });
-}

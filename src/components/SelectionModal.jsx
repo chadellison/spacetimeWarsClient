@@ -12,18 +12,16 @@ import {WEAPONS} from '../constants/weapons.js';
 import {UPGRADES} from '../constants/upgrades.js';
 import {startEventPayload} from '../helpers/sendEventHelpers.js';
 
-const handleClick = (updateState, handleGameEvent, currentPlayer) => {
-  let player;
-  if (currentPlayer.gameEvent === 'waiting') {
-    player = startEventPayload(currentPlayer);
+const handleClick = (updateState, handleGameEvent, activePlayer) => {
+  if (activePlayer.gameEvent === 'waiting') {
+    handleGameEvent(startEventPayload(activePlayer));
   } else {
-    player = {...currentPlayer, gameEvent: 'shop'}
+    handleGameEvent({...activePlayer, gameEvent: 'shop'})
   }
-  handleGameEvent(player);
-  updateState({currentPlayer: player, modal: null, activeTab: 'Ships'});
+  updateState({modal: null, activeTab: 'Ships'});
 };
 
-const renderOptions = (activeTab, page, currentPlayer, players, updateState) => {
+const renderOptions = (activeTab, page, activePlayer, updateState, index, players) => {
   switch (activeTab) {
     case 'Ships':
       const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
@@ -31,11 +29,12 @@ const renderOptions = (activeTab, page, currentPlayer, players, updateState) => 
         return (
           <Ship
             key={`ship${ship.index}`}
-            imageSrc={currentPlayer.team === 'red' ? ship.image : ship.blueImage }
-            currentPlayer={currentPlayer}
+            imageSrc={activePlayer.team === 'red' ? ship.image : ship.blueImage }
+            activePlayer={activePlayer}
             ship={ship}
-            updateState={updateState}
+            index={index}
             players={players}
+            updateState={updateState}
           />
         )
       });
@@ -47,7 +46,8 @@ const renderOptions = (activeTab, page, currentPlayer, players, updateState) => 
             key={`weapon${weapon.index}`}
             imageSrc={weapon.selectionImage}
             weapon={weapon}
-            currentPlayer={currentPlayer}
+            activePlayer={activePlayer}
+            index={index}
             players={players}
             updateState={updateState}
           />
@@ -60,7 +60,8 @@ const renderOptions = (activeTab, page, currentPlayer, players, updateState) => 
             key={`upgrade${upgrade.index}`}
             imageSrc={upgrade.image}
             upgrade={upgrade}
-            currentPlayer={currentPlayer}
+            activePlayer={activePlayer}
+            index={index}
             players={players}
             updateState={updateState}
           />
@@ -74,7 +75,8 @@ const renderOptions = (activeTab, page, currentPlayer, players, updateState) => 
             key={`item${item.index}`}
             imageSrc={item.image}
             item={item}
-            currentPlayer={currentPlayer}
+            activePlayer={activePlayer}
+            index={index}
             players={players}
             updateState={updateState}
           />
@@ -85,12 +87,12 @@ const renderOptions = (activeTab, page, currentPlayer, players, updateState) => 
   }
 };
 
-const renderStart = (updateState, handleGameEvent, currentPlayer) => {
-  if (currentPlayer.shipIndex !== undefined && currentPlayer.weaponIndex !== undefined && currentPlayer.gameEvent !== 'remove') {
+const renderStart = (updateState, handleGameEvent, activePlayer) => {
+  if (activePlayer.shipIndex !== undefined && activePlayer.weaponIndex !== undefined && activePlayer.gameEvent !== 'explode') {
     return (
       <GameButton
         className={'selectionButton'}
-        onClick={() => handleClick(updateState, handleGameEvent, currentPlayer)}
+        onClick={() => handleClick(updateState, handleGameEvent, activePlayer)}
         buttonText={'Start'}
       />
     );
@@ -99,12 +101,12 @@ const renderStart = (updateState, handleGameEvent, currentPlayer) => {
   };
 };
 
-const renderTabs = (activeTab, updateState, currentPlayer) => {
+const renderTabs = (activeTab, updateState, activePlayer) => {
   let tabs = ['Ships'];
-  if (currentPlayer.shipIndex || currentPlayer.shipIndex === 0) {
+  if (activePlayer.shipIndex || activePlayer.shipIndex === 0) {
     tabs.push('Weapons');
   };
-  if (currentPlayer.weaponIndex || currentPlayer.weaponIndex === 0) {
+  if (activePlayer.weaponIndex || activePlayer.weaponIndex === 0) {
     tabs.push('Upgrades');
     tabs.push('Items');
   };
@@ -121,19 +123,20 @@ const renderTabs = (activeTab, updateState, currentPlayer) => {
 
 export const SelectionModal = ({
   page,
+  index,
   players,
   activeTab,
   updateState,
-  currentPlayer,
-  handleGameEvent
+  activePlayer,
+  handleGameEvent,
 }) => {
   return (
     <div className="modal">
       <div className="modalTabs">
-        {renderTabs(activeTab, updateState, currentPlayer)}
+        {renderTabs(activeTab, updateState, activePlayer)}
       </div>
-      {renderStart(updateState, handleGameEvent, currentPlayer)}
-      {renderOptions(activeTab, page, currentPlayer, players, updateState)}
+      {renderStart(updateState, handleGameEvent, activePlayer)}
+      {renderOptions(activeTab, page, activePlayer, updateState, index, players)}
       <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />
     </div>
   );

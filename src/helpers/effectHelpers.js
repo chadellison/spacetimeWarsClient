@@ -33,11 +33,11 @@ export const randomBuffIndex = () => {
   return Math.floor(Math.random() * Math.floor(RANDOME_GAME_BUFF_INDEX_LENGTH));
 }
 
-export const applyGameBuff = (buffedPlayerId, players, gameBuff) => {
+export const applyGameBuff = (team, players, gameBuff) => {
   return players.map((player) => {
-    if (gameBuff.id < 5 && buffedPlayerId !== player.id) {
+    if (gameBuff.id < 5 && team !== player.team) {
       player.effects = {...player.effects, [gameBuff.id]: {...gameBuff}};
-    } else if (gameBuff.id > 4 && buffedPlayerId === player.id) {
+    } else if (gameBuff.id > 4 && team === player.team) {
       player.effects = {...player.effects, [gameBuff.id]: {...gameBuff}};
     };
 

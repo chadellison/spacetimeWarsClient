@@ -46,7 +46,7 @@ export const handleItems = (player) => {
 };
 
 export const handleAbsorbDamage = (player) => {
-  if (!player.effects[5]) {
+  if (!player.effects[6]) {
     let absorbDamageItem = getItem(player.items, 4);
     absorbDamageItem.durationCount = 0;
   };

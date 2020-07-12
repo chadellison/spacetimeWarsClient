@@ -1,25 +1,26 @@
 import {round} from '../helpers/mathHelpers.js';
 
 export const addPlayer = (userId, players) => {
+  let startingPlayer = {
+    userId: userId,
+    team: 'red',
+    gold: handleStartingGold(players),
+    gameEvent: 'waiting',
+    score: 0,
+    items: {},
+    effects: {},
+    type: 'human',
+    accelerate: false,
+    lastAccelerationTime: 0,
+    kills: 0,
+    rotate: 'none',
+    explode: false,
+    ability: {},
+    explodeAnimation: {}
+  }
   return {
     modal: 'nameForm',
-    currentPlayer: {
-      id: userId,
-      team: 'red',
-      gold: handleStartingGold(players),
-      gameEvent: 'waiting',
-      score: 0,
-      items: {},
-      effects: {},
-      type: 'human',
-      accelerate: false,
-      lastAccelerationTime: 0,
-      kills: 0,
-      rotate: 'none',
-      explode: false,
-      ability: {},
-      explodeAnimation: {}
-    }
+    startingPlayer: startingPlayer
   };
 }
 

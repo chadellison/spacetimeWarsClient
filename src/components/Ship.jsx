@@ -1,16 +1,15 @@
 import React from 'react';
 import '../styles/ship.css';
 import {gong, notEnoughResources} from '../constants/settings.js';
-import {getUpdatedPlayers} from '../helpers/gameLogic.js';
 import {SHIPS} from '../constants/ships.js';
 
-const handleClick = (shipIndex, currentPlayer, players, updateState) => {
-  const gold = currentPlayer.gold - SHIPS[shipIndex].price;
+const handleClick = (shipIndex, activePlayer, updateState, index, players) => {
+  const gold = activePlayer.gold - SHIPS[shipIndex].price;
 
   if (gold >= 0) {
     gong.play();
     const player = {
-      ...currentPlayer,
+      ...activePlayer,
       shipIndex: shipIndex,
       gold: gold,
       armor: SHIPS[shipIndex].armor,
@@ -18,19 +17,23 @@ const handleClick = (shipIndex, currentPlayer, players, updateState) => {
       maxHitpoints: SHIPS[shipIndex].hitpoints,
       velocity: SHIPS[shipIndex].speed,
     }
-
-    const updatedPlayers = getUpdatedPlayers(player, players);
-    updateState({currentPlayer: player, players: updatedPlayers, activeTab: 'Weapons', page: 1});
+    if (index !== null) {
+      let updatedPlayers = [...players];
+      updatedPlayers[index] = player
+      updateState({players: updatedPlayers})
+    } else {
+      updateState({startingPlayer: player, activeTab: 'Weapons', page: 1});
+    }
   } else {
     notEnoughResources.play();
     console.log('Not enough gold');
   }
 };
 
-export const Ship = ({imageSrc, currentPlayer, ship, players, updateState}) => {
+export const Ship = ({imageSrc, activePlayer, ship, updateState, index, players}) => {
   return (
-    <div className={`selection ${currentPlayer.shipIndex === ship.index ? 'selected' : ''}`}
-      onClick={() => handleClick(ship.index, currentPlayer, players, updateState)}>
+    <div className={`selection ${activePlayer.shipIndex === ship.index ? 'selected' : ''}`}
+      onClick={() => handleClick(ship.index, activePlayer, updateState, index, players)}>
         <div className="imageWrapper">
           <img id={ship.index} src={imageSrc} alt="ship" className="selectionImage"/>
         </div>

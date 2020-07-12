@@ -1,7 +1,6 @@
 import {WEAPONS} from '../constants/weapons.js';
 import {SHIPS} from '../constants/ships.js';
 import {canFire} from '../helpers/gameLogic.js';
-import {getUpdatedPlayers} from '../helpers/gameLogic.js';
 import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
@@ -20,7 +19,7 @@ export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState
       handleAccelerateEvent(gameState, pressedKey, handleGameEvent, updateState);
       break;
     case 'q':
-      handleAbility(gameState.currentPlayer, gameState.abilityUsedAt, handleGameEvent, updateState);
+      handleAbility(gameState.players[gameState.index], gameState.abilityUsedAt, handleGameEvent, updateState);
       break;
     default:
       break;
@@ -33,8 +32,9 @@ export const keyUpEventPayload = (
   handleGameEvent,
   updateState
 ) => {
-  const {currentPlayer, shortestRoundTripTime, players} = gameState;
-  if (['right', 'left'].includes(pressedKey) && currentPlayer) {
+  const {players, index} = gameState;
+  const currentPlayer = players[index]
+  if (['right', 'left'].includes(pressedKey) && currentPlayer.name) {
     handleGameEvent({
       ...currentPlayer,
       gameEvent: pressedKey + 'Stop',
@@ -50,42 +50,38 @@ export const keyUpEventPayload = (
       trajectory: currentPlayer.angle
     }
     handleGameEvent(player);
-    setTimeout(() => updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)}), shortestRoundTripTime / 2);
   }
 
-  if ('space' === pressedKey && currentPlayer) {
+  if ('space' === pressedKey && currentPlayer.name) {
     const updatedPlayer = {
       ...currentPlayer,
       gameEvent: 'fireStop'
     };
     handleGameEvent(updatedPlayer);
-    updateState({currentPlayer: updatedPlayer});
   };
 };
 
 const handleRotateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
-  const {currentPlayer, shortestRoundTripTime, players} = gameState;
+  const {players, index} = gameState;
+  const currentPlayer = players[index]
   if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
     const player = rotateEventPayload(currentPlayer, pressedKey);
     handleGameEvent(player);
-    setTimeout(() => updateState({
-      currentPlayer: player,
-      players: getUpdatedPlayers(player, players)
-    }), shortestRoundTripTime / 2);
   };
 };
 
 const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
-  const {currentPlayer, shortestRoundTripTime, players} = gameState;
+  const {players, index} = gameState;
+  const currentPlayer = players[index]
   if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
     const player = accelerateEventPayload(currentPlayer, pressedKey)
     handleGameEvent(player);
-    setTimeout(() => updateState({currentPlayer: player, players: getUpdatedPlayers(player, players)}), shortestRoundTripTime / 2);
   };
 };
 
 const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
-  const {currentPlayer, lastFired} = gameState;
+  const {lastFired, players} = gameState;
+  const currentPlayer = players[gameState.index]
   if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
     handleGameEvent({...currentPlayer, gameEvent: 'fire'});
     updateState({lastFired: Date.now()});
@@ -101,7 +97,8 @@ export const startEventPayload = (player) => {
     angle: startData.angle,
     trajectory: startData.trajectory,
     hitpoints: player.maxHitpoints,
-    team: player.team
+    team: player.team,
+    active: true
   };
 }
 

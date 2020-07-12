@@ -1,30 +1,31 @@
 import React from 'react';
 import '../styles/ship.css';
-import {getUpdatedPlayers} from '../helpers/gameLogic.js';
 import {loadWeapon, notEnoughResources} from '../constants/settings.js';
 import {WEAPONS} from '../constants/weapons.js';
+import {handleUpdate} from '../helpers/selectionModalHelpers.js';
 
-const handleClick = (weaponIndex, currentPlayer, players, updateState) => {
-  const gold = currentPlayer.gold - WEAPONS[weaponIndex].price;
+const handleClick = (weaponIndex, activePlayer, updateState, index, players) => {
+  const gold = activePlayer.gold - WEAPONS[weaponIndex].price;
   if (gold >= 0) {
     loadWeapon.play();
-    const updatedPlayer = {
-      ...currentPlayer,
+    const player = {
+      ...activePlayer,
       weaponIndex: weaponIndex,
       damage: WEAPONS[weaponIndex].damage,
       gold: gold
     };
-    updateState({currentPlayer: updatedPlayer, players: getUpdatedPlayers(updatedPlayer, players)});
+
+    handleUpdate(updateState, players, index, player);
   } else {
     notEnoughResources.play();
     console.log('Not enough gold');
   }
 };
 
-export const Weapon = ({imageSrc, weapon, currentPlayer, players, updateState}) => {
+export const Weapon = ({imageSrc, weapon, activePlayer, updateState, index, players}) => {
   return (
-    <div className={`selection ${currentPlayer.weaponIndex === weapon.index ? 'selected' : ''}`}
-      onClick={() => handleClick(weapon.index, currentPlayer, players, updateState)}>
+    <div className={`selection ${activePlayer.weaponIndex === weapon.index ? 'selected' : ''}`}
+      onClick={() => handleClick(weapon.index, activePlayer, updateState, index, players)}>
         <div className="imageWrapper">
           <img id={weapon.index} src={imageSrc} alt="ship" className="selectionImage"/>
         </div>

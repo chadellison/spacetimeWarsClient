@@ -22,7 +22,7 @@ export const GameOverModal = ({gameOverStats, updateState}) => {
       })}
       <GameButton
         className={'exitButton'}
-        onClick={() => updateState({modal: null, defenseData: { red: 10, blue: 10 }})}
+        onClick={() => window.location.reload()}
         buttonText={'Exit'}
       />
     </div>
