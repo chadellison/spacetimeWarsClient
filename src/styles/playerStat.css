@@ -69,3 +69,13 @@
   font-weight: bold;
   margin-bottom: 0.5em;
 }
+
+.redModifier {
+  color: #9c1616;
+  margin-left: 5px;
+}
+
+.greenModifier {
+  color: rgb(0, 255, 0);
+  margin-left: 5px;
+}

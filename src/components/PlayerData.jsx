@@ -31,17 +31,38 @@ const renderWeapon = (weaponIndex) => {
 
 const renderArmor = (player) => {
   if (player.armor >= 0) {
-    let value = player.armor
-    if (player.effects[7]) {
-      value += 4
+    let modifier;
+    if (player.effects[8]) {
+      modifier = '+4';
     }
-    return <PlayerStat image={UPGRADES[0].image} alt={'shield'} value={value} className="statInfo" />
+    return (
+      <PlayerStat
+        image={UPGRADES[0].image}
+        alt={'shield'}
+        value={player.armor}
+        className="statInfo"
+        modifier={modifier}
+      />
+    )
   }
 }
 const renderSpeed = (player) => {
   if (player.velocity) {
-    const value = player.effects[2] ? 1 : player.velocity;
-    return <PlayerStat image={UPGRADES[2].image} alt={'speedometer'} value={value} className="statInfo" />
+    let modifier;
+    if (player.effects[2]) {
+      modifier = '-' + (player.velocity - 1).toString()
+    } else if (player.effects[9]) {
+      modifier = '+4';
+    }
+    return (
+      <PlayerStat
+        image={UPGRADES[2].image}
+        alt={'speedometer'}
+        value={player.velocity}
+        className="statInfo"
+        modifier={modifier}
+      />
+    )
   }
 }
 

@@ -175,6 +175,7 @@ export const handleWeapons = (gameData, handleGameEvent) => {
   let newWeapons = [];
   gameData.weapons.forEach((weapon) => {
     let attacker = gameData.players[weapon.playerIndex];
+    // if attacker has effect.... then render weapon in location same  as attacker...
     weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
     if (weapon.id === 1) {
       if (Date.now() - weapon.deployedAt > 2000) {
