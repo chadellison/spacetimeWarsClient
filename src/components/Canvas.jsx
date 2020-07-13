@@ -226,7 +226,7 @@ class Canvas extends React.Component {
         {ABILITY_WEAPONS.map((weapon, index) => {
           return(
             <img ref={weapon.name}
-              src={weapon.animation.spriteImage}
+              src={weapon.animation ? weapon.animation.spriteImage : weapon.image}
               className="hidden"
               alt={weapon.name}
               key={`abilityWeapon${index}`}

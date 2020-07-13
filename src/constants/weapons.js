@@ -15,6 +15,7 @@ import blueFire from '../images/blueFire.png';
 import displayBlueFire from '../images/displayBlueFire.png';
 import plasmaCannon from '../images/plasmaCannon.png';
 import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
+import spaceMine from '../images/spaceMine.png';
 import nuclearBlastAnimation from '../images/nuclearBlastAnimation.png';
 import spaceMineAnimation from '../images/redMeteorAnimation.png';
 import lavaBlastAnimation from '../images/stunGunAnimation.png';
@@ -208,19 +209,20 @@ export const ABILITY_WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 0,
-    width: 60,
-    height: 30,
+    width: 80,
+    height: 40,
     damage: 600,
-    animation: {
-      coordinates: {x: 0, y: 0},
-      spriteImage: spaceMineAnimation,
-      width: 128,
-      height: 64,
-      rowCount: 4,
-      columnCount: 2,
-      rate: 1,
-      startRate: 1,
-      xOffset: 0,
-    }
+    image: spaceMine,
+    // animation: {
+    //   coordinates: {x: 0, y: 0},
+    //   spriteImage: spaceMineAnimation,
+    //   width: 128,
+    //   height: 64,
+    //   rowCount: 4,
+    //   columnCount: 2,
+    //   rate: 1,
+    //   startRate: 1,
+    //   xOffset: 0,
+    // }
   }
 ]
