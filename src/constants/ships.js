@@ -49,7 +49,7 @@ export const SHIPS = [
   {
     index: 1,
     name: 'hunterShip',
-    price: 550,
+    price: 750,
     armor: 0,
     hitpoints: 700,
     speed: 3,
@@ -85,10 +85,10 @@ export const SHIPS = [
   {
     index: 3,
     name: 'cruiserShip',
-    price: 875,
+    price: 500,
     armor: 1,
-    hitpoints: 800,
-    speed: 5.5,
+    hitpoints: 500,
+    speed: 4.5,
     shipCenter: {x: 60.5, y: 22.5},
     image: cruiserShip,
     blueImage: blueCruiserShip,
@@ -103,7 +103,7 @@ export const SHIPS = [
   {
     index: 4,
     name: 'carrierShip',
-    price: 825,
+    price: 900,
     armor: 2,
     hitpoints: 1000,
     speed: 3,
