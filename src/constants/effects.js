@@ -1,4 +1,5 @@
-import poisonAnimation from '../images/poisonAnimation.png'
+import poisonAnimation from '../images/greenGasAnimation.png'
+// import poisonAnimation from '../images/poisonAnimation.png'
 import healAnimation from '../images/healAnimation.png'
 import armorBoost from '../images/armorBoost.png'
 import coldAnimation from '../images/coldAnimation.png'
@@ -15,12 +16,12 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: poisonAnimation,
-      width: 128,
-      height: 128,
+      width: 256,
+      height: 256,
       renderWidth: 100,
       renderHeight: 100,
       rowCount: 4,
-      columnCount: 7,
+      columnCount: 4,
       rate: 1,
       startRate: 1,
       xOffset: 0
