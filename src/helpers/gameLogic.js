@@ -39,12 +39,11 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
 
 const updateAiShips = (aiShips, index, handleGameEvent, clockDifference) => {
   let updatedAiShips = [];
-  let leaked = {};
   [...aiShips].forEach((ship) => {
     if (ship.explodeAnimation !== 'complete') {
-      if (isLeak(ship)) {
+      if (isLeak(ship) && [0, 1].includes(index)) {
         const opponentTeam = ship.team === 'red' ? 'blue' : 'red'
-        leaked[ship.id] = opponentTeam
+        handleGameEvent({id: ship.id, team: opponentTeam, gameEvent: 'leak'});
       } else {
         ship = handleHitpoints(ship, index, handleGameEvent)
         updatePlayer(ship, ANAIMATION_FRAME_RATE, clockDifference)
@@ -54,7 +53,7 @@ const updateAiShips = (aiShips, index, handleGameEvent, clockDifference) => {
       }
     }
   });
-  handleLeak(handleGameEvent, leaked, index)
+
   return updatedAiShips;
 }
 
@@ -76,15 +75,6 @@ const updatePlayers = (gameState, handleGameEvent, updateState) => {
   });
 
   return updatedPlayers;
-}
-
-const handleLeak = (handleGameEvent, leaked, index) => {
-  const leakedIds = Object.keys(leaked)
-  if (leakedIds.length > 0 && index === 0) {
-    leakedIds.forEach((id) => {
-      handleGameEvent({id: id, team: leaked[id], gameEvent: 'leak'});
-    })
-  };
 }
 
 const isLeak = (player) => {
