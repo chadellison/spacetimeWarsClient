@@ -34,15 +34,13 @@ const handleExplodeEvent = (players, aiShips, playerData, elapsedTime) => {
   if (playerData.type === 'human') {
     let updatedPlayers = [...players];
     let player = updatedPlayers[playerData.index]
-    if (!player.explode) {
-      player = explodePlayer(player, playerData.updatedAt);
-    }
+    player = explodePlayer(player, playerData);
     updatedPlayers[playerData.index] = player
     return {players: updatedPlayers}
   } else {
     let updatedAiShips = [...aiShips].map((ship) => {
       if (playerData.id === ship.id && !ship.explode) {
-        ship = explodePlayer(ship, ship.updatedAt)
+        ship = explodePlayer(ship, ship)
       };
       return ship;
     });
@@ -64,16 +62,19 @@ const handleBuff = (playerData, players, aiShips, elapsedTime) => {
   return {players: updatedPlayers, gameBuff: gameBuff, aiShips: updatedAiShips};
 }
 
-const explodePlayer = (player, updatedAt) => {
+const explodePlayer = (player, playerData) => {
   player.hitpoints = 0;
   player.explodeAnimation = {x: 0, y: 0};
   player.explode = true;
-  player.updatedAt = updatedAt;
+  player.updatedAt = playerData.updatedAt;
+  player.explodedAt = playerData.explodedAt;
   player.accelerate = false;
   player.angle = 0;
   player.trajectory = 0;
   player.rotate = 'none';
   player.effects = {};
+  player.active = false;
+  player.gameEvent = 'waiting';
   return player;
 }
 

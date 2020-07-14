@@ -11,6 +11,7 @@ import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
 import {UPGRADES} from '../constants/upgrades.js';
 import {startEventPayload} from '../helpers/sendEventHelpers.js';
+import {findElapsedTime} from '../helpers/gameLogic.js';
 
 const handleClick = (updateState, handleGameEvent, activePlayer) => {
   if (activePlayer.gameEvent === 'waiting') {
@@ -87,8 +88,10 @@ const renderOptions = (activeTab, page, activePlayer, updateState, index, player
   }
 };
 
-const renderStart = (updateState, handleGameEvent, activePlayer) => {
-  if (activePlayer.shipIndex !== undefined && activePlayer.weaponIndex !== undefined && activePlayer.gameEvent !== 'explode') {
+const renderStart = (updateState, handleGameEvent, activePlayer, clockDifference) => {
+  const elapsedSeconds = findElapsedTime(clockDifference, activePlayer.explodedAt) / 1000;
+
+  if (activePlayer.shipIndex !== undefined && activePlayer.weaponIndex !== undefined && elapsedSeconds > 10) {
     return (
       <GameButton
         className={'selectionButton'}
@@ -128,6 +131,7 @@ export const SelectionModal = ({
   activeTab,
   updateState,
   activePlayer,
+  clockDifference,
   handleGameEvent,
 }) => {
   return (
@@ -135,7 +139,7 @@ export const SelectionModal = ({
       <div className="modalTabs">
         {renderTabs(activeTab, updateState, activePlayer)}
       </div>
-      {renderStart(updateState, handleGameEvent, activePlayer)}
+      {renderStart(updateState, handleGameEvent, activePlayer, clockDifference)}
       {renderOptions(activeTab, page, activePlayer, updateState, index, players)}
       <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />
     </div>

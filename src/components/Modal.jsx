@@ -15,6 +15,7 @@ export const Modal = ({
   updateState,
   activePlayer,
   gameOverStats,
+  clockDifference,
   handleGameEvent,
 }) => {
   switch (modal) {
@@ -28,6 +29,7 @@ export const Modal = ({
           index={index}
           players={players}
           activePlayer={activePlayer}
+          clockDifference={clockDifference}
         />
       );
     case 'instructions':

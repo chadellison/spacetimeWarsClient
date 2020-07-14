@@ -10,6 +10,7 @@ import {ShipIcon} from './ShipIcon';
 import {AbilityIcon} from './AbilityIcon';
 import {findElapsedTime} from '../helpers/gameLogic.js';
 import {SHIPS} from '../constants/ships';
+import {round} from '../helpers/mathHelpers';
 
 const renderShip = (activePlayer) => {
   if (activePlayer.shipIndex || activePlayer.shipIndex === 0) {
@@ -95,10 +96,10 @@ const renderAbilityIcon = (activePlayer, abilityUsedAt) => {
 };
 
 const PlayerData = ({activePlayer, clockDifference, updateState, players, defenseData, abilityUsedAt}) => {
-  const elapsedSeconds = findElapsedTime(clockDifference, activePlayer.updatedAt) / 1000;
+  const elapsedSeconds = findElapsedTime(clockDifference, activePlayer.explodedAt) / 1000;
   let countDown = 0;
   if (activePlayer.explode && elapsedSeconds < 10) {
-    countDown = Math.round(10 - elapsedSeconds);
+    countDown = round(10 - elapsedSeconds);
   }
 
   const {gold, damage} = activePlayer;

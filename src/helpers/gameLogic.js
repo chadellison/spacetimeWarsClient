@@ -82,27 +82,13 @@ const isLeak = (player) => {
 }
 
 const handleHitpoints = (player, index, handleGameEvent) => {
-  if (player.hitpoints <= 0 && !player.explode) {
-    const exploadedPlayer = {
-      ...player,
-      explode: true,
-      active: false,
-      gameEvent: 'explode',
-      explodeAnimation: {x: 0, y: 0},
-      effects: {},
-      hitpoints: 0,
-      accelerate: false,
-      angle: 0,
-      trajectory: 0,
-      rotate: 'none',
-    }
+  if (player.hitpoints <= 0 && !player.explode && player.gameEvent !== 'explode') {
     if (player.killedBy === index) {
-      handleGameEvent(exploadedPlayer);
+      player.gameEvent = 'explode';
+      handleGameEvent(player);
     }
-    return exploadedPlayer;
-  } else {
-    return player;
   }
+  return player;
 };
 
 export const canFire = (lastFired, cooldown) => {
@@ -114,7 +100,6 @@ const handleCountDownEnd = (currentPlayer, clockDifference) => {
     const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
     if (elapsedSeconds >= 10) {
       currentPlayer.explode = false;
-      currentPlayer.gameEvent = 'waiting';
     };
   };
 }
@@ -165,7 +150,6 @@ export const handleWeapons = (gameData, handleGameEvent) => {
   let newWeapons = [];
   gameData.weapons.forEach((weapon) => {
     let attacker = gameData.players[weapon.playerIndex];
-    // if attacker has effect.... then render weapon in location same  as attacker...
     weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
     if (weapon.id === 1) {
       if (Date.now() - weapon.deployedAt > 2000) {

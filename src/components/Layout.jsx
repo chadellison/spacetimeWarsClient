@@ -228,6 +228,7 @@ class Layout extends React.Component {
             activePlayer={activePlayer}
             gameOverStats={gameOverStats}
             updateState={this.updateState}
+            clockDifference={clockDifference}
             handleGameEvent={this.handleGameEvent}
           />}
           {activePlayer && <GameButton

@@ -12,6 +12,7 @@ export const addPlayer = (userId, players) => {
     type: 'human',
     accelerate: false,
     lastAccelerationTime: 0,
+    explodedAt: 0,
     kills: 0,
     rotate: 'none',
     explode: false,
