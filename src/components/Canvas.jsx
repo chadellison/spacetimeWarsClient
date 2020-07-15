@@ -15,7 +15,7 @@ import {
   BOARD_HEIGHT
 } from '../constants/settings.js';
 import {SHIPS, SUPPLY_SHIP, RED_BOMBER, BLUE_BOMBER} from '../constants/ships.js';
-import {WEAPONS, ABILITY_WEAPONS, WEAPON_ANIMATIONS} from '../constants/weapons.js';
+import {WEAPONS, ABILITY_WEAPONS, EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 
 class Canvas extends React.Component {
@@ -57,7 +57,7 @@ class Canvas extends React.Component {
     const blueFire = this.refs.blueFire
     const plasmaCannon = this.refs.plasmaCannon
     const supplyShip = this.refs.supplyShip
-    const explosion = this.refs.explosion
+    const shipExplosion = this.refs.shipExplosion
     const poison = this.refs.poison
     const slow = this.refs.slow
     const stun = this.refs.stun
@@ -68,7 +68,7 @@ class Canvas extends React.Component {
     const lavaBlast = this.refs.lavaBlast
     const spaceMine = this.refs.spaceMine
     const spaceMineExplosion = this.refs.spaceMineExplosion
-    const nuclearExplosionAnimation = this.refs.nuclearExplosionAnimation
+    const nuclearExplosion = this.refs.nuclearExplosion
 
     this.setState({
       canvas: canvas,
@@ -111,8 +111,8 @@ class Canvas extends React.Component {
       lavaBlast: lavaBlast,
       spaceMine: spaceMine,
       spaceMineExplosion: spaceMineExplosion,
-      nuclearExplosionAnimation: nuclearExplosionAnimation,
-      explosion: explosion,
+      nuclearExplosion: nuclearExplosion,
+      shipExplosion: shipExplosion,
       supplyShip: supplyShip,
       halfWindowWidth: round(window.innerWidth / 2),
       halfWindowHeight: round(window.innerHeight / 2)
@@ -163,7 +163,7 @@ class Canvas extends React.Component {
           .filter((effect) => [1, 2, 4, 7, 8].includes(effect.id))
           .forEach((effect) => renderAnimation(context, this.state[effect.name], effect.animation, player.location))
         } else if (player.explode && player.explodeAnimation !== 'complete') {
-          renderAnimation(context, this.state.explosion, player.explodeAnimation, player.location)
+          renderAnimation(context, this.state.shipExplosion, player.explodeAnimation, player.location)
         };
         renderPlayerData(gameBuff, context, player, showShip);
       };
@@ -239,7 +239,7 @@ class Canvas extends React.Component {
             />
           );
         })}
-        {WEAPON_ANIMATIONS.map((weaponAnimation, index) => {
+        {EXPLOSION_ANIMATIONS.map((weaponAnimation, index) => {
           return(
             <img ref={weaponAnimation.name}
               src={weaponAnimation.spriteImage}

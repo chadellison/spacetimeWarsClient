@@ -7,7 +7,7 @@ import {
   mineTriggerSound
 } from '../constants/settings.js';
 import {SHIPS} from '../constants/ships.js';
-import {WEAPONS, WEAPON_ANIMATIONS} from '../constants/weapons.js';
+import {WEAPONS, EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
 import {handleEffects, updateGameBuff} from '../helpers/effectHelpers';
@@ -177,7 +177,7 @@ export const handleWeapons = (gameData, handleGameEvent) => {
         applyHitToAll(gameData.aiShips, weapon, attacker, handleGameEvent)
 
         playSound(explosionSound);
-        const nuclearBlastAnimation = {...WEAPON_ANIMATIONS[1], location: weapon.location, coordinates: {...WEAPON_ANIMATIONS[1].coordinates}}
+        const nuclearBlastAnimation = {...EXPLOSION_ANIMATIONS[1], location: weapon.location, coordinates: {...EXPLOSION_ANIMATIONS[1].coordinates}}
         gameData.animations.push(nuclearBlastAnimation);
         weapon.removed = true
       }
@@ -191,7 +191,7 @@ export const handleWeapons = (gameData, handleGameEvent) => {
     if (!weapon.removed) {
       newWeapons.push(weapon);
     } else if (weapon.id === 3) {
-      const mineExplosionAnimation = {...WEAPON_ANIMATIONS[0], location: weapon.location, coordinates: {...WEAPON_ANIMATIONS[0].coordinates}}
+      const mineExplosionAnimation = {...EXPLOSION_ANIMATIONS[0], location: weapon.location, coordinates: {...EXPLOSION_ANIMATIONS[0].coordinates}}
       gameData.animations.push(mineExplosionAnimation);
     }
   });

@@ -224,7 +224,7 @@ export const ABILITY_WEAPONS = [
   }
 ]
 
-export const WEAPON_ANIMATIONS = [
+export const EXPLOSION_ANIMATIONS = [
   {
     id: 1,
     name: 'spaceMineExplosion',
@@ -244,7 +244,7 @@ export const WEAPON_ANIMATIONS = [
   },
   {
     id: 2,
-    name: 'nuclearExplosionAnimation',
+    name: 'nuclearExplosion',
     location: {x: 0, y: 0},
     coordinates: {x: 0, y: 0},
     spriteImage: nuclearExplosionAnimation,
@@ -261,7 +261,7 @@ export const WEAPON_ANIMATIONS = [
   },
   {
     id: 3,
-    name: 'explosion',
+    name: 'shipExplosion',
     location: {x: 0, y: 0},
     coordinates: {x: 0, y: 0},
     spriteImage: shipExplosionAnimation,
