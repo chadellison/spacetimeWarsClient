@@ -46,7 +46,8 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
 const handleAnimations = (animations) => {
   let updatedAnimations = []
   animations.forEach((animation) => {
-    if (updateAnimation(animation) !== 'complete') {
+    animation = updateAnimation(animation);
+    if (!animation.complete) {
       updatedAnimations.push(animation);
     }
   });
@@ -56,7 +57,7 @@ const handleAnimations = (animations) => {
 const updateAiShips = (aiShips, index, handleGameEvent, clockDifference) => {
   let updatedAiShips = [];
   [...aiShips].forEach((ship) => {
-    if (ship.explodeAnimation !== 'complete') {
+    if (!ship.explodeAnimation.complete) {
       if (isLeak(ship) && [0, 1].includes(index)) {
         const opponentTeam = ship.team === 'red' ? 'blue' : 'red'
         handleGameEvent({id: ship.id, team: opponentTeam, gameEvent: 'leak'});
@@ -88,7 +89,7 @@ const updatePlayers = (gameState, handleGameEvent, updateState) => {
       }
       handleWall(player);
       handleEffects(player)
-    } else if (player.explode && player.explodeAnimation !== 'complete') {
+    } else if (player.explode && !player.explodeAnimation.complete) {
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
       player.explodeAnimation = updateAnimation(player.explodeAnimation);
     }
@@ -248,9 +249,7 @@ const applyHit = (player, weapon, attacker, handleGameEvent) => {
     console.log('BLAM!');
     updateCollisionData(player, weapon, attacker, handleGameEvent)
   }
-  if (weapon.id !== 4 || weapon.animation === 'complete') {
-    weapon.removed = true
-  }
+  weapon.removed = true
 };
 
 const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {

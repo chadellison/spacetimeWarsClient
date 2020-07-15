@@ -90,7 +90,12 @@ const handleLeakEvent = (playerData, players) => {
 
 const handleGameOver = (players, playerData) => {
   const updatedPlayers = players.map((player) => {
-    return {...player, explode: true, active: false, explodeAnimation: {x: 0, y: 0}}
+    return {
+      ...player,
+      explode: true,
+      active: false,
+      explodeAnimation: {...EXPLOSION_ANIMATIONS[2], coordinates: {x: 0, y: 0}}
+    }
   });
   const winningTeam = playerData.team === 'red' ? 'blue' : 'red'
   return {

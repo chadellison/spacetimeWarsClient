@@ -16,7 +16,7 @@ export const updateFrame = (animation) => {
 
 export const updateAnimation = (animation) => {
   if (animation.coordinates.x >= animation.width * (animation.rowCount - 1) && animation.coordinates.y >= animation.height * (animation.columnCount - 1)) {
-    animation = 'complete'
+    animation.complete = true
   } else if (animation.coordinates.x >= animation.width * (animation.rowCount - 1)) {
     animation.coordinates.x = 0
     animation.coordinates.y += animation.height

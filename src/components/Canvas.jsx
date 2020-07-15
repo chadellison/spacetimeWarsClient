@@ -160,10 +160,10 @@ class Canvas extends React.Component {
           handleInvisibleFilter(context, player, index);
           drawShip(context, player, this.handleImage(player), this.state.warpSpeed);
           Object.values(player.effects)
-          .filter((effect) => [1, 2, 4, 7, 8].includes(effect.id))
-          .forEach((effect) => renderAnimation(context, this.state[effect.name], effect.animation, player.location))
-        } else if (player.explode && player.explodeAnimation !== 'complete') {
-          renderAnimation(context, this.state.shipExplosion, player.explodeAnimation, player.location)
+            .filter((effect) => [1, 2, 4, 7, 8].includes(effect.id))
+            .forEach((effect) => renderAnimation(context, this.state[effect.name], effect.animation, player.location))
+        } else if (player.explode && !player.explodeAnimation.complete) {
+          renderAnimation(context, this.state.shipExplosion, player.explodeAnimation, player.location);
         };
         renderPlayerData(gameBuff, context, player, showShip);
       };
