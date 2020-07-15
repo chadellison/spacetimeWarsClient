@@ -23,9 +23,6 @@ export const BOARD_HEIGHT = 1125;
 export const ANAIMATION_FRAME_RATE = 40;
 export const REQUEST_COUNT = 10;
 export const DRIFT = 2;
-export const SPRITE_WIDTH = 256;
-export const SPRITE_ROW_COUNT = 8;
-export const SPRITE_COLUMN_COUNT = 6;
 
 export const thruster = new Audio(thrusterAudio);
 thruster.loop = true;

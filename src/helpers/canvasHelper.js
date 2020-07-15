@@ -1,4 +1,3 @@
-import {SPRITE_WIDTH} from '../constants/settings.js';
 import {findColor} from '../helpers/colorHelpers.js';
 import {round} from '../helpers/mathHelpers.js';
 
@@ -33,18 +32,7 @@ export const handleAnimatedWeapon = (context, weapon, spriteImage) => {
   context.translate(cx, cy);
   context.rotate((Math.PI / 180) * weapon.trajectory);
   context.translate(-cx, -cy);
-
-  context.drawImage(
-    spriteImage,
-    weapon.animation.coordinates.x,
-    weapon.animation.coordinates.y,
-    weapon.animation.width,
-    weapon.animation.height,
-    weapon.location.x,
-    weapon.location.y,
-    weapon.width,
-    weapon.height
-  )
+  renderAnimation(context, spriteImage, weapon.animation, weapon.location);
 }
 
 export const handleDirection = (context, image, location, trajectory) => {
@@ -92,20 +80,6 @@ export const handleInvisibleFilter = (context, player, index) => {
     context.filter = 'none';
   }
 }
-
-export const renderExplosion = (context, explosion, player) => {
-  context.drawImage(
-    explosion,
-    player.explodeAnimation.x,
-    player.explodeAnimation.y,
-    SPRITE_WIDTH,
-    SPRITE_WIDTH,
-    player.location.x,
-    player.location.y,
-    200,
-    200
-  )
-};
 
 export const renderAnimation = (context, spriteImage, animation, location) => {
   context.drawImage(

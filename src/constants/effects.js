@@ -149,7 +149,8 @@ export const GAME_EFFECTS = [
       columnCount: 2,
       rate: 1,
       startRate: 1,
-      xOffset: -30
+      xOffset: -30,
+      yOffset: 0,
     }
   }
 ]

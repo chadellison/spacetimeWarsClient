@@ -2,7 +2,6 @@ import React from 'react';
 import {
   drawShip,
   shouldRenderShip,
-  renderExplosion,
   renderPlayerData,
   renderAnimation,
   handleInvisibleFilter,
@@ -10,7 +9,6 @@ import {
 } from '../helpers/canvasHelper.js';
 import {canAbsorbDamage} from '../helpers/itemHelpers.js';
 import '../styles/styles.css';
-import explodeAnimation from '../images/explosion.png';
 import {round} from '../helpers/mathHelpers.js';
 import {
   BOARD_WIDTH,
@@ -164,8 +162,8 @@ class Canvas extends React.Component {
           Object.values(player.effects)
           .filter((effect) => [1, 2, 4, 7, 8].includes(effect.id))
           .forEach((effect) => renderAnimation(context, this.state[effect.name], effect.animation, player.location))
-        } else if (player.explode) {
-          renderExplosion(context, this.state.explosion, player);
+        } else if (player.explode && player.explodeAnimation !== 'complete') {
+          renderAnimation(context, this.state.explosion, player.explodeAnimation, player.location)
         };
         renderPlayerData(gameBuff, context, player, showShip);
       };
@@ -265,7 +263,6 @@ class Canvas extends React.Component {
         <img ref={SUPPLY_SHIP.name} src={SUPPLY_SHIP.image} className="hidden" alt={SUPPLY_SHIP.name} />
         <img ref={RED_BOMBER.name} src={RED_BOMBER.image} className="hidden" alt={RED_BOMBER.name} />
         <img ref={BLUE_BOMBER.name} src={BLUE_BOMBER.image} className="hidden" alt={BLUE_BOMBER.name} />
-        <img ref="explosion" src={explodeAnimation} className="hidden" alt="explosion" />
       </div>
     );
   };

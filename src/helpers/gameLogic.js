@@ -11,16 +11,15 @@ import {WEAPONS, WEAPON_ANIMATIONS} from '../constants/weapons.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
 import {handleEffects, updateGameBuff} from '../helpers/effectHelpers';
-import {handleExplodeUpdate, updateAnimation} from '../helpers/animationHelpers';
+import {updateAnimation} from '../helpers/animationHelpers';
 import {round} from '../helpers/mathHelpers.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
 import {playSound} from '../helpers/audioHelpers.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   let deployedWeapons = [...gameState.deployedWeapons];
-  let updatedAnimations = [...gameState.animations];
   const {clockDifference, gameBuff, index, aiShips} = gameState;
-
+  let updatedAnimations = [...gameState.animations];
   let updatedPlayers = updatePlayers(gameState, handleGameEvent, updateState);
   let updatedAiShips = updateAiShips(aiShips, index, handleGameEvent, clockDifference);
 
@@ -62,10 +61,14 @@ const updateAiShips = (aiShips, index, handleGameEvent, clockDifference) => {
         const opponentTeam = ship.team === 'red' ? 'blue' : 'red'
         handleGameEvent({id: ship.id, team: opponentTeam, gameEvent: 'leak'});
       } else {
-        ship = handleHitpoints(ship, index, handleGameEvent)
+        if (ship.explode) {
+          ship.explodeAnimation = updateAnimation(ship.explodeAnimation);
+        } else {
+          ship = handleHitpoints(ship, index, handleGameEvent)
+          handleWall(ship);
+          handleEffects(ship)
+        }
         updatePlayer(ship, ANAIMATION_FRAME_RATE, clockDifference)
-        handleWall(ship);
-        handleEffects(ship)
         updatedAiShips.push(ship);
       }
     }
@@ -87,6 +90,7 @@ const updatePlayers = (gameState, handleGameEvent, updateState) => {
       handleEffects(player)
     } else if (player.explode && player.explodeAnimation !== 'complete') {
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
+      player.explodeAnimation = updateAnimation(player.explodeAnimation);
     }
     return player
   });
@@ -148,7 +152,6 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
     const trajectory = player.accelerate ? player.angle : player.trajectory;
     player.location = handleLocation(trajectory, player.location, distance);
   }
-  player.explodeAnimation = handleExplodeUpdate(player.explode, player.explodeAnimation);
   if (player.type === 'human') {
     handleItems(player);
   }

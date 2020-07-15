@@ -1,6 +1,7 @@
 import {handleFireWeapon, updatePlayer} from '../helpers/gameLogic.js';
 import {applyGameBuff} from '../helpers/effectHelpers.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
+import {WEAPON_ANIMATIONS} from '../constants/weapons.js';
 import {playSound, stopSound} from '../helpers/audioHelpers.js';
 import {handleAbility} from '../helpers/abilityHelpers.js';
 import {
@@ -64,7 +65,7 @@ const handleBuff = (playerData, players, aiShips, elapsedTime) => {
 
 const explodePlayer = (player, playerData) => {
   player.hitpoints = 0;
-  player.explodeAnimation = {x: 0, y: 0};
+  player.explodeAnimation = {...WEAPON_ANIMATIONS[2], coordinates: {x: 0, y: 0}}
   player.explode = true;
   player.updatedAt = playerData.updatedAt;
   player.explodedAt = playerData.explodedAt;

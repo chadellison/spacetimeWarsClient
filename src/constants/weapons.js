@@ -19,6 +19,7 @@ import spaceMine from '../images/spaceMine.png';
 import nuclearExplosionAnimation from '../images/nuclearExplosionAnimation.png';
 import mineExplosionAnimation from '../images/mineExplosionAnimation.png';
 import nuclearBlastAnimation from '../images/nuclearBlastAnimation.png';
+import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
 import lavaBlastAnimation from '../images/stunGunAnimation.png';
 
 import cannonAudio from '../audio/cannon.wav';
@@ -180,6 +181,8 @@ export const ABILITY_WEAPONS = [
       columnCount: 2,
       rate: 1,
       startRate: 1,
+      renderWidth: 80,
+      renderHeight: 40,
       xOffset: 0,
       yOffset: 0,
     }
@@ -201,6 +204,8 @@ export const ABILITY_WEAPONS = [
       rowCount: 4,
       columnCount: 2,
       rate: 1,
+      renderWidth: 120,
+      renderHeight: 60,
       startRate: 1,
       xOffset: 0,
       yOffset: 0,
@@ -253,5 +258,22 @@ export const WEAPON_ANIMATIONS = [
     yOffset: -500,
     renderWidth: 1000,
     renderHeight: 1000,
+  },
+  {
+    id: 3,
+    name: 'explosion',
+    location: {x: 0, y: 0},
+    coordinates: {x: 0, y: 0},
+    spriteImage: shipExplosionAnimation,
+    width: 256,
+    height: 256,
+    rowCount: 36,
+    columnCount: 1,
+    rate: 0,
+    startRate: 0,
+    xOffset: 0,
+    yOffset: 0,
+    renderWidth: 200,
+    renderHeight: 200,
   }
 ]
