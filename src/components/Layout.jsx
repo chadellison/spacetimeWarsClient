@@ -36,6 +36,7 @@ const DEFAULT_STATE = {
   defenseData: { red: 10, blue: 10 },
   abilityUsedAt: 0,
   aiShips: [],
+  animations: [],
 };
 
 class Layout extends React.Component {
@@ -206,6 +207,7 @@ class Layout extends React.Component {
       players,
       gameBuff,
       activeTab,
+      animations,
       defenseData,
       abilityUsedAt,
       gameOverStats,
@@ -250,6 +252,7 @@ class Layout extends React.Component {
             index={index}
             aiShips={aiShips}
             gameBuff={gameBuff}
+            animations={animations}
           />
         </div>
       </div>

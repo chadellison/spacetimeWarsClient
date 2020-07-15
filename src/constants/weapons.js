@@ -16,8 +16,9 @@ import displayBlueFire from '../images/displayBlueFire.png';
 import plasmaCannon from '../images/plasmaCannon.png';
 import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
 import spaceMine from '../images/spaceMine.png';
+import nuclearExplosionAnimation from '../images/nuclearExplosionAnimation.png';
+import mineExplosionAnimation from '../images/mineExplosionAnimation.png';
 import nuclearBlastAnimation from '../images/nuclearBlastAnimation.png';
-import spaceMineAnimation from '../images/redMeteorAnimation.png';
 import lavaBlastAnimation from '../images/stunGunAnimation.png';
 
 import cannonAudio from '../audio/cannon.wav';
@@ -180,6 +181,7 @@ export const ABILITY_WEAPONS = [
       rate: 1,
       startRate: 1,
       xOffset: 0,
+      yOffset: 0,
     }
   },
   {
@@ -201,6 +203,7 @@ export const ABILITY_WEAPONS = [
       rate: 1,
       startRate: 1,
       xOffset: 0,
+      yOffset: 0,
     }
   },
   {
@@ -212,17 +215,43 @@ export const ABILITY_WEAPONS = [
     width: 80,
     height: 40,
     damage: 600,
-    image: spaceMine,
-    // animation: {
-    //   coordinates: {x: 0, y: 0},
-    //   spriteImage: spaceMineAnimation,
-    //   width: 128,
-    //   height: 64,
-    //   rowCount: 4,
-    //   columnCount: 2,
-    //   rate: 1,
-    //   startRate: 1,
-    //   xOffset: 0,
-    // }
+    image: spaceMine
+  }
+]
+
+export const WEAPON_ANIMATIONS = [
+  {
+    id: 1,
+    name: 'spaceMineExplosion',
+    location: {x: 0, y: 0},
+    coordinates: {x: 0, y: 0},
+    spriteImage: mineExplosionAnimation,
+    width: 256,
+    height: 256,
+    rowCount: 36,
+    columnCount: 1,
+    rate: 0,
+    startRate: 0,
+    xOffset: -100,
+    yOffset: -100,
+    renderWidth: 200,
+    renderHeight: 200,
+  },
+  {
+    id: 2,
+    name: 'nuclearExplosionAnimation',
+    location: {x: 0, y: 0},
+    coordinates: {x: 0, y: 0},
+    spriteImage: nuclearExplosionAnimation,
+    width: 256,
+    height: 256,
+    rowCount: 36,
+    columnCount: 1,
+    rate: 0,
+    startRate: 0,
+    xOffset: -500,
+    yOffset: -500,
+    renderWidth: 1000,
+    renderHeight: 1000,
   }
 ]

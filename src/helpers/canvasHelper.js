@@ -6,7 +6,7 @@ export const drawShip = (context, player, ship, warpSpeed) => {
   handleDirection(context, ship, player.location, player.angle)
   if (player.accelerate) {
     if (player.effects[9]) {
-      renderAnimation(context, warpSpeed, player.effects[9], player)
+      renderAnimation(context, warpSpeed, player.effects[9].animation, player.location)
     } else {
       handleAcceleration(context, player, ship);
     }
@@ -107,17 +107,17 @@ export const renderExplosion = (context, explosion, player) => {
   )
 };
 
-export const renderAnimation = (context, spriteImage, effect, player) => {
+export const renderAnimation = (context, spriteImage, animation, location) => {
   context.drawImage(
     spriteImage,
-    effect.animation.coordinates.x,
-    effect.animation.coordinates.y,
-    effect.animation.width,
-    effect.animation.height,
-    player.location.x + effect.animation.xOffset,
-    player.location.y,
-    effect.animation.renderWidth,
-    effect.animation.renderHeight
+    animation.coordinates.x,
+    animation.coordinates.y,
+    animation.width,
+    animation.height,
+    location.x + animation.xOffset,
+    location.y + animation.yOffset,
+    animation.renderWidth,
+    animation.renderHeight
   )
 }
 

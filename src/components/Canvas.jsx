@@ -6,7 +6,7 @@ import {
   renderPlayerData,
   renderAnimation,
   handleInvisibleFilter,
-  renderWeapon
+  renderWeapon,
 } from '../helpers/canvasHelper.js';
 import {canAbsorbDamage} from '../helpers/itemHelpers.js';
 import '../styles/styles.css';
@@ -17,7 +17,7 @@ import {
   BOARD_HEIGHT
 } from '../constants/settings.js';
 import {SHIPS, SUPPLY_SHIP, RED_BOMBER, BLUE_BOMBER} from '../constants/ships.js';
-import {WEAPONS, ABILITY_WEAPONS} from '../constants/weapons.js';
+import {WEAPONS, ABILITY_WEAPONS, WEAPON_ANIMATIONS} from '../constants/weapons.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 
 class Canvas extends React.Component {
@@ -69,6 +69,8 @@ class Canvas extends React.Component {
     const nuclearBlast = this.refs.nuclearBlast
     const lavaBlast = this.refs.lavaBlast
     const spaceMine = this.refs.spaceMine
+    const spaceMineExplosion = this.refs.spaceMineExplosion
+    const nuclearExplosionAnimation = this.refs.nuclearExplosionAnimation
 
     this.setState({
       canvas: canvas,
@@ -110,6 +112,8 @@ class Canvas extends React.Component {
       nuclearBlast: nuclearBlast,
       lavaBlast: lavaBlast,
       spaceMine: spaceMine,
+      spaceMineExplosion: spaceMineExplosion,
+      nuclearExplosionAnimation: nuclearExplosionAnimation,
       explosion: explosion,
       supplyShip: supplyShip,
       halfWindowWidth: round(window.innerWidth / 2),
@@ -159,7 +163,7 @@ class Canvas extends React.Component {
           drawShip(context, player, this.handleImage(player), this.state.warpSpeed);
           Object.values(player.effects)
           .filter((effect) => [1, 2, 4, 7, 8].includes(effect.id))
-          .forEach((effect) => renderAnimation(context, this.state[effect.name], effect, player))
+          .forEach((effect) => renderAnimation(context, this.state[effect.name], effect.animation, player.location))
         } else if (player.explode) {
           renderExplosion(context, this.state.explosion, player);
         };
@@ -171,6 +175,10 @@ class Canvas extends React.Component {
       if (weapon.id !== 3 || (currentPlayer && weapon.team === currentPlayer.team)) {
         renderWeapon(context, weapon, this.state[weapon.name])
       }
+    });
+
+    this.props.animations.forEach((animation) => {
+      renderAnimation(context, this.state[animation.name], animation, animation.location);
     });
   }
 
@@ -230,6 +238,16 @@ class Canvas extends React.Component {
               className="hidden"
               alt={weapon.name}
               key={`abilityWeapon${index}`}
+            />
+          );
+        })}
+        {WEAPON_ANIMATIONS.map((weaponAnimation, index) => {
+          return(
+            <img ref={weaponAnimation.name}
+              src={weaponAnimation.spriteImage}
+              className="hidden"
+              alt={weaponAnimation.name}
+              key={`weaponAnimation${index}`}
             />
           );
         })}

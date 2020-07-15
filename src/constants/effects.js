@@ -1,5 +1,4 @@
 import poisonAnimation from '../images/greenGasAnimation.png'
-// import poisonAnimation from '../images/poisonAnimation.png'
 import healAnimation from '../images/healAnimation.png'
 import armorBoost from '../images/armorBoost.png'
 import coldAnimation from '../images/coldAnimation.png'
@@ -24,7 +23,8 @@ export const GAME_EFFECTS = [
       columnCount: 4,
       rate: 1,
       startRate: 1,
-      xOffset: 0
+      xOffset: 0,
+      yOffset: 0,
     }
   },
   {
@@ -44,7 +44,8 @@ export const GAME_EFFECTS = [
       columnCount: 3,
       rate: 0,
       startRate: 0,
-      xOffset: 0
+      xOffset: 0,
+      yOffset: 0,
     }
   },
   {
@@ -72,7 +73,8 @@ export const GAME_EFFECTS = [
       columnCount: 3,
       rate: 2,
       startRate: 2,
-      xOffset: 0
+      xOffset: 0,
+      yOffset: 0,
     }
   },
   {
@@ -106,7 +108,8 @@ export const GAME_EFFECTS = [
       columnCount: 6,
       rate: 1,
       startRate: 1,
-      xOffset: 0
+      xOffset: 0,
+      yOffset: 0,
     }
   },
   {
@@ -126,7 +129,8 @@ export const GAME_EFFECTS = [
       columnCount: 1,
       rate: 1,
       startRate: 1,
-      xOffset: 0
+      xOffset: 0,
+      yOffset: 0,
     }
   },
   {

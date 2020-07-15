@@ -7,24 +7,30 @@ import {
   mineTriggerSound
 } from '../constants/settings.js';
 import {SHIPS} from '../constants/ships.js';
-import {WEAPONS} from '../constants/weapons.js';
+import {WEAPONS, WEAPON_ANIMATIONS} from '../constants/weapons.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
 import {handleEffects, updateGameBuff} from '../helpers/effectHelpers';
-import {handleExplodeUpdate} from '../helpers/animationHelpers';
+import {handleExplodeUpdate, updateAnimation} from '../helpers/animationHelpers';
 import {round} from '../helpers/mathHelpers.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
 import {playSound} from '../helpers/audioHelpers.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   let deployedWeapons = [...gameState.deployedWeapons];
+  let updatedAnimations = [...gameState.animations];
   const {clockDifference, gameBuff, index, aiShips} = gameState;
 
   let updatedPlayers = updatePlayers(gameState, handleGameEvent, updateState);
   let updatedAiShips = updateAiShips(aiShips, index, handleGameEvent, clockDifference);
 
   const filteredWeapons = removeOutOfBoundsShots(deployedWeapons);
-  let gameData = {players: updatedPlayers, weapons: filteredWeapons, aiShips: updatedAiShips}
+  let gameData = {
+    players: updatedPlayers,
+    weapons: filteredWeapons,
+    aiShips: updatedAiShips,
+    animations: updatedAnimations
+  }
   gameData = handleWeapons(gameData, handleGameEvent);
 
   handleCountDownEnd(gameData.players[index], clockDifference);
@@ -33,9 +39,20 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
     players: gameData.players,
     aiShips: gameData.aiShips,
     deployedWeapons: gameData.weapons,
-    gameBuff: updateGameBuff(gameBuff)
+    gameBuff: updateGameBuff(gameBuff),
+    animations: handleAnimations(gameData.animations),
   };
 };
+
+const handleAnimations = (animations) => {
+  let updatedAnimations = []
+  animations.forEach((animation) => {
+    if (updateAnimation(animation) !== 'complete') {
+      updatedAnimations.push(animation);
+    }
+  });
+  return updatedAnimations;
+}
 
 const updateAiShips = (aiShips, index, handleGameEvent, clockDifference) => {
   let updatedAiShips = [];
@@ -157,9 +174,11 @@ export const handleWeapons = (gameData, handleGameEvent) => {
         applyHitToAll(gameData.aiShips, weapon, attacker, handleGameEvent)
 
         playSound(explosionSound);
+        const nuclearBlastAnimation = {...WEAPON_ANIMATIONS[1], location: weapon.location, coordinates: {...WEAPON_ANIMATIONS[1].coordinates}}
+        gameData.animations.push(nuclearBlastAnimation);
         weapon.removed = true
       }
-    } else {
+    } else if (weapon.id !== 4) {
       handleCollision(gameData.players, weapon, attacker, handleGameEvent)
       handleCollision(gameData.aiShips, weapon, attacker, handleGameEvent)
     }
@@ -168,6 +187,9 @@ export const handleWeapons = (gameData, handleGameEvent) => {
     }
     if (!weapon.removed) {
       newWeapons.push(weapon);
+    } else if (weapon.id === 3) {
+      const mineExplosionAnimation = {...WEAPON_ANIMATIONS[0], location: weapon.location, coordinates: {...WEAPON_ANIMATIONS[0].coordinates}}
+      gameData.animations.push(mineExplosionAnimation);
     }
   });
   gameData.weapons = newWeapons;
@@ -223,7 +245,9 @@ const applyHit = (player, weapon, attacker, handleGameEvent) => {
     console.log('BLAM!');
     updateCollisionData(player, weapon, attacker, handleGameEvent)
   }
-  weapon.removed = true
+  if (weapon.id !== 4 || weapon.animation === 'complete') {
+    weapon.removed = true
+  }
 };
 
 const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
