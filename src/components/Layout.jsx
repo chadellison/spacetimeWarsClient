@@ -121,6 +121,7 @@ class Layout extends React.Component {
 
   handleGameEvent = (eventPayload) => {
     this.state.gameSocket.create(eventPayload);
+    this.setState({testTime: Date.now()})
   };
 
   updateState = (newState) => {
@@ -150,8 +151,8 @@ class Layout extends React.Component {
       } else {
         const currentPlayer = players[index]
         if (currentPlayer && currentPlayer.active && !this.state[pressedKey]) {
-          keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState);
           this.setState({[pressedKey]: true})
+          keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState);
         }
       };
     }
@@ -161,13 +162,15 @@ class Layout extends React.Component {
     const currentPlayer = this.state.players[this.state.index]
     const pressedKey = KEY_MAP[event.keyCode];
     if (currentPlayer && currentPlayer.active && !this.state.modal && this.state[pressedKey]) {
-      keyUpEventPayload(pressedKey, this.state, this.handleGameEvent, this.updateState)
       this.setState({[pressedKey]: false});
+      keyUpEventPayload(pressedKey, this.state, this.handleGameEvent, this.updateState)
     };
   };
 
   handleReceivedEvent = (playerData) => {
-    const elapsedTime = findElapsedTime(this.state.clockDifference, playerData.updatedAt);
+    // consider adding shortestRoundTripTime / 2 to elapsedTime
+    console.log('TEST TIME: ', Date.now() - this.state.testTime)
+    const elapsedTime = findElapsedTime(this.state.clockDifference, playerData.updatedAt - (this.state.shortestRoundTripTime / 2));
     const gameState = handleEventPayload(this.state, playerData, elapsedTime);
 
     this.setState(gameState);

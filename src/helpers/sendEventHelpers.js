@@ -1,6 +1,9 @@
 import {WEAPONS} from '../constants/weapons.js';
 import {SHIPS} from '../constants/ships.js';
-import {canFire} from '../helpers/gameLogic.js';
+import {canFire, updatePlayer, handleFireWeapon} from '../helpers/gameLogic.js';
+import {playSound, stopSound} from '../helpers/audioHelpers.js';
+import {thruster} from '../constants/settings.js';
+
 import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
@@ -32,61 +35,99 @@ export const keyUpEventPayload = (
   handleGameEvent,
   updateState
 ) => {
-  const {players, index} = gameState;
-  const currentPlayer = players[index]
-  if (['right', 'left'].includes(pressedKey) && currentPlayer.name) {
-    handleGameEvent({
-      ...currentPlayer,
-      gameEvent: pressedKey + 'Stop',
-      rotate: 'none'
-    });
-  };
+  const {players, index, up, left, right} = gameState;
+  let updatedPlayer = handlePlayerPosition({...players[index]}, up, left, right)
+  let updatedPlayers = [...players]
 
-  if (pressedKey === 'up') {
-    const player = {
-      ...currentPlayer,
-      gameEvent: 'upStop',
-      accelerate: false,
-      trajectory: currentPlayer.angle
-    }
-    handleGameEvent(player);
+  switch (pressedKey) {
+    case 'left':
+    case 'right':
+      updatedPlayer.gameEvent = pressedKey + 'Stop'
+      queueForPlayerUpdate(updatedPlayers, updatedPlayer, updateState, handleGameEvent);
+      break;
+    case 'up':
+      updatedPlayer.gameEvent = 'upStop';
+      updatedPlayer.trajectory = updatedPlayer.angle;
+
+      queueForPlayerUpdate(updatedPlayers, updatedPlayer, updateState, handleGameEvent, () => stopSound(thruster));
+      break;
+    case 'space':
+      updatedPlayer.gameEvent = 'fireStop';
+      queueForPlayerUpdate(updatedPlayers, updatedPlayer, updateState, handleGameEvent);
+      break;
+    default:
+      break;
   }
-
-  if ('space' === pressedKey && currentPlayer.name) {
-    const updatedPlayer = {
-      ...currentPlayer,
-      gameEvent: 'fireStop'
-    };
-    handleGameEvent(updatedPlayer);
-  };
 };
 
+const handlePlayerPosition = (player, up, left, right) => {
+  let rotate = 'none';
+  if (left) {
+    rotate = 'left';
+  }
+  if (right) {
+    rotate = 'right';
+  }
+
+  return {
+    ...player,
+    rotate,
+    accelerate: up
+  }
+}
+
 const handleRotateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
-  const {players, index} = gameState;
-  const currentPlayer = players[index]
-  if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
-    const player = rotateEventPayload(currentPlayer, pressedKey);
-    handleGameEvent(player);
-  };
+  const {players, index, up, left, right} = gameState;
+  let updatedPlayers = [...players];
+  let updatedPlayer = handlePlayerPosition(updatedPlayers[index], up, left, right)
+  updatedPlayer = rotateEventPayload(updatedPlayer, pressedKey);
+  queueForPlayerUpdate(updatedPlayers, updatedPlayer, updateState, handleGameEvent);
 };
 
 const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
-  const {players, index} = gameState;
-  const currentPlayer = players[index]
-  if (currentPlayer && currentPlayer.gameEvent !== 'waiting') {
-    const player = accelerateEventPayload(currentPlayer, pressedKey)
-    handleGameEvent(player);
-  };
+  const {players, index, up, left, right} = gameState;
+  let updatedPlayer = handlePlayerPosition([...players][index], up, left, right)
+  updatedPlayer = accelerateEventPayload(updatedPlayer, pressedKey)
+  queueForPlayerUpdate([...players], updatedPlayer, updateState, handleGameEvent, () => playSound(thruster));
 };
 
 const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
-  const {lastFired, players} = gameState;
-  const currentPlayer = players[gameState.index]
+  const {lastFired, players, clockDifference, deployedWeapons, index} = gameState;
+  const currentPlayer = players[index]
   if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
-    handleGameEvent({...currentPlayer, gameEvent: 'fire'});
+    let player = {...currentPlayer, gameEvent: 'fire'}
     updateState({lastFired: Date.now()});
+    const updatedWeapons = [
+      ...deployedWeapons,
+      handleFireWeapon(player, clockDifference, {...WEAPONS[player.weaponIndex]}, 50, player.damage)
+    ];
+    queueForWeaponUpdate(player, updateState, handleGameEvent, () => playSound(WEAPONS[player.weaponIndex].sound), updatedWeapons);
   };
 };
+
+const queueForPlayerUpdate = (updatedPlayers, updatedPlayer, updateState, handleGameEvent, soundEffect) => {
+  handleGameEvent(updatedPlayer);
+  if (updatedPlayer.gameEvent === 'upStop') {
+    updatedPlayer.lastAccelerationTime = Date.now()
+  }
+  updatedPlayers[updatedPlayer.index] = updatePlayer(updatedPlayer, 50, 0);
+  setTimeout(() => {
+    updateState({players: updatedPlayers})
+    if (soundEffect) {
+      soundEffect();
+    }
+  }, 50);
+}
+
+export const queueForWeaponUpdate = (player, updateState, handleGameEvent, soundEffect, updatedWeapons) => {
+  handleGameEvent(player);
+  setTimeout(() => {
+    updateState({deployedWeapons: updatedWeapons})
+    if (soundEffect) {
+      soundEffect();
+    }
+  }, 50);
+}
 
 export const startEventPayload = (player) => {
   const startData = getStartData(player.team);
