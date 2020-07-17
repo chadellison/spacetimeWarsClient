@@ -103,7 +103,7 @@ const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
 
 const queueForPlayerUpdate = (updatedPlayers, updatedPlayer, updateState, handleGameEvent, soundEffect) => {
   handleGameEvent(updatedPlayer);
-  updatedPlayers[updatedPlayer.index] = updatePlayer(updatedPlayer, 50, 0);
+  updatedPlayers[updatedPlayer.index] = updatePlayer(updatedPlayer, 0, 0);
   updateState({players: updatedPlayers})
   if (soundEffect) {
     soundEffect();
@@ -128,7 +128,8 @@ export const startEventPayload = (player) => {
     trajectory: startData.trajectory,
     hitpoints: player.maxHitpoints,
     team: player.team,
-    active: true
+    active: true,
+    explode: false,
   };
 }
 

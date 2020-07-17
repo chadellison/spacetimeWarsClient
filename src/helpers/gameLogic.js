@@ -28,7 +28,6 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
     animations: [...gameState.animations],
   }
   gameData = handleWeapons(gameData, handleGameEvent);
-  handleCountDownEnd(gameData.players[index], clockDifference);
 
   return {
     players: gameData.players,
@@ -125,15 +124,6 @@ const handleHitpoints = (player, index, handleGameEvent) => {
 
 export const canFire = (lastFired, cooldown) => {
   return Date.now() - lastFired > cooldown;
-}
-
-const handleCountDownEnd = (player, clockDifference) => {
-  if (player && player.explode) {
-    const elapsedSeconds = (Date.now() + clockDifference - player.updatedAt) / 1000;
-    if (elapsedSeconds >= 10) {
-      player.explode = false;
-    };
-  };
 }
 
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
