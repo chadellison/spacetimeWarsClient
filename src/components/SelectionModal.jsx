@@ -11,7 +11,6 @@ import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
 import {UPGRADES} from '../constants/upgrades.js';
 import {startEventPayload} from '../helpers/sendEventHelpers.js';
-import {findElapsedTime} from '../helpers/gameLogic.js';
 
 const handleClick = (updateState, handleGameEvent, activePlayer) => {
   if (activePlayer.gameEvent === 'waiting') {
@@ -89,8 +88,7 @@ const renderOptions = (activeTab, page, activePlayer, updateState, index, player
 };
 
 const renderStart = (updateState, handleGameEvent, activePlayer, clockDifference) => {
-  const elapsedSeconds = findElapsedTime(clockDifference, activePlayer.explodedAt) / 1000;
-
+  const elapsedSeconds = (Date.now() + clockDifference - activePlayer.explodedAt) / 1000;
   if (activePlayer.shipIndex !== undefined && activePlayer.weaponIndex !== undefined && elapsedSeconds > 10) {
     return (
       <GameButton

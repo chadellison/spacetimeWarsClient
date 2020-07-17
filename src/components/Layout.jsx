@@ -9,7 +9,7 @@ import {HeaderButtons} from './HeaderButtons';
 import '../styles/styles.css';
 import {ANAIMATION_FRAME_RATE, REQUEST_COUNT} from '../constants/settings.js';
 import {KEY_MAP} from '../constants/keyMap.js';
-import {updatePlayer, findElapsedTime, updateGameState} from '../helpers/gameLogic.js';
+import {updatePlayer, updateGameState} from '../helpers/gameLogic.js';
 import {keyDownEvent, keyUpEventPayload} from '../helpers/sendEventHelpers.js';
 import {addPlayer} from '../helpers/playerHelpers.js';
 import {handleEventPayload} from '../helpers/receiveEventHelpers.js';
@@ -105,7 +105,7 @@ class Layout extends React.Component {
       .then((response) => response.json())
       .then((gameData) => {
         const players = gameData.players.map((player) => {
-          const elapsedTime = findElapsedTime(clockDifference, player.updatedAt);
+          const elapsedTime = Date.now() + clockDifference - player.updatedAt
           if (player.active) {
             return updatePlayer(player, elapsedTime, clockDifference)
           } else {
@@ -113,7 +113,7 @@ class Layout extends React.Component {
           }
         });
         const aiShips = gameData.aiShips.map((ship) => {
-          const elapsedTime = findElapsedTime(clockDifference, ship.updatedAt);
+          const elapsedTime = Date.now() + clockDifference - ship.updatedAt
           return updatePlayer(ship, elapsedTime, clockDifference);
         });
         this.setState({players, aiShips, defenseData: gameData.defenseData});

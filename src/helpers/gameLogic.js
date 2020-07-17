@@ -127,11 +127,11 @@ export const canFire = (lastFired, cooldown) => {
   return Date.now() - lastFired > cooldown;
 }
 
-const handleCountDownEnd = (currentPlayer, clockDifference) => {
-  if (currentPlayer && currentPlayer.explode) {
-    const elapsedSeconds = findElapsedTime(clockDifference, currentPlayer.updatedAt) / 1000;
+const handleCountDownEnd = (player, clockDifference) => {
+  if (player && player.explode) {
+    const elapsedSeconds = (Date.now() + clockDifference - player.updatedAt) / 1000;
     if (elapsedSeconds >= 10) {
-      currentPlayer.explode = false;
+      player.explode = false;
     };
   };
 }
@@ -337,11 +337,6 @@ export const handleFireWeapon = (player, weapon, elapsedTime, damage) => {
 const findHypotenuse = (point, pointTwo) => {
   return round(Math.sqrt((point.x - pointTwo.x) ** 2 + (point.y - pointTwo.y) ** 2))
 };
-
-export const findElapsedTime = (clockDifference, updatedAt) => {
-  const currentTime = Date.now();
-  return currentTime + clockDifference - updatedAt;
-}
 
 export const handleLocation = (trajectory, location, distance) => {
   const radians = trajectory * Math.PI / 180
