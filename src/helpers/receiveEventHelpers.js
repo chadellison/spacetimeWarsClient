@@ -42,7 +42,7 @@ const handleExplodeEvent = (players, aiShips, playerData, elapsedTime) => {
     return {players: updatedPlayers}
   } else {
     let updatedAiShips = [...aiShips].map((ship) => {
-      if (playerData.id === ship.id && !ship.explode) {
+      if (playerData.id === ship.id && ship.active) {
         ship = explodePlayer(ship, ship)
       };
       return ship;
@@ -68,7 +68,7 @@ const handleBuff = (playerData, players, aiShips, elapsedTime) => {
 const explodePlayer = (player, playerData) => {
   player.hitpoints = 0;
   player.explodeAnimation = {...EXPLOSION_ANIMATIONS[2], coordinates: {x: 0, y: 0}}
-  player.explode = true;
+  // player.explode = true;
   player.updatedAt = playerData.updatedAt;
   player.explodedAt = playerData.explodedAt;
   player.accelerate = false;
@@ -94,7 +94,6 @@ const handleGameOver = (players, playerData) => {
   const updatedPlayers = players.map((player) => {
     return {
       ...player,
-      explode: true,
       active: false,
       explodeAnimation: {...EXPLOSION_ANIMATIONS[2], coordinates: {x: 0, y: 0}}
     }

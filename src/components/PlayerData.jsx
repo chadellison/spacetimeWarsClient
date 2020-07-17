@@ -97,13 +97,13 @@ const renderAbilityIcon = (activePlayer, abilityUsedAt) => {
 const PlayerData = ({activePlayer, clockDifference, updateState, defenseData, abilityUsedAt}) => {
   const elapsedSeconds = (Date.now() + clockDifference - activePlayer.explodedAt) / 1000;
   let countDown = 0;
-  if (activePlayer.explode && elapsedSeconds < 10) {
+  if (!activePlayer.active && elapsedSeconds < 10) {
     countDown = round(10 - elapsedSeconds);
   }
 
   const {gold, damage} = activePlayer;
   return (
-    <div className={`playerData column ${activePlayer.explode ? 'waiting' : ''}`}>
+    <div className={`playerData column ${!activePlayer.active ? 'waiting' : ''}`}>
       <div className="row">
         {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown)}
         <div className="nameInfo">{activePlayer.name}</div>

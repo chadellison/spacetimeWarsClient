@@ -102,7 +102,7 @@ export const renderPlayerData = (gameBuff, context, player, showShip) => {
       context.fillStyle = findColor(player.hitpoints, player.maxHitpoints);
       renderHealthBar(context, player);
       context.fillText(player.name, player.location.x + 25, player.location.y + 110)
-    } else if (player.explode && !player.explodeAnimation.complete) {
+    } else if (!player.active && !player.explodeAnimation.complete) {
       context.fillStyle = "#ab8432";
       context.font = "12px Arial";
       context.fillText(`+ ${round(player.score * 0.01 + 100)}`, player.location.x + 75, player.location.y)

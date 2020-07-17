@@ -153,7 +153,7 @@ class Canvas extends React.Component {
     }
 
     this.props.players.concat(this.props.aiShips).forEach((player) => {
-      if (player.active || player.explode) {
+      if (player.active) {
         const {gameBuff, index} = this.props;
         const showShip = shouldRenderShip(player, index);
         if (showShip) {
@@ -162,10 +162,10 @@ class Canvas extends React.Component {
           Object.values(player.effects)
             .filter((effect) => [1, 2, 4, 7, 8].includes(effect.id))
             .forEach((effect) => renderAnimation(context, this.state[effect.name], effect.animation, player.location))
-        } else if (player.explode && !player.explodeAnimation.complete) {
-          renderAnimation(context, this.state.shipExplosion, player.explodeAnimation, player.location);
-        };
+        }
         renderPlayerData(gameBuff, context, player, showShip);
+      } else if (!player.explodeAnimation.complete) {
+        renderAnimation(context, this.state.shipExplosion, player.explodeAnimation, player.location);
       };
     })
 

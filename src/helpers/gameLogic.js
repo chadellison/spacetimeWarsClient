@@ -57,7 +57,7 @@ const updateAiShips = (aiShips, index, handleGameEvent, clockDifference) => {
         const opponentTeam = ship.team === 'red' ? 'blue' : 'red'
         handleGameEvent({id: ship.id, team: opponentTeam, gameEvent: 'leak'});
       } else {
-        if (ship.explode) {
+        if (!ship.active) {
           ship.explodeAnimation = updateAnimation(ship.explodeAnimation);
         } else {
           ship = handleHitpoints(ship, index, handleGameEvent)
@@ -82,7 +82,7 @@ const updatePlayers = (gameState, handleGameEvent, updateState) => {
 
       handleWall(player);
       handleEffects(player)
-    } else if (player.explode && !player.explodeAnimation.complete) {
+    } else if (!player.explodeAnimation.complete) {
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
       player.explodeAnimation = updateAnimation(player.explodeAnimation);
     }
@@ -108,12 +108,12 @@ const handleRepeatedFire = (player, index, space, lastFired, deployedWeapons, up
   }
 }
 
-const isLeak = (player) => {
-  return player.type === 'bomber' && !player.explode && ((player.team === 'red' && player.location.x > BOARD_WIDTH) || (player.team === 'blue' && player.location.x < 0));
+const isLeak = (ship) => {
+  return ship.type === 'bomber' && ship.active && ((ship.team === 'red' && ship.location.x > BOARD_WIDTH) || (ship.team === 'blue' && ship.location.x < 0));
 }
 
 const handleHitpoints = (player, index, handleGameEvent) => {
-  if (player.hitpoints <= 0 && !player.explode && player.gameEvent !== 'explode') {
+  if (player.hitpoints <= 0 && player.active && player.gameEvent !== 'explode') {
     if (player.killedBy === index) {
       player.gameEvent = 'explode';
       handleGameEvent(player);
@@ -224,7 +224,7 @@ const findShipBoundingBoxes = (player) => {
 
 const handleCollision = (players, weapon, attacker, handleGameEvent) => {
   players.forEach((player) => {
-    if (player.team !== weapon.team && !player.explode) {
+    if (player.team !== weapon.team && player.active) {
       const shipBoundingBoxes = findShipBoundingBoxes(player);
       const weaponCenter = {x: weapon.location.x + (weapon.width / 2), y: weapon.location.y + (weapon.height / 2)}
 
