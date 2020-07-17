@@ -271,8 +271,8 @@ export const EXPLOSION_ANIMATIONS = [
     columnCount: 1,
     rate: 0,
     startRate: 0,
-    xOffset: 0,
-    yOffset: 0,
+    xOffset: -50,
+    yOffset: -50,
     renderWidth: 200,
     renderHeight: 200,
   }
