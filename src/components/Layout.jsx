@@ -130,7 +130,7 @@ class Layout extends React.Component {
       serverTime: sentTime + this.state.clockDifference
     });
     userEvents[id] = sentTime;
-    this.setState({testTime: Date.now(), userEvents: userEvents})
+    this.setState({userEvents})
   };
 
   updateState = (newState) => {
@@ -177,10 +177,6 @@ class Layout extends React.Component {
   };
 
   handleReceivedEvent = (playerData) => {
-    // consider adding shortestRoundTripTime / 2 to elapsedTime
-    console.log('TEST TIME: ', Date.now() - this.state.testTime)
-    // let elapsedTime = findElapsedTime(this.state.clockDifference, playerData.updatedAt - (this.state.shortestRoundTripTime / 2));
-    // console.log('serverTime', playerData.serverTime)
     const elapsedTime = Date.now() + this.state.clockDifference - playerData.serverTime;
     const gameState = handleEventPayload(this.state, playerData, elapsedTime);
 
@@ -200,6 +196,8 @@ class Layout extends React.Component {
   handleClockUpdate = (roundTripTime, difference) => {
     if (roundTripTime < this.state.shortestRoundTripTime) {
       const clockDifference = difference - (roundTripTime / 2)
+      console.log('shorter time', roundTripTime)
+      console.log('new clock difference', clockDifference)
       this.setState({
         clockDifference: clockDifference,
         shortestRoundTripTime: roundTripTime

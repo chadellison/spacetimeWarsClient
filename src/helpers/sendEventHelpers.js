@@ -35,7 +35,7 @@ export const keyUpEventPayload = (
   handleGameEvent,
   updateState
 ) => {
-  const {players, index, up, left, right} = gameState;
+  const {players, index, up, left, right, clockDifference} = gameState;
   let updatedPlayer = handlePlayerPosition({...players[index]}, up, left, right)
   let updatedPlayers = [...players]
 
@@ -48,7 +48,7 @@ export const keyUpEventPayload = (
     case 'up':
       updatedPlayer.gameEvent = 'upStop';
       updatedPlayer.trajectory = updatedPlayer.angle;
-
+      updatedPlayer.lastAccelerationTime = Date.now() + clockDifference
       queueForPlayerUpdate(updatedPlayers, updatedPlayer, updateState, handleGameEvent, () => stopSound(thruster));
       break;
     case 'space':
@@ -107,9 +107,6 @@ const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
 
 const queueForPlayerUpdate = (updatedPlayers, updatedPlayer, updateState, handleGameEvent, soundEffect) => {
   handleGameEvent(updatedPlayer);
-  if (updatedPlayer.gameEvent === 'upStop') {
-    updatedPlayer.lastAccelerationTime = Date.now()
-  }
   updatedPlayers[updatedPlayer.index] = updatePlayer(updatedPlayer, 50, 0);
   setTimeout(() => {
     updateState({players: updatedPlayers})
@@ -164,7 +161,7 @@ const accelerateEventPayload = (player, pressedKey) => {
     ...player,
     gameEvent: pressedKey,
     accelerate: true,
-    trajectory: player.angle
+    trajectory: player.angle,
   };
 };
 
