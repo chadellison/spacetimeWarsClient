@@ -136,7 +136,6 @@ export const handleUpdateEvent = (players, playerData, clockDifference, deployed
         ...updatedWeapons,
         handleFireWeapon(
           playerData,
-          clockDifference,
           {...WEAPONS[playerData.weaponIndex]},
           elapsedTime,
           updatedPlayer.damage

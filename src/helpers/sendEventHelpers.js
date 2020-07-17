@@ -36,7 +36,7 @@ export const keyUpEventPayload = (
   updateState
 ) => {
   const {players, index, up, left, right, clockDifference} = gameState;
-  let updatedPlayer = handlePlayerPosition({...players[index]}, up, left, right)
+  let updatedPlayer = handlePlayerOrientation({...players[index]}, up, left, right)
   let updatedPlayers = [...players]
 
   switch (pressedKey) {
@@ -60,7 +60,7 @@ export const keyUpEventPayload = (
   }
 };
 
-const handlePlayerPosition = (player, up, left, right) => {
+const handlePlayerOrientation = (player, up, left, right) => {
   let rotate = 'none';
   if (left) {
     rotate = 'left';
@@ -69,24 +69,20 @@ const handlePlayerPosition = (player, up, left, right) => {
     rotate = 'right';
   }
 
-  return {
-    ...player,
-    rotate,
-    accelerate: up
-  }
+  return {...player, rotate, accelerate: up}
 }
 
 const handleRotateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
   const {players, index, up, left, right} = gameState;
   let updatedPlayers = [...players];
-  let updatedPlayer = handlePlayerPosition(updatedPlayers[index], up, left, right)
+  let updatedPlayer = handlePlayerOrientation(updatedPlayers[index], up, left, right)
   updatedPlayer = rotateEventPayload(updatedPlayer, pressedKey);
   queueForPlayerUpdate(updatedPlayers, updatedPlayer, updateState, handleGameEvent);
 };
 
 const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
   const {players, index, up, left, right} = gameState;
-  let updatedPlayer = handlePlayerPosition([...players][index], up, left, right)
+  let updatedPlayer = handlePlayerOrientation([...players][index], up, left, right)
   updatedPlayer = accelerateEventPayload(updatedPlayer, pressedKey)
   queueForPlayerUpdate([...players], updatedPlayer, updateState, handleGameEvent, () => playSound(thruster));
 };
@@ -96,10 +92,10 @@ const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
   const currentPlayer = players[index]
   if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
     let player = {...currentPlayer, gameEvent: 'fire'}
-    updateState({lastFired: Date.now() + 50});
+    updateState({lastFired: Date.now()});
     const updatedWeapons = [
       ...deployedWeapons,
-      handleFireWeapon(player, {...WEAPONS[player.weaponIndex]}, 50, player.damage)
+      handleFireWeapon(player, {...WEAPONS[player.weaponIndex]}, 0, player.damage)
     ];
     queueForWeaponUpdate(player, updateState, handleGameEvent, () => playSound(WEAPONS[player.weaponIndex].sound), updatedWeapons);
   };
@@ -108,22 +104,18 @@ const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
 const queueForPlayerUpdate = (updatedPlayers, updatedPlayer, updateState, handleGameEvent, soundEffect) => {
   handleGameEvent(updatedPlayer);
   updatedPlayers[updatedPlayer.index] = updatePlayer(updatedPlayer, 50, 0);
-  setTimeout(() => {
-    updateState({players: updatedPlayers})
-    if (soundEffect) {
-      soundEffect();
-    }
-  }, 0);
+  updateState({players: updatedPlayers})
+  if (soundEffect) {
+    soundEffect();
+  }
 }
 
 export const queueForWeaponUpdate = (player, updateState, handleGameEvent, soundEffect, updatedWeapons) => {
   handleGameEvent(player);
-  setTimeout(() => {
-    updateState({deployedWeapons: updatedWeapons})
-    if (soundEffect) {
-      soundEffect();
-    }
-  }, 0);
+  updateState({deployedWeapons: updatedWeapons})
+  if (soundEffect) {
+    soundEffect();
+  }
 }
 
 export const startEventPayload = (player) => {

@@ -15,24 +15,19 @@ import {updateAnimation} from '../helpers/animationHelpers';
 import {round} from '../helpers/mathHelpers.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
 import {playSound} from '../helpers/audioHelpers.js';
-import {queueForWeaponUpdate} from '../helpers/sendEventHelpers.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
-  let deployedWeapons = [...gameState.deployedWeapons];
-  const {clockDifference, gameBuff, index, aiShips} = gameState;
-  let updatedAnimations = [...gameState.animations];
+  const {clockDifference, gameBuff, index, aiShips, space, lastFired} = gameState;
   let updatedPlayers = updatePlayers(gameState, handleGameEvent, updateState);
-  let updatedAiShips = updateAiShips(aiShips, index, handleGameEvent, clockDifference);
+  let deployedWeapons = handleRepeatedFire(updatedPlayers[index], index, space, lastFired, [...gameState.deployedWeapons], updateState, handleGameEvent);
 
-  const filteredWeapons = removeOutOfBoundsShots(deployedWeapons);
   let gameData = {
     players: updatedPlayers,
-    weapons: filteredWeapons,
-    aiShips: updatedAiShips,
-    animations: updatedAnimations
+    weapons: removeOutOfBoundsShots(deployedWeapons),
+    aiShips: updateAiShips(aiShips, index, handleGameEvent, clockDifference),
+    animations: [...gameState.animations],
   }
   gameData = handleWeapons(gameData, handleGameEvent);
-
   handleCountDownEnd(gameData.players[index], clockDifference);
 
   return {
@@ -80,12 +75,12 @@ const updateAiShips = (aiShips, index, handleGameEvent, clockDifference) => {
 }
 
 const updatePlayers = (gameState, handleGameEvent, updateState) => {
-  const {players, clockDifference, space, index, lastFired, deployedWeapons} = gameState;
+  const {players, clockDifference, index} = gameState;
   const updatedPlayers = [...players].map((player) => {
     if (player.active) {
       player = handleHitpoints(player, index, handleGameEvent);
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
-      handleRepeatedFire(player, index, space, lastFired, deployedWeapons, updateState, handleGameEvent)
+
       handleWall(player);
       handleEffects(player)
     } else if (player.explode && !player.explodeAnimation.complete) {
@@ -99,14 +94,18 @@ const updatePlayers = (gameState, handleGameEvent, updateState) => {
 }
 
 const handleRepeatedFire = (player, index, space, lastFired, deployedWeapons, updateState, handleGameEvent) => {
-  if (player.index === index && space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
+  if (space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
     const updatedPlayer = {...player, gameEvent: 'fire'};
+    handleGameEvent(updatedPlayer)
     const updatedWeapons = [
       ...deployedWeapons,
-      handleFireWeapon(updatedPlayer, {...WEAPONS[player.weaponIndex]}, 50, player.damage)
+      handleFireWeapon(updatedPlayer, {...WEAPONS[player.weaponIndex]}, 0, player.damage)
     ];
-    updateState({lastFired: Date.now() + 50});
-    queueForWeaponUpdate(updatedPlayer, updateState, handleGameEvent, () => playSound(WEAPONS[player.weaponIndex].sound), updatedWeapons);
+    updateState({lastFired: Date.now()});
+    playSound(WEAPONS[player.weaponIndex].sound);
+    return updatedWeapons;
+  } else {
+    return deployedWeapons;
   }
 }
 
