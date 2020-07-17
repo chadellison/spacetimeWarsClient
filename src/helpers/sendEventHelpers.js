@@ -92,14 +92,14 @@ const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateSta
 };
 
 const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
-  const {lastFired, players, clockDifference, deployedWeapons, index} = gameState;
+  const {lastFired, players, deployedWeapons, index} = gameState;
   const currentPlayer = players[index]
   if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
     let player = {...currentPlayer, gameEvent: 'fire'}
-    updateState({lastFired: Date.now()});
+    updateState({lastFired: Date.now() + 50});
     const updatedWeapons = [
       ...deployedWeapons,
-      handleFireWeapon(player, clockDifference, {...WEAPONS[player.weaponIndex]}, 50, player.damage)
+      handleFireWeapon(player, {...WEAPONS[player.weaponIndex]}, 50, player.damage)
     ];
     queueForWeaponUpdate(player, updateState, handleGameEvent, () => playSound(WEAPONS[player.weaponIndex].sound), updatedWeapons);
   };

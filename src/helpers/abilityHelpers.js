@@ -41,7 +41,6 @@ const addAbilityWeapon = (weaponIndex, gameState, playerData, sound, elapsedTime
     ...gameState.deployedWeapons,
     handleFireWeapon(
       playerData,
-      gameState.clockDifference,
       weapon,
       elapsedTime,
       weapon.damage + playerData.damage

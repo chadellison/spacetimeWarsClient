@@ -85,15 +85,7 @@ const updatePlayers = (gameState, handleGameEvent, updateState) => {
     if (player.active) {
       player = handleHitpoints(player, index, handleGameEvent);
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
-      if (player.index === index && space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
-        const updatedPlayer = {...player, gameEvent: 'fire'};
-        const updatedWeapons = [
-          ...deployedWeapons,
-          handleFireWeapon(updatedPlayer, clockDifference, {...WEAPONS[player.weaponIndex]}, 0, player.damage)
-        ];
-        updateState({lastFired: Date.now()});
-        queueForWeaponUpdate(updatedPlayer, updateState, handleGameEvent, () => playSound(WEAPONS[player.weaponIndex].sound), updatedWeapons);
-      }
+      handleRepeatedFire(player, index, space, lastFired, deployedWeapons, updateState, handleGameEvent)
       handleWall(player);
       handleEffects(player)
     } else if (player.explode && !player.explodeAnimation.complete) {
@@ -104,6 +96,18 @@ const updatePlayers = (gameState, handleGameEvent, updateState) => {
   });
 
   return updatedPlayers;
+}
+
+const handleRepeatedFire = (player, index, space, lastFired, deployedWeapons, updateState, handleGameEvent) => {
+  if (player.index === index && space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
+    const updatedPlayer = {...player, gameEvent: 'fire'};
+    const updatedWeapons = [
+      ...deployedWeapons,
+      handleFireWeapon(updatedPlayer, {...WEAPONS[player.weaponIndex]}, 50, player.damage)
+    ];
+    updateState({lastFired: Date.now() + 50});
+    queueForWeaponUpdate(updatedPlayer, updateState, handleGameEvent, () => playSound(WEAPONS[player.weaponIndex].sound), updatedWeapons);
+  }
 }
 
 const isLeak = (player) => {
@@ -314,7 +318,7 @@ const calculateDamage = (weapon, player) => {
   return round(damage * (10 - armor) / 10);
 }
 
-export const handleFireWeapon = (player, clockDifference, weapon, elapsedTime, damage) => {
+export const handleFireWeapon = (player, weapon, elapsedTime, damage) => {
   const angle = handleAngle(player, elapsedTime);
   const location = player.location;
   const shipCenter = SHIPS[player.shipIndex].shipCenter;
@@ -334,13 +338,6 @@ export const handleFireWeapon = (player, clockDifference, weapon, elapsedTime, d
 const findHypotenuse = (point, pointTwo) => {
   return round(Math.sqrt((point.x - pointTwo.x) ** 2 + (point.y - pointTwo.y) ** 2))
 };
-
-// export const handleRepeatedFire = (player, handleGameEvent, lastFired, updateState, clockDifference, spaceKeyPressed) => {
-  // if (spaceKeyPressed && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
-    // handleGameEvent({...player, gameEvent: 'fire'});
-    // updateState({lastFired: Date.now()});
-  // };
-// };
 
 export const findElapsedTime = (clockDifference, updatedAt) => {
   const currentTime = Date.now();
