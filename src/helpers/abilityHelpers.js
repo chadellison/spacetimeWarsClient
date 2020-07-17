@@ -14,9 +14,6 @@ import {round} from '../helpers/mathHelpers';
 
 export const handleAbility = (gameState, playerData, elapsedTime) => {
   let updatedPlayers = [...gameState.players];
-  if (updatedPlayers.filter((player) => player.id === playerData.id).length === 0) {
-    updatedPlayers = [...updatedPlayers, playerData];
-  };
 
   switch (playerData.shipIndex) {
     case 0:
