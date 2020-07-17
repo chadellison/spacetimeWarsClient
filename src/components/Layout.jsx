@@ -48,7 +48,7 @@ class Layout extends React.Component {
 
   componentDidMount() {
     this.createGameSocket()
-    this.syncClocks(REQUEST_COUNT, true)
+    this.syncClocks(REQUEST_COUNT)
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
     this.interval = setInterval(() => this.renderGame(), ANAIMATION_FRAME_RATE);
@@ -76,23 +76,23 @@ class Layout extends React.Component {
     this.setState({gameSocket: gameSocket})
   };
 
-  syncClocks = (iteration, shouldFetchPlayers) => {
+  syncClocks = (iteration) => {
     const sentTime = Date.now();
     fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
       .then((response) => response.json())
-      .then((timeData) => this.handleTimeResponse(sentTime, timeData, iteration, shouldFetchPlayers))
+      .then((timeData) => this.handleTimeResponse(sentTime, timeData, iteration))
       .catch((error) => console.log('ERROR', error));
   }
 
-  handleTimeResponse = (sentTime, timeData, iteration, shouldFetchPlayers) => {
+  handleTimeResponse = (sentTime, timeData, iteration) => {
     const responseTime = Date.now();
     const roundTripTime = responseTime - sentTime;
     this.handleClockUpdate(roundTripTime, timeData.difference);
 
     if (iteration > 0) {
       iteration -= 1
-      this.syncClocks(iteration, shouldFetchPlayers)
-    } else if (shouldFetchPlayers) {
+      this.syncClocks(iteration)
+    } else {
       console.log('clock difference: ***********', this.state.clockDifference);
       this.fetchPlayers();
     };
