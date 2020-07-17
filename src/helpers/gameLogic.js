@@ -86,12 +86,13 @@ const updatePlayers = (gameState, handleGameEvent, updateState) => {
       player = handleHitpoints(player, index, handleGameEvent);
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
       if (player.index === index && space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
+        const updatedPlayer = {...player, gameEvent: 'fire'};
         const updatedWeapons = [
           ...deployedWeapons,
-          handleFireWeapon({...player, gameEvent: 'fire'}, clockDifference, {...WEAPONS[player.weaponIndex]}, 0, player.damage)
+          handleFireWeapon(updatedPlayer, clockDifference, {...WEAPONS[player.weaponIndex]}, 0, player.damage)
         ];
         updateState({lastFired: Date.now()});
-        queueForWeaponUpdate(player, updateState, handleGameEvent, () => playSound(WEAPONS[player.weaponIndex].sound), updatedWeapons);
+        queueForWeaponUpdate(updatedPlayer, updateState, handleGameEvent, () => playSound(WEAPONS[player.weaponIndex].sound), updatedWeapons);
       }
       handleWall(player);
       handleEffects(player)

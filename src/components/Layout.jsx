@@ -37,6 +37,7 @@ const DEFAULT_STATE = {
   abilityUsedAt: 0,
   aiShips: [],
   animations: [],
+  userEvents: {},
 };
 
 class Layout extends React.Component {
@@ -120,8 +121,16 @@ class Layout extends React.Component {
   };
 
   handleGameEvent = (eventPayload) => {
-    this.state.gameSocket.create(eventPayload);
-    this.setState({testTime: Date.now()})
+    let userEvents = {...this.state.sentEvents};
+    const id = Object.keys(userEvents).length
+    const sentTime = Date.now();
+    this.state.gameSocket.create({
+      ...eventPayload,
+      eventId: id,
+      serverTime: sentTime + this.state.clockDifference
+    });
+    userEvents[id] = sentTime;
+    this.setState({testTime: Date.now(), userEvents: userEvents})
   };
 
   updateState = (newState) => {
@@ -170,13 +179,19 @@ class Layout extends React.Component {
   handleReceivedEvent = (playerData) => {
     // consider adding shortestRoundTripTime / 2 to elapsedTime
     console.log('TEST TIME: ', Date.now() - this.state.testTime)
-    const elapsedTime = findElapsedTime(this.state.clockDifference, playerData.updatedAt - (this.state.shortestRoundTripTime / 2));
+    // let elapsedTime = findElapsedTime(this.state.clockDifference, playerData.updatedAt - (this.state.shortestRoundTripTime / 2));
+    // console.log('serverTime', playerData.serverTime)
+    const elapsedTime = Date.now() + this.state.clockDifference - playerData.serverTime;
     const gameState = handleEventPayload(this.state, playerData, elapsedTime);
 
     this.setState(gameState);
-    if (this.state.shortestRoundTripTime > 100) {
-      this.syncClocks(2, false);
-    };
+    if (playerData.index === this.state.index) {
+      let userEvents = {...this.state.userEvents}
+      const sentTime = userEvents[playerData.eventId]
+      this.handleClockUpdate(Date.now() - sentTime, playerData.updatedAt - sentTime);
+      delete userEvents[playerData.eventId]
+      this.setState({userEvents})
+    }
     if (elapsedTime > 400) {
       console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime);
     };
@@ -250,12 +265,12 @@ class Layout extends React.Component {
             abilityUsedAt={abilityUsedAt}
           />}
           <Canvas
-            players={players}
-            deployedWeapons={deployedWeapons}
             index={index}
+            players={players}
             aiShips={aiShips}
             gameBuff={gameBuff}
             animations={animations}
+            deployedWeapons={deployedWeapons}
           />
         </div>
       </div>

@@ -116,7 +116,7 @@ const queueForPlayerUpdate = (updatedPlayers, updatedPlayer, updateState, handle
     if (soundEffect) {
       soundEffect();
     }
-  }, 50);
+  }, 0);
 }
 
 export const queueForWeaponUpdate = (player, updateState, handleGameEvent, soundEffect, updatedWeapons) => {
@@ -126,7 +126,7 @@ export const queueForWeaponUpdate = (player, updateState, handleGameEvent, sound
     if (soundEffect) {
       soundEffect();
     }
-  }, 50);
+  }, 0);
 }
 
 export const startEventPayload = (player) => {
