@@ -10,6 +10,7 @@ import {
   mineDropSound,
   stunGunSound
 } from '../constants/settings.js';
+import {round} from '../helpers/mathHelpers';
 
 export const handleAbility = (gameState, playerData, elapsedTime) => {
   let updatedPlayers = [...gameState.players];
@@ -43,7 +44,7 @@ const addAbilityWeapon = (weaponIndex, gameState, playerData, sound, elapsedTime
       playerData,
       weapon,
       elapsedTime,
-      weapon.damage + playerData.damage
+      weapon.damage + round(playerData.score / 50)
     )
   ];
   playSound(sound);
@@ -51,9 +52,15 @@ const addAbilityWeapon = (weaponIndex, gameState, playerData, sound, elapsedTime
 }
 
 const addAbilityEffect = (effectIndex, players, gameState, playerData, sound, elapsedTime) => {
-  const effect = {...GAME_EFFECTS[effectIndex], durationCount: elapsedTime};
   let updatedPlayers = [...players]
   let player = updatedPlayers[playerData.index]
+
+  const effect = {
+    ...GAME_EFFECTS[effectIndex],
+    durationCount: elapsedTime,
+    duration: GAME_EFFECTS[effectIndex].duration + round(player.score / 5)
+  };
+
   player.effects = {...player.effects, [effect.id]: effect};
   updatedPlayers[playerData.index] = player;
   playSound(sound);
