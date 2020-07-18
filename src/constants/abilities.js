@@ -16,7 +16,8 @@ import {
   invulnerableSound,
   mineDropSound,
   stunGunSound,
-  meteorShowSound,
+  damageBoostSound,
+  pierceSound,
 } from '../constants/settings.js';
 
 export const ABILITIES = [
@@ -81,7 +82,7 @@ export const ABILITIES = [
     cooldown: 30000,
     weaponIndex: 3,
     image: meteorShowerIcon,
-    sound: meteorShowSound,
+    sound: damageBoostSound,
   },
   {
     index: 7,
@@ -90,7 +91,7 @@ export const ABILITIES = [
     cooldown: 90000,
     effectIndex: 6,
     image: healingIcon,
-    sound: meteorShowSound,
+    sound: damageBoostSound,
   },
   {
     index: 8,
@@ -99,7 +100,7 @@ export const ABILITIES = [
     cooldown: 40000,
     weaponIndex: 4,
     image: piercerIcon,
-    sound: meteorShowSound,
+    sound: pierceSound,
   },
   {
     index: 9,
@@ -108,7 +109,7 @@ export const ABILITIES = [
     cooldown: 40000,
     effectIndex: 9,
     image: rapidFireIcon,
-    sound: meteorShowSound,
+    sound: damageBoostSound,
   },
   {
     index: 10,
@@ -117,6 +118,6 @@ export const ABILITIES = [
     cooldown: 45000,
     effectIndex: 10,
     image: damageBoostIcon,
-    sound: meteorShowSound,
+    sound: damageBoostSound,
   }
 ]
