@@ -7,6 +7,7 @@ import stealthModeIcon from '../images/stealthMode.png';
 import meteorShowerIcon from '../images/meteorShowerIcon.png';
 import healingIcon from '../images/healthBoost.jpg';
 import piercerIcon from '../images/piercerIcon.png';
+import rapidFireIcon from '../images/rapidFireIcon.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import {
   windSound,
@@ -106,7 +107,7 @@ export const ABILITIES = [
     description: 'Enables your ship to fire twice as fast for 15 seconds (40s cooldown).',
     cooldown: 40000,
     effectIndex: 9,
-    image: piercerIcon,
+    image: rapidFireIcon,
     sound: meteorShowSound,
   },
   {
