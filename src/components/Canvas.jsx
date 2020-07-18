@@ -68,6 +68,8 @@ class Canvas extends React.Component {
     const lavaBlast = this.refs.lavaBlast
     const spaceMine = this.refs.spaceMine
     const meteorShower = this.refs.meteorShower
+    const piercer = this.refs.piercer
+    const damageBoost = this.refs.damageBoost
     const spaceMineExplosion = this.refs.spaceMineExplosion
     const nuclearExplosion = this.refs.nuclearExplosion
 
@@ -111,7 +113,9 @@ class Canvas extends React.Component {
       nuclearBlast: nuclearBlast,
       lavaBlast: lavaBlast,
       spaceMine: spaceMine,
+      piercer: piercer,
       meteorShower: meteorShower,
+      damageBoost: damageBoost,
       spaceMineExplosion: spaceMineExplosion,
       nuclearExplosion: nuclearExplosion,
       shipExplosion: shipExplosion,
@@ -161,9 +165,11 @@ class Canvas extends React.Component {
         if (showShip) {
           handleInvisibleFilter(context, player, index);
           drawShip(context, player, this.handleImage(player), this.state.warpSpeed);
-          Object.values(player.effects)
-            .filter((effect) => [1, 2, 4, 7, 8].includes(effect.id))
-            .forEach((effect) => renderAnimation(context, this.state[effect.name], effect.animation, player.location))
+          Object.values(player.effects).forEach((effect) => {
+            if (effect.animation && effect.id !== 9) {
+              renderAnimation(context, this.state[effect.name], effect.animation, player.location);
+            }
+          });
         }
         renderPlayerData(gameBuff, context, player, showShip);
       } else if (!player.explodeAnimation.complete) {
@@ -251,7 +257,7 @@ class Canvas extends React.Component {
             />
           );
         })}
-        {GAME_EFFECTS.filter((effect, index) => [1, 2, 4, 7, 8, 9].includes(effect.id))
+        {GAME_EFFECTS.filter((effect, index) => effect.animation)
           .map((effect, index) => {
             return(
               <img ref={effect.name}

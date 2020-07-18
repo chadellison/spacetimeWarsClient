@@ -45,8 +45,17 @@ const addAbilityEffect = (effectIndex, players, gameState, playerData, elapsedTi
     duration: GAME_EFFECTS[effectIndex].duration + round(player.score / 5)
   };
 
-  player.effects = {...player.effects, [effect.id]: effect};
-  updatedPlayers[playerData.index] = player;
+  if (effect.id === 11) {
+    updatedPlayers = updatedPlayers.map((p) => {
+      if (p.team === player.team) {
+        p.effects = {...player.effects, [effect.id]: effect}
+      }
+      return p;
+    });
+  } else {
+    player.effects = {...player.effects, [effect.id]: effect};
+    updatedPlayers[playerData.index] = player;
+  }
   return {players: updatedPlayers};
 }
 

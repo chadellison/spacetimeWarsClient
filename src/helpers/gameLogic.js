@@ -93,19 +93,22 @@ const updatePlayers = (gameState, handleGameEvent, updateState) => {
 }
 
 const handleRepeatedFire = (player, index, space, lastFired, deployedWeapons, updateState, handleGameEvent) => {
-  if (space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown)) {
-    const updatedPlayer = {...player, gameEvent: 'fire'};
-    handleGameEvent(updatedPlayer)
-    const updatedWeapons = [
-      ...deployedWeapons,
-      handleFireWeapon(updatedPlayer, {...WEAPONS[player.weaponIndex]}, 0, player.damage)
-    ];
-    updateState({lastFired: Date.now()});
-    playSound(WEAPONS[player.weaponIndex].sound);
-    return updatedWeapons;
-  } else {
-    return deployedWeapons;
+  if (index >= 0) {
+    if (space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown, player.effects[10])) {
+      const updatedPlayer = {...player, gameEvent: 'fire'};
+      handleGameEvent(updatedPlayer)
+      let damage = updatedPlayer.damage;
+      damage = updatedPlayer.effects[11] ? damage + round(damage * 0.25) : damage
+      const updatedWeapons = [
+        ...deployedWeapons,
+        handleFireWeapon(updatedPlayer, {...WEAPONS[player.weaponIndex]}, 0, damage)
+      ];
+      updateState({lastFired: Date.now()});
+      playSound(WEAPONS[player.weaponIndex].sound);
+      return updatedWeapons;
+    }
   }
+  return deployedWeapons;
 }
 
 const isLeak = (ship) => {
@@ -122,8 +125,12 @@ const handleHitpoints = (player, index, handleGameEvent) => {
   return player;
 };
 
-export const canFire = (lastFired, cooldown) => {
-  return Date.now() - lastFired > cooldown;
+export const canFire = (lastFired, cooldown, rapidFireFirect) => {
+  if (rapidFireFirect) {
+    return Date.now() - lastFired > (cooldown / 2);
+  } else {
+    return Date.now() - lastFired > cooldown;
+  }
 }
 
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
@@ -249,7 +256,9 @@ const applyHit = (player, weapon, attacker, handleGameEvent) => {
     console.log('BLAM!');
     updateCollisionData(player, weapon, attacker, handleGameEvent)
   }
-  weapon.removed = true
+  if (weapon.id !== 5) {
+    weapon.removed = true
+  }
 };
 
 const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
@@ -299,7 +308,6 @@ const calculateDamage = (weapon, player) => {
   } else if (weapon.index === 7) {
     armor = 0;
   }
-
   let damage = weapon.damage;
   if (weapon.index === 4 && Math.random() >= 0.8) {
     damage *= 2

@@ -22,6 +22,7 @@ import nuclearBlastAnimation from '../images/nuclearBlastAnimation.png';
 import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
 import lavaBlastAnimation from '../images/stunGunAnimation.png';
 import meteorShowerAnimation from '../images/meteorShowerAnimation.png';
+import piercerAnimation from '../images/piercerAnimation.png';
 
 import cannonAudio from '../audio/cannon.wav';
 import missileAudio from '../audio/missile.wav';
@@ -240,8 +241,32 @@ export const ABILITY_WEAPONS = [
       rowCount: 1,
       columnCount: 5,
       rate: 1,
-      renderWidth: 80,
-      renderHeight: 40,
+      renderWidth: 100,
+      renderHeight: 50,
+      startRate: 1,
+      xOffset: 0,
+      yOffset: 0,
+    }
+  },
+  {
+    id: 5,
+    name: 'piercer',
+    location: {x: 0, y: 0},
+    trajectory: 0,
+    speed: 14,
+    width: 80,
+    height: 40,
+    damage: 80,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: piercerAnimation,
+      width: 128,
+      height: 64,
+      rowCount: 4,
+      columnCount: 2,
+      rate: 1,
+      renderWidth: 120,
+      renderHeight: 60,
       startRate: 1,
       xOffset: 0,
       yOffset: 0,

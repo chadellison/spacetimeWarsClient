@@ -46,7 +46,7 @@ export const SHIPS = [
     image: hunterShip,
     blueImage: blueHunterShip,
     absorbImage: hunterShipAbsorb,
-    abilities: {q: 1, w: 1}
+    abilities: {q: 1, w: 7}
   },
   {
     index: 2,
@@ -59,7 +59,7 @@ export const SHIPS = [
     image: redWarShip,
     blueImage: blueWarShip,
     absorbImage: warShipAbsorb,
-    abilities: {q: 2, w: 2}
+    abilities: {q: 2, w: 8}
   },
   {
     index: 3,
@@ -72,7 +72,7 @@ export const SHIPS = [
     image: cruiserShip,
     blueImage: blueCruiserShip,
     absorbImage: cruiserShipAbsorb,
-    abilities: {q: 3, w: 3}
+    abilities: {q: 3, w: 9}
   },
   {
     index: 4,
@@ -85,7 +85,7 @@ export const SHIPS = [
     image: carrierShip,
     blueImage: blueCarrierShip,
     absorbImage: carrierShipAbsorb,
-    abilities: {q: 4, w: 4}
+    abilities: {q: 4, w: 10}
   },
   {
     index: 5,

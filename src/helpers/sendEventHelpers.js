@@ -4,6 +4,7 @@ import {ABILITIES} from '../constants/abilities.js';
 import {canFire, updatePlayer, handleFireWeapon} from '../helpers/gameLogic.js';
 import {playSound, stopSound} from '../helpers/audioHelpers.js';
 import {thruster} from '../constants/settings.js';
+import {round} from '../helpers/mathHelpers.js';
 
 import {
   BOARD_WIDTH,
@@ -92,12 +93,14 @@ const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateSta
 const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
   const {lastFired, players, deployedWeapons, index} = gameState;
   const currentPlayer = players[index]
-  if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown)) {
+  if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown, currentPlayer.effects[10])) {
     let player = {...currentPlayer, gameEvent: 'fire'}
     updateState({lastFired: Date.now()});
+    let damage = player.damage;
+    damage = player.effects[11] ? damage + round(damage * 0.25) : damage
     const updatedWeapons = [
       ...deployedWeapons,
-      handleFireWeapon(player, {...WEAPONS[player.weaponIndex]}, 0, player.damage)
+      handleFireWeapon(player, {...WEAPONS[player.weaponIndex]}, 0, damage)
     ];
     queueForWeaponUpdate(player, updateState, handleGameEvent, () => playSound(WEAPONS[player.weaponIndex].sound), updatedWeapons);
   };

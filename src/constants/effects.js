@@ -4,6 +4,7 @@ import armorBoost from '../images/armorBoost.png'
 import coldAnimation from '../images/coldAnimation.png'
 import stunAnimation from '../images/stunAnimation.png'
 import warpSpeedAnimation from '../images/warpSpeedAnimation.png'
+import damageBoostIcon from '../images/damageBoostIcon.png';
 
 export const GAME_EFFECTS = [
   {
@@ -54,7 +55,6 @@ export const GAME_EFFECTS = [
     duration: 3000,
     durationCount: 0,
     color: 'rgba(151, 127, 7, 0.37)',
-    animation: {}
   },
   {
     id: 4,
@@ -123,14 +123,14 @@ export const GAME_EFFECTS = [
       spriteImage: armorBoost,
       width: 100,
       height: 103,
-      renderWidth: 50,
-      renderHeight: 50,
+      renderWidth: 30,
+      renderHeight: 30,
       rowCount: 1,
       columnCount: 1,
       rate: 1,
       startRate: 1,
-      xOffset: 0,
-      yOffset: 0,
+      xOffset: 25,
+      yOffset: -25,
     }
   },
   {
@@ -151,6 +151,32 @@ export const GAME_EFFECTS = [
       startRate: 1,
       xOffset: -30,
       yOffset: 0,
+    }
+  },
+  {
+    id: 10,
+    name: 'rapidFire',
+    duration: 15000,
+    durationCount: 0,
+  },
+  {
+    id: 11,
+    name: 'damageBoost',
+    duration: 12000,
+    durationCount: 0,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: damageBoostIcon,
+      width: 70,
+      height: 70,
+      renderWidth: 30,
+      renderHeight: 30,
+      rowCount: 1,
+      columnCount: 1,
+      rate: 1,
+      startRate: 1,
+      xOffset: 25,
+      yOffset: -25,
     }
   }
 ]

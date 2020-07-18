@@ -5,6 +5,9 @@ import stunGunIcon from '../images/stunGunIcon.png';
 import invulnerabilityIcon from '../images/invulnerabilityIcon.png';
 import stealthModeIcon from '../images/stealthMode.png';
 import meteorShowerIcon from '../images/meteorShowerIcon.png';
+import healingIcon from '../images/healthBoost.jpg';
+import piercerIcon from '../images/piercerIcon.png';
+import damageBoostIcon from '../images/damageBoostIcon.png';
 import {
   windSound,
   warpSpeedSound,
@@ -77,6 +80,42 @@ export const ABILITIES = [
     cooldown: 30000,
     weaponIndex: 3,
     image: meteorShowerIcon,
+    sound: meteorShowSound,
+  },
+  {
+    index: 7,
+    type: 'effect',
+    description: 'Boosts hitpoints to %50 of max hitpoints (90 second cooldown)',
+    cooldown: 90000,
+    effectIndex: 6,
+    image: healingIcon,
+    sound: meteorShowSound,
+  },
+  {
+    index: 8,
+    type: 'weapon',
+    description: 'Fires a weapon that tears through ships by traveling through them (40s cooldown).',
+    cooldown: 40000,
+    weaponIndex: 4,
+    image: piercerIcon,
+    sound: meteorShowSound,
+  },
+  {
+    index: 9,
+    type: 'effect',
+    description: 'Enables your ship to fire twice as fast for 15 seconds (40s cooldown).',
+    cooldown: 40000,
+    effectIndex: 9,
+    image: piercerIcon,
+    sound: meteorShowSound,
+  },
+  {
+    index: 10,
+    type: 'effect',
+    description: 'Provides a 25% damage boost to all allied units for for 12 seconds (45s cooldown).',
+    cooldown: 45000,
+    effectIndex: 10,
+    image: damageBoostIcon,
     sound: meteorShowSound,
   }
 ]

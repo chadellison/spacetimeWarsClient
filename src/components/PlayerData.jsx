@@ -60,6 +60,24 @@ const renderSpeed = (player) => {
   }
 }
 
+const renderDamage = (player) => {
+  if (player.damage) {
+    let modifier;
+    if (player.effects[11]) {
+      modifier = '+' + round(player.damage * 0.25)
+    }
+    return (
+      <PlayerStat
+        image={UPGRADES[3].image}
+        alt={'target'}
+        value={player.damage}
+        className="statInfo"
+        modifier={modifier}
+      />
+    )
+  }
+}
+
 const handlePlayerIcon = (activePlayer, countDown) => {
   if (countDown > 0) {
     return <span className="waitCountDown">{countDown}</span>;
@@ -99,7 +117,7 @@ const PlayerData = ({activePlayer, clockDifference, updateState, defenseData, ab
     countDown = round(10 - elapsedSeconds);
   }
 
-  const {gold, damage} = activePlayer;
+  const {gold} = activePlayer;
   return (
     <div className={`playerData column ${!activePlayer.active ? 'waiting' : ''}`}>
       <div className="row">
@@ -109,7 +127,7 @@ const PlayerData = ({activePlayer, clockDifference, updateState, defenseData, ab
         {renderHitPoints(activePlayer)}
         {renderWeapon(activePlayer.weaponIndex)}
         {renderAbilityIcons(activePlayer, abilityCooldownData)}
-        {damage > 0 && <PlayerStat image={UPGRADES[3].image} alt={'target'} value={damage} className="statInfo"/>}
+        {renderDamage(activePlayer)}
         {renderArmor(activePlayer)}
         {renderSpeed(activePlayer)}
         <div className="ScoreInfo">{`Score: ${activePlayer.score}`}</div>
