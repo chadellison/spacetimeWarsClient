@@ -67,6 +67,7 @@ class Canvas extends React.Component {
     const nuclearBlast = this.refs.nuclearBlast
     const lavaBlast = this.refs.lavaBlast
     const spaceMine = this.refs.spaceMine
+    const meteorShower = this.refs.meteorShower
     const spaceMineExplosion = this.refs.spaceMineExplosion
     const nuclearExplosion = this.refs.nuclearExplosion
 
@@ -110,6 +111,7 @@ class Canvas extends React.Component {
       nuclearBlast: nuclearBlast,
       lavaBlast: lavaBlast,
       spaceMine: spaceMine,
+      meteorShower: meteorShower,
       spaceMineExplosion: spaceMineExplosion,
       nuclearExplosion: nuclearExplosion,
       shipExplosion: shipExplosion,

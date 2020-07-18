@@ -182,7 +182,7 @@ export const handleWeapons = (gameData, handleGameEvent) => {
         gameData.animations.push(nuclearBlastAnimation);
         weapon.removed = true
       }
-    } else if (weapon.id !== 4) {
+    } else {
       handleCollision(gameData.players, weapon, attacker, handleGameEvent)
       handleCollision(gameData.aiShips, weapon, attacker, handleGameEvent)
     }

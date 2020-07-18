@@ -16,6 +16,7 @@ import explosionAudio from '../audio/explosionSound.mov';
 import mineTriggerAudio from '../audio/mineTriggerSound.mov';
 import mineDropAudio from '../audio/mineDropSound.mp3';
 import stunGunAudio from '../audio/stunGunSound.mp3';
+import meteorShowAudio from '../audio/meteorShowSound.mov';
 
 // constants
 export const BOARD_WIDTH = 1800;
@@ -42,3 +43,4 @@ export const explosionSound = new Audio(explosionAudio);
 export const mineTriggerSound = new Audio(mineTriggerAudio);
 export const mineDropSound = new Audio(mineDropAudio);
 export const stunGunSound = new Audio(stunGunAudio);
+export const meteorShowSound = new Audio(meteorShowAudio);

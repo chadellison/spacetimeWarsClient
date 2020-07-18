@@ -21,6 +21,7 @@ import mineExplosionAnimation from '../images/mineExplosionAnimation.png';
 import nuclearBlastAnimation from '../images/nuclearBlastAnimation.png';
 import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
 import lavaBlastAnimation from '../images/stunGunAnimation.png';
+import meteorShowerAnimation from '../images/meteorShowerAnimation.png';
 
 import cannonAudio from '../audio/cannon.wav';
 import missileAudio from '../audio/missile.wav';
@@ -221,6 +222,30 @@ export const ABILITY_WEAPONS = [
     height: 40,
     damage: 600,
     image: spaceMine
+  },
+  {
+    id: 4,
+    name: 'meteorShower',
+    location: {x: 0, y: 0},
+    trajectory: 0,
+    speed: 10,
+    width: 80,
+    height: 40,
+    damage: 200,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: meteorShowerAnimation,
+      width: 128,
+      height: 64,
+      rowCount: 1,
+      columnCount: 5,
+      rate: 1,
+      renderWidth: 80,
+      renderHeight: 40,
+      startRate: 1,
+      xOffset: 0,
+      yOffset: 0,
+    }
   }
 ]
 

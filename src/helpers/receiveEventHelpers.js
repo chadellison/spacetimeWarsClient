@@ -68,7 +68,6 @@ const handleBuff = (playerData, players, aiShips, elapsedTime) => {
 const explodePlayer = (player, playerData) => {
   player.hitpoints = 0;
   player.explodeAnimation = {...EXPLOSION_ANIMATIONS[2], coordinates: {x: 0, y: 0}}
-  // player.explode = true;
   player.updatedAt = playerData.updatedAt;
   player.explodedAt = playerData.explodedAt;
   player.accelerate = false;

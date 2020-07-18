@@ -3,5 +3,6 @@ export const KEY_MAP = {
   38: 'up',
   39: 'right',
   32: 'space',
-  81: 'q'
+  81: 'q',
+  87: 'w',
 };

@@ -34,7 +34,7 @@ const DEFAULT_STATE = {
   gameBuff: {},
   gameOverStats: {},
   defenseData: { red: 10, blue: 10 },
-  abilityUsedAt: 0,
+  abilityCooldownData: {q: 0, w: 0},
   aiShips: [],
   animations: [],
   userEvents: {},
@@ -225,10 +225,10 @@ class Layout extends React.Component {
       activeTab,
       animations,
       defenseData,
-      abilityUsedAt,
       gameOverStats,
       deployedWeapons,
       clockDifference,
+      abilityCooldownData,
     } = this.state;
 
     const activePlayer = this.findActivePlayer();
@@ -260,7 +260,7 @@ class Layout extends React.Component {
             updateState={this.updateState}
             activePlayer={activePlayer}
             defenseData={defenseData}
-            abilityUsedAt={abilityUsedAt}
+            abilityCooldownData={abilityCooldownData}
           />}
           <Canvas
             index={index}

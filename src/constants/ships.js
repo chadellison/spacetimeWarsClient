@@ -20,12 +20,6 @@ import stealthShipAbsorb from '../images/stealthShipAbsorb.png';
 import supplyShip from '../images/supplyShip.png';
 import redBomber from '../images/redBomber.png';
 import blueBomber from '../images/blueBomber.png';
-import stealthMode from '../images/stealthMode.png';
-import nuclearExplosionIcon from '../images/nuclearExplosionIcon.png';
-import warpSpeedIcon from '../images/warpSpeedIcon.png';
-import mineIcon from '../images/mineIcon.png';
-import stunGunIcon from '../images/stunGunIcon.png';
-import invulnerabilityIcon from '../images/invulnerabilityIcon.png';
 
 export const SHIPS = [
   {
@@ -39,12 +33,7 @@ export const SHIPS = [
     image: destroyerShip,
     blueImage: blueDestroyerShip,
     absorbImage: destroyerShipAbsorb,
-    ability: {
-      description: 'Stuns an enemy ship dealing 200 bonus damage (45s cooldown).',
-      cooldown: 45000,
-      lastUsed: 0,
-      image: stunGunIcon,
-    }
+    abilities: {q: 0, w: 6},
   },
   {
     index: 1,
@@ -57,12 +46,7 @@ export const SHIPS = [
     image: hunterShip,
     blueImage: blueHunterShip,
     absorbImage: hunterShipAbsorb,
-    ability: {
-      description: 'Renders your ship impervious to attacks for seven seconds (60s cooldown).',
-      cooldown: 60000,
-      lastUsed: 0,
-      image: invulnerabilityIcon,
-    }
+    abilities: {q: 1, w: 1}
   },
   {
     index: 2,
@@ -75,12 +59,7 @@ export const SHIPS = [
     image: redWarShip,
     blueImage: blueWarShip,
     absorbImage: warShipAbsorb,
-    ability: {
-      description: 'Drops mines invisible to enemy ships that deal 600 bonus damage when a ship lands on the mine (50s cooldown).',
-      cooldown: 50000,
-      lastUsed: 0,
-      image: mineIcon,
-    }
+    abilities: {q: 2, w: 2}
   },
   {
     index: 3,
@@ -93,12 +72,7 @@ export const SHIPS = [
     image: cruiserShip,
     blueImage: blueCruiserShip,
     absorbImage: cruiserShipAbsorb,
-    ability: {
-      description: 'Allows the ship to travel extremely fast (+4) for eight seconds (45s cooldown).',
-      cooldown: 45000,
-      lastUsed: 0,
-      image: warpSpeedIcon,
-    }
+    abilities: {q: 3, w: 3}
   },
   {
     index: 4,
@@ -111,12 +85,7 @@ export const SHIPS = [
     image: carrierShip,
     blueImage: blueCarrierShip,
     absorbImage: carrierShipAbsorb,
-    ability: {
-      description: 'Deploys a massive blast dealing 500 bonus damage to every opponent ship (3 minute cooldown).',
-      cooldown: 180000,
-      lastUsed: 0,
-      image: nuclearExplosionIcon,
-    }
+    abilities: {q: 4, w: 4}
   },
   {
     index: 5,
@@ -129,12 +98,7 @@ export const SHIPS = [
     image: redStealthShip,
     blueImage: blueStealthShip,
     absorbImage: stealthShipAbsorb,
-    ability: {
-      description: 'Renders ship invisible for ten seconds (60s cooldown).',
-      cooldown: 60000,
-      lastUsed: 0,
-      image: stealthMode,
-    }
+    abilities: {q: 5, w: 5}
   }
 ];
 

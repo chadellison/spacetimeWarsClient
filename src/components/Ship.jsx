@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/ship.css';
 import {gong, notEnoughResources} from '../constants/settings.js';
 import {SHIPS} from '../constants/ships.js';
+import {ABILITIES} from '../constants/abilities.js';
 
 const handleClick = (shipIndex, activePlayer, updateState, index, players) => {
   const gold = activePlayer.gold - SHIPS[shipIndex].price;
@@ -52,12 +53,19 @@ export const Ship = ({imageSrc, activePlayer, ship, updateState, index, players}
         <div className="selectionData">
           {`Speed: ${ship.speed}`}
         </div>
-        <div className="shipAbilityIcon">
-          <img src={ship.ability.image} className="QAbilityIcon" alt="ship ability"/>
-          <div className="QKey">Q</div>
-        </div>
+          {[
+            {abilityImage: ABILITIES[ship.abilities.q].image, key: 'Q'},
+            {abilityImage: ABILITIES[ship.abilities.w].image, key: 'W'}
+          ].map((abilityData, index) => {
+              return (
+                <div className="shipAbilityIcon" key={'displayAbility' + index}>
+                  <div className="abilityKey">{abilityData.key}</div>
+                  <img src={abilityData.abilityImage} className="abilityIcon" alt="ship ability"/>
+                </div>
+              )
+          })}
         <div className="selectionDescription">
-          {ship.ability.description}
+          {ABILITIES[ship.abilities.q].description}
         </div>
     </div>
   );

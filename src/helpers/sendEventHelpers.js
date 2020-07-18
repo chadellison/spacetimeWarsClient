@@ -1,5 +1,6 @@
 import {WEAPONS} from '../constants/weapons.js';
 import {SHIPS} from '../constants/ships.js';
+import {ABILITIES} from '../constants/abilities.js';
 import {canFire, updatePlayer, handleFireWeapon} from '../helpers/gameLogic.js';
 import {playSound, stopSound} from '../helpers/audioHelpers.js';
 import {thruster} from '../constants/settings.js';
@@ -22,7 +23,8 @@ export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState
       handleAccelerateEvent(gameState, pressedKey, handleGameEvent, updateState);
       break;
     case 'q':
-      handleAbility(gameState.players[gameState.index], gameState.abilityUsedAt, handleGameEvent, updateState);
+    case 'w':
+      handleAbility(gameState.players[gameState.index], {...gameState.abilityCooldownData}, handleGameEvent, updateState, pressedKey);
       break;
     default:
       break;
@@ -161,9 +163,10 @@ const rotateEventPayload = (player, pressedKey) => {
   return {...player, gameEvent: pressedKey, rotate: pressedKey};
 }
 
-const handleAbility = (player, abilityUsedAt, handleGameEvent, updateState) => {
-  if (Date.now() - abilityUsedAt > SHIPS[player.shipIndex].ability.cooldown) {
-    handleGameEvent({...player, gameEvent: 'ability'});
-    updateState({abilityUsedAt: Date.now()});
+const handleAbility = (player, abilityCooldownData, handleGameEvent, updateState, pressedKey) => {
+  if (Date.now() - abilityCooldownData[pressedKey] > ABILITIES[SHIPS[player.shipIndex].abilities[pressedKey]].cooldown) {
+    handleGameEvent({...player, gameEvent: 'ability', usedAbility: pressedKey});
+    abilityCooldownData[pressedKey] = Date.now()
+    updateState({abilityCooldownData});
   }
 }

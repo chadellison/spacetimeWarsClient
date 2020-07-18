@@ -1,54 +1,41 @@
 import {ABILITY_WEAPONS} from '../constants/weapons.js';
+import {ABILITIES} from '../constants/abilities.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
-import {handleFireWeapon} from '../helpers/gameLogic.js';
+import {SHIPS} from '../constants/ships.js';
+import {handleFireWeapon, handleAngle, handleLocation} from '../helpers/gameLogic.js';
 import {playSound} from '../helpers/audioHelpers.js';
-import {
-  windSound,
-  warpSpeedSound,
-  toneSound,
-  invulnerableSound,
-  mineDropSound,
-  stunGunSound
-} from '../constants/settings.js';
 import {round} from '../helpers/mathHelpers';
 
 export const handleAbility = (gameState, playerData, elapsedTime) => {
   let updatedPlayers = [...gameState.players];
-
-  switch (playerData.shipIndex) {
-    case 0:
-      return addAbilityWeapon(1, gameState, playerData, stunGunSound, elapsedTime);
-    case 1:
-      return addAbilityEffect(5, updatedPlayers, gameState, playerData, invulnerableSound, elapsedTime);
-    case 2:
-      return addAbilityWeapon(2, gameState, playerData, mineDropSound, elapsedTime);
-    case 3:
-      return addAbilityEffect(8, updatedPlayers, gameState, playerData, warpSpeedSound, elapsedTime);
-    case 4:
-      return addAbilityWeapon(0, gameState, playerData, toneSound, elapsedTime);
-    case 5:
-      return addAbilityEffect(4, updatedPlayers, gameState, playerData, windSound, elapsedTime);
-    default:
-      return {players: updatedPlayers}
+  const ability = ABILITIES[SHIPS[playerData.shipIndex].abilities[playerData.usedAbility]]
+  playSound(ability.sound);
+  if (ability.type === 'weapon') {
+    return addAbilityWeapon(ability.weaponIndex, gameState, playerData, elapsedTime);
+  } else {
+    return addAbilityEffect(ability.effectIndex, updatedPlayers, gameState, playerData, elapsedTime);
   }
 }
 
-const addAbilityWeapon = (weaponIndex, gameState, playerData, sound, elapsedTime) => {
+const addAbilityWeapon = (weaponIndex, gameState, playerData, elapsedTime) => {
   let weapon = {...ABILITY_WEAPONS[weaponIndex], deployedAt: Date.now()}
-  const updatedWeapons = [
-    ...gameState.deployedWeapons,
-    handleFireWeapon(
-      playerData,
-      weapon,
-      elapsedTime,
-      weapon.damage + round(playerData.score / 50)
-    )
-  ];
-  playSound(sound);
-  return {deployedWeapons: updatedWeapons}
+  if (weapon.id === 4) {
+    return handleMeteorShower(gameState.deployedWeapons, playerData, weapon, elapsedTime);
+  } else {
+    const updatedWeapons = [
+      ...gameState.deployedWeapons,
+      handleFireWeapon(
+        playerData,
+        weapon,
+        elapsedTime,
+        weapon.damage + round(playerData.score / 50)
+      )
+    ];
+    return {deployedWeapons: updatedWeapons}
+  }
 }
 
-const addAbilityEffect = (effectIndex, players, gameState, playerData, sound, elapsedTime) => {
+const addAbilityEffect = (effectIndex, players, gameState, playerData, elapsedTime) => {
   let updatedPlayers = [...players]
   let player = updatedPlayers[playerData.index]
 
@@ -60,6 +47,31 @@ const addAbilityEffect = (effectIndex, players, gameState, playerData, sound, el
 
   player.effects = {...player.effects, [effect.id]: effect};
   updatedPlayers[playerData.index] = player;
-  playSound(sound);
   return {players: updatedPlayers};
 }
+
+const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime) => {
+  const angle = handleAngle(player, elapsedTime);
+  const meteors = [-40, -20, 0, 20, 40].map((degree) => {
+    let weaponAngle = angle + degree
+    if (weaponAngle < 0) {
+      weaponAngle += 360
+    } else if (weaponAngle > 360) {
+      weaponAngle -= 360
+    }
+    const location = player.location;
+    const shipCenter = SHIPS[player.shipIndex].shipCenter;
+    const x = location.x + shipCenter.x - (weapon.width / 2);
+    const y = location.y + shipCenter.y - (weapon.height / 2);
+
+    return {
+      ...weapon,
+      location: handleLocation(weaponAngle, {x, y}, 50),
+      trajectory: weaponAngle,
+      playerIndex: player.index,
+      team: player.team,
+      damage: 200 + round(player.score / 50),
+    }
+  });
+  return {deployedWeapons: deployedWeapons.concat(meteors)}
+};

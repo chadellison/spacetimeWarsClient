@@ -2,20 +2,14 @@ import React from "react";
 import '../styles/playerData.css';
 import {WEAPONS} from '../constants/weapons.js';
 import {UPGRADES} from '../constants/upgrades.js';
+import {ABILITIES} from '../constants/abilities.js';
 import goldIcon from "../images/gold.png";
 import {Hitpoints} from './Hitpoints';
 import {PlayerItems} from './PlayerItems';
 import {PlayerStat} from './PlayerStat';
-import {ShipIcon} from './ShipIcon';
 import {AbilityIcon} from './AbilityIcon';
 import {SHIPS} from '../constants/ships';
 import {round} from '../helpers/mathHelpers';
-
-const renderShip = (activePlayer) => {
-  if (activePlayer.shipIndex || activePlayer.shipIndex === 0) {
-    return <ShipIcon shipIndex={activePlayer.shipIndex} team={activePlayer.team} className={'playerShip'}/>
-  };
-}
 
 const renderWeapon = (weaponIndex) => {
   if (weaponIndex || weaponIndex === 0) {
@@ -85,16 +79,20 @@ const renderHitPoints = (activePlayer) => {
   }
 };
 
-const renderAbilityIcon = (activePlayer, abilityUsedAt) => {
+const renderAbilityIcons = (activePlayer, abilityCooldownData) => {
   if (activePlayer.shipIndex === 0 || activePlayer.shipIndex) {
-    return (
-      <AbilityIcon ability={SHIPS[activePlayer.shipIndex].ability}
-        abilityUsedAt={abilityUsedAt}/>
-    );
+    const shipAbilities = SHIPS[activePlayer.shipIndex].abilities
+    return [
+      {ability: ABILITIES[shipAbilities.q], key: 'q'},
+      {ability: ABILITIES[shipAbilities.w], key: 'w'}
+    ].map((abilityData, index) => {
+      return <AbilityIcon ability={abilityData.ability} key={'abilityIcon' + index}
+        abilityUsedAt={abilityCooldownData[abilityData.key]}/>
+    });
   }
 };
 
-const PlayerData = ({activePlayer, clockDifference, updateState, defenseData, abilityUsedAt}) => {
+const PlayerData = ({activePlayer, clockDifference, updateState, defenseData, abilityCooldownData}) => {
   const elapsedSeconds = (Date.now() + clockDifference - activePlayer.explodedAt) / 1000;
   let countDown = 0;
   if (!activePlayer.active && elapsedSeconds < 10) {
@@ -109,9 +107,8 @@ const PlayerData = ({activePlayer, clockDifference, updateState, defenseData, ab
         <div className="nameInfo">{activePlayer.name}</div>
         {gold >= 0 && <PlayerStat image={goldIcon} alt={'gold'} value={gold} className="goldInfo"/>}
         {renderHitPoints(activePlayer)}
-        {activePlayer.updatedAt && renderShip(activePlayer)}
         {renderWeapon(activePlayer.weaponIndex)}
-        {renderAbilityIcon(activePlayer, abilityUsedAt)}
+        {renderAbilityIcons(activePlayer, abilityCooldownData)}
         {damage > 0 && <PlayerStat image={UPGRADES[3].image} alt={'target'} value={damage} className="statInfo"/>}
         {renderArmor(activePlayer)}
         {renderSpeed(activePlayer)}
