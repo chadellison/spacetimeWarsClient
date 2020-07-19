@@ -9,6 +9,7 @@ import healingIcon from '../images/healthBoost.jpg';
 import piercerIcon from '../images/piercerIcon.png';
 import rapidFireIcon from '../images/rapidFireIcon.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
+import hiddenAttackIcon from '../images/hiddenAttackIcon.png';
 import {
   windSound,
   warpSpeedSound,
@@ -118,6 +119,15 @@ export const ABILITIES = [
     cooldown: 45000,
     effectIndex: 10,
     image: damageBoostIcon,
+    sound: damageBoostSound,
+  },
+  {
+    index: 11,
+    type: 'effect',
+    description: 'Renders your weapons invisible for 5 seconds (55s cooldown)',
+    cooldown: 55000,
+    effectIndex: 11,
+    image: hiddenAttackIcon,
     sound: damageBoostSound,
   }
 ]

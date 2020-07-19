@@ -178,5 +178,11 @@ export const GAME_EFFECTS = [
       xOffset: 25,
       yOffset: -25,
     }
+  },
+  {
+    id: 12,
+    name: 'stealthWeapon',
+    duration: 5000,
+    durationCount: 0,
   }
 ]

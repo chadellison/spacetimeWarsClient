@@ -328,6 +328,7 @@ export const handleFireWeapon = (player, weapon, elapsedTime, damage) => {
   weapon.team = player.team
   weapon.damage = damage
   weapon.canStun = player.items[6]
+  weapon.invisible = player.effects[12] || weapon.id === 3 ? true : false
 
   return weapon;
 };

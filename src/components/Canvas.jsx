@@ -178,7 +178,7 @@ class Canvas extends React.Component {
     })
 
     this.props.deployedWeapons.forEach((weapon) => {
-      if (weapon.id !== 3 || (currentPlayer && weapon.team === currentPlayer.team)) {
+      if (!weapon.invisible || (currentPlayer && weapon.team === currentPlayer.team)) {
         renderWeapon(context, weapon, this.state[weapon.name])
       }
     });
