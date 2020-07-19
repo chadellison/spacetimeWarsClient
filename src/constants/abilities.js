@@ -18,14 +18,18 @@ import {
   mineDropSound,
   stunGunSound,
   damageBoostSound,
-  pierceSound,
+  piercerSound,
+  clokingSound,
+  healSound,
+  rapidFireSound,
+  meteorConeSound,
 } from '../constants/settings.js';
 
 export const ABILITIES = [
   {
     index: 0,
     type: 'weapon',
-    description: 'Stuns an enemy ship dealing 200 bonus damage (45s cooldown).',
+    description: 'Stuns an enemy ship for 3 seconds and deals 350 damage (45s cooldown).',
     cooldown: 45000,
     weaponIndex: 1,
     image: stunGunIcon,
@@ -83,7 +87,7 @@ export const ABILITIES = [
     cooldown: 30000,
     weaponIndex: 3,
     image: meteorShowerIcon,
-    sound: damageBoostSound,
+    sound: meteorConeSound,
   },
   {
     index: 7,
@@ -92,7 +96,7 @@ export const ABILITIES = [
     cooldown: 90000,
     effectIndex: 6,
     image: healingIcon,
-    sound: damageBoostSound,
+    sound: healSound,
   },
   {
     index: 8,
@@ -101,7 +105,7 @@ export const ABILITIES = [
     cooldown: 40000,
     weaponIndex: 4,
     image: piercerIcon,
-    sound: pierceSound,
+    sound: piercerSound,
   },
   {
     index: 9,
@@ -110,7 +114,7 @@ export const ABILITIES = [
     cooldown: 40000,
     effectIndex: 9,
     image: rapidFireIcon,
-    sound: damageBoostSound,
+    sound: rapidFireSound,
   },
   {
     index: 10,
@@ -128,6 +132,6 @@ export const ABILITIES = [
     cooldown: 55000,
     effectIndex: 11,
     image: hiddenAttackIcon,
-    sound: damageBoostSound,
+    sound: clokingSound,
   }
 ]

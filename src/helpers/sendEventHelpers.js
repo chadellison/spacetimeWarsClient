@@ -134,6 +134,7 @@ export const startEventPayload = (player) => {
     hitpoints: player.maxHitpoints,
     team: player.team,
     active: true,
+    effects: {},
   };
 }
 

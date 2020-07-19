@@ -20,7 +20,7 @@ import nuclearExplosionAnimation from '../images/nuclearExplosionAnimation.png';
 import mineExplosionAnimation from '../images/mineExplosionAnimation.png';
 import nuclearBlastAnimation from '../images/nuclearBlastAnimation.png';
 import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
-import lavaBlastAnimation from '../images/stunGunAnimation.png';
+import stunGunAnimation from '../images/stunGunAnimation.png';
 import meteorShowerAnimation from '../images/meteorShowerAnimation.png';
 import piercerAnimation from '../images/piercerAnimation.png';
 
@@ -191,16 +191,16 @@ export const ABILITY_WEAPONS = [
   },
   {
     id: 2,
-    name: 'lavaBlast',
+    name: 'stunGun',
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 14,
     width: 120,
     height: 60,
-    damage: 200,
+    damage: 350,
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: lavaBlastAnimation,
+      spriteImage: stunGunAnimation,
       width: 128,
       height: 64,
       rowCount: 4,

@@ -65,7 +65,7 @@ class Canvas extends React.Component {
     const armorBoost = this.refs.armorBoost
     const warpSpeed = this.refs.warpSpeed
     const nuclearBlast = this.refs.nuclearBlast
-    const lavaBlast = this.refs.lavaBlast
+    const stunGun = this.refs.stunGun
     const spaceMine = this.refs.spaceMine
     const meteorShower = this.refs.meteorShower
     const piercer = this.refs.piercer
@@ -111,7 +111,7 @@ class Canvas extends React.Component {
       armorBoost: armorBoost,
       warpSpeed: warpSpeed,
       nuclearBlast: nuclearBlast,
-      lavaBlast: lavaBlast,
+      stunGun: stunGun,
       spaceMine: spaceMine,
       piercer: piercer,
       meteorShower: meteorShower,
