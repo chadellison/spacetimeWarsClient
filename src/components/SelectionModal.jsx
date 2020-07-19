@@ -94,12 +94,16 @@ const renderStart = (updateState, handleGameEvent, activePlayer, clockDifference
       <GameButton
         className={'selectionButton'}
         onClick={() => handleClick(updateState, handleGameEvent, activePlayer)}
-        buttonText={'Start'}
+        buttonText={'start'}
       />
     );
+  } else if (activePlayer.shipIndex === undefined) {
+    return <div className="informationText">select a ship</div>;
+  } else if (activePlayer.weaponIndex === undefined) {
+    return <div className="informationText">select a weapon</div>;
   } else {
     return null;
-  };
+  }
 };
 
 const renderTabs = (activeTab, updateState, activePlayer) => {

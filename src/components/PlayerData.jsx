@@ -8,8 +8,10 @@ import {Hitpoints} from './Hitpoints';
 import {PlayerItems} from './PlayerItems';
 import {PlayerStat} from './PlayerStat';
 import {AbilityIcon} from './AbilityIcon';
+import {GameButton} from './GameButton';
 import {SHIPS} from '../constants/ships';
 import {round} from '../helpers/mathHelpers';
+import {startEventPayload} from '../helpers/sendEventHelpers';
 
 const renderWeapon = (weaponIndex) => {
   if (weaponIndex || weaponIndex === 0) {
@@ -78,12 +80,26 @@ const renderDamage = (player) => {
   }
 }
 
-const handlePlayerIcon = (activePlayer, countDown) => {
-  if (countDown > 0) {
+const handlePlayerIcon = (activePlayer, countDown, modal, handleGameEvent) => {
+  if (activePlayer.active) {
+    return (
+      <img
+        className="playerImage"
+        src={`https://robohash.org/${activePlayer.index}?color=${activePlayer.team}`}
+        alt="player"
+      />
+    );
+  } else if (countDown > 0) {
     return <span className="waitCountDown">{countDown}</span>;
-  } else {
-    return <img className="playerImage" src={`https://robohash.org/${activePlayer.index}?color=${activePlayer.team}`} alt="player"/>;
-  };
+  } else if (modal !== 'selection') {
+    return (
+      <GameButton
+        className={'startButton'}
+        onClick={() => handleGameEvent(startEventPayload(activePlayer))}
+        buttonText={'start'}
+      />
+    );
+  }
 }
 
 const renderHitPoints = (activePlayer) => {
@@ -110,7 +126,15 @@ const renderAbilityIcons = (activePlayer, abilityCooldownData) => {
   }
 };
 
-const PlayerData = ({activePlayer, clockDifference, updateState, defenseData, abilityCooldownData}) => {
+const PlayerData = ({
+  activePlayer,
+  clockDifference,
+  updateState,
+  defenseData,
+  abilityCooldownData,
+  modal,
+  handleGameEvent
+}) => {
   const elapsedSeconds = (Date.now() + clockDifference - activePlayer.explodedAt) / 1000;
   let countDown = 0;
   if (!activePlayer.active && elapsedSeconds < 10) {
@@ -121,7 +145,7 @@ const PlayerData = ({activePlayer, clockDifference, updateState, defenseData, ab
   return (
     <div className={`playerData column ${!activePlayer.active ? 'waiting' : ''}`}>
       <div className="row">
-        {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown)}
+        {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown, modal, handleGameEvent)}
         <div className="nameInfo">{activePlayer.name}</div>
         {gold >= 0 && <PlayerStat image={goldIcon} alt={'gold'} value={gold} className="goldInfo"/>}
         {renderHitPoints(activePlayer)}

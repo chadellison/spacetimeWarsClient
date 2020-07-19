@@ -256,10 +256,12 @@ class Layout extends React.Component {
           />}
           <HeaderButtons updateState={this.updateState} />
           {activePlayer.name && <PlayerData
-            clockDifference={clockDifference}
-            updateState={this.updateState}
-            activePlayer={activePlayer}
+            modal={modal}
             defenseData={defenseData}
+            activePlayer={activePlayer}
+            updateState={this.updateState}
+            clockDifference={clockDifference}
+            handleGameEvent={this.handleGameEvent}
             abilityCooldownData={abilityCooldownData}
           />}
           <Canvas
