@@ -1,6 +1,6 @@
 .selection {
   width: 10em;
-  height: 10em;
+  height: 12em;
   margin-top: 2em;
   margin-left: 1em;
   margin-right: 1em;
@@ -72,38 +72,26 @@
   line-height: 1.3em;
   display: flex;
   font-size: 12px;
+  height: 0.5em;
   color: #2c66b2;
 }
 
-.shipAbilityIcon {
-  /* text-align: left; */
-  /* display: flex; */
-  display: inline-block;
-  /* align-items: left; */
-  /* margin-left: 0; */
-  margin-top: 8px;
-  width: 50%;
-  /* margin-left: -10em; */
-  /* display: flex; */
-  /* position: absolute; */
-  /* left: 0; */
+.abilityTitle {
+  padding: .5em;
+  text-align: left;
+  line-height: 4px;
+  display: flex;
+  font-size: 14px;
+  margin-top: 0.5em;
+  color: #2c66b2;
 }
 
-.abilityIcon {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: inline-block;
-  padding-left: .5em;
-  padding-right: .5em;
-  padding-top: 0.1em;
-}
-
-.abilityKey {
-  padding-top: .5em;
-  font-size: 10px;
-  margin-top: 0.3em;
-  color: #ab8432;
+.abilityDescription {
+  margin-top: 1em;
+  text-align: left;
+  line-height: 1.5em;
+  display: flex;
+  font-size: 16px;
+  color: #2c66b2;
   position: absolute;
-  display: inline-block;
 }

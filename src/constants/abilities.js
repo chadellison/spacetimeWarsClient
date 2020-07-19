@@ -29,7 +29,7 @@ export const ABILITIES = [
   {
     index: 0,
     type: 'weapon',
-    description: 'Stuns an enemy ship for 3 seconds and deals 350 damage (45s cooldown).',
+    description: 'Stuns an enemy ship for 3 seconds and deals 350 damage ("Q" key to use; 45s cooldown).',
     cooldown: 45000,
     weaponIndex: 1,
     image: stunGunIcon,
@@ -38,7 +38,7 @@ export const ABILITIES = [
   {
     index: 1,
     type: 'effect',
-    description: 'Renders your ship impervious to attacks for seven seconds (60s cooldown).',
+    description: 'Renders the ship impervious to attacks for seven seconds ("Q" key to use; 60s cooldown).',
     cooldown: 60000,
     effectIndex: 5,
     image: invulnerabilityIcon,
@@ -47,7 +47,7 @@ export const ABILITIES = [
   {
     index: 2,
     type: 'weapon',
-    description: 'Drops mines invisible to enemy ships that deal 600 bonus damage when a ship lands on the mine (50s cooldown).',
+    description: 'Drops invisible mines dealing 600 damage when an enemy ship travels over the mine ("Q" key to use; 50s cooldown).',
     cooldown: 50000,
     weaponIndex: 2,
     image: mineIcon,
@@ -56,7 +56,7 @@ export const ABILITIES = [
   {
     index: 3,
     type: 'effect',
-    description: 'Allows the ship to travel extremely fast (+4) for eight seconds (45s cooldown).',
+    description: 'Allows the ship to travel at warp speed (+4) for eight seconds ("Q" key to use; 45s cooldown).',
     cooldown: 45000,
     effectIndex: 8,
     image: warpSpeedIcon,
@@ -65,7 +65,7 @@ export const ABILITIES = [
   {
     index: 4,
     type: 'weapon',
-    description: 'Deploys a massive blast dealing 500 bonus damage to every opponent ship (3 minute cooldown).',
+    description: 'Deploys a nuclear blast dealing 500 damage to every opponent ship ("Q" key to use; 3 minute cooldown).',
     cooldown: 180000,
     weaponIndex: 0,
     image: nuclearExplosionIcon,
@@ -74,7 +74,7 @@ export const ABILITIES = [
   {
     index: 5,
     type: 'effect',
-    description: 'Renders ship invisible for ten seconds (60s cooldown).',
+    description: 'Renders the ship invisible for ten seconds ("Q" key to use; 60s cooldown).',
     cooldown: 60000,
     effectIndex: 4,
     image: stealthModeIcon,
@@ -83,7 +83,7 @@ export const ABILITIES = [
   {
     index: 6,
     type: 'weapon',
-    description: 'Fires a cone of meteors each dealing 200 damage (30s cooldown).',
+    description: 'Fires a cone of meteors each dealing 200 damage ("W" key to use; 30s cooldown).',
     cooldown: 30000,
     weaponIndex: 3,
     image: meteorShowerIcon,
@@ -92,7 +92,7 @@ export const ABILITIES = [
   {
     index: 7,
     type: 'effect',
-    description: 'Boosts hitpoints to %50 of max hitpoints (90 second cooldown)',
+    description: 'Boosts hitpoints to %50 of max hitpoints ("W" key to use; 90 second cooldown)',
     cooldown: 90000,
     effectIndex: 6,
     image: healingIcon,
@@ -101,7 +101,7 @@ export const ABILITIES = [
   {
     index: 8,
     type: 'weapon',
-    description: 'Fires a weapon that tears through ships by traveling through them (40s cooldown).',
+    description: 'Fires a projectile that travels through enemy ships dealing catastrophic damage ("W" key to use; 40s cooldown).',
     cooldown: 40000,
     weaponIndex: 4,
     image: piercerIcon,
@@ -110,7 +110,7 @@ export const ABILITIES = [
   {
     index: 9,
     type: 'effect',
-    description: 'Enables your ship to fire twice as fast for 15 seconds (40s cooldown).',
+    description: 'Enables the ship to fire at rapid speed (twice as fast) for 10 seconds ("W" key to use; 40s cooldown).',
     cooldown: 40000,
     effectIndex: 9,
     image: rapidFireIcon,
@@ -119,7 +119,7 @@ export const ABILITIES = [
   {
     index: 10,
     type: 'effect',
-    description: 'Provides a 25% damage boost to all allied units for for 12 seconds (45s cooldown).',
+    description: 'Provides a 25% damage boost to all friendly ships for 12 seconds ("W" key to use; 45s cooldown).',
     cooldown: 45000,
     effectIndex: 10,
     image: damageBoostIcon,
@@ -128,7 +128,7 @@ export const ABILITIES = [
   {
     index: 11,
     type: 'effect',
-    description: 'Renders your weapons invisible for 5 seconds (55s cooldown)',
+    description: 'Renders the ship\'s weapons invisible for 5 seconds ("W" key to use; 55s cooldown)',
     cooldown: 55000,
     effectIndex: 11,
     image: hiddenAttackIcon,

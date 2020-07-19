@@ -156,7 +156,7 @@ export const GAME_EFFECTS = [
   {
     id: 10,
     name: 'rapidFire',
-    duration: 15000,
+    duration: 10000,
     durationCount: 0,
   },
   {
