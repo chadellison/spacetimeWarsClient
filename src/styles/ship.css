@@ -93,5 +93,6 @@
   display: flex;
   font-size: 16px;
   color: #2c66b2;
+  padding-right: 10px;
   position: absolute;
 }

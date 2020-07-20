@@ -28,26 +28,26 @@ class Canvas extends React.Component {
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
     context.fillRect(0, 0, canvas.width, canvas.height);
-    const hunterShip = this.refs.hunterShip
-    const hunterShipBlue = this.refs.hunterShipBlue
-    const hunterShipAbsorb = this.refs.hunterShipAbsorb
-    const destroyerShip = this.refs.destroyerShip
-    const destroyerShipBlue = this.refs.destroyerShipBlue
-    const destroyerShipAbsorb = this.refs.destroyerShipAbsorb
-    const warShip = this.refs.warShip
-    const warShipBlue = this.refs.warShipBlue
-    const warShipAbsorb = this.refs.warShipAbsorb
-    const cruiserShip = this.refs.cruiserShip
-    const cruiserShipBlue = this.refs.cruiserShipBlue
-    const cruiserShipAbsorb = this.refs.cruiserShipAbsorb
-    const carrierShip = this.refs.carrierShip
-    const carrierShipBlue = this.refs.carrierShipBlue
-    const carrierShipAbsorb = this.refs.carrierShipAbsorb
-    const stealthShip = this.refs.stealthShip
-    const stealthShipBlue = this.refs.stealthShipBlue
+    const hunter = this.refs.hunter
+    const hunterBlue = this.refs.hunterBlue
+    const hunterAbsorb = this.refs.hunterAbsorb
+    const destroyer = this.refs.destroyer
+    const destroyerBlue = this.refs.destroyerBlue
+    const destroyerAbsorb = this.refs.destroyerAbsorb
+    const warrior = this.refs.warrior
+    const warriorBlue = this.refs.warriorBlue
+    const warriorAbsorb = this.refs.warriorAbsorb
+    const cruiser = this.refs.cruiser
+    const cruiserBlue = this.refs.cruiserBlue
+    const cruiserAbsorb = this.refs.cruiserAbsorb
+    const carrier = this.refs.carrier
+    const carrierBlue = this.refs.carrierBlue
+    const carrierAbsorb = this.refs.carrierAbsorb
+    const stealth = this.refs.stealth
+    const stealthBlue = this.refs.stealthBlue
+    const stealthAbsorb = this.refs.stealthAbsorb
     const redBomber = this.refs.redBomber
     const blueBomber = this.refs.blueBomber
-    const stealthShipAbsorb = this.refs.stealthShipAbsorb
     const fireball = this.refs.fireball
     const missile = this.refs.missile
     const trifecta = this.refs.trifecta
@@ -76,24 +76,24 @@ class Canvas extends React.Component {
     this.setState({
       canvas: canvas,
       context: context,
-      hunterShip: hunterShip,
-      hunterShipBlue: hunterShipBlue,
-      hunterShipAbsorb: hunterShipAbsorb,
-      destroyerShip: destroyerShip,
-      destroyerShipBlue: destroyerShipBlue,
-      destroyerShipAbsorb: destroyerShipAbsorb,
-      warShip: warShip,
-      warShipBlue: warShipBlue,
-      warShipAbsorb: warShipAbsorb,
-      cruiserShip: cruiserShip,
-      cruiserShipBlue: cruiserShipBlue,
-      cruiserShipAbsorb: cruiserShipAbsorb,
-      carrierShip: carrierShip,
-      carrierShipBlue: carrierShipBlue,
-      carrierShipAbsorb: carrierShipAbsorb,
-      stealthShip: stealthShip,
-      stealthShipBlue: stealthShipBlue,
-      stealthShipAbsorb: stealthShipAbsorb,
+      hunter: hunter,
+      hunterBlue: hunterBlue,
+      hunterAbsorb: hunterAbsorb,
+      destroyer: destroyer,
+      destroyerBlue: destroyerBlue,
+      destroyerAbsorb: destroyerAbsorb,
+      warrior: warrior,
+      warriorBlue: warriorBlue,
+      warriorAbsorb: warriorAbsorb,
+      cruiser: cruiser,
+      cruiserBlue: cruiserBlue,
+      cruiserAbsorb: cruiserAbsorb,
+      carrier: carrier,
+      carrierBlue: carrierBlue,
+      carrierAbsorb: carrierAbsorb,
+      stealth: stealth,
+      stealthBlue: stealthBlue,
+      stealthAbsorb: stealthAbsorb,
       redBomber: redBomber,
       blueBomber: blueBomber,
       fireball: fireball,

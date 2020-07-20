@@ -14,10 +14,10 @@ import {round} from '../helpers/mathHelpers';
 import {startEventPayload} from '../helpers/sendEventHelpers';
 
 const renderWeapon = (weaponIndex) => {
-  if (weaponIndex || weaponIndex === 0) {
+  if (weaponIndex >= 0) {
     return (
       <img
-        className="playerInfoWeapon"
+        className="playerDataWeapon"
         src={WEAPONS[weaponIndex].selectionImage}
         alt="weapon"
       />
@@ -149,8 +149,8 @@ const PlayerData = ({
         <div className="nameInfo">{activePlayer.name}</div>
         {gold >= 0 && <PlayerStat image={goldIcon} alt={'gold'} value={gold} className="goldInfo"/>}
         {renderHitPoints(activePlayer)}
-        {renderWeapon(activePlayer.weaponIndex)}
         {renderAbilityIcons(activePlayer, abilityCooldownData)}
+        {renderWeapon(activePlayer.weaponIndex)}
         {renderDamage(activePlayer)}
         {renderArmor(activePlayer)}
         {renderSpeed(activePlayer)}

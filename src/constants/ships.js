@@ -24,7 +24,7 @@ import blueBomber from '../images/blueBomber.png';
 export const SHIPS = [
   {
     index: 0,
-    name: 'destroyerShip',
+    name: 'destroyer',
     price: 600,
     armor: 1,
     hitpoints: 900,
@@ -37,7 +37,7 @@ export const SHIPS = [
   },
   {
     index: 1,
-    name: 'hunterShip',
+    name: 'hunter',
     price: 800,
     armor: 0,
     hitpoints: 700,
@@ -50,7 +50,7 @@ export const SHIPS = [
   },
   {
     index: 2,
-    name: 'warShip',
+    name: 'warrior',
     price: 700,
     armor: 1,
     hitpoints: 700,
@@ -63,7 +63,7 @@ export const SHIPS = [
   },
   {
     index: 3,
-    name: 'cruiserShip',
+    name: 'cruiser',
     price: 800,
     armor: 1,
     hitpoints: 800,
@@ -76,7 +76,7 @@ export const SHIPS = [
   },
   {
     index: 4,
-    name: 'carrierShip',
+    name: 'carrier',
     price: 900,
     armor: 2,
     hitpoints: 1000,
@@ -89,7 +89,7 @@ export const SHIPS = [
   },
   {
     index: 5,
-    name: 'stealthShip',
+    name: 'stealth',
     price: 850,
     armor: 1,
     hitpoints: 900,
