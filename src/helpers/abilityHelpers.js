@@ -23,8 +23,6 @@ const addAbilityWeapon = (weaponIndex, gameState, playerData, elapsedTime) => {
   switch (weapon.id) {
     case 4:
       return handleMeteorShower(gameState.deployedWeapons, playerData, weapon, elapsedTime);
-    // case 6:
-    //   handleElectricField(gameState.deployedWeapons, playerData, weapon, elapsedTime);
     default:
       const updatedWeapons = [
           ...gameState.deployedWeapons,
@@ -43,13 +41,14 @@ const addAbilityEffect = (effectIndex, players, gameState, playerData, elapsedTi
   let updatedPlayers = [...players]
   let player = updatedPlayers[playerData.index]
 
-  const effect = {
+  let effect = {
     ...GAME_EFFECTS[effectIndex],
     durationCount: elapsedTime,
     duration: GAME_EFFECTS[effectIndex].duration + round(player.score / 5)
   };
 
-  if (effect.id === 11) {
+  if (effect.id === 11 || (effect.id === 7 && player.shipIndex === 4)) {
+    effect = {...effect, duration: 1800}
     updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect)
   } else if (effect.id === 13) {
     const team = player.team === 'red' ? 'blue' : 'red';

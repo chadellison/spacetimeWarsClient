@@ -142,7 +142,7 @@ export const ABILITIES = [
   {
     index: 12,
     type: 'weapon',
-    description: 'does things',
+    description: 'Creates an electric field dealing 25 damage per second and slowing enemy units who fly into this field ("E" key to use; 45s cooldown)',
     cooldown: 45000,
     weaponIndex: 5,
     image: electricFieldIcon,
@@ -163,5 +163,21 @@ export const ABILITIES = [
     description: 'Gives a %20 chance to gain a double bounty upon destroying an enemy ship (passive ability)',
     cooldown: 0,
     image: goldIcon,
+  },
+  {
+    index: 15,
+    type: 'passive',
+    description: '%25 of damage taken will be inflicted on the opponent who fires on this ship (passive ability)',
+    cooldown: 0,
+    image: goldIcon,
+  },
+  {
+    index: 16,
+    type: 'effect',
+    description: 'Heals ally units for %25 of their total hitpoints ("E" key to use; 50s cooldown)',
+    cooldown: 50000,
+    effectIndex: 6,
+    image: healingIcon,
+    sound: healSound,
   }
 ]

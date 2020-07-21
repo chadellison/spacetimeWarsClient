@@ -72,7 +72,7 @@ export const SHIPS = [
     image: cruiserShip,
     blueImage: blueCruiserShip,
     absorbImage: cruiserShipAbsorb,
-    abilities: {q: 3, w: 9, e: 12}
+    abilities: {q: 3, w: 9, e: 15}
   },
   {
     index: 4,
@@ -85,7 +85,7 @@ export const SHIPS = [
     image: carrierShip,
     blueImage: blueCarrierShip,
     absorbImage: carrierShipAbsorb,
-    abilities: {q: 4, w: 10, e: 12}
+    abilities: {q: 4, w: 10, e: 16}
   },
   {
     index: 5,

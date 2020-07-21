@@ -252,7 +252,7 @@ const handleCollision = (players, weapon, attacker, handleGameEvent) => {
 
       shipBoundingBoxes.forEach((center, index) => {
         const distance = findHypotenuse(center, weaponCenter);
-        
+
         if ((index < 3 && distance < (18 + weapon.damageRadius)) || (index > 2 && distance < 23 + weapon.damageRadius)) {
           applyHit(player, weapon, attacker, handleGameEvent);
         }
@@ -279,8 +279,12 @@ const applyHit = (player, weapon, attacker, handleGameEvent) => {
 
 const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
   if (player.hitpoints > 0) {
-    player = handleNegativeBuff(player, weapon);
-    player.hitpoints -= calculateDamage(weapon, player);
+    player = handleNegativeBuff(player, weapon, attacker);
+    const damage = calculateDamage(weapon, player);
+    if (player.shipIndex === 3) {
+      attacker.hitpoints -= round(damage / 4);
+    }
+    player.hitpoints -= damage;
     attacker = handlePositiveBuff(attacker, weapon);
   }
   if (player.hitpoints <= 0) {
