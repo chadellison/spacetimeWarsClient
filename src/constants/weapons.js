@@ -266,8 +266,8 @@ export const ABILITY_WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 14,
-    width: 30,
-    height: 30,
+    width: 120,
+    height: 60,
     damage: 80,
     damageRadius: 4,
     animation: {
@@ -291,8 +291,8 @@ export const ABILITY_WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 0,
-    width: 250,
-    height: 250,
+    width: 400,
+    height: 400,
     damageRadius: 125,
     damage: 1,
     animation: {

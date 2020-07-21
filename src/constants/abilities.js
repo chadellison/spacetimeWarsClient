@@ -13,6 +13,8 @@ import hiddenAttackIcon from '../images/hiddenAttackIcon.png';
 import damageReductionIcon from '../images/damageReductionIcon.png';
 import electricFieldIcon from '../images/electricFieldIcon.png';
 import goldIcon from '../images/gold.png';
+import returnDamageIcon from '../images/returnDamageIcon.png';
+import evasionIcon from '../images/evasionIcon.png';
 import {
   windSound,
   warpSpeedSound,
@@ -169,7 +171,7 @@ export const ABILITIES = [
     type: 'passive',
     description: '%25 of damage taken will be inflicted on the opponent who fires on this ship (passive ability)',
     cooldown: 0,
-    image: goldIcon,
+    image: returnDamageIcon,
   },
   {
     index: 16,
@@ -185,6 +187,6 @@ export const ABILITIES = [
     type: 'passive',
     description: 'Gives the ship a %20 chance to evade an attack (passive ability)',
     cooldown: 0,
-    image: healingIcon,
+    image: evasionIcon,
   }
 ]
