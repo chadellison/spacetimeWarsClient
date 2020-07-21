@@ -98,7 +98,7 @@ export const SHIPS = [
     image: redStealthShip,
     blueImage: blueStealthShip,
     absorbImage: stealthShipAbsorb,
-    abilities: {q: 5, w: 11, e: 12}
+    abilities: {q: 5, w: 11, e: 17}
   }
 ];
 

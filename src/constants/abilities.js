@@ -179,5 +179,12 @@ export const ABILITIES = [
     effectIndex: 6,
     image: healingIcon,
     sound: healSound,
+  },
+  {
+    index: 17,
+    type: 'passive',
+    description: 'Gives the ship a %20 chance to evade an attack (passive ability)',
+    cooldown: 0,
+    image: healingIcon,
   }
 ]

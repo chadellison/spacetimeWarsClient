@@ -341,6 +341,9 @@ const calculateDamage = (weapon, player) => {
   if (weapon.index === 4 && Math.random() >= 0.8) {
     damage *= 2
   }
+  if (player.shipIndex === 5 && Math.random() >= 0.8) {
+    damage = 0;
+  }
   return round(damage * (10 - armor) / 10);
 }
 
