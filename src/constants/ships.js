@@ -33,7 +33,7 @@ export const SHIPS = [
     image: destroyerShip,
     blueImage: blueDestroyerShip,
     absorbImage: destroyerShipAbsorb,
-    abilities: {q: 0, w: 6},
+    abilities: {q: 0, w: 6, e: 12},
   },
   {
     index: 1,
@@ -46,7 +46,7 @@ export const SHIPS = [
     image: hunterShip,
     blueImage: blueHunterShip,
     absorbImage: hunterShipAbsorb,
-    abilities: {q: 1, w: 7}
+    abilities: {q: 1, w: 7, e: 13}
   },
   {
     index: 2,
@@ -59,7 +59,7 @@ export const SHIPS = [
     image: redWarShip,
     blueImage: blueWarShip,
     absorbImage: warShipAbsorb,
-    abilities: {q: 2, w: 8}
+    abilities: {q: 2, w: 8, e: 14}
   },
   {
     index: 3,
@@ -72,7 +72,7 @@ export const SHIPS = [
     image: cruiserShip,
     blueImage: blueCruiserShip,
     absorbImage: cruiserShipAbsorb,
-    abilities: {q: 3, w: 9}
+    abilities: {q: 3, w: 9, e: 12}
   },
   {
     index: 4,
@@ -85,7 +85,7 @@ export const SHIPS = [
     image: carrierShip,
     blueImage: blueCarrierShip,
     absorbImage: carrierShipAbsorb,
-    abilities: {q: 4, w: 10}
+    abilities: {q: 4, w: 10, e: 12}
   },
   {
     index: 5,
@@ -98,7 +98,7 @@ export const SHIPS = [
     image: redStealthShip,
     blueImage: blueStealthShip,
     absorbImage: stealthShipAbsorb,
-    abilities: {q: 5, w: 11}
+    abilities: {q: 5, w: 11, e: 12}
   }
 ];
 

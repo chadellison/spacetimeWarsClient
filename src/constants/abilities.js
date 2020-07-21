@@ -10,6 +10,9 @@ import piercerIcon from '../images/piercerIcon.png';
 import rapidFireIcon from '../images/rapidFireIcon.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import hiddenAttackIcon from '../images/hiddenAttackIcon.png';
+import damageReductionIcon from '../images/damageReductionIcon.png';
+import electricFieldIcon from '../images/electricFieldIcon.png';
+import goldIcon from '../images/gold.png';
 import {
   windSound,
   warpSpeedSound,
@@ -23,6 +26,8 @@ import {
   healSound,
   rapidFireSound,
   meteorConeSound,
+  damageReductionSound,
+  electricFieldSound,
 } from '../constants/settings.js';
 
 export const ABILITIES = [
@@ -133,5 +138,30 @@ export const ABILITIES = [
     effectIndex: 11,
     image: hiddenAttackIcon,
     sound: clokingSound,
+  },
+  {
+    index: 12,
+    type: 'weapon',
+    description: 'does things',
+    cooldown: 45000,
+    weaponIndex: 5,
+    image: electricFieldIcon,
+    sound: electricFieldSound,
+  },
+  {
+    index: 13,
+    type: 'effect',
+    description: 'Reduces the attack damage of all enemy ships by %50 for seven seconds ("E" key to use; 50s cooldown)',
+    cooldown: 50000,
+    effectIndex: 12,
+    image: damageReductionIcon,
+    sound: damageReductionSound,
+  },
+  {
+    index: 14,
+    type: 'passive',
+    description: 'Gives a %20 chance to gain a double bounty upon destroying an enemy ship (passive ability)',
+    cooldown: 0,
+    image: goldIcon,
   }
 ]

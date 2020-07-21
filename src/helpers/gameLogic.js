@@ -15,6 +15,7 @@ import {updateAnimation} from '../helpers/animationHelpers';
 import {round} from '../helpers/mathHelpers.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
 import {playSound} from '../helpers/audioHelpers.js';
+import {goldAudio} from '../constants/settings.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   const {clockDifference, gameBuff, index, aiShips, space, lastFired} = gameState;
@@ -93,12 +94,11 @@ const updatePlayers = (gameState, handleGameEvent, updateState) => {
 }
 
 const handleRepeatedFire = (player, index, space, lastFired, deployedWeapons, updateState, handleGameEvent) => {
-  if (index >= 0) {
+  if (player && player.active) {
     if (space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown, player.effects[10])) {
       const updatedPlayer = {...player, gameEvent: 'fire'};
       handleGameEvent(updatedPlayer)
-      let damage = updatedPlayer.damage;
-      damage = updatedPlayer.effects[11] ? damage + round(damage * 0.25) : damage
+      const damage = handlePlayerDamage(updatedPlayer)
       const updatedWeapons = [
         ...deployedWeapons,
         handleFireWeapon(updatedPlayer, {...WEAPONS[player.weaponIndex]}, 0, damage)
@@ -109,6 +109,16 @@ const handleRepeatedFire = (player, index, space, lastFired, deployedWeapons, up
     }
   }
   return deployedWeapons;
+}
+
+const handlePlayerDamage = (player) => {
+  if (player.effects[11]) {
+    return round(player.damage * 0.25);
+  } else if (player.effects[13]) {
+    return round(player.damage / 2);
+  } else {
+    return player.damage;
+  }
 }
 
 const isLeak = (ship) => {
@@ -193,6 +203,11 @@ export const handleWeapons = (gameData, handleGameEvent) => {
       handleCollision(gameData.players, weapon, attacker, handleGameEvent)
       handleCollision(gameData.aiShips, weapon, attacker, handleGameEvent)
     }
+
+    if (weapon.id === 6 && (Date.now() - weapon.deployedAt) > 6000) {
+      weapon.removed = true
+    }
+
     if (weapon.animation) {
       updateFrame(weapon.animation);
     }
@@ -237,7 +252,8 @@ const handleCollision = (players, weapon, attacker, handleGameEvent) => {
 
       shipBoundingBoxes.forEach((center, index) => {
         const distance = findHypotenuse(center, weaponCenter);
-        if ((index < 3 && distance < 18) || (index > 2 && distance < 23)) {
+        
+        if ((index < 3 && distance < (18 + weapon.damageRadius)) || (index > 2 && distance < 23 + weapon.damageRadius)) {
           applyHit(player, weapon, attacker, handleGameEvent);
         }
       });
@@ -256,7 +272,7 @@ const applyHit = (player, weapon, attacker, handleGameEvent) => {
     console.log('BLAM!');
     updateCollisionData(player, weapon, attacker, handleGameEvent)
   }
-  if (weapon.id !== 5) {
+  if (![5, 6].includes(weapon.id)) {
     weapon.removed = true
   }
 };
@@ -271,15 +287,24 @@ const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
     const bounty = round(player.score * 0.01 + 100);
     player.killedBy = weapon.playerIndex
     attacker.kills += 1
-    attacker.gold += bounty;
+    attacker.gold += handleGold(bounty, attacker.shipIndex);
     attacker.score += bounty;
   };
 };
 
+const handleGold = (bounty, shipIndex) => {
+  if (shipIndex === 2 && Math.random() > 0.8) {
+    playSound(goldAudio);
+    return bounty * 2;
+  } else {
+    return bounty;
+  }
+}
+
 const handleNegativeBuff = (player, weapon) => {
   if (weapon.index === 5) {
     player.effects[GAME_EFFECTS[0].id] = {...GAME_EFFECTS[0], duration: 3000}
-  } else if (weapon.index === 6) {
+  } else if (weapon.index === 6 || weapon.id === 6) {
     player.effects[GAME_EFFECTS[1].id] = {...GAME_EFFECTS[1], duration: 2000}
   }
 

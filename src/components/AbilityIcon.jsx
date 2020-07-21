@@ -3,7 +3,7 @@ import '../styles/abilityIcon.css';
 import {PieChart, Pie} from 'recharts';
 import {calculateAngle} from '../helpers/mathHelpers';
 
-export const AbilityIcon = ({ability, abilityUsedAt}) => {
+export const AbilityIcon = ({ability, abilityUsedAt, abilityKey}) => {
   const whole = ability.cooldown;
   const part = Date.now() - abilityUsedAt
   const onCoolDown = whole > part ? 'transparent' : ''
@@ -28,6 +28,7 @@ export const AbilityIcon = ({ability, abilityUsedAt}) => {
         </Pie>
       </PieChart>
       <img src={ability.image} className={`icon ${onCoolDown}`} alt="ability icon"/>
+      <div className="abilityIconKey">{abilityKey.toUpperCase()}</div>
     </div>
   );
 };

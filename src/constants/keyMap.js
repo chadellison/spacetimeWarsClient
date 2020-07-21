@@ -5,4 +5,5 @@ export const KEY_MAP = {
   32: 'space',
   81: 'q',
   87: 'w',
+  69: 'e',
 };

@@ -25,6 +25,7 @@ export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState
       break;
     case 'q':
     case 'w':
+    case 'e':
       handleAbility(gameState.players[gameState.index], {...gameState.abilityCooldownData}, handleGameEvent, updateState, pressedKey);
       break;
     default:

@@ -10,7 +10,8 @@ export class Ship extends React.Component {
     super(props);
     this.state = {
       q: false,
-      w: false
+      w: false,
+      e: false,
     }
   }
 
@@ -44,11 +45,12 @@ export class Ship extends React.Component {
 
   renderDescriptions = () => {
     let content;
-
     if (this.state.q) {
       content = ABILITIES[this.props.ship.abilities.q].description;
     } else if (this.state.w) {
       content = ABILITIES[this.props.ship.abilities.w].description;
+    } else if (this.state.e) {
+      content = ABILITIES[this.props.ship.abilities.e].description;
     };
 
     return <div className="abilityDescription">{content}</div>
@@ -82,7 +84,8 @@ export class Ship extends React.Component {
           </div>
             {[
               {abilityImage: ABILITIES[ship.abilities.q].image, key: 'Q', value: 'q'},
-              {abilityImage: ABILITIES[ship.abilities.w].image, key: 'W', value: 'w'}
+              {abilityImage: ABILITIES[ship.abilities.w].image, key: 'W', value: 'w'},
+              {abilityImage: ABILITIES[ship.abilities.e].image, key: 'E', value: 'e'}
              ].map((abilityData, index) => {
                 return (
                   <AbilityDisplay key={'displayAbility' + index}

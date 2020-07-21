@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import '../styles/playerData.css';
 import {WEAPONS} from '../constants/weapons.js';
 import {UPGRADES} from '../constants/upgrades.js';
 import {ABILITIES} from '../constants/abilities.js';
-import goldIcon from "../images/gold.png";
+import goldIcon from '../images/gold.png';
 import {Hitpoints} from './Hitpoints';
 import {PlayerItems} from './PlayerItems';
 import {PlayerStat} from './PlayerStat';
@@ -66,7 +66,9 @@ const renderDamage = (player) => {
   if (player.damage) {
     let modifier;
     if (player.effects[11]) {
-      modifier = '+' + round(player.damage * 0.25)
+      modifier = '+' + round(player.damage * 0.25);
+    } else if (player.effects[13]) {
+      modifier = '-' + round(player.damage / 2);
     }
     return (
       <PlayerStat
@@ -118,10 +120,16 @@ const renderAbilityIcons = (activePlayer, abilityCooldownData) => {
     const shipAbilities = SHIPS[activePlayer.shipIndex].abilities
     return [
       {ability: ABILITIES[shipAbilities.q], key: 'q'},
-      {ability: ABILITIES[shipAbilities.w], key: 'w'}
+      {ability: ABILITIES[shipAbilities.w], key: 'w'},
+      {ability: ABILITIES[shipAbilities.e], key: 'e'},
     ].map((abilityData, index) => {
-      return <AbilityIcon ability={abilityData.ability} key={'abilityIcon' + index}
-        abilityUsedAt={abilityCooldownData[abilityData.key]}/>
+      return (
+        <AbilityIcon
+          ability={abilityData.ability}
+          key={'abilityIcon' + index}
+          abilityKey={abilityData.key}
+          abilityUsedAt={abilityCooldownData[abilityData.key]}/>
+      );
     });
   }
 };

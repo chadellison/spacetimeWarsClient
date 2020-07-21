@@ -5,6 +5,7 @@ import coldAnimation from '../images/coldAnimation.png'
 import stunAnimation from '../images/stunAnimation.png'
 import warpSpeedAnimation from '../images/warpSpeedAnimation.png'
 import damageBoostIcon from '../images/damageBoostIcon.png';
+import damageReductionAnimation from '../images/damageReductionAnimation.png';
 
 export const GAME_EFFECTS = [
   {
@@ -184,5 +185,25 @@ export const GAME_EFFECTS = [
     name: 'stealthWeapon',
     duration: 5000,
     durationCount: 0,
+  },
+  {
+    id: 13,
+    name: 'damageReduction',
+    duration: 7000,
+    durationCount: 0,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: damageReductionAnimation,
+      width: 128,
+      height: 128,
+      renderWidth: 50,
+      renderHeight: 50,
+      rowCount: 4,
+      columnCount: 7,
+      rate: 1,
+      startRate: 1,
+      xOffset: 0,
+      yOffset: 0,
+    }
   }
 ]

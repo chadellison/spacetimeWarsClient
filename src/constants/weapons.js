@@ -23,6 +23,7 @@ import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
 import stunGunAnimation from '../images/stunGunAnimation.png';
 import meteorShowerAnimation from '../images/meteorShowerAnimation.png';
 import piercerAnimation from '../images/piercerAnimation.png';
+import electricFieldAnimation from '../images/electricFieldAnimation.png';
 
 import cannonAudio from '../audio/cannon.wav';
 import missileAudio from '../audio/missile.wav';
@@ -45,6 +46,7 @@ export const WEAPONS = [
     price: 100,
     width: 16,
     height: 16,
+    damageRadius: 2,
     ability: 'none',
     sound: new Audio(cannonAudio),
     image: fireball,
@@ -61,6 +63,7 @@ export const WEAPONS = [
     price: 200,
     width: 40,
     height: 15,
+    damageRadius: 2,
     ability: 'none',
     sound: new Audio(missileAudio),
     image: missile,
@@ -77,6 +80,7 @@ export const WEAPONS = [
     price: 400,
     width: 50,
     height: 29,
+    damageRadius: 3,
     image: bomb,
     ability: 'none',
     sound: new Audio(bombAudio),
@@ -93,6 +97,7 @@ export const WEAPONS = [
     price: 950,
     width: 40,
     height: 16,
+    damageRadius: 2,
     image: laser,
     ability: 'energy steal: 15% of damage dealt will be added to your hitpoints',
     sound: new Audio(laserAudio),
@@ -109,6 +114,7 @@ export const WEAPONS = [
     price: 1100,
     width: 32,
     height: 32,
+    damageRadius: 2,
     ability: 'critical damage: 20% chance to do double damage',
     image: trifecta,
     sound: new Audio(trifectaAudio),
@@ -125,6 +131,7 @@ export const WEAPONS = [
     price: 690,
     width: 16,
     height: 16,
+    damageRadius: 3,
     ability: 'poison damage: deals 17% damage of the total hitpoints over 3 seconds',
     image: poisonCannon,
     sound: new Audio(lightLazer),
@@ -141,6 +148,7 @@ export const WEAPONS = [
     price: 500,
     width: 20,
     height: 20,
+    damageRadius: 3,
     ability: 'cold damage: significanlty slows enemy speed for two seconds',
     image: blueFire,
     sound: new Audio(plasmaCannonAudio),
@@ -157,6 +165,7 @@ export const WEAPONS = [
     price: 750,
     width: 20,
     height: 20,
+    damageRadius: 3,
     ability: 'armor piercing damage: disregards all armor on enemy ship',
     image: plasmaCannon,
     sound: new Audio(mediumLaser),
@@ -171,8 +180,8 @@ export const ABILITY_WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 7,
-    width: 80,
-    height: 40,
+    width: 4,
+    height: 4,
     damage: 500,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -198,6 +207,7 @@ export const ABILITY_WEAPONS = [
     width: 120,
     height: 60,
     damage: 350,
+    damageRadius: 12,
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: stunGunAnimation,
@@ -220,7 +230,8 @@ export const ABILITY_WEAPONS = [
     trajectory: 0,
     speed: 0,
     width: 80,
-    height: 40,
+    height: 80,
+    damageRadius: 16,
     damage: 600,
     image: spaceMine
   },
@@ -230,8 +241,9 @@ export const ABILITY_WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 10,
-    width: 80,
-    height: 40,
+    width: 20,
+    height: 20,
+    damageRadius: 3,
     damage: 200,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -254,9 +266,10 @@ export const ABILITY_WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 14,
-    width: 80,
-    height: 40,
+    width: 30,
+    height: 30,
     damage: 80,
+    damageRadius: 4,
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: piercerAnimation,
@@ -268,6 +281,31 @@ export const ABILITY_WEAPONS = [
       renderWidth: 120,
       renderHeight: 60,
       startRate: 1,
+      xOffset: 0,
+      yOffset: 0,
+    }
+  },
+  {
+    id: 6,
+    name: 'electricField',
+    location: {x: 0, y: 0},
+    trajectory: 0,
+    speed: 0,
+    width: 250,
+    height: 250,
+    damageRadius: 125,
+    damage: 1,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: electricFieldAnimation,
+      width: 256,
+      height: 256,
+      renderWidth: 400,
+      renderHeight: 400,
+      rowCount: 4,
+      columnCount: 7,
+      rate: 0,
+      startRate: 0,
       xOffset: 0,
       yOffset: 0,
     }

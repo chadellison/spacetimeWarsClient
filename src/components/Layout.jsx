@@ -34,7 +34,7 @@ const DEFAULT_STATE = {
   gameBuff: {},
   gameOverStats: {},
   defenseData: { red: 10, blue: 10 },
-  abilityCooldownData: {q: 0, w: 0},
+  abilityCooldownData: {q: 0, w: 0, e: 0},
   aiShips: [],
   animations: [],
   userEvents: {},
@@ -93,10 +93,8 @@ class Layout extends React.Component {
       iteration -= 1
       this.syncClocks(iteration)
     } else {
-      console.log('clock difference: ***********', this.state.clockDifference);
       this.fetchPlayers();
     };
-    console.log('shortest response time: ***********', this.state.shortestRoundTripTime);
   };
 
   fetchPlayers() {

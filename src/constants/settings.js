@@ -22,6 +22,8 @@ import piercerAudio from '../audio/piercerSound.mov';
 import clokingAudio from '../audio/clokingSound.mov';
 import healAudio from '../audio/healSound.mp3';
 import rapidFireAudio from '../audio/rapidFireSound.mp3';
+import damageReductionAudio from '../audio/damageReductionSound.mp3';
+import electricFieldAudio from '../audio/electricFieldSound.mov';
 
 // constants
 export const BOARD_WIDTH = 1800;
@@ -54,3 +56,5 @@ export const piercerSound = new Audio(piercerAudio);
 export const clokingSound = new Audio(clokingAudio);
 export const healSound = new Audio(healAudio);
 export const rapidFireSound = new Audio(rapidFireAudio);
+export const damageReductionSound = new Audio(damageReductionAudio);
+export const electricFieldSound = new Audio(electricFieldAudio);
