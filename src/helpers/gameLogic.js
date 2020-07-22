@@ -98,7 +98,7 @@ const handleRepeatedFire = (player, index, space, lastFired, deployedWeapons, up
     if (space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown, player.effects[10])) {
       const updatedPlayer = {...player, gameEvent: 'fire'};
       handleGameEvent(updatedPlayer)
-      const damage = handlePlayerDamage(updatedPlayer)
+      const damage = handlePlayerDamage(updatedPlayer);
       const updatedWeapons = [
         ...deployedWeapons,
         handleFireWeapon(updatedPlayer, {...WEAPONS[player.weaponIndex]}, 0, damage)
@@ -114,7 +114,7 @@ const handleRepeatedFire = (player, index, space, lastFired, deployedWeapons, up
 const handlePlayerDamage = (player) => {
   if (player.effects[11]) {
     return round(player.damage * 0.25);
-  } else if (player.effects[13]) {
+  } else if (player.effects[3]) {
     return round(player.damage / 2);
   } else {
     return player.damage;

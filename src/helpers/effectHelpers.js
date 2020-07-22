@@ -11,9 +11,6 @@ export const handleEffects = (player) => {
         const damage = round((player.maxHitpoints * 0.17) / (effect.duration / ANAIMATION_FRAME_RATE));
         const newHitpoints = player.hitpoints - damage;
         player.hitpoints = newHitpoints > 1 ? newHitpoints : 1;
-      } else if (effect.id === 3) {
-        const goldReduction = round((player.gold * 0.2) / (effect.duration / ANAIMATION_FRAME_RATE));
-        player.gold -= goldReduction;
       } else if (effect.id === 7) {
         const health = round((player.maxHitpoints * 0.5) / (effect.duration / ANAIMATION_FRAME_RATE))
         const newHitpoints = player.hitpoints + health;

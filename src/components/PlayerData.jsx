@@ -67,7 +67,7 @@ const renderDamage = (player) => {
     let modifier;
     if (player.effects[11]) {
       modifier = '+' + round(player.damage * 0.25);
-    } else if (player.effects[13]) {
+    } else if (player.effects[3]) {
       modifier = '-' + round(player.damage / 2);
     }
     return (
@@ -93,7 +93,7 @@ const handlePlayerIcon = (activePlayer, countDown, modal, handleGameEvent) => {
     );
   } else if (countDown > 0) {
     return <span className="waitCountDown">{countDown}</span>;
-  } else if (modal !== 'selection') {
+  } else if (!modal) {
     return (
       <GameButton
         className={'startButton'}

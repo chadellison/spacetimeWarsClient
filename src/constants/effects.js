@@ -52,10 +52,23 @@ export const GAME_EFFECTS = [
   },
   {
     id: 3,
-    name: 'gold steal',
-    duration: 3000,
+    name: 'damageReduction',
+    duration: 7000,
     durationCount: 0,
-    color: 'rgba(151, 127, 7, 0.37)',
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: damageReductionAnimation,
+      width: 128,
+      height: 128,
+      renderWidth: 50,
+      renderHeight: 50,
+      rowCount: 4,
+      columnCount: 7,
+      rate: 1,
+      startRate: 1,
+      xOffset: 0,
+      yOffset: 0,
+    }
   },
   {
     id: 4,
@@ -88,7 +101,7 @@ export const GAME_EFFECTS = [
   {
     id: 6,
     name: 'invulnerable',
-    duration: 7000,
+    duration: 5000,
     durationCount: 0,
     color: 'rgba(144, 7, 151, 0.37)',
   },
@@ -186,24 +199,4 @@ export const GAME_EFFECTS = [
     duration: 5000,
     durationCount: 0,
   },
-  {
-    id: 13,
-    name: 'damageReduction',
-    duration: 7000,
-    durationCount: 0,
-    animation: {
-      coordinates: {x: 0, y: 0},
-      spriteImage: damageReductionAnimation,
-      width: 128,
-      height: 128,
-      renderWidth: 50,
-      renderHeight: 50,
-      rowCount: 4,
-      columnCount: 7,
-      rate: 1,
-      startRate: 1,
-      xOffset: 0,
-      yOffset: 0,
-    }
-  }
 ]
