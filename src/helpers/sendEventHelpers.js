@@ -9,6 +9,7 @@ import {round} from '../helpers/mathHelpers.js';
 import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
+  EVENT_DIVIDER,
 } from '../constants/settings.js';
 
 export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState) => {
@@ -174,4 +175,28 @@ const handleAbility = (player, abilityCooldownData, handleGameEvent, updateState
     abilityCooldownData[pressedKey] = Date.now()
     updateState({abilityCooldownData});
   }
+}
+
+export const handleAiEvents = (eventData, team, handleGameEvent) => {
+  let updatedEventData = {...eventData};
+  updatedEventData.count += 1;
+  if (updatedEventData.count % EVENT_DIVIDER === 0) {
+    handleGameEvent({gameEvent: 'supplyShip'});
+  };
+  if (Date.now() - updatedEventData.lastSend > updatedEventData.sendInterval) {
+    const opponentTeam = team === 'red' ? 'blue' : 'red';
+    if (updatedEventData.shipCount < 5) {
+      updatedEventData.shipCount += 1;
+    } else {
+      updatedEventData.shipHitpoints += 100
+    }
+    handleGameEvent({
+      gameEvent: 'bombers',
+      team: opponentTeam,
+      shipCount: updatedEventData.shipCount,
+      shipHitpoints: updatedEventData.shipHitpoints,
+    });
+    updatedEventData.lastSend = Date.now();
+  }
+  return updatedEventData;
 }

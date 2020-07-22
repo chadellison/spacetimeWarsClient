@@ -54,7 +54,7 @@ const updateAiShips = (aiShips, index, handleGameEvent, clockDifference) => {
   let updatedAiShips = [];
   [...aiShips].forEach((ship) => {
     if (!ship.explodeAnimation.complete) {
-      if (isLeak(ship) && [0, 1].includes(index)) {
+      if (isLeak(ship)) {
         const opponentTeam = ship.team === 'red' ? 'blue' : 'red'
         handleGameEvent({id: ship.id, team: opponentTeam, gameEvent: 'leak'});
       } else {

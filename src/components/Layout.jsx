@@ -10,7 +10,7 @@ import '../styles/styles.css';
 import {ANAIMATION_FRAME_RATE, REQUEST_COUNT} from '../constants/settings.js';
 import {KEY_MAP} from '../constants/keyMap.js';
 import {updatePlayer, updateGameState} from '../helpers/gameLogic.js';
-import {keyDownEvent, keyUpEventPayload} from '../helpers/sendEventHelpers.js';
+import {keyDownEvent, keyUpEventPayload, handleAiEvents} from '../helpers/sendEventHelpers.js';
 import {addPlayer} from '../helpers/playerHelpers.js';
 import {handleEventPayload} from '../helpers/receiveEventHelpers.js';
 
@@ -37,7 +37,7 @@ const DEFAULT_STATE = {
   abilityCooldownData: {q: 0, w: 0, e: 0},
   aiShips: [],
   animations: [],
-  userEvents: {},
+  eventData: {lastSend: 0, count: 0, shipCount: 1, shipHitpoints: 100, userEvents: {}, sendInterval: 30},
 };
 
 class Layout extends React.Component {
@@ -119,7 +119,7 @@ class Layout extends React.Component {
   };
 
   handleGameEvent = (eventPayload) => {
-    let userEvents = {...this.state.sentEvents};
+    let userEvents = {...this.state.eventData.userEvents};
     const id = Object.keys(userEvents).length
     const sentTime = Date.now();
     this.state.gameSocket.create({
@@ -128,7 +128,9 @@ class Layout extends React.Component {
       serverTime: sentTime + this.state.clockDifference
     });
     userEvents[id] = sentTime;
-    this.setState({userEvents})
+    let eventData = {...this.state.eventData}
+    eventData.userEvents = userEvents
+    this.setState({eventData})
   };
 
   updateState = (newState) => {
@@ -175,21 +177,27 @@ class Layout extends React.Component {
   };
 
   handleReceivedEvent = (playerData) => {
-    const elapsedTime = Date.now() + this.state.clockDifference - playerData.serverTime;
+    const {clockDifference} = this.state;
+    this.handleEventData(playerData);
+    const elapsedTime = Date.now() + clockDifference - playerData.serverTime;
     const gameState = handleEventPayload(this.state, playerData, elapsedTime);
-
     this.setState(gameState);
-    if (playerData.index === this.state.index) {
-      let userEvents = {...this.state.userEvents}
-      const sentTime = userEvents[playerData.eventId]
-      this.handleClockUpdate(Date.now() - sentTime, playerData.updatedAt - sentTime);
-      delete userEvents[playerData.eventId]
-      this.setState({userEvents})
-    }
+
     if (elapsedTime > 400) {
       console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime);
     };
   };
+
+  handleEventData = (playerData) => {
+    if (playerData.index === this.state.index) {
+      let userEvents = {...this.state.eventData.userEvents}
+      const sentTime = userEvents[playerData.eventId]
+      this.handleClockUpdate(Date.now() - sentTime, playerData.updatedAt - sentTime);
+      delete userEvents[playerData.eventId]
+      const eventData = handleAiEvents(this.state.eventData, playerData.team, this.handleGameEvent);
+      this.setState({eventData: {...eventData, userEvents: userEvents}})
+    }
+  }
 
   handleClockUpdate = (roundTripTime, difference) => {
     if (roundTripTime < this.state.shortestRoundTripTime) {
@@ -248,9 +256,9 @@ class Layout extends React.Component {
             handleGameEvent={this.handleGameEvent}
           />}
           {activePlayer && <GameButton
-            buttonText={activePlayer.name ? 'shop' : 'start'}
-            onClick={this.handleShopButton}
             className={'gameButton'}
+            onClick={this.handleShopButton}
+            buttonText={activePlayer.name ? 'shop' : 'start'}
           />}
           <HeaderButtons updateState={this.updateState} />
           {activePlayer.name && <PlayerData

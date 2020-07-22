@@ -13,10 +13,10 @@ import {
 import {WEAPONS} from '../constants/weapons.js';
 
 export const handleEventPayload = (gameState, playerData, elapsedTime) => {
-  const {players, clockDifference, deployedWeapons, userId, aiShips, index} = gameState;
+  const {players, clockDifference, deployedWeapons, userId, aiShips, index, eventData} = gameState;
   switch (playerData.gameEvent) {
     case 'start':
-      return handleStartEvent(players, playerData, userId);
+      return handleStartEvent(players, playerData, userId, eventData);
     case 'explode':
       return handleExplodeEvent(players, aiShips, playerData, elapsedTime);
     case 'supplyShip':
@@ -106,9 +106,11 @@ const handleGameOver = (players, playerData) => {
   }
 }
 
-const handleStartEvent = (players, playerData, userId) => {
+const handleStartEvent = (players, playerData, userId, eventData) => {
   let newPlayers = [...players];
   newPlayers[playerData.index] = playerData
+
+  const updatedEventData = {...eventData, sendInterval: handleSendInterval(newPlayers)}
 
   if (userId === playerData.userId) {
     return {
@@ -117,10 +119,28 @@ const handleStartEvent = (players, playerData, userId) => {
       right: false,
       space: false,
       players: newPlayers,
-      index: playerData.index
+      index: playerData.index,
+      eventData: updatedEventData,
     }
   } else {
-    return { players: newPlayers }
+    return { players: newPlayers, eventData, updatedEventData }
+  }
+}
+
+const handleSendInterval = (players) => {
+  let red = 0;
+  let blue = 0;
+  players.forEach((player) => {
+    if (player.team === 'red') {
+      red += 1;
+    } else {
+      blue += 1;
+    }
+  });
+  if ([red, blue].includes(0)) {
+    return 15000;
+  } else {
+    return 60000;
   }
 }
 
