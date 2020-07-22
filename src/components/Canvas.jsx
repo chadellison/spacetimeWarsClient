@@ -163,9 +163,9 @@ class Canvas extends React.Component {
     }
 
     this.props.players.concat(this.props.aiShips).forEach((player) => {
+      const {gameBuff, index} = this.props;
+      const showShip = shouldRenderShip(player, index);
       if (player.active) {
-        const {gameBuff, index} = this.props;
-        const showShip = shouldRenderShip(player, index);
         if (showShip) {
           handleInvisibleFilter(context, player, index);
           drawShip(context, player, this.handleImage(player), this.state.warpSpeed);
@@ -175,10 +175,10 @@ class Canvas extends React.Component {
             }
           });
         }
-        renderPlayerData(gameBuff, context, player, showShip);
       } else if (!player.explodeAnimation.complete) {
         renderAnimation(context, this.state.shipExplosion, player.explodeAnimation, player.location);
       };
+      renderPlayerData(gameBuff, context, player, showShip)
     })
 
     this.props.deployedWeapons.forEach((weapon) => {
