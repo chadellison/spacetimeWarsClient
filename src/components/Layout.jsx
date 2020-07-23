@@ -213,28 +213,6 @@ class Layout extends React.Component {
   };
 
   resetGame = () => {
-    // this.updateState({
-    //   index: null,
-    //   startingPlayer: {},
-    //   players: [],
-    //   clockDifference: 0,
-    //   deployedWeapons: [],
-    //   lastFired: 0,
-    //   up: false,
-    //   left: false,
-    //   right: false,
-    //   space: false,
-    //   modal: null,
-    //   activeTab: 'Ships',
-    //   page: 1,
-    //   gameBuff: {},
-    //   gameOverStats: {},
-    //   defenseData: { red: 10, blue: 10 },
-    //   abilityCooldownData: {q: 0, w: 0, e: 0},
-    //   aiShips: [],
-    //   animations: [],
-    //   eventData: {lastSend: 0, count: 0, shipCount: 1, shipHitpoints: 100, userEvents: {}, sendInterval: 30},
-    // });
     this.state.gameSocket.unsubscribe()
     this.updateState(DEFAULT_STATE);
     this.createGameSocket()
