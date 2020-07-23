@@ -213,7 +213,6 @@ class Layout extends React.Component {
   };
 
   resetGame = () => {
-    this.state.gameSocket.unsubscribe()
     this.updateState(DEFAULT_STATE);
     this.createGameSocket()
     this.syncClocks(REQUEST_COUNT)
@@ -237,6 +236,7 @@ class Layout extends React.Component {
       players,
       gameBuff,
       activeTab,
+      gameSocket,
       animations,
       defenseData,
       gameOverStats,
@@ -255,10 +255,11 @@ class Layout extends React.Component {
             page={page}
             modal={modal}
             index={index}
-            resetGame={this.resetGame}
             players={players}
             activeTab={activeTab}
+            gameSocket={gameSocket}
             defenseData={defenseData}
+            resetGame={this.resetGame}
             activePlayer={activePlayer}
             gameOverStats={gameOverStats}
             updateState={this.updateState}
