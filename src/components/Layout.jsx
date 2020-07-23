@@ -30,6 +30,7 @@ const DEFAULT_STATE = {
   space: false,
   modal: null,
   activeTab: 'Ships',
+  upgrades: [0, 0, 0, 0],
   page: 1,
   gameBuff: {},
   gameOverStats: {},
@@ -37,7 +38,14 @@ const DEFAULT_STATE = {
   abilityCooldownData: {q: 0, w: 0, e: 0},
   aiShips: [],
   animations: [],
-  eventData: {lastSend: 0, count: 0, shipCount: 0, shipHitpoints: 100, userEvents: {}, sendInterval: 30},
+  eventData: {
+    lastSend: 0,
+    count: 0,
+    shipCount: 0,
+    shipHitpoints: 100,
+    userEvents: {},
+    sendInterval: 30
+  },
 };
 
 class Layout extends React.Component {
@@ -235,6 +243,7 @@ class Layout extends React.Component {
       aiShips,
       players,
       gameBuff,
+      upgrades,
       activeTab,
       gameSocket,
       animations,
@@ -256,6 +265,7 @@ class Layout extends React.Component {
             modal={modal}
             index={index}
             players={players}
+            upgrades={upgrades}
             activeTab={activeTab}
             gameSocket={gameSocket}
             defenseData={defenseData}

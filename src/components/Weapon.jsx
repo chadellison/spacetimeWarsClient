@@ -15,7 +15,8 @@ const handleClick = (weaponIndex, activePlayer, updateState, index, players) => 
       gold: gold
     };
 
-    handleUpdate(updateState, players, index, player);
+    const newState = handleUpdate(players, index, player);
+    updateState(newState);
   } else {
     notEnoughResources.play();
     console.log('Not enough gold');

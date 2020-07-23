@@ -21,7 +21,7 @@ const handleClick = (updateState, handleGameEvent, activePlayer) => {
   updateState({modal: null, activeTab: 'Ships'});
 };
 
-const renderOptions = (activeTab, page, activePlayer, updateState, index, players) => {
+const renderOptions = (activeTab, page, activePlayer, updateState, index, players, upgrades) => {
   switch (activeTab) {
     case 'Ships':
       const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
@@ -54,16 +54,17 @@ const renderOptions = (activeTab, page, activePlayer, updateState, index, player
         )
       });
     case 'Upgrades':
-      return UPGRADES.map((upgrade) => {
+      return UPGRADES.map((upgrade, upgradeIndex) => {
         return (
           <Upgrade
-            key={`upgrade${upgrade.index}`}
-            imageSrc={upgrade.image}
-            upgrade={upgrade}
-            activePlayer={activePlayer}
             index={index}
+            upgrade={upgrade}
             players={players}
+            upgrades={upgrades}
+            imageSrc={upgrade.image}
             updateState={updateState}
+            activePlayer={activePlayer}
+            key={`upgrade${upgrade.index}`}
           />
         )
       });
@@ -130,6 +131,7 @@ export const SelectionModal = ({
   page,
   index,
   players,
+  upgrades,
   activeTab,
   updateState,
   activePlayer,
@@ -142,7 +144,7 @@ export const SelectionModal = ({
         {renderTabs(activeTab, updateState, activePlayer)}
       </div>
       {renderStart(updateState, handleGameEvent, activePlayer, clockDifference)}
-      {renderOptions(activeTab, page, activePlayer, updateState, index, players)}
+      {renderOptions(activeTab, page, activePlayer, updateState, index, players, upgrades)}
       <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />
     </div>
   );

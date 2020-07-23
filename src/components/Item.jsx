@@ -17,7 +17,8 @@ const handleClick = (activePlayer, item, updateState, index, players) => {
       gold: gold
     }
     goldAudio.play();
-    handleUpdate(updateState, players, index, player);
+    const newState = handleUpdate(players, index, player);
+    updateState(newState);
   } else {
     notEnoughResources.play();
     console.log('Not enough gold');

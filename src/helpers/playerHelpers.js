@@ -33,8 +33,8 @@ const handleStartingGold = (players) => {
                              .reduce((accumulator, player) => {
       return accumulator + player.score
     }, 0);
-    return round((scoreSums / players.length) + 1000);
+    return round((scoreSums / players.length) + 10000);
   } else {
-    return 1000;
+    return 10000;
   }
 }

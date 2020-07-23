@@ -10,6 +10,7 @@ export const Modal = ({
   modal,
   index,
   players,
+  upgrades,
   activeTab,
   resetGame,
   gameSocket,
@@ -24,13 +25,14 @@ export const Modal = ({
     case 'selection':
       return (
         <SelectionModal
-          updateState={updateState}
-          handleGameEvent={handleGameEvent}
-          activeTab={activeTab}
           page={page}
           index={index}
           players={players}
+          upgrades={upgrades}
+          activeTab={activeTab}
+          updateState={updateState}
           activePlayer={activePlayer}
+          handleGameEvent={handleGameEvent}
           clockDifference={clockDifference}
         />
       );

@@ -1,9 +1,9 @@
-export const handleUpdate = (updateState, players, index, player) => {
+export const handleUpdate = (players, index, player) => {
   if (index !== null) {
     let updatedPlayers = [...players];
     updatedPlayers[index] = player
-    updateState({players: updatedPlayers})
+    return {players: updatedPlayers}
   } else {
-    updateState({startingPlayer: player});
+    return {startingPlayer: player};
   }
 }
