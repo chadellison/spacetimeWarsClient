@@ -3,7 +3,7 @@ import '../styles/modal.css';
 import {GameOverStat} from './GameOverStat';
 import {GameButton} from './GameButton';
 
-export const GameOverModal = ({gameOverStats, updateState}) => {
+export const GameOverModal = ({gameOverStats, resetGame}) => {
   return (
     <div className='modal'>
       <div className={`gameOverText ${gameOverStats.winningTeam}`}>{`${gameOverStats.winningTeam} Team Wins!`}</div>
@@ -22,7 +22,7 @@ export const GameOverModal = ({gameOverStats, updateState}) => {
       })}
       <GameButton
         className={'exitButton'}
-        onClick={() => window.location.reload()}
+        onClick={resetGame}
         buttonText={'Exit'}
       />
     </div>

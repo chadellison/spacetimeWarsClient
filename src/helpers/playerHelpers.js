@@ -1,7 +1,14 @@
 import {round} from '../helpers/mathHelpers.js';
 
 export const addPlayer = (userId, players) => {
-  let startingPlayer = {
+  return {
+    modal: 'nameForm',
+    startingPlayer: newPlayer(userId, players)
+  };
+}
+
+export const newPlayer = (userId, players) => {
+  return {
     userId: userId,
     team: 'red',
     gold: handleStartingGold(players),
@@ -16,12 +23,8 @@ export const addPlayer = (userId, players) => {
     kills: 0,
     rotate: 'none',
     ability: {},
-    explodeAnimation: {}
+    explodeAnimation: { complete: true }
   }
-  return {
-    modal: 'nameForm',
-    startingPlayer: startingPlayer
-  };
 }
 
 const handleStartingGold = (players) => {

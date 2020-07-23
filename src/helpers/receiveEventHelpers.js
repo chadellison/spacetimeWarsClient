@@ -102,6 +102,7 @@ const handleGameOver = (players, playerData) => {
   return {
     modal: 'gameOver',
     players: updatedPlayers,
+    aiShips: [],
     gameOverStats: {playerStats: players, winningTeam: winningTeam}
   }
 }

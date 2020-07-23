@@ -138,17 +138,18 @@ class Layout extends React.Component {
   }
 
   handleShopButton = () => {
-    const currentPlayer = this.state.players[this.state.index]
-    if (currentPlayer) {
+    const {players, startingPlayer, userId} = this.state;
+
+    if (startingPlayer.name) {
       this.updateState({modal: 'selection'})
     } else {
-      this.updateState(addPlayer(this.state.userId, this.state.players));
+      this.updateState(addPlayer(userId, players));
     };
   };
 
   findActivePlayer = () => {
     const {index, players, startingPlayer} = this.state
-    return (index || index === 0) ? players[index] : startingPlayer;
+    return index !== null ? players[index] : startingPlayer;
   }
 
   handleKeyDown = (event) => {
@@ -211,6 +212,35 @@ class Layout extends React.Component {
     };
   };
 
+  resetGame = () => {
+    // this.updateState({
+    //   index: null,
+    //   startingPlayer: {},
+    //   players: [],
+    //   clockDifference: 0,
+    //   deployedWeapons: [],
+    //   lastFired: 0,
+    //   up: false,
+    //   left: false,
+    //   right: false,
+    //   space: false,
+    //   modal: null,
+    //   activeTab: 'Ships',
+    //   page: 1,
+    //   gameBuff: {},
+    //   gameOverStats: {},
+    //   defenseData: { red: 10, blue: 10 },
+    //   abilityCooldownData: {q: 0, w: 0, e: 0},
+    //   aiShips: [],
+    //   animations: [],
+    //   eventData: {lastSend: 0, count: 0, shipCount: 1, shipHitpoints: 100, userEvents: {}, sendInterval: 30},
+    // });
+    this.state.gameSocket.unsubscribe()
+    this.updateState(DEFAULT_STATE);
+    this.createGameSocket()
+    this.syncClocks(REQUEST_COUNT)
+  }
+
   renderGame = () => {
     const updatedGameState = updateGameState(
       this.state,
@@ -238,6 +268,7 @@ class Layout extends React.Component {
     } = this.state;
 
     const activePlayer = this.findActivePlayer();
+
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
         <h2>{modal ? null : 'Space Wars'}</h2>
@@ -246,6 +277,7 @@ class Layout extends React.Component {
             page={page}
             modal={modal}
             index={index}
+            resetGame={this.resetGame}
             players={players}
             activeTab={activeTab}
             defenseData={defenseData}
