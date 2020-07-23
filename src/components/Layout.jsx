@@ -37,7 +37,7 @@ const DEFAULT_STATE = {
   abilityCooldownData: {q: 0, w: 0, e: 0},
   aiShips: [],
   animations: [],
-  eventData: {lastSend: 0, count: 0, shipCount: 1, shipHitpoints: 100, userEvents: {}, sendInterval: 30},
+  eventData: {lastSend: 0, count: 0, shipCount: 0, shipHitpoints: 100, userEvents: {}, sendInterval: 30},
 };
 
 class Layout extends React.Component {

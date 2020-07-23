@@ -185,7 +185,7 @@ export const handleAiEvents = (eventData, team, handleGameEvent) => {
   };
   if (Date.now() - updatedEventData.lastSend > updatedEventData.sendInterval) {
     const opponentTeam = team === 'red' ? 'blue' : 'red';
-    if (updatedEventData.shipCount < 5) {
+    if (updatedEventData.shipCount < 3) {
       updatedEventData.shipCount += 1;
     } else {
       updatedEventData.shipHitpoints += 100
