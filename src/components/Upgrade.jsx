@@ -38,7 +38,7 @@ const handleClick = (activePlayer, upgrade, updateState, index, players, upgrade
         break;
       case 3:
         upgradeSound.play();
-        player.damage += 50
+        player.damage += 100
         newState = handleUpdate(players, index, player);
         newUpgrades[3] += 1;
         newState['upgrades'] = newUpgrades;
@@ -54,21 +54,28 @@ const handleClick = (activePlayer, upgrade, updateState, index, players, upgrade
 };
 
 export const Upgrade = ({imageSrc, activePlayer, upgrade, updateState, index, players, upgrades}) => {
-  return (
-    <div className="selection"
-      onClick={() => handleClick(activePlayer, upgrade, updateState, index, players, upgrades)}>
-        <div className="imageWrapper">
-          <img id={upgrade.index} src={imageSrc} alt="item" className="selectionImage"/>
-        </div>
-        <div className="selectionTitle">
-          {`${upgrade.name}`}
-        </div>
-        <div className="selectionPrice">
-          {`Price: ${upgrade.price}`}
-        </div>
-        <div className="selectionDescription">
-          {upgrade.description}
-        </div>
-    </div>
-  );
+  if (upgrades[upgrade.index] === 3) {
+    return <div></div>
+  } else {
+    return (
+      <div className="selection"
+        onClick={() => handleClick(activePlayer, upgrade, updateState, index, players, upgrades)}>
+          <div className="imageWrapper">
+            <img id={upgrade.index} src={imageSrc} alt="item" className="selectionImage"/>
+          </div>
+          <div className="selectionTitle">
+            {`${upgrade.name}`}
+          </div>
+          <div className="selectionTitle">
+            {`Level ${upgrades[upgrade.index] + 1}`}
+          </div>
+          <div className="selectionPrice">
+            {`Price: ${upgrade.price}`}
+          </div>
+          <div className="selectionDescription">
+            {upgrade.description}
+          </div>
+      </div>
+    );
+  }
 };
