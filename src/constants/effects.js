@@ -176,7 +176,7 @@ export const GAME_EFFECTS = [
   {
     id: 11,
     name: 'damageBoost',
-    duration: 12000,
+    duration: 15000,
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},

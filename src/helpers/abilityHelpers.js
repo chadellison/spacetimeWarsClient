@@ -48,7 +48,8 @@ const addAbilityEffect = (effectIndex, players, gameState, playerData, elapsedTi
   };
 
   if (effect.id === 11 || (effect.id === 7 && player.shipIndex === 4)) {
-    effect = {...effect, duration: 1800}
+    effect = effect.id === 7 ? {...effect, duration: 1800} : {...effect}
+
     updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect)
   } else if (effect.id === 3) {
     const team = player.team === 'red' ? 'blue' : 'red';

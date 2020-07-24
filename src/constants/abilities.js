@@ -73,7 +73,7 @@ export const ABILITIES = [
     index: 4,
     type: 'weapon',
     description: 'Deploys a nuclear blast dealing 500 damage to every opponent ship ("Q" key to use; 3 minute cooldown).',
-    cooldown: 180000,
+    cooldown: 90000,
     weaponIndex: 0,
     image: nuclearExplosionIcon,
     sound: toneSound,
