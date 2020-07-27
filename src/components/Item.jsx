@@ -2,19 +2,23 @@ import React from 'react';
 import '../styles/ship.css';
 import {getItem} from '../helpers/itemHelpers.js';
 import {handleUpdate} from '../helpers/selectionModalHelpers.js';
+import {round} from '../helpers/mathHelpers.js';
 import {notEnoughResources, goldAudio} from '../constants/settings.js';
 import {ITEMS} from '../constants/items.js';
 
 const handleClick = (activePlayer, item, updateState, index, players) => {
   const gold = activePlayer.gold - ITEMS[item.index].price;
   if (gold >= 0 && !getItem(activePlayer.items, item.id)) {
-    const player = {
+    let player = {
       ...activePlayer,
       items: {
         ...activePlayer.items,
         [item.id]: { index: item.index, durationCount: item.cooldown, cooldown: item.cooldown }
       },
       gold: gold
+    }
+    if (item.id === 7) {
+      player.damage += round(player.damage + 0.8);
     }
     goldAudio.play();
     const newState = handleUpdate(players, index, player);

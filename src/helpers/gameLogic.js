@@ -111,7 +111,7 @@ const handleRepeatedFire = (player, index, space, lastFired, deployedWeapons, up
   return deployedWeapons;
 }
 
-const handlePlayerDamage = (player) => {
+export const handlePlayerDamage = (player) => {
   if (player.effects[11]) {
     return round(player.damage * 0.25);
   } else if (player.effects[3]) {
@@ -338,6 +338,7 @@ const calculateDamage = (weapon, player) => {
     armor = 0;
   }
   let damage = weapon.damage;
+
   if (weapon.index === 4 && Math.random() >= 0.8) {
     damage *= 2
   }
@@ -355,12 +356,12 @@ export const handleFireWeapon = (player, weapon, elapsedTime, damage) => {
   const y = location.y + shipCenter.y - (weapon.height / 2);
 
   weapon.location = handleLocation(angle, {x, y}, 50);
-  weapon.trajectory = angle
-  weapon.playerIndex = player.index
-  weapon.team = player.team
-  weapon.damage = damage
-  weapon.canStun = player.items[6]
-  weapon.invisible = player.effects[12] || weapon.id === 3 ? true : false
+  weapon.trajectory = angle;
+  weapon.playerIndex = player.index;
+  weapon.team = player.team;
+  weapon.damage = damage;
+  weapon.canStun = player.items[6];
+  weapon.invisible = weapon.id === 3;
 
   return weapon;
 };

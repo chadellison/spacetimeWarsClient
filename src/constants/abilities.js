@@ -153,7 +153,7 @@ export const ABILITIES = [
   {
     index: 13,
     type: 'effect',
-    description: 'Reduces the attack damage of all enemy ships by %50 for seven seconds ("E" key to use; 50s cooldown)',
+    description: 'Reduces the attack damage of all enemy ships by %50 for 11 seconds ("E" key to use; 50s cooldown)',
     cooldown: 50000,
     effectIndex: 2,
     image: damageReductionIcon,

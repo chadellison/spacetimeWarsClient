@@ -53,7 +53,7 @@ export const GAME_EFFECTS = [
   {
     id: 3,
     name: 'damageReduction',
-    duration: 7000,
+    duration: 11000,
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},

@@ -1,10 +1,9 @@
 import {WEAPONS} from '../constants/weapons.js';
 import {SHIPS} from '../constants/ships.js';
 import {ABILITIES} from '../constants/abilities.js';
-import {canFire, updatePlayer, handleFireWeapon} from '../helpers/gameLogic.js';
+import {canFire, updatePlayer, handleFireWeapon, handlePlayerDamage} from '../helpers/gameLogic.js';
 import {playSound, stopSound} from '../helpers/audioHelpers.js';
 import {thruster} from '../constants/settings.js';
-import {round} from '../helpers/mathHelpers.js';
 
 import {
   BOARD_WIDTH,
@@ -98,8 +97,7 @@ const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
   if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown, currentPlayer.effects[10])) {
     let player = {...currentPlayer, gameEvent: 'fire'}
     updateState({lastFired: Date.now()});
-    let damage = player.damage;
-    damage = player.effects[11] ? damage + round(damage * 0.25) : damage
+    const damage = handlePlayerDamage(player);
     const updatedWeapons = [
       ...deployedWeapons,
       handleFireWeapon(player, {...WEAPONS[player.weaponIndex]}, 0, damage)

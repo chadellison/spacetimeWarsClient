@@ -1,10 +1,9 @@
-import {handleFireWeapon, updatePlayer} from '../helpers/gameLogic.js';
+import {handleFireWeapon, updatePlayer, handlePlayerDamage} from '../helpers/gameLogic.js';
 import {applyGameBuff} from '../helpers/effectHelpers.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 import {EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
 import {playSound, stopSound} from '../helpers/audioHelpers.js';
 import {handleAbility} from '../helpers/abilityHelpers.js';
-import {round} from '../helpers/mathHelpers.js';
 import {
   thruster,
   supplyPop,
@@ -152,8 +151,7 @@ export const handleUpdateEvent = (players, playerData, clockDifference, deployed
 
   switch (playerData.gameEvent) {
     case 'fire':
-      let damage = updatedPlayer.damage;
-      damage = updatedPlayer.effects[11] ? damage + round(damage * 0.25) : damage
+      const damage = handlePlayerDamage(updatedPlayer);
       updatedWeapons = [
         ...updatedWeapons,
         handleFireWeapon(

@@ -64,11 +64,17 @@ const renderSpeed = (player) => {
 
 const renderDamage = (player) => {
   if (player.damage) {
-    let modifier;
+    let modifier = '';
+    let modifiedValue = '';
     if (player.effects[11]) {
-      modifier = '+' + round(player.damage * 0.25);
-    } else if (player.effects[3]) {
-      modifier = '-' + round(player.damage / 2);
+      modifier = '+';
+      modifiedValue = round(player.damage * 0.25);
+    }
+
+    if (player.effects[3]) {
+      modifier = '-';
+      modifiedValue = modifiedValue ? modifiedValue : player.damage;
+      modifiedValue = round(modifiedValue / 2)
     }
     return (
       <PlayerStat
@@ -76,7 +82,7 @@ const renderDamage = (player) => {
         alt={'target'}
         value={player.damage}
         className="statInfo"
-        modifier={modifier}
+        modifier={modifier + modifiedValue}
       />
     )
   }

@@ -4,6 +4,7 @@ import healthBoost from '../images/healthBoost.jpg';
 import stealthMode from '../images/stealthMode.png';
 import absorbDamage from '../images/absorbDamage.png';
 import armorBoost from '../images/armorBoost.png';
+import damageIncrease from '../images/damageIncrease.png';
 import stun from '../images/stun.png';
 
 export const ITEMS = [
@@ -66,5 +67,15 @@ export const ITEMS = [
     cooldown: 0,
     durationCount: 0,
     description: 'Provieds your weapon a 10% chance to stun your opponent for two seconds'
+  },
+  {
+    id: 7,
+    index: 6,
+    price: 2000,
+    name: 'Damage Boost',
+    image: damageIncrease,
+    cooldown: 0,
+    durationCount: 0,
+    description: 'Increases your ship\'s attack damage by %80 for all weapons and abilities'
   }
 ];
