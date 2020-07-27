@@ -111,7 +111,7 @@ export const WEAPONS = [
     cooldown: 300,
     speed: 24,
     damage: 150,
-    price: 1100,
+    price: 1300,
     width: 32,
     height: 32,
     damageRadius: 2,
@@ -132,7 +132,7 @@ export const WEAPONS = [
     width: 16,
     height: 16,
     damageRadius: 3,
-    ability: 'poison damage: deals 17% damage of the total hitpoints over 3 seconds',
+    ability: 'poison damage: drains 17% of opponent\'s total hitpoints over 3 seconds',
     image: poisonCannon,
     sound: new Audio(lightLazer),
     selectionImage: displayPoisonCannon

@@ -5,6 +5,7 @@ import stealthMode from '../images/stealthMode.png';
 import absorbDamage from '../images/absorbDamage.png';
 import armorBoost from '../images/armorBoost.png';
 import damageIncrease from '../images/damageIncrease.png';
+import healthIncrease from '../images/healthIncrease.png';
 import stun from '../images/stun.png';
 
 export const ITEMS = [
@@ -77,5 +78,15 @@ export const ITEMS = [
     cooldown: 0,
     durationCount: 0,
     description: 'Increases your ship\'s attack damage by %80 for all weapons and abilities'
+  },
+  {
+    id: 8,
+    index: 7,
+    price: 1600,
+    name: 'Hitpoint Increase',
+    image: healthIncrease,
+    cooldown: 0,
+    durationCount: 0,
+    description: 'Increases your ship\'s hitpoints by 1200'
   }
 ];

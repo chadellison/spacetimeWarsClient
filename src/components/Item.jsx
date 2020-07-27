@@ -19,6 +19,9 @@ const handleClick = (activePlayer, item, updateState, index, players) => {
     }
     if (item.id === 7) {
       player.damage += round(player.damage + 0.8);
+    } else if (item.id === 8) {
+      player.hitpoints += 1200;
+      player.maxHitpoints += 1200;
     }
     goldAudio.play();
     const newState = handleUpdate(players, index, player);
