@@ -281,7 +281,7 @@ const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
   if (player.hitpoints > 0) {
     player = handleNegativeBuff(player, weapon, attacker);
     const damage = calculateDamage(weapon, player);
-    if (player.shipIndex === 3) {
+    if (player.shipIndex === 1) {
       attacker.hitpoints -= round(damage / 4);
     }
     player.hitpoints -= damage;

@@ -9,12 +9,12 @@ import healingIcon from '../images/healthBoost.jpg';
 import piercerIcon from '../images/piercerIcon.png';
 import rapidFireIcon from '../images/rapidFireIcon.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
-import hiddenAttackIcon from '../images/hiddenAttackIcon.png';
 import damageReductionIcon from '../images/damageReductionIcon.png';
 import electricFieldIcon from '../images/electricFieldIcon.png';
 import goldIcon from '../images/gold.png';
 import returnDamageIcon from '../images/returnDamageIcon.png';
 import evasionIcon from '../images/evasionIcon.png';
+import armorBoost from '../images/armorBoost.png';
 import {
   windSound,
   warpSpeedSound,
@@ -135,10 +135,10 @@ export const ABILITIES = [
   {
     index: 11,
     type: 'effect',
-    description: 'Renders the ship\'s weapons invisible for 5 seconds ("W" key to use; 55s cooldown)',
+    description: 'Boosts armor by 4 for 15 seconds',
     cooldown: 55000,
-    effectIndex: 11,
-    image: hiddenAttackIcon,
+    effectIndex: 7,
+    image: armorBoost,
     sound: clokingSound,
   },
   {
