@@ -245,7 +245,6 @@ class Layout extends React.Component {
       gameBuff,
       upgrades,
       activeTab,
-      gameSocket,
       animations,
       defenseData,
       gameOverStats,
@@ -267,7 +266,6 @@ class Layout extends React.Component {
             players={players}
             upgrades={upgrades}
             activeTab={activeTab}
-            gameSocket={gameSocket}
             defenseData={defenseData}
             resetGame={this.resetGame}
             activePlayer={activePlayer}

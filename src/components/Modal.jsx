@@ -13,7 +13,6 @@ export const Modal = ({
   upgrades,
   activeTab,
   resetGame,
-  gameSocket,
   defenseData,
   updateState,
   activePlayer,
@@ -47,7 +46,6 @@ export const Modal = ({
         <GameOverModal
           gameOverStats={gameOverStats}
           resetGame={resetGame}
-          gameSocket={gameSocket}
         />
       )
     default:

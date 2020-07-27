@@ -25,7 +25,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     case 'ability':
       return handleAbility(gameState, playerData, elapsedTime);
     case 'leak':
-      return handleLeakEvent(playerData, gameState.players);
+      return handleLeakEvent(playerData, gameState.players, gameState.gameSocket);
     default:
       if (index !== playerData.index) {
         return handleUpdateEvent([...players], playerData, clockDifference, deployedWeapons, elapsedTime);
@@ -80,16 +80,17 @@ const explodePlayer = (player, playerData) => {
   return player;
 }
 
-const handleLeakEvent = (playerData, players) => {
+const handleLeakEvent = (playerData, players, gameSocket) => {
   playSound(leakSound)
   if (playerData.defenseData[playerData.team] < 1) {
-    return handleGameOver(players, playerData);
+    return handleGameOver(players, playerData, gameSocket);
   } else {
     return { defenseData: playerData.defenseData }
   }
 }
 
-const handleGameOver = (players, playerData) => {
+const handleGameOver = (players, playerData, gameSocket) => {
+  gameSocket.unsubscribe();
   const updatedPlayers = players.map((player) => {
     return {
       ...player,
