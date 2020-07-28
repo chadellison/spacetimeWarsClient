@@ -91,19 +91,14 @@ const handleLeakEvent = (playerData, players, gameSocket) => {
 
 const handleGameOver = (players, playerData, gameSocket) => {
   gameSocket.unsubscribe();
-  const updatedPlayers = players.map((player) => {
-    return {
-      ...player,
-      active: false,
-      explodeAnimation: {...EXPLOSION_ANIMATIONS[2], coordinates: {x: 0, y: 0}}
-    }
-  });
   const winningTeam = playerData.team === 'red' ? 'blue' : 'red'
   return {
-    modal: 'gameOver',
-    players: updatedPlayers,
+    players: [],
     aiShips: [],
-    gameOverStats: {playerStats: players, winningTeam: winningTeam}
+    index: null,
+    modal: 'gameOver',
+    startingPlayer: {},
+    gameOverStats: {playerStats: players, winningTeam: winningTeam},
   }
 }
 
