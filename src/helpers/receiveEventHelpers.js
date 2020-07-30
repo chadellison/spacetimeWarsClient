@@ -93,11 +93,13 @@ const handleGameOver = (players, playerData, gameSocket) => {
   gameSocket.unsubscribe();
   const winningTeam = playerData.team === 'red' ? 'blue' : 'red'
   return {
+    index: null,
     players: [],
     aiShips: [],
-    index: null,
+    animations: [],
     modal: 'gameOver',
     startingPlayer: {},
+    deployedWeapons: [],
     gameOverStats: {playerStats: players, winningTeam: winningTeam},
   }
 }

@@ -15,7 +15,7 @@ export const GameOverModal = ({gameOverStats, resetGame}) => {
           return 1
         }
         return 0;
-      }).filter((player) => player.type === 'human').map((player, index) => {
+      }).map((player, index) => {
         return (
           <GameOverStat player={player} key={`gameOver${index}`} index={index}/>
         );

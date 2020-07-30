@@ -179,7 +179,7 @@ class Canvas extends React.Component {
         renderAnimation(context, this.state.shipExplosion, player.explodeAnimation, player.location);
       };
       renderPlayerData(gameBuff, context, player, showShip)
-    })
+    });
 
     this.props.deployedWeapons.forEach((weapon) => {
       if (!weapon.invisible || (currentPlayer && weapon.team === currentPlayer.team)) {
