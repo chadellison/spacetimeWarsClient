@@ -115,7 +115,7 @@ export const handlePlayerDamage = (player) => {
   let damage = WEAPONS[player.weaponIndex].damage + player.damage;
 
   if (player.effects[11]) {
-    damage = round(damage * 0.25);
+    damage += round(damage * 0.25);
   } else if (player.effects[3]) {
     damage = round(damage / 2);
   }
