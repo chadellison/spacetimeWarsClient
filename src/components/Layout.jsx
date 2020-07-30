@@ -193,6 +193,7 @@ class Layout extends React.Component {
     this.setState(gameState);
 
     if (elapsedTime > 400) {
+      // maybe throw away events
       console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime);
     };
   };

@@ -63,24 +63,25 @@ const renderSpeed = (player) => {
 }
 
 const renderDamage = (player) => {
-  if (player.damage) {
+  if (player.weaponIndex || player.weaponIndex === 0) {
+    const damage = WEAPONS[player.weaponIndex].damage + player.damage;
     let modifier = '';
     let modifiedValue = '';
     if (player.effects[11]) {
       modifier = '+';
-      modifiedValue = round(player.damage * 0.25);
+      modifiedValue = round(damage * 0.25);
     }
 
     if (player.effects[3]) {
       modifier = '-';
-      modifiedValue = modifiedValue ? modifiedValue : player.damage;
+      modifiedValue = modifiedValue ? modifiedValue : damage;
       modifiedValue = round(modifiedValue / 2)
     }
     return (
       <PlayerStat
         image={UPGRADES[3].image}
         alt={'target'}
-        value={player.damage}
+        value={damage}
         className="statInfo"
         modifier={modifier + modifiedValue}
       />

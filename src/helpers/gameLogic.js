@@ -112,13 +112,14 @@ const handleRepeatedFire = (player, index, space, lastFired, deployedWeapons, up
 }
 
 export const handlePlayerDamage = (player) => {
+  let damage = WEAPONS[player.weaponIndex].damage + player.damage;
+
   if (player.effects[11]) {
-    return round(player.damage * 0.25);
+    damage = round(damage * 0.25);
   } else if (player.effects[3]) {
-    return round(player.damage / 2);
-  } else {
-    return player.damage;
+    damage = round(damage / 2);
   }
+  return damage;
 }
 
 const isLeak = (ship) => {
@@ -288,7 +289,7 @@ const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
     attacker = handlePositiveBuff(attacker, weapon);
   }
   if (player.hitpoints <= 0) {
-    const bounty = round(player.score * 0.01 + 100);
+    const bounty = round(player.score * 0.01 + 50);
     player.killedBy = weapon.playerIndex
     attacker.kills += 1
     attacker.gold += handleGold(bounty, attacker.shipIndex);

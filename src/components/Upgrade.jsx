@@ -38,7 +38,7 @@ const handleClick = (activePlayer, upgrade, updateState, index, players, upgrade
         break;
       case 3:
         upgradeSound.play();
-        player.damage += 100
+        player.damage += 50
         newState = handleUpdate(players, index, player);
         newUpgrades[3] += 1;
         newState['upgrades'] = newUpgrades;

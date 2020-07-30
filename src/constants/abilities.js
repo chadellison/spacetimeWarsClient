@@ -36,8 +36,8 @@ export const ABILITIES = [
   {
     index: 0,
     type: 'weapon',
-    description: 'Stuns an enemy ship for 3 seconds and deals 350 damage ("Q" key to use; 45s cooldown).',
-    cooldown: 45000,
+    description: 'Stuns an enemy ship for 3 seconds and deals 350 damage ("Q" key to use; 40s cooldown).',
+    cooldown: 40000,
     weaponIndex: 1,
     image: stunGunIcon,
     sound: stunGunSound,
@@ -108,8 +108,8 @@ export const ABILITIES = [
   {
     index: 8,
     type: 'weapon',
-    description: 'Fires a projectile that travels through enemy ships dealing catastrophic damage ("W" key to use; 40s cooldown).',
-    cooldown: 40000,
+    description: 'Fires a projectile that travels through enemy ships dealing catastrophic damage ("W" key to use; 30s cooldown).',
+    cooldown: 30000,
     weaponIndex: 4,
     image: piercerIcon,
     sound: piercerSound,

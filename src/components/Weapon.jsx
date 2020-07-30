@@ -11,8 +11,7 @@ const handleClick = (weaponIndex, activePlayer, updateState, index, players) => 
     const player = {
       ...activePlayer,
       weaponIndex: weaponIndex,
-      damage: WEAPONS[weaponIndex].damage,
-      gold: gold
+      gold: gold,
     };
 
     const newState = handleUpdate(players, index, player);

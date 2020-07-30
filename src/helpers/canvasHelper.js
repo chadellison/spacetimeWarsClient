@@ -105,7 +105,7 @@ export const renderPlayerData = (gameBuff, context, player, showShip) => {
     } else if (!player.active && !player.explodeAnimation.complete) {
       context.fillStyle = "#ab8432";
       context.font = "12px Arial";
-      context.fillText(`+ ${round(player.score * 0.01 + 100)}`, player.location.x + 75, player.location.y)
+      context.fillText(`+ ${round(player.score * 0.01 + 50)}`, player.location.x + 75, player.location.y)
     }
   }
 };
