@@ -287,14 +287,15 @@ const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
     }
     player.hitpoints -= damage;
     attacker = handlePositiveBuff(attacker, weapon);
+
+    if (player.hitpoints <= 0) {
+      const bounty = round(player.score * 0.01 + 50);
+      player.killedBy = weapon.playerIndex
+      attacker.kills += 1
+      attacker.gold += handleGold(bounty, attacker.shipIndex);
+      attacker.score += bounty;
+    };
   }
-  if (player.hitpoints <= 0) {
-    const bounty = round(player.score * 0.01 + 50);
-    player.killedBy = weapon.playerIndex
-    attacker.kills += 1
-    attacker.gold += handleGold(bounty, attacker.shipIndex);
-    attacker.score += bounty;
-  };
 };
 
 const handleGold = (bounty, shipIndex) => {
