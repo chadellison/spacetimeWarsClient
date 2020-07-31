@@ -55,7 +55,6 @@ class Layout extends React.Component {
   };
 
   componentDidMount() {
-    this.createGameSocket()
     this.syncClocks(REQUEST_COUNT)
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
@@ -123,6 +122,7 @@ class Layout extends React.Component {
           return updatePlayer(ship, elapsedTime, clockDifference);
         });
         this.setState({players, aiShips, defenseData: gameData.defenseData});
+        this.createGameSocket()
     }).catch((error) => console.log('ERROR', error));
   };
 
@@ -222,9 +222,14 @@ class Layout extends React.Component {
   };
 
   resetGame = () => {
-    this.updateState(DEFAULT_STATE);
-    this.createGameSocket()
-    this.syncClocks(REQUEST_COUNT)
+    const newState = {
+      ...DEFAULT_STATE,
+      userId: this.state.userId,
+      clockDifference: this.state.clockDifference,
+      shortestRoundTripTime: this.state.shortestRoundTripTime
+    }
+    this.updateState(newState);
+    this.syncClocks(3)
   }
 
   renderGame = () => {
