@@ -24,7 +24,7 @@ import {
   stunGunSound,
   damageBoostSound,
   piercerSound,
-  clokingSound,
+  metalClank,
   healSound,
   rapidFireSound,
   meteorConeSound,
@@ -139,7 +139,7 @@ export const ABILITIES = [
     cooldown: 55000,
     effectIndex: 7,
     image: armorBoost,
-    sound: clokingSound,
+    sound: metalClank,
   },
   {
     index: 12,
