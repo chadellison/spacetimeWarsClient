@@ -11,7 +11,6 @@ import {ANAIMATION_FRAME_RATE, REQUEST_COUNT} from '../constants/settings.js';
 import {KEY_MAP} from '../constants/keyMap.js';
 import {updatePlayer, updateGameState} from '../helpers/gameLogic.js';
 import {keyDownEvent, keyUpEventPayload, handleAiEvents} from '../helpers/sendEventHelpers.js';
-import {addPlayer} from '../helpers/playerHelpers.js';
 import {handleEventPayload} from '../helpers/receiveEventHelpers.js';
 
 const DEFAULT_STATE = {
@@ -146,39 +145,25 @@ class Layout extends React.Component {
     this.setState(newState);
   }
 
-  handleShopButton = () => {
-    const {players, startingPlayer, userId} = this.state;
-
-    if (startingPlayer.name) {
-      this.updateState({modal: 'selection'})
-    } else {
-      this.updateState(addPlayer(userId, players));
-    };
-  };
-
   findActivePlayer = () => {
     const {index, players, startingPlayer} = this.state
     return index !== null ? players[index] : startingPlayer;
   }
 
   handleKeyDown = (event) => {
-    const {modal, players, index, startingPlayer} = this.state;
+    const {modal, players, index} = this.state;
     if (!modal) {
       const pressedKey = KEY_MAP[event.keyCode];
-      if (!startingPlayer.name) {
-        this.updateState(addPlayer(this.state.userId, players));
-      } else {
-        const currentPlayer = players[index]
-        if (currentPlayer && currentPlayer.active && !this.state[pressedKey]) {
-          this.setState({[pressedKey]: true})
-          keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState);
-        }
-      };
+      if (players[index].active && !this.state[pressedKey]) {
+        this.setState({[pressedKey]: true})
+        keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState);
+      }
     }
   };
 
   handleKeyUp = (event) => {
-    const currentPlayer = this.state.players[this.state.index]
+    const {players, index} = this.state;
+    const currentPlayer = players[index]
     const pressedKey = KEY_MAP[event.keyCode];
     if (currentPlayer && currentPlayer.active && !this.state.modal && this.state[pressedKey]) {
       this.setState({[pressedKey]: false});
@@ -286,8 +271,8 @@ class Layout extends React.Component {
           />}
           {activePlayer && !modal && <GameButton
             className={'gameButton'}
-            onClick={this.handleShopButton}
-            buttonText={activePlayer.name ? 'shop' : 'start'}
+            onClick={() => this.updateState({modal: 'selection'})}
+            buttonText={'shop'}
           />}
           <HeaderButtons updateState={this.updateState} />
           {activePlayer.name && <PlayerData
