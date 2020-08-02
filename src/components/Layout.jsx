@@ -266,7 +266,6 @@ class Layout extends React.Component {
 
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
-        <h2>{modal ? null : 'Space Wars'}</h2>
         <div className='game row'>
           {modal && <Modal
             page={page}
@@ -285,7 +284,7 @@ class Layout extends React.Component {
             clockDifference={clockDifference}
             handleGameEvent={this.handleGameEvent}
           />}
-          {activePlayer && <GameButton
+          {activePlayer && !modal && <GameButton
             className={'gameButton'}
             onClick={this.handleShopButton}
             buttonText={activePlayer.name ? 'shop' : 'start'}

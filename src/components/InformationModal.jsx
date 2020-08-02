@@ -57,7 +57,7 @@ const renderHowToPlay = (howToPlay) => {
 export const InformationModal = ({updateState, howToPlay, userId, players}) => {
   return (
     <div className="modal">
-      <div className="informationTitle">Space Wars</div>
+      <h2 className="informationTitle">Space Wars</h2>
       <div className="introduction">
         Shoot and destroy your opponents' "bombers" before they cross your team's edge of the screen.
       </div>

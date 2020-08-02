@@ -1,5 +1,5 @@
 .informationTitle {
-  margin-top: 2em;
+  margin-top: 3em;
   font-size: 20px;
   height: 30px;
   margin-left: 40%;
@@ -74,7 +74,6 @@
 .selectionButton {
   font-size: 20px;
   transition: ease-in .3s;
-
   height: 12px;
   margin-left: 45%;
   padding-top: 12.5px;
@@ -87,6 +86,8 @@
 
 .selectionButton:hover {
   background: #9c1616;
+  cursor: pointer;
+  box-shadow: 0 0 8px 0 rgba(0,0,0, 0.3);
 }
 
 .closeButton {
@@ -109,11 +110,6 @@
   cursor: pointer;
   opacity: 0.8;
   transition: ease-in .3s;
-  box-shadow: 0 0 8px 0 rgba(0,0,0, 0.3);
-}
-
-.selectionButton:hover {
-  cursor: pointer;
   box-shadow: 0 0 8px 0 rgba(0,0,0, 0.3);
 }
 
