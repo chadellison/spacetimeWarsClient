@@ -2,10 +2,19 @@
   margin-top: 2em;
   font-size: 20px;
   height: 30px;
-  color: white;
   margin-left: 40%;
   width: 20%;
   color: #c1cadb
+}
+
+.introduction {
+  font-size: 20px;
+  height: 30px;
+  font-size: 18px;
+  padding: 0.25em;
+  color: #2c66b2;
+  margin-top: 2em;
+  margin-bottom: 1em;
 }
 
 .gameOverText {
@@ -87,7 +96,7 @@
   color: #2c66b2;
   margin-left: 40%;
   width: 20%;
-  transition: ease-in 1.5s;
+  cursor: pointer;
 }
 
 .assetLink {
@@ -98,6 +107,8 @@
 
 .closeButton:hover {
   cursor: pointer;
+  opacity: 0.8;
+  transition: ease-in .3s;
   box-shadow: 0 0 8px 0 rgba(0,0,0, 0.3);
 }
 
@@ -161,7 +172,8 @@
 }
 
 .infoImage {
-  margin-bottom: 1em;
+  padding-left: 2em;
+  padding-right: 2em;
 }
 
 .blueShipInfo {
@@ -226,7 +238,41 @@
   margin-right: 1em;
 }
 
-.redTeamButton:hover {
+.howToPlayButton {
+  padding: 16px;
+  font-size: 20px;
+  color: white;
+  border: 1px solid #2c66b2;
+  border-radius: 5px;
+  transition: ease-out .3s;
+  display: inline-block;
+  width: 6em;
+  margin-top: 1em;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.startGameButton {
+  padding: 16px;
+  font-size: 20px;
+  color: white;
+  border: 1px solid #9c1616;
+  border-radius: 5px;
+  transition: ease-out .3s;
+  display: inline-block;
+  width: 6em;
+  margin-top: 1em;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.howToPlayButton:hover {
+  background: #2c66b2;
+  color: white;
+  cursor: pointer;
+}
+
+.redTeamButton:hover, .startGameButton:hover {
   background: #9c1616;
   color: white;
   cursor: pointer;
@@ -235,6 +281,29 @@
 .blueTeamButton:hover {
   background: #2c66b2;
   color: white;
+  cursor: pointer;
+}
+
+.howToPlay {
+  margin-top: 2em;
+  /* animation-name: slideDown;
+  -webkit-animation-name: slideDown;
+  animation-duration: .5s;
+  -webkit-animation-duration: .5s;
+  animation-timing-function: ease; */
+}
+
+.informationButton {
+  margin-bottom: 2em;
+  color: #2c66b2;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.informationButton:hover {
+  color: #2c66b2;
+  opacity: 0.8;
+  transition: ease-in .3s;
   cursor: pointer;
 }
 

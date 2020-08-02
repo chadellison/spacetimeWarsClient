@@ -9,10 +9,12 @@ export const Modal = ({
   page,
   modal,
   index,
+  userId,
   players,
   upgrades,
   activeTab,
   resetGame,
+  howToPlay,
   defenseData,
   updateState,
   activePlayer,
@@ -36,7 +38,14 @@ export const Modal = ({
         />
       );
     case 'instructions':
-      return <InformationModal updateState={updateState} />
+      return (
+        <InformationModal
+        updateState={updateState}
+        howToPlay={howToPlay}
+        userId={userId}
+        players={players}
+      />
+      );
     case 'credits':
       return <CreditsModal updateState={updateState} />
     case 'nameForm':

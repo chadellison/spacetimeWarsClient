@@ -3,7 +3,7 @@ import '../styles/paginateButton.css';
 
 const resolveText = (activeTab, page) => {
   if (['Ships', 'Weapons', 'Items'].includes(activeTab)) {
-    return page === 1 ? 'Next' : 'Previous';
+    return page === 1 ? 'more' : 'previous';
   } else {
     return null;
   }

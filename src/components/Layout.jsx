@@ -28,7 +28,7 @@ const DEFAULT_STATE = {
   left: false,
   right: false,
   space: false,
-  modal: null,
+  modal: 'instructions',
   activeTab: 'Ships',
   upgrades: [0, 0, 0, 0],
   page: 1,
@@ -38,6 +38,7 @@ const DEFAULT_STATE = {
   abilityCooldownData: {q: 0, w: 0, e: 0},
   aiShips: [],
   animations: [],
+  howToPlay: false,
   eventData: {
     lastSend: 0,
     count: 0,
@@ -246,11 +247,13 @@ class Layout extends React.Component {
       page,
       modal,
       index,
+      userId,
       aiShips,
       players,
       gameBuff,
       upgrades,
       activeTab,
+      howToPlay,
       animations,
       defenseData,
       gameOverStats,
@@ -269,9 +272,11 @@ class Layout extends React.Component {
             page={page}
             modal={modal}
             index={index}
+            userId={userId}
             players={players}
             upgrades={upgrades}
             activeTab={activeTab}
+            howToPlay={howToPlay}
             defenseData={defenseData}
             resetGame={this.resetGame}
             activePlayer={activePlayer}

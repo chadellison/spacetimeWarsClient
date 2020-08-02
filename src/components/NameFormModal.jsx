@@ -28,18 +28,21 @@ export const NameFormModal = ({updateState, activePlayer}) => {
       <label className="teamLabel">
         Select a team
       </label>
-      <div className={`redTeamButton ${activePlayer.team === 'red' ? 'redBackground' : ''}`}
-        onClick={() => updateTeam(updateState, activePlayer, 'red')}>
-          red
-      </div>
-      <div className={`blueTeamButton ${activePlayer.team === 'blue' ? 'blueBackground' : ''}`}
-        onClick={() => updateTeam(updateState, activePlayer, 'blue')}>
-          blue
-      </div>
+      <GameButton
+        onClick={() => updateTeam(updateState, activePlayer, 'red')}
+        buttonText={'red'}
+        className={`redTeamButton ${activePlayer.team === 'red' ? 'redBackground' : ''}`}
+      />
+      <GameButton
+        onClick={() => updateTeam(updateState, activePlayer, 'blue')}
+        buttonText={'blue'}
+        className={`blueTeamButton ${activePlayer.team === 'blue' ? 'blueBackground' : ''}`}
+      />
       <GameButton
         onClick={() => updateState({modal: 'selection'})}
-        buttonText={'Submit'}
-        className={'paginateButton'} />
+        buttonText={'submit'}
+        className={'paginateButton'}
+      />
     </div>
   );
 };
