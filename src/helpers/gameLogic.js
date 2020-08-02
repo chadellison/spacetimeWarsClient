@@ -119,6 +119,9 @@ export const handlePlayerDamage = (player) => {
   } else if (player.effects[3]) {
     damage = round(damage / 2);
   }
+  if (player.items[7]) {
+    damage += round(damage * 0.8);
+  }
   return damage;
 }
 

@@ -64,7 +64,10 @@ const renderSpeed = (player) => {
 
 const renderDamage = (player) => {
   if (player.weaponIndex || player.weaponIndex === 0) {
-    const damage = WEAPONS[player.weaponIndex].damage + player.damage;
+    let damage = WEAPONS[player.weaponIndex].damage + player.damage;
+    if (player.items[7]) {
+      damage += round(damage * 0.8);
+    }
     let modifier = '';
     let modifiedValue = '';
     if (player.effects[11]) {
