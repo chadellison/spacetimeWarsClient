@@ -2,7 +2,6 @@ import React from 'react';
 import '../styles/ship.css';
 import {getItem} from '../helpers/itemHelpers.js';
 import {handleUpdate} from '../helpers/selectionModalHelpers.js';
-import {round} from '../helpers/mathHelpers.js';
 import {notEnoughResources, goldAudio} from '../constants/settings.js';
 import {ITEMS} from '../constants/items.js';
 
@@ -17,9 +16,7 @@ const handleClick = (activePlayer, item, updateState, index, players) => {
       },
       gold: gold
     }
-    if (item.id === 7) {
-      player.damage += round(player.damage + 0.8);
-    } else if (item.id === 8) {
+    if (item.id === 8) {
       player.hitpoints += 1200;
       player.maxHitpoints += 1200;
     }
