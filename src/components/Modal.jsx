@@ -47,7 +47,7 @@ export const Modal = ({
       />
       );
     case 'credits':
-      return <CreditsModal updateState={updateState} />
+      return <CreditsModal updateState={updateState} index={index}/>
     case 'nameForm':
       return <NameFormModal updateState={updateState} activePlayer={activePlayer} />
     case 'gameOver':

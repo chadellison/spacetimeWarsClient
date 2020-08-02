@@ -154,7 +154,8 @@ class Layout extends React.Component {
     const {modal, players, index} = this.state;
     if (!modal) {
       const pressedKey = KEY_MAP[event.keyCode];
-      if (players[index].active && !this.state[pressedKey]) {
+      const currentPlayer = players[index];
+      if (currentPlayer.active && !this.state[pressedKey]) {
         this.setState({[pressedKey]: true})
         keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState);
       }
