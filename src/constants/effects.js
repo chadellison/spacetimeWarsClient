@@ -85,10 +85,10 @@ export const GAME_EFFECTS = [
       renderHeight: 100,
       rowCount: 4,
       columnCount: 3,
-      rate: 2,
-      startRate: 2,
+      rate: 1,
+      startRate: 1,
       xOffset: 0,
-      yOffset: 0,
+      yOffset: -50,
     }
   },
   {
