@@ -1,5 +1,5 @@
 .informationTitle {
-  margin-top: 1em;
+  margin-top: 2em;
   font-size: 20px;
   height: 30px;
   color: white;
@@ -50,9 +50,11 @@
   position: fixed;
   width: 70%;
   height: 90%;
+  margin-top: 2%;
   margin-left: 15%;
   overflow: scroll;
   border-bottom: 1px solid #ffa109;
+  border-top: 1px solid #ffa109;
 }
 
 .modalTabs {
