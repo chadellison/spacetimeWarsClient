@@ -61,7 +61,7 @@
   height: 90%;
   margin-top: 2%;
   margin-left: 15%;
-  overflow: scroll;
+  overflow: auto;
   border-bottom: 1px solid #ffa109;
   border-top: 1px solid #ffa109;
 }
