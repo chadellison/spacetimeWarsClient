@@ -25,6 +25,9 @@ import rapidFireAudio from '../audio/rapidFireSound.mp3';
 import damageReductionAudio from '../audio/damageReductionSound.mp3';
 import electricFieldAudio from '../audio/electricFieldSound.mov';
 
+// images
+import levelUpAnimation from '../images/levelUpAnimation.png';
+
 // constants
 export const BOARD_WIDTH = 1800;
 export const BOARD_HEIGHT = 1125;
@@ -59,3 +62,20 @@ export const healSound = new Audio(healAudio);
 export const rapidFireSound = new Audio(rapidFireAudio);
 export const damageReductionSound = new Audio(damageReductionAudio);
 export const electricFieldSound = new Audio(electricFieldAudio);
+
+export const levelUp = {
+  name: 'levelUp',
+  location: {x: 0, y: 0},
+  coordinates: {x: 0, y: 0},
+  spriteImage: levelUpAnimation,
+  width: 128,
+  height: 128,
+  rowCount: 4,
+  columnCount: 3,
+  rate: 0,
+  startRate: 0,
+  xOffset: 0,
+  yOffset: -50,
+  renderWidth: 100,
+  renderHeight: 100,
+}

@@ -11,6 +11,7 @@ export const newPlayer = (userId, players) => {
   return {
     userId: userId,
     team: 'red',
+    level: handleStartingLevel(players),
     gold: handleStartingGold(players),
     gameEvent: 'waiting',
     score: 0,
@@ -37,5 +38,17 @@ const handleStartingGold = (players) => {
     return round((scoreSums / players.length) + 1000);
   } else {
     return 1000;
+  }
+}
+
+const handleStartingLevel = (players) => {
+  if (players.length > 0) {
+    const levelSums = players.filter((player) => player.type === 'human')
+                             .reduce((accumulator, player) => {
+      return accumulator + player.level
+    }, 0);
+    return round((levelSums / players.length) + 1);
+  } else {
+    return 1;
   }
 }

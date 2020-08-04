@@ -7,6 +7,12 @@
   display: flex;
 }
 
+.playerLevel {
+  color: #2c66b2;
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
+}
+
 .ScoreInfo {
   font-size: 14px;
   color: gray;

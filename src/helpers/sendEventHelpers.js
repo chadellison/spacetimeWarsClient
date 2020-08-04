@@ -26,7 +26,7 @@ export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState
     case 'q':
     case 'w':
     case 'e':
-      handleAbility(gameState.players[gameState.index], {...gameState.abilityCooldownData}, handleGameEvent, updateState, pressedKey);
+      handleAbility(gameState.players[gameState.index], {...gameState.abilityData}, handleGameEvent, updateState, pressedKey);
       break;
     default:
       break;
@@ -167,12 +167,21 @@ const rotateEventPayload = (player, pressedKey) => {
   return {...player, gameEvent: pressedKey, rotate: pressedKey};
 }
 
-const handleAbility = (player, abilityCooldownData, handleGameEvent, updateState, pressedKey) => {
-  if (Date.now() - abilityCooldownData[pressedKey] > ABILITIES[SHIPS[player.shipIndex].abilities[pressedKey]].cooldown) {
-    handleGameEvent({...player, gameEvent: 'ability', usedAbility: pressedKey});
-    abilityCooldownData[pressedKey] = Date.now()
-    updateState({abilityCooldownData});
+const handleAbility = (player, abilityData, handleGameEvent, updateState, pressedKey) => {
+  const levelSum = abilityData.q.level + abilityData.w.level + abilityData.e.level;
+  const ability = abilityData[pressedKey];
+
+  if (player.level > levelSum && abilityData[pressedKey].level < 3) {
+    updateState({abilityData: {...abilityData, [pressedKey]: {...ability, level: ability.level + 1}}});
+  } else if (canUseAbility(ability, player, pressedKey) && ability.level > 0) {
+    handleGameEvent({...player, gameEvent: 'ability', usedAbility: pressedKey, abilityLevel: abilityData[pressedKey].level});
+    abilityData[pressedKey].lastUsed = Date.now()
+    updateState({abilityData});
   }
+}
+
+const canUseAbility = (ability, player, pressedKey) => {
+  return Date.now() - ability.lastUsed > ABILITIES[SHIPS[player.shipIndex].abilities[pressedKey]].cooldown
 }
 
 export const handleAiEvents = (eventData, team, handleGameEvent) => {

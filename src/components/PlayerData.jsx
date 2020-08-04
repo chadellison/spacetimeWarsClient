@@ -8,6 +8,7 @@ import {Hitpoints} from './Hitpoints';
 import {PlayerItems} from './PlayerItems';
 import {PlayerStat} from './PlayerStat';
 import {AbilityIcon} from './AbilityIcon';
+import {LevelUpIcon} from './LevelUpIcon';
 import {GameButton} from './GameButton';
 import {SHIPS} from '../constants/ships';
 import {round} from '../helpers/mathHelpers';
@@ -125,49 +126,68 @@ const renderHitPoints = (activePlayer) => {
   }
 };
 
-const renderAbilityIcons = (activePlayer, abilityCooldownData) => {
+const renderAbilityIcons = (activePlayer, playerAbilityData) => {
   if (activePlayer.shipIndex === 0 || activePlayer.shipIndex) {
-    const shipAbilities = SHIPS[activePlayer.shipIndex].abilities
-    return [
+    let abilityIcons = [];
+    const shipAbilities = SHIPS[activePlayer.shipIndex].abilities;
+    const levelSum = playerAbilityData.q.level + playerAbilityData.w.level + playerAbilityData.e.level;
+
+    const hasLevelPoints = activePlayer.level > levelSum;
+    [
       {ability: ABILITIES[shipAbilities.q], key: 'q'},
       {ability: ABILITIES[shipAbilities.w], key: 'w'},
       {ability: ABILITIES[shipAbilities.e], key: 'e'},
-    ].map((abilityData, index) => {
-      return (
-        <AbilityIcon
-          ability={abilityData.ability}
-          key={'abilityIcon' + index}
-          abilityKey={abilityData.key}
-          abilityUsedAt={abilityCooldownData[abilityData.key]}/>
-      );
+    ].forEach((abilityData, index) => {
+      const abilityLevel = playerAbilityData[abilityData.key].level;
+      if (hasLevelPoints && abilityLevel < 3) {
+        abilityIcons.push(
+          <LevelUpIcon
+            ability={abilityData.ability}
+            key={'abilityIcon' + index}
+            abilityKey={abilityData.key}
+            abilityLevel={abilityLevel}
+          />
+        )
+      } else if (playerAbilityData[abilityData.key].level > 0) {
+        abilityIcons.push(
+          <AbilityIcon
+            ability={abilityData.ability}
+            key={'abilityIcon' + index}
+            abilityKey={abilityData.key}
+            available={playerAbilityData[abilityData.key].level > 0}
+            abilityUsedAt={playerAbilityData[abilityData.key].lastUsed}
+          />
+        )
+      };
     });
+    return abilityIcons;
   }
 };
 
 const PlayerData = ({
-  activePlayer,
-  clockDifference,
+  modal,
   updateState,
   defenseData,
-  abilityCooldownData,
-  modal,
-  handleGameEvent
+  abilityData,
+  activePlayer,
+  handleGameEvent,
+  clockDifference,
 }) => {
   const elapsedSeconds = (Date.now() + clockDifference - activePlayer.explodedAt) / 1000;
   let countDown = 0;
   if (!activePlayer.active && elapsedSeconds < 10) {
     countDown = round(10 - elapsedSeconds);
   }
-
   const {gold} = activePlayer;
   return (
     <div className={`playerData column ${!activePlayer.active ? 'waiting' : ''}`}>
       <div className="row">
         {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown, modal, handleGameEvent)}
+        <div className="playerLevel">{'level: ' + activePlayer.level}</div>
         <div className="nameInfo">{activePlayer.name}</div>
         {gold >= 0 && <PlayerStat image={goldIcon} alt={'gold'} value={gold} className="goldInfo"/>}
         {renderHitPoints(activePlayer)}
-        {renderAbilityIcons(activePlayer, abilityCooldownData)}
+        {renderAbilityIcons(activePlayer, abilityData)}
         {renderWeapon(activePlayer.weaponIndex)}
         {renderDamage(activePlayer)}
         {renderArmor(activePlayer)}

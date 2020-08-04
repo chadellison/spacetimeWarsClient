@@ -15,7 +15,7 @@ import {updateAnimation} from '../helpers/animationHelpers';
 import {round} from '../helpers/mathHelpers.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
 import {playSound} from '../helpers/audioHelpers.js';
-import {goldAudio} from '../constants/settings.js';
+import {goldAudio, upgradeSound, levelUp} from '../constants/settings.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   const {clockDifference, gameBuff, index, aiShips, space, lastFired} = gameState;
@@ -199,7 +199,7 @@ export const handleWeapons = (gameData, handleGameEvent) => {
         applyHitToAll(gameData.aiShips, weapon, attacker, handleGameEvent)
 
         playSound(explosionSound);
-        const nuclearBlastAnimation = {...EXPLOSION_ANIMATIONS[1], location: weapon.location, coordinates: {...EXPLOSION_ANIMATIONS[1].coordinates}}
+        const nuclearBlastAnimation = {...EXPLOSION_ANIMATIONS[1], location: weapon.location, coordinates: {x: 0, y: 0}}
         gameData.animations.push(nuclearBlastAnimation);
         weapon.removed = true
       }
@@ -218,10 +218,17 @@ export const handleWeapons = (gameData, handleGameEvent) => {
     if (!weapon.removed) {
       newWeapons.push(weapon);
     } else if (weapon.id === 3) {
-      const mineExplosionAnimation = {...EXPLOSION_ANIMATIONS[0], location: weapon.location, coordinates: {...EXPLOSION_ANIMATIONS[0].coordinates}}
+      const mineExplosionAnimation = {...EXPLOSION_ANIMATIONS[0], location: weapon.location, coordinates: {x: 0, y: 0}}
       gameData.animations.push(mineExplosionAnimation);
     }
+    if (attacker.levelUp) {
+      delete attacker.levelUp
+      attacker.level += 1;
+      playSound(upgradeSound);
+      gameData.animations.push({...levelUp, location: attacker.location, coordinates: {x: 0, y: 0}});
+    }
   });
+
   gameData.weapons = newWeapons;
 
   return gameData;
@@ -290,6 +297,7 @@ const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
     }
     player.hitpoints -= damage;
     attacker = handlePositiveBuff(attacker, weapon);
+    attacker.score += round(damage * 0.1)
 
     if (player.hitpoints <= 0) {
       const bounty = round(player.score * 0.01 + 50);
@@ -297,7 +305,17 @@ const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
       attacker.kills += 1
       attacker.gold += handleGold(bounty, attacker.shipIndex);
       attacker.score += bounty;
+
     };
+    if (didLevelUp(attacker.level, attacker.score) && attacker.level < 10) {
+      attacker.levelUp = true;
+    }
+  }
+};
+
+const didLevelUp = (level, score) => {
+  if (score > 500) {
+    return round(score / 500) !== level;
   }
 };
 
