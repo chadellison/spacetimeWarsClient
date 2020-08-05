@@ -21,7 +21,7 @@ const handleClick = (updateState, handleGameEvent, activePlayer) => {
   updateState({modal: null, activeTab: 'Ships'});
 };
 
-const renderOptions = (activeTab, page, activePlayer, updateState, index, players, upgrades) => {
+const renderOptions = (activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints) => {
   switch (activeTab) {
     case 'Ships':
       const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
@@ -32,7 +32,6 @@ const renderOptions = (activeTab, page, activePlayer, updateState, index, player
             imageSrc={activePlayer.team === 'red' ? ship.image : ship.blueImage }
             activePlayer={activePlayer}
             ship={ship}
-            index={index}
             players={players}
             updateState={updateState}
           />
@@ -47,7 +46,6 @@ const renderOptions = (activeTab, page, activePlayer, updateState, index, player
             imageSrc={weapon.selectionImage}
             weapon={weapon}
             activePlayer={activePlayer}
-            index={index}
             players={players}
             updateState={updateState}
           />
@@ -57,13 +55,13 @@ const renderOptions = (activeTab, page, activePlayer, updateState, index, player
       return UPGRADES.map((upgrade, upgradeIndex) => {
         return (
           <Upgrade
-            index={index}
             upgrade={upgrade}
             players={players}
             upgrades={upgrades}
             imageSrc={upgrade.image}
             updateState={updateState}
             activePlayer={activePlayer}
+            experiencePoints={experiencePoints}
             key={`upgrade${upgrade.index}`}
           />
         )
@@ -77,7 +75,6 @@ const renderOptions = (activeTab, page, activePlayer, updateState, index, player
             imageSrc={item.image}
             item={item}
             activePlayer={activePlayer}
-            index={index}
             players={players}
             updateState={updateState}
           />
@@ -129,7 +126,6 @@ const renderTabs = (activeTab, updateState, activePlayer) => {
 
 export const SelectionModal = ({
   page,
-  index,
   players,
   upgrades,
   activeTab,
@@ -138,13 +134,15 @@ export const SelectionModal = ({
   clockDifference,
   handleGameEvent,
 }) => {
+  const experiencePoints = activePlayer.level - upgrades.reduce((accumulator, value) => accumulator + value, 1)
   return (
     <div className="modal">
       <div className="modalTabs">
         {renderTabs(activeTab, updateState, activePlayer)}
       </div>
       {renderStart(updateState, handleGameEvent, activePlayer, clockDifference)}
-      {renderOptions(activeTab, page, activePlayer, updateState, index, players, upgrades)}
+      {activeTab === 'Upgrades' && <div className="experiencePoints">{'Experience points ' + experiencePoints}</div>}
+      {renderOptions(activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints)}
       <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />
     </div>
   );

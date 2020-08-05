@@ -1,20 +1,18 @@
 import React from 'react';
 import '../styles/ship.css';
 import {notEnoughResources, upgradeSound} from '../constants/settings.js';
-import {UPGRADES} from '../constants/upgrades.js';
 import {handleUpdate} from '../helpers/selectionModalHelpers.js';
 
-const handleClick = (activePlayer, upgrade, updateState, index, players, upgrades) => {
-  const gold = activePlayer.gold - UPGRADES[upgrade.index].price;
-  if (gold >= 0 && upgrades[upgrade.index] < 3) {
-    let player = {...activePlayer, gold: gold}
+const handleClick = (activePlayer, upgrade, updateState, players, upgrades, experiencePoints) => {
+  if (experiencePoints > 0 && upgrades[upgrade.index] < 3) {
+    let player = {...activePlayer};
     let newState;
     let newUpgrades = [...upgrades]
     switch (upgrade.index) {
       case 0:
         upgradeSound.play();
         player.armor += 1
-        newState = handleUpdate(players, index, player);
+        newState = handleUpdate(players, player);
         newUpgrades[0] += 1;
         newState['upgrades'] = newUpgrades;
         updateState(newState);
@@ -23,7 +21,7 @@ const handleClick = (activePlayer, upgrade, updateState, index, players, upgrade
         upgradeSound.play();
         player.maxHitpoints += 200;
         player.hitpoints += 200;
-        newState = handleUpdate(players, index, player);
+        newState = handleUpdate(players, player);
         newUpgrades[1] += 1;
         newState['upgrades'] = newUpgrades;
         updateState(newState);
@@ -31,7 +29,7 @@ const handleClick = (activePlayer, upgrade, updateState, index, players, upgrade
       case 2:
         upgradeSound.play();
         player.velocity += 1
-        newState = handleUpdate(players, index, player);
+        newState = handleUpdate(players, player);
         newUpgrades[2] += 1;
         newState['upgrades'] = newUpgrades;
         updateState(newState);
@@ -39,7 +37,7 @@ const handleClick = (activePlayer, upgrade, updateState, index, players, upgrade
       case 3:
         upgradeSound.play();
         player.damage += 50
-        newState = handleUpdate(players, index, player);
+        newState = handleUpdate(players, player);
         newUpgrades[3] += 1;
         newState['upgrades'] = newUpgrades;
         updateState(newState);
@@ -53,13 +51,13 @@ const handleClick = (activePlayer, upgrade, updateState, index, players, upgrade
   }
 };
 
-export const Upgrade = ({imageSrc, activePlayer, upgrade, updateState, index, players, upgrades}) => {
+export const Upgrade = ({imageSrc, activePlayer, upgrade, updateState, players, upgrades, experiencePoints}) => {
   if (upgrades[upgrade.index] === 3) {
     return <div></div>
   } else {
     return (
       <div className="selection"
-        onClick={() => handleClick(activePlayer, upgrade, updateState, index, players, upgrades)}>
+        onClick={() => handleClick(activePlayer, upgrade, updateState, players, upgrades, experiencePoints)}>
           <div className="imageWrapper">
             <img id={upgrade.index} src={imageSrc} alt="item" className="selectionImage"/>
           </div>

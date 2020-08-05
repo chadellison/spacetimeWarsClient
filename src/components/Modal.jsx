@@ -27,7 +27,6 @@ export const Modal = ({
       return (
         <SelectionModal
           page={page}
-          index={index}
           players={players}
           upgrades={upgrades}
           activeTab={activeTab}

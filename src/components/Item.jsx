@@ -5,7 +5,7 @@ import {handleUpdate} from '../helpers/selectionModalHelpers.js';
 import {notEnoughResources, goldAudio} from '../constants/settings.js';
 import {ITEMS} from '../constants/items.js';
 
-const handleClick = (activePlayer, item, updateState, index, players) => {
+const handleClick = (activePlayer, item, updateState, players) => {
   const gold = activePlayer.gold - ITEMS[item.index].price;
   if (gold >= 0 && !getItem(activePlayer.items, item.id)) {
     let player = {
@@ -21,7 +21,7 @@ const handleClick = (activePlayer, item, updateState, index, players) => {
       player.maxHitpoints += 1200;
     }
     goldAudio.play();
-    const newState = handleUpdate(players, index, player);
+    const newState = handleUpdate(players, player);
     updateState(newState);
   } else {
     notEnoughResources.play();
@@ -29,10 +29,10 @@ const handleClick = (activePlayer, item, updateState, index, players) => {
   }
 };
 
-export const Item = ({imageSrc, activePlayer, item, updateState, index, players}) => {
+export const Item = ({imageSrc, activePlayer, item, updateState, players}) => {
   return (
     <div className="selection"
-      onClick={() => handleClick(activePlayer, item, updateState, index, players)}>
+      onClick={() => handleClick(activePlayer, item, updateState, players)}>
         <div className="imageWrapper">
           <img id={item.index} src={imageSrc} alt="item" className="selectionImage"/>
         </div>

@@ -4,7 +4,7 @@ import {loadWeapon, notEnoughResources} from '../constants/settings.js';
 import {WEAPONS} from '../constants/weapons.js';
 import {handleUpdate} from '../helpers/selectionModalHelpers.js';
 
-const handleClick = (weaponIndex, activePlayer, updateState, index, players) => {
+const handleClick = (weaponIndex, activePlayer, updateState, players) => {
   const gold = activePlayer.gold - WEAPONS[weaponIndex].price;
   if (gold >= 0) {
     loadWeapon.play();
@@ -14,7 +14,7 @@ const handleClick = (weaponIndex, activePlayer, updateState, index, players) => 
       gold: gold,
     };
 
-    const newState = handleUpdate(players, index, player);
+    const newState = handleUpdate(players, player);
     updateState(newState);
   } else {
     notEnoughResources.play();
@@ -22,10 +22,10 @@ const handleClick = (weaponIndex, activePlayer, updateState, index, players) => 
   }
 };
 
-export const Weapon = ({imageSrc, weapon, activePlayer, updateState, index, players}) => {
+export const Weapon = ({imageSrc, weapon, activePlayer, updateState, players}) => {
   return (
     <div className={`selection ${activePlayer.weaponIndex === weapon.index ? 'selected' : ''}`}
-      onClick={() => handleClick(weapon.index, activePlayer, updateState, index, players)}>
+      onClick={() => handleClick(weapon.index, activePlayer, updateState, players)}>
         <div className="imageWrapper">
           <img id={weapon.index} src={imageSrc} alt="ship" className="selectionImage"/>
         </div>

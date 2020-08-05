@@ -16,7 +16,7 @@ export class Ship extends React.Component {
   }
 
   handleClick = (shipIndex) => {
-    const {activePlayer, updateState, index, players} = this.props;
+    const {activePlayer, updateState, players} = this.props;
     const gold = activePlayer.gold - SHIPS[shipIndex].price;
 
     if (gold >= 0) {
@@ -30,9 +30,9 @@ export class Ship extends React.Component {
         maxHitpoints: SHIPS[shipIndex].hitpoints,
         velocity: SHIPS[shipIndex].speed,
       }
-      if (index !== null) {
+      if (activePlayer.index >= 0) {
         let updatedPlayers = [...players];
-        updatedPlayers[index] = player
+        updatedPlayers[activePlayer.index] = player
         updateState({players: updatedPlayers})
       } else {
         updateState({startingPlayer: player, activeTab: 'Weapons', page: 1});

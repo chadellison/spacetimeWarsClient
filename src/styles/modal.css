@@ -282,11 +282,10 @@
 
 .howToPlay {
   margin-top: 2em;
-  /* animation-name: slideDown;
-  -webkit-animation-name: slideDown;
-  animation-duration: .5s;
-  -webkit-animation-duration: .5s;
-  animation-timing-function: ease; */
+}
+
+.experiencePoints {
+  margin-top: 2em;
 }
 
 .informationButton {
