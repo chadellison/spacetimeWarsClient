@@ -11,18 +11,19 @@ import {SHIPS} from '../constants/ships.js';
 import {WEAPONS} from '../constants/weapons.js';
 import {UPGRADES} from '../constants/upgrades.js';
 import {startEventPayload} from '../helpers/sendEventHelpers.js';
+import {handleGameEvent} from '../gameSocket.js';
 
-const handleClick = (updateState, handleGameEvent, activePlayer) => {
+const handleClick = (modal, updateModalAction, activePlayer) => {
   if (activePlayer.gameEvent === 'waiting') {
     handleGameEvent(startEventPayload(activePlayer));
   } else {
     handleGameEvent({...activePlayer, gameEvent: 'shop'})
   }
-  updateState({modal: null, activeTab: 'Ships'});
+  updateModalAction({...modal, display: null, activeTab: 'Ships'});
 };
 
-const renderOptions = (activeTab, page, activePlayer, updateState, index, players, upgrades) => {
-  switch (activeTab) {
+const renderOptions = (modal, activePlayer, user, players) => {
+  switch (modal.activeTab) {
     case 'Ships':
       const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
       return ships.map((ship) => {
@@ -32,9 +33,8 @@ const renderOptions = (activeTab, page, activePlayer, updateState, index, player
             imageSrc={activePlayer.team === 'red' ? ship.image : ship.blueImage }
             activePlayer={activePlayer}
             ship={ship}
-            index={index}
+            index={user.index}
             players={players}
-            updateState={updateState}
           />
         )
       });
@@ -47,22 +47,20 @@ const renderOptions = (activeTab, page, activePlayer, updateState, index, player
             imageSrc={weapon.selectionImage}
             weapon={weapon}
             activePlayer={activePlayer}
-            index={index}
+            index={user.index}
             players={players}
-            updateState={updateState}
           />
         )
       });
     case 'Upgrades':
-      return UPGRADES.map((upgrade, upgradeIndex) => {
+      return UPGRADES.map((upgrade) => {
         return (
           <Upgrade
-            index={index}
+            index={user.index}
             upgrade={upgrade}
             players={players}
             upgrades={upgrades}
             imageSrc={upgrade.image}
-            updateState={updateState}
             activePlayer={activePlayer}
             key={`upgrade${upgrade.index}`}
           />
@@ -77,9 +75,8 @@ const renderOptions = (activeTab, page, activePlayer, updateState, index, player
             imageSrc={item.image}
             item={item}
             activePlayer={activePlayer}
-            index={index}
+            index={user.index}
             players={players}
-            updateState={updateState}
           />
         )
       });
@@ -88,13 +85,13 @@ const renderOptions = (activeTab, page, activePlayer, updateState, index, player
   }
 };
 
-const renderStart = (updateState, handleGameEvent, activePlayer, clockDifference) => {
+const renderStart = (modal, updateModalAction, activePlayer, clockDifference) => {
   const elapsedSeconds = (Date.now() + clockDifference - activePlayer.explodedAt) / 1000;
   if (activePlayer.shipIndex !== undefined && activePlayer.weaponIndex !== undefined && elapsedSeconds > 10) {
     return (
       <GameButton
         className={'selectionButton'}
-        onClick={() => handleClick(updateState, handleGameEvent, activePlayer)}
+        onClick={() => handleClick(modal, updateModalAction, activePlayer)}
         buttonText={'start'}
       />
     );
@@ -107,7 +104,7 @@ const renderStart = (updateState, handleGameEvent, activePlayer, clockDifference
   }
 };
 
-const renderTabs = (activeTab, updateState, activePlayer) => {
+const renderTabs = (modal, updateModalAction, activePlayer) => {
   let tabs = ['Ships'];
   if (activePlayer.shipIndex || activePlayer.shipIndex === 0) {
     tabs.push('Weapons');
@@ -118,34 +115,35 @@ const renderTabs = (activeTab, updateState, activePlayer) => {
   };
   return tabs.map((tab, index) => {
     return (
-      <div className={`selectionText ${activeTab === tab ? 'activeTab' : ''}`}
+      <div className={`selectionText ${modal.activeTab === tab ? 'activeTab' : ''}`}
         key={`tabs${index}`}
-        onClick={() => updateState({activeTab: tab, page: 1})}>
+        onClick={() => updateModalAction({...modal, activeTab: tab, page: 1})}>
           {tab}
       </div>
     );
   });
 };
 
-export const SelectionModal = ({
-  page,
-  index,
-  players,
-  upgrades,
-  activeTab,
-  updateState,
-  activePlayer,
-  clockDifference,
-  handleGameEvent,
-}) => {
+export const SelectionModal = ({modal, user, players, time}) => {
+  const activePlayer = user.index !== null ? players[user.index] : user.startingPlayer;
   return (
     <div className="modal">
       <div className="modalTabs">
-        {renderTabs(activeTab, updateState, activePlayer)}
+        {renderTabs(modal, updateModalAction, activePlayer)}
       </div>
-      {renderStart(updateState, handleGameEvent, activePlayer, clockDifference)}
-      {renderOptions(activeTab, page, activePlayer, updateState, index, players, upgrades)}
+      {renderStart(modal, updateModalAction, activePlayer, time.clockDifference)}
+      {renderOptions(modal, activePlayer, user, players)}
       <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />
     </div>
   );
 };
+
+const mapStateToProps = ({modal, user, players, time}) => {
+  return { modal, user, time, players };
+}
+
+const mapDispatchToProps = dispatch => {
+  return { updateModalAction }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectionModal)

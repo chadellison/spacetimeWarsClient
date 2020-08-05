@@ -1,11 +1,11 @@
 import React from 'react';
 import '../styles/modal.css';
 
-export const CreditsModal = ({updateState, index}) => {
-  const modalValue = (index || index === 0) ? null : 'instructions';
+export const CreditsModal = ({updateModalAction, user}) => {
+  const modalValue = (user.index || user.index === 0) ? null : 'instructions';
   return (
     <div className='modal'>
-      <div className="closeButton" onClick={() => updateState({modal: modalValue})}>Close</div>
+      <div className="closeButton" onClick={() => updateModalAction({...modal, display: modalValue})}>Close</div>
       <div className="informationTitle">Credits</div>
       <div className="informationText">
         <span className="instructionControl">Background art:</span>Vadim Sadovski/Shutterstock.com
@@ -81,7 +81,17 @@ export const CreditsModal = ({updateState, index}) => {
             https://www.zapsplat.com
         </a>
       </div>
-      <div className="closeButton" onClick={() => updateState({modal: modalValue})}>Close</div>
+      <div className="closeButton" onClick={() => updateModalAction({...modal, display: modalValue})}>Close</div>
     </div>
   );
 };
+
+const mapStateToProps = ({ user }) => {
+  return { user };
+}
+
+const mapDispatchToProps = dispatch => {
+  return { updateModalAction }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreditsModal)

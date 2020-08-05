@@ -2,7 +2,7 @@ import {round} from '../helpers/mathHelpers.js';
 
 export const addPlayer = (userId, players) => {
   return {
-    modal: 'nameForm',
+    // modal: 'nameForm',
     startingPlayer: newPlayer(userId, players)
   };
 }

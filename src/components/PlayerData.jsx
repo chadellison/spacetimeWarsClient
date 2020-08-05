@@ -13,6 +13,7 @@ import {GameButton} from './GameButton';
 import {SHIPS} from '../constants/ships';
 import {round} from '../helpers/mathHelpers';
 import {startEventPayload} from '../helpers/sendEventHelpers';
+import {handleGameEvent} from '../gameSocket.js';
 
 const renderWeapon = (weaponIndex) => {
   if (weaponIndex >= 0) {
@@ -93,7 +94,7 @@ const renderDamage = (player) => {
   }
 }
 
-const handlePlayerIcon = (activePlayer, countDown, modal, handleGameEvent) => {
+const handlePlayerIcon = (activePlayer, countDown, displayModal) => {
   if (activePlayer.active) {
     return (
       <img
@@ -104,7 +105,7 @@ const handlePlayerIcon = (activePlayer, countDown, modal, handleGameEvent) => {
     );
   } else if (countDown > 0) {
     return <span className="waitCountDown">{countDown}</span>;
-  } else if (!modal) {
+  } else if (!displayModal) {
     return (
       <GameButton
         className={'startButton'}
@@ -165,15 +166,15 @@ const renderAbilityIcons = (activePlayer, playerAbilityData) => {
 };
 
 const PlayerData = ({
+  game,
+  time,
   modal,
-  updateState,
-  defenseData,
+  players,
   abilityData,
-  activePlayer,
-  handleGameEvent,
-  clockDifference,
 }) => {
-  const elapsedSeconds = (Date.now() + clockDifference - activePlayer.explodedAt) / 1000;
+  const activePlayer = user.index !== null ? players[user.index] : user.startingPlayer;
+
+  const elapsedSeconds = (Date.now() + time.clockDifference - activePlayer.explodedAt) / 1000;
   let countDown = 0;
   if (!activePlayer.active && elapsedSeconds < 10) {
     countDown = round(10 - elapsedSeconds);
@@ -182,7 +183,7 @@ const PlayerData = ({
   return (
     <div className={`playerData column ${!activePlayer.active ? 'waiting' : ''}`}>
       <div className="row">
-        {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown, modal, handleGameEvent)}
+        {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown, modal.display)}
         <div className="playerLevel">{'level: ' + activePlayer.level}</div>
         <div className="nameInfo">{activePlayer.name}</div>
         {gold >= 0 && <PlayerStat image={goldIcon} alt={'gold'} value={gold} className="goldInfo"/>}
@@ -202,4 +203,15 @@ const PlayerData = ({
   );
 }
 
-export default PlayerData;
+const mapStateToProps = ({ modal, game, user, players, time, abilityData }) => {
+  return { modal, game, user, players, time, abilityData };
+}
+
+const mapDispatchToProps = dispatch => {
+  return { updateModalAction }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerData)
+
+
+// export default PlayerData;

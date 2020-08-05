@@ -1,0 +1,9 @@
+export const FETCH_PLAYERS = 'FETCH_PLAYERS';
+export const UPDATE_PLAYERS = 'UPDATE_PLAYERS';
+export const UPDATE_USER = 'UPDATE_USER';
+export const UPDATE_GAME_EVENT = 'UPDATE_GAME_EVENT';
+export const SYNC_CLOCKS = 'SYNC_CLOCKS';
+export const UPDATE_CLOCK = 'UPDATE_CLOCK';
+export const UPDATE_GAME = 'UPDATE_GAME';
+export const UPDATE_MODAL = 'UPDATE_MODAL';
+export const ADD_USER = 'ADD_USER';

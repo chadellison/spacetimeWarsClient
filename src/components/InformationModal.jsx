@@ -4,6 +4,7 @@ import redBomber from '../images/redBomber.png';
 import blueBomber from '../images/blueBomber.png';
 import {addPlayer} from '../helpers/playerHelpers.js';
 import {GameButton} from './GameButton';
+import {addUserAction} from '../actions/userActions';
 
 const renderHowToPlay = (howToPlay) => {
   if (howToPlay) {
@@ -54,7 +55,13 @@ const renderHowToPlay = (howToPlay) => {
     return <div></div>
   }
 }
-export const InformationModal = ({updateState, howToPlay, userId, players}) => {
+
+const handleStart = (addUser, updateModalAction, modal) => {
+  addUser();
+  updateModal()
+}
+
+export const InformationModal = ({modal, user, players}) => {
   return (
     <div className="modal">
       <h2 className="informationTitle">Space Wars</h2>
@@ -67,17 +74,26 @@ export const InformationModal = ({updateState, howToPlay, userId, players}) => {
       </div>
 
       <GameButton
-        onClick={() => updateState({howToPlay: !howToPlay})}
-        buttonText={howToPlay ? 'close' : 'how to play'}
+        onClick={() => updateModalAction({...modal, howToPlay: !modal.howToPlay})}
+        buttonText={modal.howToPlay ? 'close' : 'how to play'}
         className={'howToPlayButton'}
       />
       <GameButton
         className={'startGameButton'}
-        onClick={() => updateState(addPlayer(userId, players))}
+        onClick={() => handleStart(() => addUserAction(userId, players), () => updateModal({...modal, display: 'nameForm'}))}
         buttonText={'start'}
       />
-      {renderHowToPlay(howToPlay)}
-
+      {renderHowToPlay(modal.howToPlay)}
     </div>
   );
 };
+
+const mapStateToProps = ({modal, user, players}) => {
+  return { modal, user, players };
+}
+
+const mapDispatchToProps = dispatch => {
+  return { updateModalAction, addUserAction }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(InformationModal)

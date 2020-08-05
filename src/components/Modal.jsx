@@ -6,58 +6,73 @@ import {GameOverModal} from './GameOverModal';
 import {NameFormModal} from './NameFormModal';
 
 export const Modal = ({
-  page,
+  // page,
   modal,
-  index,
-  userId,
-  players,
-  upgrades,
-  activeTab,
-  resetGame,
-  howToPlay,
-  defenseData,
-  updateState,
-  activePlayer,
-  gameOverStats,
-  clockDifference,
-  handleGameEvent,
+  // index,
+  // userId,
+  // players,
+  // upgrades,
+  // activeTab,
+  // resetGame,
+  // howToPlay,
+  // defenseData,
+  // updateState,
+  // activePlayer,
+  // gameOverStats,
+  // clockDifference,
+  // handleGameEvent,
 }) => {
   switch (modal) {
     case 'selection':
       return (
         <SelectionModal
-          page={page}
-          index={index}
-          players={players}
-          upgrades={upgrades}
-          activeTab={activeTab}
-          updateState={updateState}
-          activePlayer={activePlayer}
-          handleGameEvent={handleGameEvent}
-          clockDifference={clockDifference}
+          // page={page}
+          // index={index}
+          // players={players}
+          // upgrades={upgrades}
+          // activeTab={activeTab}
+          // updateState={updateState}
+          // activePlayer={activePlayer}
+          // handleGameEvent={handleGameEvent}
+          // clockDifference={clockDifference}
         />
       );
     case 'instructions':
       return (
         <InformationModal
-        updateState={updateState}
-        howToPlay={howToPlay}
-        userId={userId}
-        players={players}
+        // updateState={updateState}
+        // howToPlay={howToPlay}
+        // userId={userId}
+        // players={players}
       />
       );
     case 'credits':
-      return <CreditsModal updateState={updateState} index={index}/>
+      return <CreditsModal />
+      // return <CreditsModal updateState={updateState} index={index}/>
     case 'nameForm':
-      return <NameFormModal updateState={updateState} activePlayer={activePlayer} />
+      return <NameFormModal />
+      // return <NameFormModal updateState={updateState} activePlayer={activePlayer} />
     case 'gameOver':
       return (
         <GameOverModal
-          gameOverStats={gameOverStats}
-          resetGame={resetGame}
+          // gameOverStats={gameOverStats}
+          // resetGame={resetGame}
         />
       )
     default:
       return <div></div>
   }
 };
+
+const mapStateToProps = ({modal}) => {
+  return {modal};
+}
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     updateUserAction,
+//     updateGameEventAction,
+//   }
+// }
+
+export default connect(mapStateToProps)(Modal)

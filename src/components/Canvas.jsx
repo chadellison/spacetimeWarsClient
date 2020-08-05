@@ -1,4 +1,5 @@
 import React from 'react';
+import { gameSocket } from './gameSocket.js';
 import {
   drawShip,
   shouldRenderShip,
@@ -10,6 +11,9 @@ import {
 import {canAbsorbDamage} from '../helpers/itemHelpers.js';
 import '../styles/styles.css';
 import {round} from '../helpers/mathHelpers.js';
+import {KEY_MAP} from '../constants/keyMap.js';
+import { updateUserAction } from '../actions/userActions';
+import { updateGameEventAction } from '../actions/gameEventActions';
 import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
@@ -18,6 +22,7 @@ import {
 import {SHIPS, SUPPLY_SHIP, RED_BOMBER, BLUE_BOMBER} from '../constants/ships.js';
 import {WEAPONS, ABILITY_WEAPONS, EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
+import {keyDownEvent, keyUpEventPayload, handleAiEvents} from '../helpers/sendEventHelpers.js';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -26,6 +31,10 @@ class Canvas extends React.Component {
   }
 
   componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('keyup', this.handleKeyUp);
+    this.interval = setInterval(() => this.renderGame(), ANAIMATION_FRAME_RATE);
+
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -132,6 +141,62 @@ class Canvas extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  renderGame = () => {
+    updatedGameState = updateGameState = (
+      this.state,
+      this.updateState,
+      this.handleGameEvent
+    );
+    this.setState(updatedGameState);
+  }
+
+  handleGameEvent = (eventPayload) => {
+    let userEvents = {...this.props.gameEvent.userEvents};
+    const id = Object.keys(userEvents).length
+    const sentTime = Date.now();
+    gameSocket.create({
+      ...eventPayload,
+      eventId: id,
+      serverTime: sentTime + this.props.game.clockDifference
+    });
+    userEvents[id] = sentTime;
+    let eventData = {...this.props.gameEvent}
+    eventData.userEvents = userEvents
+    this.props.updateGameEventAction(eventData);
+  };
+
+  handleKeyDown = (event) => {
+    const {modal, players, user} = this.props;
+    const {up, left, right, space, index} = user;
+
+    if (!modal) {
+      const pressedKey = KEY_MAP[event.keyCode];
+      const currentPlayer = players[index];
+      if (currentPlayer.active && !user[pressedKey]) {
+        this.props.updateUserAction(pressedKey, true);
+        // this.setState({[pressedKey]: true})
+        keyDownEvent(pressedKey, this.props, this.handleGameEvent, this.updateState);
+      }
+    }
+  };
+
+  handleKeyUp = (event) => {
+    const {modal, players, user} = this.props;
+    const {up, left, right, space, index} = user;
+
+    const currentPlayer = players[index]
+    const unpressedKey = KEY_MAP[event.keyCode];
+    if (currentPlayer && currentPlayer.active && !this.props.modal.display && this.props.user[unpressedKey]) {
+      this.setState({[unpressedKey]: false});
+      this.props.updateUserAction(unpressedKey, false);
+      keyUpEventPayload(unpressedKey, this.props, this.handleGameEvent, this.updateState)
+    };
+  };
+
   handleImage = (player) => {
     let imageReference = '';
     if (player.type === 'supplyShip') {
@@ -160,13 +225,15 @@ class Canvas extends React.Component {
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
-    if (this.props.gameBuff.color) {
+    if (this.props.game.gameBuff.color) {
       context.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
       context.fillStyle = this.props.gameBuff.color;
     }
 
-    this.props.players.concat(this.props.aiShips).forEach((player) => {
-      const {gameBuff, index} = this.props;
+    this.props.players.concat(this.props.game.aiShips).forEach((player) => {
+      // const {gameBuff, index} = this.props;
+      const {index} = this.props.user;
+      const {gameBuff} = this.props.game;
       const showShip = shouldRenderShip(player, index);
       if (player.active) {
         if (showShip) {
@@ -190,7 +257,7 @@ class Canvas extends React.Component {
       }
     });
 
-    this.props.animations.forEach((animation) => {
+    this.props.game.animations.forEach((animation) => {
       renderAnimation(context, this.state[animation.name], animation, animation.location);
     });
   }
@@ -284,4 +351,15 @@ class Canvas extends React.Component {
   };
 }
 
-export default Canvas
+const mapStateToProps = ({user, players, game, deployedWeapons, modal}) => {
+  return {user, players, game, deployedWeapons, modal};
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateUserAction,
+    updateGameEventAction,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Canvas)

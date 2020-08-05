@@ -50,3 +50,9 @@ export const Weapon = ({imageSrc, weapon, activePlayer, updateState, index, play
     </div>
   );
 };
+
+// const mapStateToProps = ({players}) => {
+//   return {players}
+// }
+//
+// export default connect(mapStateToProps)(Weapon);

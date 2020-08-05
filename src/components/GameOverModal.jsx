@@ -3,11 +3,23 @@ import '../styles/modal.css';
 import {GameOverStat} from './GameOverStat';
 import {GameButton} from './GameButton';
 
-export const GameOverModal = ({gameOverStats, resetGame}) => {
+const resetGame = () => {
+  // const newState = {
+  //   ...DEFAULT_STATE,
+  //   userId: this.state.userId,
+  //   clockDifference: this.state.clockDifference,
+  //   shortestRoundTripTime: this.state.shortestRoundTripTime
+  // }
+  // this.updateState(newState);
+  // this.syncClocks(3)
+  console.log('do lots of things fire all the actions etc')
+}
+
+export const GameOverModal = ({game}) => {
   return (
     <div className='modal'>
-      <div className={`gameOverText ${gameOverStats.winningTeam}`}>{`${gameOverStats.winningTeam} Team Wins!`}</div>
-      {gameOverStats.playerStats.sort((playerOne, playerTwo) => {
+      <div className={`gameOverText ${game.gameOverStats.winningTeam}`}>{`${game.gameOverStats.winningTeam} Team Wins!`}</div>
+      {game.gameOverStats.playerStats.sort((playerOne, playerTwo) => {
         if (playerOne.score > playerTwo.score) {
           return -1
         }
@@ -28,3 +40,13 @@ export const GameOverModal = ({gameOverStats, resetGame}) => {
     </div>
   );
 };
+
+const mapStateToProps = ({game}) => {
+  return { game };
+}
+
+const mapDispatchToProps = dispatch => {
+  return { updateModalAction }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameOverModal)
