@@ -3,7 +3,7 @@ import {SHIPS} from '../constants/ships.js';
 import {ABILITIES} from '../constants/abilities.js';
 import {canFire, updatePlayer, handleFireWeapon, handlePlayerDamage} from '../helpers/gameLogic.js';
 import {playSound, stopSound} from '../helpers/audioHelpers.js';
-import {thruster} from '../constants/settings.js';
+import {thruster, mineDropSound} from '../constants/settings.js';
 
 import {
   BOARD_WIDTH,
@@ -172,6 +172,7 @@ const handleAbility = (player, abilityData, handleGameEvent, updateState, presse
   const ability = abilityData[pressedKey];
 
   if (player.level > levelSum && abilityData[pressedKey].level < 3) {
+    playSound(mineDropSound);
     updateState({abilityData: {...abilityData, [pressedKey]: {...ability, level: ability.level + 1}}});
   } else if (canUseAbility(ability, player, pressedKey) && ability.level > 0) {
     handleGameEvent({...player, gameEvent: 'ability', usedAbility: pressedKey, abilityLevel: abilityData[pressedKey].level});
