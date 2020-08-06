@@ -1,7 +1,7 @@
 // ships
-import hunterShip from '../images/hunterShip.png';
+import hunterShip from '../images/redHunterShip.png';
 import blueHunterShip from '../images/blueHunterShip.png';
-import hunterShipAbsorb from '../images/hunterShipAbsorb.png';
+import hunterShipAbsorb from '../images/hunterAbsorb.png';
 import destroyerShip from '../images/destroyerShip.png';
 import blueDestroyerShip from '../images/blueDestroyerShip.png';
 import destroyerShipAbsorb from '../images/destroyerShipAbsorb.png';
@@ -11,12 +11,12 @@ import warShipAbsorb from '../images/warShipAbsorb.png';
 import cruiserShip from '../images/cruiserShip.png';
 import blueCruiserShip from '../images/blueCruiserShip.png';
 import cruiserShipAbsorb from '../images/cruiserShipAbsorb.png';
-import carrierShip from '../images/carrierShip.png';
+import carrierShip from '../images/redCarrierShip.png';
 import blueCarrierShip from '../images/blueCarrierShip.png';
-import carrierShipAbsorb from '../images/carrierShipAbsorb.png';
+import carrierShipAbsorb from '../images/carrierAbsorb.png';
 import redStealthShip from '../images/redStealthShip.png';
 import blueStealthShip from '../images/blueStealthShip.png';
-import stealthShipAbsorb from '../images/stealthShipAbsorb.png';
+import stealthShipAbsorb from '../images/stealthAbsorb.png';
 import supplyShip from '../images/supplyShip.png';
 import redBomber from '../images/redBomber.png';
 import blueBomber from '../images/blueBomber.png';
@@ -42,7 +42,7 @@ export const SHIPS = [
     armor: 0,
     hitpoints: 700,
     speed: 2,
-    shipCenter: {x: 60.5, y: 35},
+    shipCenter: {x: 60.5, y: 51},
     image: hunterShip,
     blueImage: blueHunterShip,
     absorbImage: hunterShipAbsorb,
@@ -81,7 +81,7 @@ export const SHIPS = [
     armor: 2,
     hitpoints: 1000,
     speed: 2,
-    shipCenter: {x: 60.5, y: 29},
+    shipCenter: {x: 60.5, y: 42.5},
     image: carrierShip,
     blueImage: blueCarrierShip,
     absorbImage: carrierShipAbsorb,
@@ -94,7 +94,7 @@ export const SHIPS = [
     armor: 1,
     hitpoints: 900,
     speed: 3,
-    shipCenter: {x: 60, y: 34},
+    shipCenter: {x: 60.5, y: 57},
     image: redStealthShip,
     blueImage: blueStealthShip,
     absorbImage: stealthShipAbsorb,

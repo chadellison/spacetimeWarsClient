@@ -315,7 +315,7 @@ const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
 
 const didLevelUp = (level, score) => {
   if (score > 500) {
-    return round(score / 500) !== level;
+    return round(score / 500) > level;
   }
 };
 
