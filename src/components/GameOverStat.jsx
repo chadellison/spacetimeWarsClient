@@ -15,6 +15,7 @@ export const GameOverStat = ({player, index}) => {
         alt="weapon"
       />
       <div className="playerInfo">{`${player.name}`}</div>
+      <div className="playerInfo">{`level: ${player.level}`}</div>
       <PlayerStat image={UPGRADES[3].image} alt={'target'} value={player.damage} className="statInfo"/>
       <PlayerStat image={UPGRADES[0].image} alt={'shield'} value={player.armor} className="statInfo"/>
       <PlayerStat image={UPGRADES[2].image} alt={'speedometer'} value={player.velocity} className="statInfo"/>

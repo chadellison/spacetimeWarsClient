@@ -164,7 +164,7 @@ export const GAME_EFFECTS = [
       rate: 1,
       startRate: 1,
       xOffset: -30,
-      yOffset: 0,
+      yOffset: 26,
     }
   },
   {

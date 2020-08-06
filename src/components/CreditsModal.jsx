@@ -13,6 +13,15 @@ export const CreditsModal = ({updateState, index}) => {
       <div className="informationText">
         <span className="creditTitle">Spaceship art:</span> MillionthVector
         <a className="assetLink"
+          href="https://www.cgtrader.com/msgamedevelopment"
+          target="_blank"
+          rel="noopener noreferrer">
+            msgamedevelopment
+        </a>
+      </div>
+      <div className="informationText">
+        <span className="creditTitle">Bomber art:</span> MillionthVector
+        <a className="assetLink"
           href="https://millionthvector.blogspot.com/p/free-sprites.html"
           target="_blank"
           rel="noopener noreferrer">

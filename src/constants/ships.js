@@ -2,15 +2,15 @@
 import hunterShip from '../images/redHunterShip.png';
 import blueHunterShip from '../images/blueHunterShip.png';
 import hunterShipAbsorb from '../images/hunterAbsorb.png';
-import destroyerShip from '../images/destroyerShip.png';
-import blueDestroyerShip from '../images/blueDestroyerShip.png';
-import destroyerShipAbsorb from '../images/destroyerShipAbsorb.png';
-import redWarShip from '../images/redWarShip.png';
-import blueWarShip from '../images/blueWarShip.png';
-import warShipAbsorb from '../images/warShipAbsorb.png';
-import cruiserShip from '../images/cruiserShip.png';
-import blueCruiserShip from '../images/blueCruiserShip.png';
-import cruiserShipAbsorb from '../images/cruiserShipAbsorb.png';
+import destroyerShip from '../images/redDestroyer.png';
+import blueDestroyerShip from '../images/blueDestroyer.png';
+import destroyerShipAbsorb from '../images/destroyerAbsorb.png';
+import redWarShip from '../images/redWar.png';
+import blueWarShip from '../images/blueWar.png';
+import warShipAbsorb from '../images/warAbsorb.png';
+import cruiserShip from '../images/redCruiser.png';
+import blueCruiserShip from '../images/blueCruiser.png';
+import cruiserShipAbsorb from '../images/cruiserAbsorb.png';
 import carrierShip from '../images/redCarrierShip.png';
 import blueCarrierShip from '../images/blueCarrierShip.png';
 import carrierShipAbsorb from '../images/carrierAbsorb.png';
@@ -29,7 +29,7 @@ export const SHIPS = [
     armor: 1,
     hitpoints: 900,
     speed: 2,
-    shipCenter: {x: 60.5, y: 36},
+    shipCenter: {x: 60.5, y: 37.5},
     image: destroyerShip,
     blueImage: blueDestroyerShip,
     absorbImage: destroyerShipAbsorb,
@@ -55,7 +55,7 @@ export const SHIPS = [
     armor: 1,
     hitpoints: 700,
     speed: 2.5,
-    shipCenter: {x: 60.5, y: 27},
+    shipCenter: {x: 60.5, y: 18.5},
     image: redWarShip,
     blueImage: blueWarShip,
     absorbImage: warShipAbsorb,
@@ -68,7 +68,7 @@ export const SHIPS = [
     armor: 1,
     hitpoints: 800,
     speed: 3,
-    shipCenter: {x: 60.5, y: 22.5},
+    shipCenter: {x: 60.5, y: 50.5},
     image: cruiserShip,
     blueImage: blueCruiserShip,
     absorbImage: cruiserShipAbsorb,
