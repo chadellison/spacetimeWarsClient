@@ -42,11 +42,11 @@ const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, ability
   let effect = {
     ...GAME_EFFECTS[effectIndex],
     durationCount: elapsedTime,
-    duration: GAME_EFFECTS[effectIndex].duration + abilityLevel
+    duration: GAME_EFFECTS[effectIndex].duration + (abilityLevel * 1000) - 1000
   };
 
   if (effect.id === 11 || (effect.id === 7 && player.shipIndex === 4)) {
-    effect = effect.id === 7 ? {...effect, duration: 1800 + abilityLevel} : effect
+    effect = effect.id === 7 ? {...effect, duration: 800 + (abilityLevel * 1000)} : effect
 
     updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect)
   } else if (effect.id === 3) {

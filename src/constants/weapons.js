@@ -182,7 +182,7 @@ export const ABILITY_WEAPONS = [
     speed: 7,
     width: 4,
     height: 4,
-    damage: 500,
+    damage: 300,
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: nuclearBlastAnimation,
@@ -206,7 +206,7 @@ export const ABILITY_WEAPONS = [
     speed: 14,
     width: 120,
     height: 60,
-    damage: 350,
+    damage: 230,
     damageRadius: 12,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -232,7 +232,7 @@ export const ABILITY_WEAPONS = [
     width: 80,
     height: 80,
     damageRadius: 16,
-    damage: 600,
+    damage: 400,
     image: spaceMine
   },
   {

@@ -36,7 +36,7 @@ export const ABILITIES = [
   {
     index: 0,
     type: 'weapon',
-    description: 'Stuns an enemy ship for 3 seconds and deals 350 damage ("Q" key to use; 40s cooldown).',
+    description: 'Stuns an enemy ship for 3 seconds and deals (230, 460, 690) damage ("Q" key to use; 40s cooldown).',
     cooldown: 40000,
     weaponIndex: 1,
     image: stunGunIcon,
@@ -45,7 +45,7 @@ export const ABILITIES = [
   {
     index: 1,
     type: 'effect',
-    description: 'Renders the ship impervious to attacks for seven seconds ("Q" key to use; 60s cooldown).',
+    description: 'Renders the ship impervious to attacks for (five, six, seven) seconds ("Q" key to use; 60s cooldown).',
     cooldown: 60000,
     effectIndex: 5,
     image: invulnerabilityIcon,
@@ -54,7 +54,7 @@ export const ABILITIES = [
   {
     index: 2,
     type: 'weapon',
-    description: 'Drops invisible mines dealing 600 damage when an enemy ship travels over the mine ("Q" key to use; 50s cooldown).',
+    description: 'Drops invisible mines dealing (400, 800, 1200) damage when an enemy ship travels over the mine ("Q" key to use; 50s cooldown).',
     cooldown: 50000,
     weaponIndex: 2,
     image: mineIcon,
@@ -63,7 +63,7 @@ export const ABILITIES = [
   {
     index: 3,
     type: 'effect',
-    description: 'Allows the ship to travel at warp speed (+4) for eight seconds ("Q" key to use; 45s cooldown).',
+    description: 'Allows the ship to travel at warp speed (+4) for (eight, nine, ten) seconds ("Q" key to use; 45s cooldown).',
     cooldown: 45000,
     effectIndex: 8,
     image: warpSpeedIcon,
@@ -72,7 +72,7 @@ export const ABILITIES = [
   {
     index: 4,
     type: 'weapon',
-    description: 'Deploys a nuclear blast dealing 500 damage to every opponent ship ("Q" key to use; 3 minute cooldown).',
+    description: 'Deploys a nuclear blast dealing (300, 600, 900) damage to every opponent ship ("Q" key to use; 3 minute cooldown).',
     cooldown: 90000,
     weaponIndex: 0,
     image: nuclearExplosionIcon,
@@ -81,7 +81,7 @@ export const ABILITIES = [
   {
     index: 5,
     type: 'effect',
-    description: 'Renders the ship invisible for ten seconds ("Q" key to use; 60s cooldown).',
+    description: 'Renders the ship invisible for (10, 11, 12) seconds ("Q" key to use; 60s cooldown).',
     cooldown: 60000,
     effectIndex: 4,
     image: stealthModeIcon,
@@ -90,7 +90,7 @@ export const ABILITIES = [
   {
     index: 6,
     type: 'weapon',
-    description: 'Fires a cone of meteors each dealing 200 damage ("W" key to use; 30s cooldown).',
+    description: 'Fires a cone of meteors each dealing (200, 400, 600) damage ("W" key to use; 30s cooldown).',
     cooldown: 30000,
     weaponIndex: 3,
     image: meteorShowerIcon,
@@ -99,7 +99,7 @@ export const ABILITIES = [
   {
     index: 7,
     type: 'effect',
-    description: 'Boosts hitpoints to %50 of max hitpoints ("W" key to use; 90 second cooldown)',
+    description: 'Boosts hitpoints to %50 of max hitpoints ("E" key to use; 90 second cooldown)',
     cooldown: 90000,
     effectIndex: 6,
     image: healingIcon,
@@ -117,7 +117,7 @@ export const ABILITIES = [
   {
     index: 9,
     type: 'effect',
-    description: 'Enables the ship to fire at rapid speed (twice as fast) for 10 seconds ("W" key to use; 40s cooldown).',
+    description: 'Enables the ship to fire at rapid speed (twice as fast) for (10, 11, 12) seconds ("W" key to use; 40s cooldown).',
     cooldown: 40000,
     effectIndex: 9,
     image: rapidFireIcon,
@@ -126,7 +126,7 @@ export const ABILITIES = [
   {
     index: 10,
     type: 'effect',
-    description: 'Provides a 25% damage boost to all friendly ships for 12 seconds ("W" key to use; 45s cooldown).',
+    description: 'Provides a 25% damage boost to all friendly ships for (12, 13, 14) seconds ("W" key to use; 45s cooldown).',
     cooldown: 45000,
     effectIndex: 10,
     image: damageBoostIcon,
@@ -135,7 +135,7 @@ export const ABILITIES = [
   {
     index: 11,
     type: 'effect',
-    description: 'Boosts armor by 4 for 15 seconds',
+    description: 'Boosts armor by 4 for (15, 16, 17) seconds',
     cooldown: 55000,
     effectIndex: 7,
     image: armorBoost,
@@ -144,7 +144,7 @@ export const ABILITIES = [
   {
     index: 12,
     type: 'weapon',
-    description: 'Creates an electric field dealing 25 damage per second and slowing enemy units who fly into this field ("E" key to use; 45s cooldown)',
+    description: 'Creates an electric field dealing (25, 50, 75) damage per second and slowing enemy units who fly into this field ("E" key to use; 45s cooldown)',
     cooldown: 45000,
     weaponIndex: 5,
     image: electricFieldIcon,
@@ -153,7 +153,7 @@ export const ABILITIES = [
   {
     index: 13,
     type: 'effect',
-    description: 'Reduces the attack damage of all enemy ships by %50 for 11 seconds ("E" key to use; 50s cooldown)',
+    description: 'Reduces the attack damage of all enemy ships by %50 for (11, 12, 13) seconds ("E" key to use; 50s cooldown)',
     cooldown: 50000,
     effectIndex: 2,
     image: damageReductionIcon,
@@ -162,21 +162,21 @@ export const ABILITIES = [
   {
     index: 14,
     type: 'passive',
-    description: 'Gives a %20 chance to gain a double bounty upon destroying an enemy ship (passive ability)',
+    description: 'Gives a (%10, %20, %30) chance to gain a double bounty upon destroying an enemy ship (passive ability)',
     cooldown: 0,
     image: goldIcon,
   },
   {
     index: 15,
     type: 'passive',
-    description: '%25 of damage taken will be inflicted on the opponent who fires on this ship (passive ability)',
+    description: '(%10, %20, %30) of damage taken will be inflicted on the opponent who fires on this ship (passive ability)',
     cooldown: 0,
     image: returnDamageIcon,
   },
   {
     index: 16,
     type: 'effect',
-    description: 'Heals ally units for %25 of their total hitpoints ("E" key to use; 50s cooldown)',
+    description: 'Heals ally units for (1.5, 3, 4.5) seconds ("E" key to use; 50s cooldown)',
     cooldown: 50000,
     effectIndex: 6,
     image: healingIcon,
@@ -185,7 +185,7 @@ export const ABILITIES = [
   {
     index: 17,
     type: 'passive',
-    description: 'Gives the ship a %20 chance to evade an attack (passive ability)',
+    description: 'Gives the ship a (%11, %22, %33) chance to evade an attack (passive ability)',
     cooldown: 0,
     image: evasionIcon,
   }

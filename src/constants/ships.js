@@ -33,7 +33,7 @@ export const SHIPS = [
     image: destroyerShip,
     blueImage: blueDestroyerShip,
     absorbImage: destroyerShipAbsorb,
-    abilities: {q: 0, w: 6, e: 12},
+    abilities: {q: 0, w: 12, e: 15},
   },
   {
     index: 1,
@@ -46,7 +46,7 @@ export const SHIPS = [
     image: hunterShip,
     blueImage: blueHunterShip,
     absorbImage: hunterShipAbsorb,
-    abilities: {q: 1, w: 7, e: 15}
+    abilities: {q: 1, w: 6, e: 7}
   },
   {
     index: 2,
