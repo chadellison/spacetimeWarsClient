@@ -26,7 +26,7 @@ export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState
     case 'q':
     case 'w':
     case 'e':
-      handleAbility(gameState.players[gameState.index], {...gameState.abilityData}, handleGameEvent, updateState, pressedKey);
+      handleAbilityEvent(gameState.players[gameState.index], {...gameState.abilityData}, handleGameEvent, updateState, pressedKey);
       break;
     default:
       break;
@@ -167,7 +167,7 @@ const rotateEventPayload = (player, pressedKey) => {
   return {...player, gameEvent: pressedKey, rotate: pressedKey};
 }
 
-const handleAbility = (player, abilityData, handleGameEvent, updateState, pressedKey) => {
+const handleAbilityEvent = (player, abilityData, handleGameEvent, updateState, pressedKey) => {
   const levelSum = abilityData.q.level + abilityData.w.level + abilityData.e.level;
   const ability = abilityData[pressedKey];
 

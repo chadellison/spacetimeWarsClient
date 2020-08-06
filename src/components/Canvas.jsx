@@ -13,7 +13,7 @@ import {round} from '../helpers/mathHelpers.js';
 import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
-  levelUp,
+  GAME_ANIMATIONS,
 } from '../constants/settings.js';
 import {SHIPS, SUPPLY_SHIP, RED_BOMBER, BLUE_BOMBER} from '../constants/ships.js';
 import {WEAPONS, ABILITY_WEAPONS, EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
@@ -76,6 +76,7 @@ class Canvas extends React.Component {
     const nuclearExplosion = this.refs.nuclearExplosion
     const electricField = this.refs.electricField
     const levelUp = this.refs.levelUp
+    const blink = this.refs.blink
 
     this.setState({
       canvas: canvas,
@@ -126,6 +127,7 @@ class Canvas extends React.Component {
       nuclearExplosion: nuclearExplosion,
       shipExplosion: shipExplosion,
       levelUp: levelUp,
+      blink: blink,
       supplyShip: supplyShip,
       halfWindowWidth: round(window.innerWidth / 2),
       halfWindowHeight: round(window.innerHeight / 2)
@@ -275,10 +277,20 @@ class Canvas extends React.Component {
               />
             );
           })}
+
+        {GAME_ANIMATIONS.map((animation, index) => {
+          return(
+            <img ref={animation.name}
+              src={animation.spriteImage}
+              className="hidden"
+              alt={animation.name}
+              key={`gameAnimation${index}`}
+            />
+          );
+        })}
         <img ref={SUPPLY_SHIP.name} src={SUPPLY_SHIP.image} className="hidden" alt={SUPPLY_SHIP.name} />
         <img ref={RED_BOMBER.name} src={RED_BOMBER.image} className="hidden" alt={RED_BOMBER.name} />
         <img ref={BLUE_BOMBER.name} src={BLUE_BOMBER.image} className="hidden" alt={BLUE_BOMBER.name} />
-        <img ref="levelUp" src={levelUp.spriteImage} className="hidden" alt="level up" />
       </div>
     );
   };

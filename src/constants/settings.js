@@ -27,6 +27,7 @@ import electricFieldAudio from '../audio/electricFieldSound.mov';
 
 // images
 import levelUpAnimation from '../images/levelUpAnimation.png';
+import blinkAnimation from '../images/blinkAnimation.png';
 
 // constants
 export const BOARD_WIDTH = 1800;
@@ -63,19 +64,37 @@ export const rapidFireSound = new Audio(rapidFireAudio);
 export const damageReductionSound = new Audio(damageReductionAudio);
 export const electricFieldSound = new Audio(electricFieldAudio);
 
-export const levelUp = {
-  name: 'levelUp',
-  location: {x: 0, y: 0},
-  coordinates: {x: 0, y: 0},
-  spriteImage: levelUpAnimation,
-  width: 166,
-  height: 164,
-  rowCount: 6,
-  columnCount: 4,
-  rate: 0,
-  startRate: 0,
-  xOffset: 0,
-  yOffset: -50,
-  renderWidth: 150,
-  renderHeight: 150,
-}
+export const GAME_ANIMATIONS = [
+  {
+    name: 'levelUp',
+    location: {x: 0, y: 0},
+    coordinates: {x: 0, y: 0},
+    spriteImage: levelUpAnimation,
+    width: 166,
+    height: 164,
+    rowCount: 6,
+    columnCount: 4,
+    rate: 0,
+    startRate: 0,
+    xOffset: 0,
+    yOffset: -50,
+    renderWidth: 150,
+    renderHeight: 150,
+  },
+  {
+    name: 'blink',
+    location: {x: 0, y: 0},
+    coordinates: {x: 0, y: 0},
+    spriteImage: blinkAnimation,
+    width: 128,
+    height: 128,
+    rowCount: 5,
+    columnCount: 4,
+    rate: 0,
+    startRate: 0,
+    xOffset: 0,
+    yOffset: -50,
+    renderWidth: 150,
+    renderHeight: 150,
+  }
+];

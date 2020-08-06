@@ -4,15 +4,23 @@ import {GAME_EFFECTS} from '../constants/effects.js';
 import {SHIPS} from '../constants/ships.js';
 import {handleFireWeapon, handleAngle, handleLocation} from '../helpers/gameLogic.js';
 import {playSound} from '../helpers/audioHelpers.js';
+import {GAME_ANIMATIONS} from '../constants/settings.js';
 
-export const handleAbility = (players, deployedWeapons, playerData, elapsedTime) => {
+export const handleAbility = (players, deployedWeapons, playerData, elapsedTime, animations) => {
   const ability = ABILITIES[SHIPS[playerData.shipIndex].abilities[playerData.usedAbility]]
+  let newAnimmations = animations;
+
+  // if (ability.animationIndex >= 0) {
+    newAnimmations = [...animations, {...GAME_ANIMATIONS[1], location: playerData.location}];
+    // newAnimmations = [...animations, {...GAME_ANIMATIONS[ability.animationIndex], location: player.location}];
+  // }
+
   if (ability.type === 'weapon') {
     playSound(ability.sound);
     return addAbilityWeapon(ability.weaponIndex, deployedWeapons, playerData, elapsedTime, playerData.abilityLevel);
   } else if (ability.type === 'effect') {
     playSound(ability.sound);
-    return addAbilityEffect(ability.effectIndex, [...players], playerData, elapsedTime, playerData.abilityLevel);
+    return addAbilityEffect(ability.effectIndex, [...players], playerData, elapsedTime, playerData.abilityLevel, newAnimmations);
   }
 }
 
@@ -35,7 +43,7 @@ const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime,
   }
 }
 
-const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, abilityLevel) => {
+const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, abilityLevel, animations) => {
   let updatedPlayers = [...players]
   let player = updatedPlayers[playerData.index]
 
@@ -56,7 +64,7 @@ const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, ability
     player.effects = {...player.effects, [effect.id]: effect};
     updatedPlayers[playerData.index] = player;
   }
-  return {players: updatedPlayers};
+  return  {players: updatedPlayers, animations};
 }
 
 const applyEffectToTeam = (players, team, effect) => {

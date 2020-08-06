@@ -15,7 +15,7 @@ import {updateAnimation} from '../helpers/animationHelpers';
 import {round} from '../helpers/mathHelpers.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
 import {playSound} from '../helpers/audioHelpers.js';
-import {goldAudio, upgradeSound, levelUp} from '../constants/settings.js';
+import {goldAudio, upgradeSound, GAME_ANIMATIONS} from '../constants/settings.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   const {clockDifference, gameBuff, index, aiShips, space, lastFired} = gameState;
@@ -225,7 +225,7 @@ export const handleWeapons = (gameData, handleGameEvent) => {
       delete attacker.levelUp
       attacker.level += 1;
       playSound(upgradeSound);
-      gameData.animations.push({...levelUp, location: attacker.location, coordinates: {x: 0, y: 0}});
+      gameData.animations.push({...GAME_ANIMATIONS[0], location: attacker.location, coordinates: {x: 0, y: 0}});
     }
   });
 
