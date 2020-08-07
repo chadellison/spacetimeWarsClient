@@ -162,10 +162,12 @@ export const ABILITIES = [
   },
   {
     index: 14,
-    type: 'passive',
-    description: 'Gives a (%10, %20, %30) chance to gain a double bounty upon destroying an enemy ship (passive ability)',
-    cooldown: 0,
+    type: 'effect',
+    description: 'Reduces the armor of all enemy ships by 3 for (11, 12, 13) seconds ("E" key to use; 45s cooldown)',
+    cooldown: 45000,
+    effectIndex: 11,
     image: goldIcon,
+    sound: damageReductionSound,
   },
   {
     index: 15,
@@ -177,7 +179,7 @@ export const ABILITIES = [
   {
     index: 16,
     type: 'effect',
-    description: 'Heals ally units for (1.5, 3, 4.5) seconds ("E" key to use; 50s cooldown)',
+    description: 'Heals ally units for (%12, %25, %40) of total hitpoints ("E" key to use; 50s cooldown)',
     cooldown: 50000,
     effectIndex: 6,
     image: healingIcon,

@@ -6,6 +6,7 @@ import stunAnimation from '../images/stunAnimation.png'
 import warpSpeedAnimation from '../images/warpSpeedAnimation.png'
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import damageReductionAnimation from '../images/damageReductionAnimation.png';
+import armorReductionAnimation from '../images/armorReductionAnimation.png';
 
 export const GAME_EFFECTS = [
   {
@@ -191,6 +192,26 @@ export const GAME_EFFECTS = [
       startRate: 1,
       xOffset: 25,
       yOffset: -25,
+    }
+  },
+  {
+    id: 12,
+    name: 'armorReduction',
+    duration: 15000,
+    durationCount: 0,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: armorReductionAnimation,
+      width: 177,
+      height: 168,
+      renderWidth: 150,
+      renderHeight: 150,
+      rowCount: 5,
+      columnCount: 5,
+      rate: 0,
+      startRate: 0,
+      xOffset: 0,
+      yOffset: 0,
     }
   },
 ]

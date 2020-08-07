@@ -82,6 +82,7 @@ class Canvas extends React.Component {
     const piercer = this.refs.piercer
     const damageBoost = this.refs.damageBoost
     const damageReduction = this.refs.damageReduction
+    const armorReduction = this.refs.armorReduction
     const spaceMineExplosion = this.refs.spaceMineExplosion
     const nuclearExplosion = this.refs.nuclearExplosion
     const electricField = this.refs.electricField
@@ -142,6 +143,7 @@ class Canvas extends React.Component {
       meteorShower: meteorShower,
       damageBoost: damageBoost,
       damageReduction: damageReduction,
+      armorReduction: armorReduction,
       electricField: electricField,
       spaceMineExplosion: spaceMineExplosion,
       nuclearExplosion: nuclearExplosion,

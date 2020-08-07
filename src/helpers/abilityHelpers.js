@@ -57,9 +57,9 @@ const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, ability
     effect = effect.id === 7 ? {...effect, duration: 800 + (abilityLevel * 1000)} : effect
 
     updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect)
-  } else if (effect.id === 3) {
-    const team = player.team === 'red' ? 'blue' : 'red';
-    updatedPlayers = applyEffectToTeam(updatedPlayers, team, effect)
+  } else if ([3, 12].includes(effect.id)) {
+    const opponentTeam = player.team === 'red' ? 'blue' : 'red';
+    updatedPlayers = applyEffectToTeam(updatedPlayers, opponentTeam, effect)
   } else {
     player.effects = {...player.effects, [effect.id]: effect};
     updatedPlayers[playerData.index] = player;

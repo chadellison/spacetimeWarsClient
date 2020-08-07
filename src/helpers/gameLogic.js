@@ -359,6 +359,8 @@ const calculateDamage = (weapon, player) => {
     armor += 4;
   } else if (weapon.index === 7) {
     armor = 0;
+  } else if (player.effects[12]) {
+    armor -= 3;
   }
   let damage = weapon.damage;
 

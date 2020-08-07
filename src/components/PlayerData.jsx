@@ -28,10 +28,15 @@ const renderWeapon = (weaponIndex) => {
 
 const renderArmor = (player) => {
   if (player.armor >= 0) {
-    let modifier;
+    let modifier = 0;
     if (player.effects[8]) {
-      modifier = '+4';
+      modifier += 4;
     }
+
+    if (player.effects[12]) {
+      modifier -= 3;
+    }
+
     return (
       <PlayerStat
         image={UPGRADES[0].image}
@@ -45,11 +50,12 @@ const renderArmor = (player) => {
 }
 const renderSpeed = (player) => {
   if (player.velocity) {
-    let modifier;
+    let modifier = 0;
     if (player.effects[2]) {
-      modifier = '-' + (player.velocity - 1).toString()
-    } else if (player.effects[9]) {
-      modifier = '+4';
+      modifier -= (player.velocity - 1);
+    }
+    if (player.effects[9]) {
+      modifier += 4;
     }
     return (
       <PlayerStat
@@ -69,17 +75,13 @@ const renderDamage = (player) => {
     if (player.items[7]) {
       damage += round(damage * 0.8);
     }
-    let modifier = '';
-    let modifiedValue = '';
+    let modifier = 0;
     if (player.effects[11]) {
-      modifier = '+';
-      modifiedValue = round(damage * 0.25);
+      modifier += round(damage * 0.25);
     }
 
     if (player.effects[3]) {
-      modifier = '-';
-      modifiedValue = modifiedValue ? modifiedValue : damage;
-      modifiedValue = round(modifiedValue / 2)
+      modifier -= round((damage + modifier) / 2)
     }
     return (
       <PlayerStat
@@ -87,7 +89,7 @@ const renderDamage = (player) => {
         alt={'target'}
         value={damage}
         className="statInfo"
-        modifier={modifier + modifiedValue}
+        modifier={modifier}
       />
     )
   }
