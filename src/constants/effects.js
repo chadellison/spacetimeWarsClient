@@ -50,27 +50,6 @@ export const GAME_EFFECTS = [
       yOffset: 0,
     }
   },
-  // {
-  //   id: 2,
-  //   name: 'slow',
-  //   duration: 9000,
-  //   durationCount: 0,
-  //   color: 'rgba(142, 194, 215, 0.54)',
-  //   animation: {
-  //     coordinates: {x: 0, y: 0},
-  //     spriteImage: coldAnimation,
-  //     width: 128,
-  //     height: 128,
-  //     renderWidth: 100,
-  //     renderHeight: 100,
-  //     rowCount: 7,
-  //     columnCount: 3,
-  //     rate: 0,
-  //     startRate: 0,
-  //     xOffset: 0,
-  //     yOffset: 0,
-  //   }
-  // },
   {
     id: 3,
     name: 'damageReduction',
@@ -91,26 +70,6 @@ export const GAME_EFFECTS = [
       yOffset: 0,
     }
   },
-  // {
-  //   id: 3,
-  //   name: 'damageReduction',
-  //   duration: 11000,
-  //   durationCount: 0,
-  //   animation: {
-  //     coordinates: {x: 0, y: 0},
-  //     spriteImage: damageReductionAnimation,
-  //     width: 128,
-  //     height: 128,
-  //     renderWidth: 50,
-  //     renderHeight: 50,
-  //     rowCount: 4,
-  //     columnCount: 7,
-  //     rate: 1,
-  //     startRate: 1,
-  //     xOffset: 0,
-  //     yOffset: 0,
-  //   }
-  // },
   {
     id: 4,
     name: 'stun',
