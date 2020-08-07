@@ -10,10 +10,10 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
   const ability = ABILITIES[SHIPS[playerData.shipIndex].abilities[playerData.usedAbility]]
   let newAnimmations = animations;
 
-  // if (ability.animationIndex >= 0) {
-    newAnimmations = [...animations, {...GAME_ANIMATIONS[1], location: playerData.location}];
-    // newAnimmations = [...animations, {...GAME_ANIMATIONS[ability.animationIndex], location: player.location}];
-  // }
+  if (ability.animationIndex >= 0) {
+    const location = players[playerData.index].location;
+    newAnimmations = [...animations, {...GAME_ANIMATIONS[ability.animationIndex], location, coordinates: {x: 0, y: 0}}];
+  }
 
   if (ability.type === 'weapon') {
     playSound(ability.sound);

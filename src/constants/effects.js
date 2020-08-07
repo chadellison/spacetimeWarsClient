@@ -1,7 +1,7 @@
 import poisonAnimation from '../images/greenGasAnimation.png'
 import healAnimation from '../images/healAnimation.png'
 import armorBoost from '../images/armorBoost.png'
-import coldAnimation from '../images/coldAnimation.png'
+import coldAnimation from '../images/slowAnimation.png'
 import stunAnimation from '../images/stunAnimation.png'
 import warpSpeedAnimation from '../images/warpSpeedAnimation.png'
 import damageBoostIcon from '../images/damageBoostIcon.png';
@@ -38,18 +38,39 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: coldAnimation,
-      width: 128,
-      height: 128,
+      width: 177,
+      height: 168,
       renderWidth: 100,
       renderHeight: 100,
-      rowCount: 7,
-      columnCount: 3,
+      rowCount: 5,
+      columnCount: 5,
       rate: 0,
       startRate: 0,
       xOffset: 0,
       yOffset: 0,
     }
   },
+  // {
+  //   id: 2,
+  //   name: 'slow',
+  //   duration: 9000,
+  //   durationCount: 0,
+  //   color: 'rgba(142, 194, 215, 0.54)',
+  //   animation: {
+  //     coordinates: {x: 0, y: 0},
+  //     spriteImage: coldAnimation,
+  //     width: 128,
+  //     height: 128,
+  //     renderWidth: 100,
+  //     renderHeight: 100,
+  //     rowCount: 7,
+  //     columnCount: 3,
+  //     rate: 0,
+  //     startRate: 0,
+  //     xOffset: 0,
+  //     yOffset: 0,
+  //   }
+  // },
   {
     id: 3,
     name: 'damageReduction',
@@ -58,18 +79,38 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: damageReductionAnimation,
-      width: 128,
-      height: 128,
-      renderWidth: 50,
-      renderHeight: 50,
-      rowCount: 4,
-      columnCount: 7,
+      width: 166,
+      height: 164,
+      renderWidth: 100,
+      renderHeight: 100,
+      rowCount: 6,
+      columnCount: 4,
       rate: 1,
       startRate: 1,
       xOffset: 0,
       yOffset: 0,
     }
   },
+  // {
+  //   id: 3,
+  //   name: 'damageReduction',
+  //   duration: 11000,
+  //   durationCount: 0,
+  //   animation: {
+  //     coordinates: {x: 0, y: 0},
+  //     spriteImage: damageReductionAnimation,
+  //     width: 128,
+  //     height: 128,
+  //     renderWidth: 50,
+  //     renderHeight: 50,
+  //     rowCount: 4,
+  //     columnCount: 7,
+  //     rate: 1,
+  //     startRate: 1,
+  //     xOffset: 0,
+  //     yOffset: 0,
+  //   }
+  // },
   {
     id: 4,
     name: 'stun',

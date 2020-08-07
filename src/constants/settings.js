@@ -27,7 +27,7 @@ import electricFieldAudio from '../audio/electricFieldSound.mov';
 
 // images
 import levelUpAnimation from '../images/levelUpAnimation.png';
-import blinkAnimation from '../images/blinkAnimation.png';
+import blinkAnimation from '../images/invisibleAnimation.png';
 
 // constants
 export const BOARD_WIDTH = 1800;
@@ -70,8 +70,8 @@ export const GAME_ANIMATIONS = [
     location: {x: 0, y: 0},
     coordinates: {x: 0, y: 0},
     spriteImage: levelUpAnimation,
-    width: 166,
-    height: 164,
+    width: 98,
+    height: 118,
     rowCount: 6,
     columnCount: 4,
     rate: 0,
@@ -86,14 +86,14 @@ export const GAME_ANIMATIONS = [
     location: {x: 0, y: 0},
     coordinates: {x: 0, y: 0},
     spriteImage: blinkAnimation,
-    width: 128,
-    height: 128,
-    rowCount: 5,
-    columnCount: 4,
+    width: 115,
+    height: 114,
+    rowCount: 4,
+    columnCount: 5,
     rate: 0,
     startRate: 0,
     xOffset: 0,
-    yOffset: -50,
+    yOffset: 0,
     renderWidth: 150,
     renderHeight: 150,
   }

@@ -86,6 +86,7 @@ export const ABILITIES = [
     effectIndex: 4,
     image: stealthModeIcon,
     sound: windSound,
+    animationIndex: 1,
   },
   {
     index: 6,
