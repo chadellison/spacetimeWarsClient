@@ -1,5 +1,5 @@
 import {WEAPONS} from '../constants/weapons.js';
-import {SHIPS} from '../constants/ships.js';
+import {SHIPS, BOMBERS} from '../constants/ships.js';
 import {ABILITIES} from '../constants/abilities.js';
 import {canFire, updatePlayer, handleFireWeapon, handlePlayerDamage} from '../helpers/gameLogic.js';
 import {playSound, stopSound} from '../helpers/audioHelpers.js';
@@ -193,18 +193,36 @@ export const handleAiEvents = (eventData, team, handleGameEvent) => {
   };
   if (Date.now() - updatedEventData.lastSend > updatedEventData.sendInterval) {
     const opponentTeam = team === 'red' ? 'blue' : 'red';
-    if (updatedEventData.shipCount < 3) {
-      updatedEventData.shipCount += 1;
-    } else {
-      updatedEventData.shipHitpoints += 100
-    }
+
     handleGameEvent({
       gameEvent: 'bombers',
       team: opponentTeam,
-      shipCount: updatedEventData.shipCount,
-      shipHitpoints: updatedEventData.shipHitpoints,
+      bombers: createBombers(updatedEventData.count, opponentTeam)
     });
     updatedEventData.lastSend = Date.now();
   }
   return updatedEventData;
+}
+
+const createBombers = (iterationCount, team) => {
+  let bombers = [];
+  while (iterationCount > 0) {
+    if (iterationCount > 1000) {
+      iterationCount -= 1000;
+      bombers.push({...BOMBERS[4], team, image: null, blueImage: null});
+    } else if (iterationCount > 500) {
+      iterationCount -= 500;
+      bombers.push({...BOMBERS[3], team, image: null, blueImage: null});
+    } else if (iterationCount > 300) {
+      iterationCount -= 300;
+      bombers.push({...BOMBERS[2], team, image: null, blueImage: null});
+    } else if (iterationCount > 100) {
+      iterationCount -= 100;
+      bombers.push({...BOMBERS[1], team, image: null, blueImage: null});
+    } else if (iterationCount <= 100) {
+      bombers.push({...BOMBERS[0], team, image: null, blueImage: null});
+      iterationCount = 0;
+    }
+  }
+  return bombers;
 }

@@ -18,8 +18,17 @@ import redStealthShip from '../images/redStealthShip.png';
 import blueStealthShip from '../images/blueStealthShip.png';
 import stealthShipAbsorb from '../images/stealthAbsorb.png';
 import supplyShip from '../images/supplyShip.png';
+
 import redBomber from '../images/redBomber.png';
+import redBomber2 from '../images/redBomber2.png';
+import redBomber3 from '../images/redBomber3.png';
+import redBomber4 from '../images/redBomber4.png';
+import redBomber5 from '../images/redBomber5.png';
 import blueBomber from '../images/blueBomber.png';
+import blueBomber2 from '../images/blueBomber2.png';
+import blueBomber3 from '../images/blueBomber3.png';
+import blueBomber4 from '../images/blueBomber4.png';
+import blueBomber5 from '../images/blueBomber5.png';
 
 export const SHIPS = [
   {
@@ -108,14 +117,95 @@ export const SUPPLY_SHIP = {
   image: supplyShip
 }
 
-export const RED_BOMBER = {
-  name: 'redBomber',
-  shipCenter: {x: 60, y: 36},
-  image: redBomber
-}
-
-export const BLUE_BOMBER = {
-  name: 'blueBomber',
-  shipCenter: {x: 60, y: 36},
-  image: blueBomber
-}
+export const BOMBERS = [
+  {
+    index: 0,
+    active: true,
+    type: 'bomber',
+    name: 'b1',
+    armor: 0,
+    hitpoints: 100,
+    maxHitpoints: 100,
+    velocity: 1,
+    accelerate: true,
+    effects: {},
+    score: 0,
+    rotate: 'none',
+    explodeAnimation: {},
+    shipCenter: {x: 60.5, y: 57},
+    image: redBomber,
+    blueImage: blueBomber,
+  },
+  {
+    index: 1,
+    active: true,
+    type: 'bomber',
+    name: 'b2',
+    armor: 1,
+    hitpoints: 300,
+    maxHitpoints: 300,
+    velocity: 2,
+    accelerate: true,
+    effects: {},
+    score: 0,
+    rotate: 'none',
+    explodeAnimation: {},
+    shipCenter: {x: 60.5, y: 57},
+    image: redBomber2,
+    blueImage: blueBomber2,
+  },
+  {
+    index: 2,
+    active: true,
+    type: 'bomber',
+    name: 'b3',
+    armor: 2,
+    hitpoints: 600,
+    maxHitpoints: 600,
+    velocity: 1,
+    accelerate: true,
+    effects: {},
+    score: 0,
+    rotate: 'none',
+    explodeAnimation: {},
+    shipCenter: {x: 60.5, y: 57},
+    image: redBomber3,
+    blueImage: blueBomber3,
+  },
+  {
+    index: 3,
+    active: true,
+    type: 'bomber',
+    name: 'b4',
+    armor: 1,
+    hitpoints: 900,
+    maxHitpoints: 900,
+    velocity: 3,
+    accelerate: true,
+    effects: {},
+    score: 0,
+    rotate: 'none',
+    explodeAnimation: {},
+    shipCenter: {x: 60.5, y: 57},
+    image: redBomber4,
+    blueImage: blueBomber4,
+  },
+  {
+    index: 4,
+    active: true,
+    type: 'bomber',
+    name: 'b5',
+    armor: 3,
+    hitpoints: 1200,
+    maxHitpoints: 1200,
+    velocity: 2,
+    accelerate: true,
+    effects: {},
+    score: 0,
+    rotate: 'none',
+    explodeAnimation: {},
+    shipCenter: {x: 60.5, y: 57},
+    image: redBomber5,
+    blueImage: blueBomber5,
+  },
+];

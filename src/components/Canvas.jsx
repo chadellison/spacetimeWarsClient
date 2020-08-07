@@ -15,7 +15,7 @@ import {
   BOARD_HEIGHT,
   GAME_ANIMATIONS,
 } from '../constants/settings.js';
-import {SHIPS, SUPPLY_SHIP, RED_BOMBER, BLUE_BOMBER} from '../constants/ships.js';
+import {SHIPS, SUPPLY_SHIP, BOMBERS} from '../constants/ships.js';
 import {WEAPONS, ABILITY_WEAPONS, EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 
@@ -47,8 +47,18 @@ class Canvas extends React.Component {
     const stealth = this.refs.stealth
     const stealthBlue = this.refs.stealthBlue
     const stealthAbsorb = this.refs.stealthAbsorb
-    const redBomber = this.refs.redBomber
-    const blueBomber = this.refs.blueBomber
+
+    const b1 = this.refs.b1
+    const b1Blue = this.refs.b1Blue
+    const b2 = this.refs.b2
+    const b2Blue = this.refs.b2Blue
+    const b3 = this.refs.b3
+    const b3Blue = this.refs.b3Blue
+    const b4 = this.refs.b4
+    const b4Blue = this.refs.b4Blue
+    const b5 = this.refs.b5
+    const b5Blue = this.refs.b5Blue
+
     const fireball = this.refs.fireball
     const missile = this.refs.missile
     const trifecta = this.refs.trifecta
@@ -99,8 +109,18 @@ class Canvas extends React.Component {
       stealth: stealth,
       stealthBlue: stealthBlue,
       stealthAbsorb: stealthAbsorb,
-      redBomber: redBomber,
-      blueBomber: blueBomber,
+
+      b1: b1,
+      b1Blue: b1Blue,
+      b2: b2,
+      b2Blue: b2Blue,
+      b3: b3,
+      b3Blue: b3Blue,
+      b4: b4,
+      b4Blue: b4Blue,
+      b5: b5,
+      b5Blue: b5Blue,
+
       fireball: fireball,
       missile: missile,
       trifecta: trifecta,
@@ -139,7 +159,7 @@ class Canvas extends React.Component {
     if (player.type === 'supplyShip') {
       imageReference = 'supplyShip';
     } else if (player.type === 'bomber') {
-        imageReference = player.team + 'Bomber'
+      imageReference = player.team === 'blue' ? player.name + 'Blue' : player.name;
     } else {
       imageReference = SHIPS[player.shipIndex].name
       if (canAbsorbDamage(player)) {
@@ -288,9 +308,30 @@ class Canvas extends React.Component {
             />
           );
         })}
+
+        {BOMBERS.map((bomber, index) => {
+          return (
+            <img ref={bomber.name}
+              src={bomber.image}
+              className="hidden"
+              alt={bomber.name}
+              key={`bomber${index}`}
+            />
+          );
+        })}
+
+        {BOMBERS.map((bomber, index) => {
+          return (
+            <img ref={`${bomber.name}Blue`}
+              src={bomber.blueImage}
+              className="hidden"
+              alt={`blue-${bomber.name}`}
+              key={`blueBomber${index}`}
+            />
+          );
+        })}
+
         <img ref={SUPPLY_SHIP.name} src={SUPPLY_SHIP.image} className="hidden" alt={SUPPLY_SHIP.name} />
-        <img ref={RED_BOMBER.name} src={RED_BOMBER.image} className="hidden" alt={RED_BOMBER.name} />
-        <img ref={BLUE_BOMBER.name} src={BLUE_BOMBER.image} className="hidden" alt={BLUE_BOMBER.name} />
       </div>
     );
   };
