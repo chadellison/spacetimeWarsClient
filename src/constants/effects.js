@@ -40,8 +40,8 @@ export const GAME_EFFECTS = [
       spriteImage: coldAnimation,
       width: 177,
       height: 168,
-      renderWidth: 100,
-      renderHeight: 100,
+      renderWidth: 150,
+      renderHeight: 150,
       rowCount: 5,
       columnCount: 5,
       rate: 0,
@@ -60,8 +60,8 @@ export const GAME_EFFECTS = [
       spriteImage: damageReductionAnimation,
       width: 166,
       height: 164,
-      renderWidth: 100,
-      renderHeight: 100,
+      renderWidth: 150,
+      renderHeight: 150,
       rowCount: 6,
       columnCount: 4,
       rate: 1,
@@ -192,11 +192,5 @@ export const GAME_EFFECTS = [
       xOffset: 25,
       yOffset: -25,
     }
-  },
-  {
-    id: 12,
-    name: 'stealthWeapon',
-    duration: 5000,
-    durationCount: 0,
   },
 ]
