@@ -24,6 +24,7 @@ import healAudio from '../audio/healSound.mp3';
 import rapidFireAudio from '../audio/rapidFireSound.mp3';
 import damageReductionAudio from '../audio/damageReductionSound.mp3';
 import electricFieldAudio from '../audio/electricFieldSound.mov';
+import armorReductionAudio from '../audio/armorReductionSound.mp3';
 
 // images
 import levelUpAnimation from '../images/levelUpAnimation.png';
@@ -63,6 +64,7 @@ export const healSound = new Audio(healAudio);
 export const rapidFireSound = new Audio(rapidFireAudio);
 export const damageReductionSound = new Audio(damageReductionAudio);
 export const electricFieldSound = new Audio(electricFieldAudio);
+export const armorReductionSound = new Audio(armorReductionAudio);
 
 export const GAME_ANIMATIONS = [
   {

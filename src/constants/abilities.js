@@ -11,7 +11,7 @@ import rapidFireIcon from '../images/rapidFireIcon.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import damageReductionIcon from '../images/damageReductionIcon.png';
 import electricFieldIcon from '../images/electricFieldIcon.png';
-import goldIcon from '../images/gold.png';
+import armorReductionIcon from '../images/armorReductionIcon.png';
 import returnDamageIcon from '../images/returnDamageIcon.png';
 import evasionIcon from '../images/evasionIcon.png';
 import armorBoost from '../images/armorBoost.png';
@@ -30,6 +30,7 @@ import {
   meteorConeSound,
   damageReductionSound,
   electricFieldSound,
+  armorReductionSound,
 } from '../constants/settings.js';
 
 export const ABILITIES = [
@@ -166,8 +167,8 @@ export const ABILITIES = [
     description: 'Reduces the armor of all enemy ships by 3 for (11, 12, 13) seconds ("E" key to use; 45s cooldown)',
     cooldown: 45000,
     effectIndex: 11,
-    image: goldIcon,
-    sound: damageReductionSound,
+    image: armorReductionIcon,
+    sound: armorReductionSound,
   },
   {
     index: 15,
