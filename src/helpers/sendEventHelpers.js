@@ -185,27 +185,12 @@ const canUseAbility = (ability, player, pressedKey) => {
   return Date.now() - ability.lastUsed > ABILITIES[SHIPS[player.shipIndex].abilities[pressedKey]].cooldown
 }
 
-const cleanUserEvents = (eventData) => {
-  let updatedEventData = {...eventData};
-  let updatedUserEvents = {...updatedEventData.userEvents};
-  const keys = Object.keys(updatedUserEvents);
-
-  const now = Date.now();
-  keys.forEach((key) => {
-    if (now - updatedUserEvents[key] > 500) {
-      delete updatedUserEvents[key];
-      updatedEventData.userEvents = updatedUserEvents
-    }
-  });
-  return updatedEventData;
-}
-
 export const handleAiEvents = (eventData, team, handleGameEvent) => {
   if (eventData.count % EVENT_DIVIDER === 0) {
     handleGameEvent({gameEvent: 'supplyShip'});
   };
   if (Date.now() - eventData.lastSend > eventData.sendInterval) {
-    let updatedEventData = cleanUserEvents(eventData);
+    let updatedEventData = {...eventData, userEvents: {}};
     const opponentTeam = team === 'red' ? 'blue' : 'red';
 
     handleGameEvent({
