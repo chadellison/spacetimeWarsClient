@@ -291,9 +291,9 @@ const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
   if (player.hitpoints > 0) {
     player = handleNegativeBuff(player, weapon, attacker);
     const damage = calculateDamage(weapon, player);
-    if (player.shipIndex === 1) {
-      attacker.hitpoints -= round(damage / 4);
-    }
+    // if (player.shipIndex === 1) {
+    //   attacker.hitpoints -= round(damage / 4);
+    // }
     player.hitpoints -= damage;
     attacker = handlePositiveBuff(attacker, weapon);
     attacker.score += round(damage * 0.1)
@@ -320,25 +320,11 @@ const didLevelUp = (level, score) => {
 
 const handleNegativeBuff = (player, weapon) => {
   if (weapon.index === 5) {
-    // player.effects[GAME_EFFECTS[0].id] = {...GAME_EFFECTS[0], duration: 3000}
-    // let effect = {...GAME_EFFECTS[0]};
-    // effect = {
-    //   ...effect,
-    //   duration: 3000,
-    //   animation: {...effect.animation, coordinates: {x: 0, y: 0} }
-    // }
     const effect = createEffect(0, 3000);
     player.effects[effect.id] = effect;
   } else if (weapon.index === 6 || weapon.id === 6) {
-    // let effect = {...GAME_EFFECTS[1]};
-    // effect = {
-    //   ...effect,
-    //   duration: 2000,
-    //   animation: {...effect.animation, coordinates: {x: 0, y: 0} }
-    // }
     const effect = createEffect(1, 2000);
     player.effects[effect.id] = effect;
-    // player.effects[GAME_EFFECTS[1].id] = {...GAME_EFFECTS[1], duration: 2000}
   }
 
   if ((weapon.canStun && Math.random() <= 0.1) || weapon.id === 2) {
@@ -374,9 +360,9 @@ const calculateDamage = (weapon, player) => {
   if (weapon.index === 4 && Math.random() >= 0.8) {
     damage *= 2
   }
-  if (player.shipIndex === 5 && Math.random() >= 0.8) {
-    damage = 0;
-  }
+  // if (player.shipIndex === 5 && Math.random() >= 0.8) {
+  //   damage = 0;
+  // }
   return round(damage * (10 - armor) / 10);
 }
 

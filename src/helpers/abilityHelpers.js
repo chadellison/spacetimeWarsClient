@@ -17,18 +17,18 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
 
   if (ability.type === 'weapon') {
     playSound(ability.sound);
-    return addAbilityWeapon(ability.weaponIndex, deployedWeapons, playerData, elapsedTime, playerData.abilityLevel);
+    return addAbilityWeapon(ability.weaponIndex, deployedWeapons, playerData, elapsedTime);
   } else if (ability.type === 'effect') {
     playSound(ability.sound);
-    return addAbilityEffect(ability.effectIndex, [...players], playerData, elapsedTime, playerData.abilityLevel, newAnimmations);
+    return addAbilityEffect(ability.effectIndex, [...players], playerData, elapsedTime, newAnimmations);
   }
 }
 
-const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime, abilityLevel) => {
+const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime) => {
   let weapon = {...ABILITY_WEAPONS[weaponIndex], deployedAt: Date.now() - elapsedTime}
   switch (weapon.id) {
     case 4:
-      return handleMeteorShower(deployedWeapons, playerData, weapon, elapsedTime, abilityLevel);
+      return handleMeteorShower(deployedWeapons, playerData, weapon, elapsedTime);
     default:
       const updatedWeapons = [
           ...deployedWeapons,
@@ -36,25 +36,25 @@ const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime,
           playerData,
           weapon,
           elapsedTime,
-          weapon.damage * abilityLevel
+          weapon.damage * playerData.abilityLevel
         )
       ];
       return {deployedWeapons: updatedWeapons}
   }
 }
 
-const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, abilityLevel, animations) => {
+const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animations) => {
   let updatedPlayers = [...players]
   let player = updatedPlayers[playerData.index]
 
   let effect = {
     ...GAME_EFFECTS[effectIndex],
     durationCount: elapsedTime,
-    duration: GAME_EFFECTS[effectIndex].duration + (abilityLevel * 1000) - 1000
+    duration: GAME_EFFECTS[effectIndex].duration + (playerData.abilityLevel * 1000) - 1000
   };
 
   if (effect.id === 11 || (effect.id === 7 && player.shipIndex === 4)) {
-    effect = effect.id === 7 ? {...effect, duration: 800 + (abilityLevel * 1000)} : effect
+    effect = effect.id === 7 ? {...effect, duration: 800 + (playerData.abilityLevel * 1000)} : effect
 
     updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect)
   } else if ([3, 12].includes(effect.id)) {
@@ -76,7 +76,7 @@ const applyEffectToTeam = (players, team, effect) => {
   });
 }
 
-const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime, abilityLevel) => {
+const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime) => {
   const angle = handleAngle(player, elapsedTime);
   const meteors = [-40, -20, 0, 20, 40].map((degree) => {
     let weaponAngle = angle + degree
@@ -96,7 +96,7 @@ const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime, abilit
       trajectory: weaponAngle,
       playerIndex: player.index,
       team: player.team,
-      damage: 200 * abilityLevel,
+      damage: 200 * player.abilityLevel,
     }
   });
   return {deployedWeapons: deployedWeapons.concat(meteors)}
