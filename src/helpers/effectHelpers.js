@@ -27,14 +27,27 @@ export const handleEffects = (player) => {
 export const applyGameBuff = (team, players, gameBuff) => {
   return players.map((player) => {
     if (gameBuff.id < 5 && team !== player.team) {
-      player.effects = {...player.effects, [gameBuff.id]: {...gameBuff}};
+      player.effects = createEffect(player.effects, gameBuff);
     } else if (gameBuff.id > 4 && team === player.team) {
-      player.effects = {...player.effects, [gameBuff.id]: {...gameBuff}};
+      player.effects = createEffect(player.effects, gameBuff);
     };
 
     return player;
   });
 };
+
+const createEffect = (effects, gameBuff) => {
+  return {
+    ...effects,
+    [gameBuff.id]: {
+      ...gameBuff,
+      animation: {
+        ...gameBuff.animation,
+        coordinates: {x: 0, y: 0}
+      }
+    }
+  };
+}
 
 export const updateGameBuff = (gameBuff) => {
   if (gameBuff.durationCount > gameBuff.duration) {
