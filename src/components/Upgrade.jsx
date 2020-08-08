@@ -19,8 +19,8 @@ const handleClick = (activePlayer, upgrade, updateState, players, upgrades, expe
         break;
       case 1:
         upgradeSound.play();
-        player.maxHitpoints += 200;
-        player.hitpoints += 200;
+        player.maxHitpoints += 300;
+        player.hitpoints += 300;
         newState = handleUpdate(players, player);
         newUpgrades[1] += 1;
         newState['upgrades'] = newUpgrades;

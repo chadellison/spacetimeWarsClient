@@ -8,9 +8,8 @@ import {
 } from '../constants/settings.js';
 import {SHIPS} from '../constants/ships.js';
 import {WEAPONS, EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
-import {GAME_EFFECTS} from '../constants/effects.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
-import {handleEffects, updateGameBuff} from '../helpers/effectHelpers';
+import {handleEffects, updateGameBuff, createEffect} from '../helpers/effectHelpers';
 import {updateAnimation} from '../helpers/animationHelpers';
 import {round} from '../helpers/mathHelpers.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
@@ -321,13 +320,30 @@ const didLevelUp = (level, score) => {
 
 const handleNegativeBuff = (player, weapon) => {
   if (weapon.index === 5) {
-    player.effects[GAME_EFFECTS[0].id] = {...GAME_EFFECTS[0], duration: 3000}
+    // player.effects[GAME_EFFECTS[0].id] = {...GAME_EFFECTS[0], duration: 3000}
+    // let effect = {...GAME_EFFECTS[0]};
+    // effect = {
+    //   ...effect,
+    //   duration: 3000,
+    //   animation: {...effect.animation, coordinates: {x: 0, y: 0} }
+    // }
+    const effect = createEffect(0, 3000);
+    player.effects[effect.id] = effect;
   } else if (weapon.index === 6 || weapon.id === 6) {
-    player.effects[GAME_EFFECTS[1].id] = {...GAME_EFFECTS[1], duration: 2000}
+    // let effect = {...GAME_EFFECTS[1]};
+    // effect = {
+    //   ...effect,
+    //   duration: 2000,
+    //   animation: {...effect.animation, coordinates: {x: 0, y: 0} }
+    // }
+    const effect = createEffect(1, 2000);
+    player.effects[effect.id] = effect;
+    // player.effects[GAME_EFFECTS[1].id] = {...GAME_EFFECTS[1], duration: 2000}
   }
 
   if ((weapon.canStun && Math.random() <= 0.1) || weapon.id === 2) {
-    player.effects[GAME_EFFECTS[3].id] = {...GAME_EFFECTS[3], duration: 3000}
+    const effect = createEffect(3, 3000);
+    player.effects[effect.id] = effect;
   };
   return player;
 }
