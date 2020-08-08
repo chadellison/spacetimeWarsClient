@@ -131,16 +131,16 @@ class Layout extends React.Component {
   };
 
   handleGameEvent = (eventPayload) => {
-    let userEvents = {...this.state.eventData.userEvents};
-    const id = Object.keys(userEvents).length
+    let eventData = {...this.state.eventData}
+    let userEvents = {...eventData.userEvents};
+    eventData.count += 1;
     const sentTime = Date.now();
     this.state.gameSocket.create({
       ...eventPayload,
-      eventId: id,
+      eventId: eventData.count,
       serverTime: sentTime + this.state.clockDifference
     });
-    userEvents[id] = sentTime;
-    let eventData = {...this.state.eventData}
+    userEvents[eventData.count] = sentTime;
     eventData.userEvents = userEvents
     this.setState({eventData})
   };
@@ -195,8 +195,9 @@ class Layout extends React.Component {
       const sentTime = userEvents[playerData.eventId]
       this.handleClockUpdate(Date.now() - sentTime, playerData.updatedAt - sentTime);
       delete userEvents[playerData.eventId]
-      const eventData = handleAiEvents(this.state.eventData, playerData.team, this.handleGameEvent);
-      this.setState({eventData: {...eventData, userEvents: userEvents}})
+      const eventData = handleAiEvents({...this.state.eventData, userEvents}, playerData.team, this.handleGameEvent);
+
+      this.setState({eventData})
     }
   }
 

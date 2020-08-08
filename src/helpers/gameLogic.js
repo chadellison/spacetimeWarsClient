@@ -15,7 +15,7 @@ import {updateAnimation} from '../helpers/animationHelpers';
 import {round} from '../helpers/mathHelpers.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
 import {playSound} from '../helpers/audioHelpers.js';
-import {goldAudio, upgradeSound, GAME_ANIMATIONS} from '../constants/settings.js';
+import {upgradeSound, GAME_ANIMATIONS} from '../constants/settings.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   const {clockDifference, gameBuff, index, aiShips, space, lastFired} = gameState;
@@ -303,7 +303,7 @@ const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
       const bounty = round(player.score * 0.01 + 50);
       player.killedBy = weapon.playerIndex
       attacker.kills += 1
-      attacker.gold += handleGold(bounty, attacker.shipIndex);
+      attacker.gold += bounty;
       attacker.score += bounty;
 
     };
@@ -318,15 +318,6 @@ const didLevelUp = (level, score) => {
     return round(score / 500) > level;
   }
 };
-
-const handleGold = (bounty, shipIndex) => {
-  if (shipIndex === 2 && Math.random() > 0.8) {
-    playSound(goldAudio);
-    return bounty * 2;
-  } else {
-    return bounty;
-  }
-}
 
 const handleNegativeBuff = (player, weapon) => {
   if (weapon.index === 5) {
