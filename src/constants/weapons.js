@@ -24,6 +24,8 @@ import stunGunAnimation from '../images/stunGunAnimation.png';
 import meteorShowerAnimation from '../images/meteorShowerAnimation.png';
 import piercerAnimation from '../images/piercerAnimation.png';
 import electricFieldAnimation from '../images/electricFieldAnimation.png';
+import redMeteorAnimation from '../images/redMeteorAnimation.png';
+import meteorExplosionAnimation from '../images/meteorExplosionAnimation.png';
 
 import cannonAudio from '../audio/cannon.wav';
 import missileAudio from '../audio/missile.wav';
@@ -180,8 +182,8 @@ export const ABILITY_WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 7,
-    width: 4,
-    height: 4,
+    width: 96,
+    height: 48,
     damage: 300,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -309,7 +311,32 @@ export const ABILITY_WEAPONS = [
       xOffset: 0,
       yOffset: 0,
     }
-  }
+  },
+  {
+    id: 7,
+    name: 'redMeteor',
+    location: {x: 0, y: 0},
+    trajectory: 0,
+    speed: 20,
+    width: 60,
+    height: 30,
+    damageRadius: 10,
+    damage: 100,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: redMeteorAnimation,
+      width: 128,
+      height: 64,
+      renderWidth: 60,
+      renderHeight: 30,
+      rowCount: 4,
+      columnCount: 2,
+      rate: 0,
+      startRate: 0,
+      xOffset: 0,
+      yOffset: 0,
+    }
+  },
 ]
 
 export const EXPLOSION_ANIMATIONS = [
@@ -363,5 +390,22 @@ export const EXPLOSION_ANIMATIONS = [
     yOffset: -50,
     renderWidth: 200,
     renderHeight: 200,
-  }
+  },
+  {
+    id: 4,
+    name: 'meteorExplosion',
+    location: {x: 0, y: 0},
+    coordinates: {x: 0, y: 0},
+    spriteImage: meteorExplosionAnimation,
+    width: 256,
+    height: 256,
+    rowCount: 4,
+    columnCount: 6,
+    rate: 0,
+    startRate: 0,
+    xOffset: -100,
+    yOffset: -100,
+    renderWidth: 200,
+    renderHeight: 200,
+  },
 ]

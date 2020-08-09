@@ -85,7 +85,9 @@ class Canvas extends React.Component {
     const armorReduction = this.refs.armorReduction
     const spaceMineExplosion = this.refs.spaceMineExplosion
     const nuclearExplosion = this.refs.nuclearExplosion
+    const meteorExplosion = this.refs.meteorExplosion
     const electricField = this.refs.electricField
+    const redMeteor = this.refs.redMeteor
     const levelUp = this.refs.levelUp
     const blink = this.refs.blink
 
@@ -145,8 +147,10 @@ class Canvas extends React.Component {
       damageReduction: damageReduction,
       armorReduction: armorReduction,
       electricField: electricField,
+      redMeteor: redMeteor,
       spaceMineExplosion: spaceMineExplosion,
       nuclearExplosion: nuclearExplosion,
+      meteorExplosion: meteorExplosion,
       shipExplosion: shipExplosion,
       levelUp: levelUp,
       blink: blink,

@@ -14,6 +14,7 @@ import electricFieldIcon from '../images/electricFieldIcon.png';
 import armorReductionIcon from '../images/armorReductionIcon.png';
 import returnDamageIcon from '../images/returnDamageIcon.png';
 import evasionIcon from '../images/evasionIcon.png';
+import redMeteorIcon from '../images/redMeteorIcon.png';
 import armorBoost from '../images/armorBoost.png';
 import {
   windSound,
@@ -188,9 +189,18 @@ export const ABILITIES = [
   },
   {
     index: 17,
-    type: 'passive',
-    description: 'Gives the ship a (%11, %22, %33) chance to evade an attack (passive ability)',
-    cooldown: 0,
-    image: evasionIcon,
+    type: 'weapon',
+    weaponIndex: 6,
+    description: 'Fires a red meteor dealing (100, 200, 300) damage, slowing and poison your opponent',
+    cooldown: 30000,
+    image: redMeteorIcon,
+    sound: meteorConeSound,
   }
+  // {
+  //   index: 17,
+  //   type: 'passive',
+  //   description: 'Gives the ship a (%11, %22, %33) chance to evade an attack (passive ability)',
+  //   cooldown: 0,
+  //   image: evasionIcon,
+  // }
 ]

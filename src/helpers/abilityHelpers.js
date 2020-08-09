@@ -14,7 +14,6 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
     const location = players[playerData.index].location;
     newAnimmations = [...animations, {...GAME_ANIMATIONS[ability.animationIndex], location, coordinates: {x: 0, y: 0}}];
   }
-
   if (ability.type === 'weapon') {
     playSound(ability.sound);
     return addAbilityWeapon(ability.weaponIndex, deployedWeapons, playerData, elapsedTime);
@@ -26,20 +25,19 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
 
 const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime) => {
   let weapon = {...ABILITY_WEAPONS[weaponIndex], deployedAt: Date.now() - elapsedTime}
-  switch (weapon.id) {
-    case 4:
-      return handleMeteorShower(deployedWeapons, playerData, weapon, elapsedTime);
-    default:
-      const updatedWeapons = [
-          ...deployedWeapons,
-          handleFireWeapon(
-          playerData,
-          weapon,
-          elapsedTime,
-          weapon.damage * playerData.abilityLevel
-        )
-      ];
-      return {deployedWeapons: updatedWeapons}
+  if (weapon.id === 4) {
+    return handleMeteorShower(deployedWeapons, playerData, weapon, elapsedTime);
+  } else {
+    const updatedWeapons = [
+        ...deployedWeapons,
+        handleFireWeapon(
+        playerData,
+        weapon,
+        elapsedTime,
+        weapon.damage * playerData.abilityLevel
+      )
+    ];
+    return {deployedWeapons: updatedWeapons}
   }
 }
 

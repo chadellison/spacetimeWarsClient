@@ -219,6 +219,9 @@ export const handleWeapons = (gameData, handleGameEvent) => {
     } else if (weapon.id === 3) {
       const mineExplosionAnimation = {...EXPLOSION_ANIMATIONS[0], location: weapon.location, coordinates: {x: 0, y: 0}}
       gameData.animations.push(mineExplosionAnimation);
+    } else if (weapon.id === 7) {
+      const meteorExplosion = {...EXPLOSION_ANIMATIONS[3], location: weapon.location, coordinates: {x: 0, y: 0}}
+      gameData.animations.push(meteorExplosion);
     }
     if (attacker.levelUp) {
       delete attacker.levelUp
@@ -291,9 +294,6 @@ const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
   if (player.hitpoints > 0) {
     player = handleNegativeBuff(player, weapon, attacker);
     const damage = calculateDamage(weapon, player);
-    // if (player.shipIndex === 1) {
-    //   attacker.hitpoints -= round(damage / 4);
-    // }
     player.hitpoints -= damage;
     attacker = handlePositiveBuff(attacker, weapon);
     attacker.score += round(damage * 0.1)
@@ -322,9 +322,15 @@ const handleNegativeBuff = (player, weapon) => {
   if (weapon.index === 5) {
     const effect = createEffect(0, 3000);
     player.effects[effect.id] = effect;
-  } else if (weapon.index === 6 || weapon.id === 6) {
+  } else if (weapon.index === 6 || (weapon.id === 6 && !player.effects[2])) {
     const effect = createEffect(1, 2000);
     player.effects[effect.id] = effect;
+  } else if (weapon.id === 7) {
+    const slow = createEffect(1, 9000);
+    player.effects[slow.id] = slow;
+
+    const poison = createEffect(0, 9000);
+    player.effects[poison.id] = poison;
   }
 
   if ((weapon.canStun && Math.random() <= 0.1) || weapon.id === 2) {
