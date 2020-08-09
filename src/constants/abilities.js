@@ -31,6 +31,7 @@ import {
   damageReductionSound,
   electricFieldSound,
   armorReductionSound,
+  teleportSound,
 } from '../constants/settings.js';
 
 export const ABILITIES = [
@@ -177,7 +178,7 @@ export const ABILITIES = [
     description: 'Teleports the ship a short distance (200, 400, 600) ("E" key to use; 35s cooldown)',
     cooldown: 35000,
     image: teleportIcon,
-    sound: meteorConeSound,
+    sound: teleportSound,
     animationIndex: 2,
   },
   {
