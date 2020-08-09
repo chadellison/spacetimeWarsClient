@@ -302,6 +302,18 @@
   cursor: pointer;
 }
 
+
+.description {
+  padding-left: 50px;
+  padding-right: 50px;
+  text-align: center;
+  line-height: 24px;
+  margin-top: 2em;
+  font-size: 18px;
+  height: 0.5em;
+  color: #2c66b2;
+}
+
 @keyframes slideDown {
 	0% {
 		transform: translateY(-100%);

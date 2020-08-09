@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/ship.css';
+import '../styles/item.css';
 import {getItem} from '../helpers/itemHelpers.js';
 import {handleUpdate} from '../helpers/selectionModalHelpers.js';
 import {notEnoughResources, goldAudio} from '../constants/settings.js';
@@ -29,21 +29,20 @@ const handleClick = (activePlayer, item, updateState, players) => {
   }
 };
 
-export const Item = ({imageSrc, activePlayer, item, updateState, players}) => {
+export const Item = ({imageSrc, activePlayer, item, updateState, players, updateDescription}) => {
   return (
-    <div className="selection"
-      onClick={() => handleClick(activePlayer, item, updateState, players)}>
-        <div className="imageWrapper">
-          <img id={item.index} src={imageSrc} alt="item" className="selectionImage"/>
+    <div className="itemSelection"
+      onClick={() => handleClick(activePlayer, item, updateState, players)}
+      onMouseEnter={() => updateDescription(item.description)}
+      onMouseLeave={() => updateDescription('')}>
+        <div className="itemImageWrapper">
+          <img id={item.index} src={imageSrc} alt="item" className="itemSelectionImage"/>
         </div>
-        <div className="selectionTitle">
+        <div className="itemSelectionTitle">
           {`${item.name}`}
         </div>
-        <div className="selectionPrice">
+        <div className="itemSelectionPrice">
           {`Price: ${item.price}`}
-        </div>
-        <div className="selectionDescription">
-          {item.description}
         </div>
     </div>
   );

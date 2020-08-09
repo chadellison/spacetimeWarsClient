@@ -21,7 +21,7 @@ const handleClick = (updateState, handleGameEvent, activePlayer) => {
   updateState({modal: null, activeTab: 'Ships'});
 };
 
-const renderOptions = (activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints) => {
+const renderOptions = (activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, updateDescription) => {
   switch (activeTab) {
     case 'Ships':
       const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
@@ -34,6 +34,7 @@ const renderOptions = (activeTab, page, activePlayer, updateState, players, upgr
             ship={ship}
             players={players}
             updateState={updateState}
+            updateDescription={updateDescription}
           />
         )
       });
@@ -67,8 +68,7 @@ const renderOptions = (activeTab, page, activePlayer, updateState, players, upgr
         )
       });
     case 'Items':
-      const items = page === 1 ? ITEMS.slice(0, 4) : ITEMS.slice(4, 8);
-      return items.map((item) => {
+      return ITEMS.map((item) => {
         return (
           <Item
             key={`item${item.index}`}
@@ -77,6 +77,7 @@ const renderOptions = (activeTab, page, activePlayer, updateState, players, upgr
             activePlayer={activePlayer}
             players={players}
             updateState={updateState}
+            updateDescription={updateDescription}
           />
         )
       });
@@ -124,26 +125,43 @@ const renderTabs = (activeTab, updateState, activePlayer) => {
   });
 };
 
-export const SelectionModal = ({
-  page,
-  players,
-  upgrades,
-  activeTab,
-  updateState,
-  activePlayer,
-  clockDifference,
-  handleGameEvent,
-}) => {
-  const experiencePoints = activePlayer.level - upgrades.reduce((accumulator, value) => accumulator + value, 1)
-  return (
-    <div className="modal">
-      <div className="modalTabs">
-        {renderTabs(activeTab, updateState, activePlayer)}
+export class SelectionModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      description: ''
+    }
+  }
+
+  updateDescription = (description) => {
+    this.setState({description})
+  }
+
+  render() {
+    const {
+      page,
+      players,
+      upgrades,
+      activeTab,
+      updateState,
+      activePlayer,
+      clockDifference,
+      handleGameEvent
+    } = this.props;
+    const experiencePoints = activePlayer.level - upgrades.reduce((accumulator, value) => accumulator + value, 1)
+    return (
+      <div className="modal">
+        <div className="modalTabs">
+          {renderTabs(activeTab, updateState, activePlayer)}
+        </div>
+        {renderStart(updateState, handleGameEvent, activePlayer, clockDifference)}
+        {activeTab === 'Upgrades' && <div className="experiencePoints">{'Experience points ' + experiencePoints}</div>}
+        {renderOptions(activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, this.updateDescription)}
+        <div className="description">
+          {this.state.description}
+        </div>
+        <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />
       </div>
-      {renderStart(updateState, handleGameEvent, activePlayer, clockDifference)}
-      {activeTab === 'Upgrades' && <div className="experiencePoints">{'Experience points ' + experiencePoints}</div>}
-      {renderOptions(activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints)}
-      <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />
-    </div>
-  );
+    );
+  }
 };

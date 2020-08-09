@@ -1,0 +1,52 @@
+.itemSelection {
+  width: 5em;
+  height: 6em;
+  margin-top: 2em;
+  margin-left: 1em;
+  margin-right: 1em;
+  opacity: 0.5;
+  transition: ease-out .5s;
+  display: inline-block;
+}
+
+.itemSelection:hover {
+  cursor: pointer;
+  opacity: 1;
+  transition: ease-in .5s;
+}
+
+.itemImageWrapper {
+  border: 1px solid #2c66b2;
+  border-radius: 10%;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  width: 4em;
+  height: 4em;
+  position: relative;
+}
+
+.itemSelectionImage {
+  width: 4em;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.itemSelectionTitle {
+  text-align: left;
+  line-height: 16px;
+  display: flex;
+  font-size: 16px;
+  margin-bottom: .5em;
+}
+
+.itemSelectionPrice {
+  text-align: left;
+  line-height: 16px;
+  display: flex;
+  font-size: 14px;
+  color: #ab8432;
+}

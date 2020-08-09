@@ -2,7 +2,7 @@ import React from "react";
 import '../styles/paginateButton.css';
 
 const resolveText = (activeTab, page) => {
-  if (['Ships', 'Weapons', 'Items'].includes(activeTab)) {
+  if (['Ships', 'Weapons'].includes(activeTab)) {
     return page === 1 ? 'more' : 'previous';
   } else {
     return null;

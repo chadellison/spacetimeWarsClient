@@ -1,10 +1,12 @@
 .paginateButton {
-  margin-top: 5em;
   font-size: 20px;
   height: 30px;
   color: #2c66b2;
   margin-left: 40%;
   width: 20%;
+  bottom: 0;
+  position: absolute;
+  margin-bottom: 2em;
   transition: ease-in 1.5s;
 }
 
