@@ -90,6 +90,7 @@ class Canvas extends React.Component {
     const redMeteor = this.refs.redMeteor
     const levelUp = this.refs.levelUp
     const blink = this.refs.blink
+    const teleport = this.refs.teleport
 
     this.setState({
       canvas: canvas,
@@ -154,6 +155,7 @@ class Canvas extends React.Component {
       shipExplosion: shipExplosion,
       levelUp: levelUp,
       blink: blink,
+      teleport: teleport,
       supplyShip: supplyShip,
       halfWindowWidth: round(window.innerWidth / 2),
       halfWindowHeight: round(window.innerHeight / 2)

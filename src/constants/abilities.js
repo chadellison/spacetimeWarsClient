@@ -12,9 +12,8 @@ import damageBoostIcon from '../images/damageBoostIcon.png';
 import damageReductionIcon from '../images/damageReductionIcon.png';
 import electricFieldIcon from '../images/electricFieldIcon.png';
 import armorReductionIcon from '../images/armorReductionIcon.png';
-import returnDamageIcon from '../images/returnDamageIcon.png';
-import evasionIcon from '../images/evasionIcon.png';
 import redMeteorIcon from '../images/redMeteorIcon.png';
+import teleportIcon from '../images/teleportIcon.png';
 import armorBoost from '../images/armorBoost.png';
 import {
   windSound,
@@ -173,10 +172,13 @@ export const ABILITIES = [
   },
   {
     index: 15,
-    type: 'passive',
-    description: '(%10, %20, %30) of damage taken will be inflicted on the opponent who fires on this ship (passive ability)',
-    cooldown: 0,
-    image: returnDamageIcon,
+    type: '',
+    weaponIndex: 6,
+    description: 'Teleports the ship a short distance (200, 400, 600) ("E" key to use; 35s cooldown)',
+    cooldown: 35000,
+    image: teleportIcon,
+    sound: meteorConeSound,
+    animationIndex: 2,
   },
   {
     index: 16,
@@ -195,12 +197,5 @@ export const ABILITIES = [
     cooldown: 30000,
     image: redMeteorIcon,
     sound: meteorConeSound,
-  }
-  // {
-  //   index: 17,
-  //   type: 'passive',
-  //   description: 'Gives the ship a (%11, %22, %33) chance to evade an attack (passive ability)',
-  //   cooldown: 0,
-  //   image: evasionIcon,
-  // }
+  },
 ]

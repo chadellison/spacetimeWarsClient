@@ -14,13 +14,23 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
     const location = players[playerData.index].location;
     newAnimmations = [...animations, {...GAME_ANIMATIONS[ability.animationIndex], location, coordinates: {x: 0, y: 0}}];
   }
+  playSound(ability.sound);
   if (ability.type === 'weapon') {
-    playSound(ability.sound);
     return addAbilityWeapon(ability.weaponIndex, deployedWeapons, playerData, elapsedTime);
   } else if (ability.type === 'effect') {
-    playSound(ability.sound);
     return addAbilityEffect(ability.effectIndex, [...players], playerData, elapsedTime, newAnimmations);
+  } else {
+    return applyOtherAbility([...players], playerData, elapsedTime, newAnimmations);
   }
+}
+
+const applyOtherAbility = (players, playerData, elapsedTime, newAnimmations) => {
+  let player = players[playerData.index];
+  const distance = 200 * playerData.abilityLevel;
+  player.location = handleLocation(player.angle, player.location, distance);
+  const teleportAnimation = {...GAME_ANIMATIONS[2], location: player.location, coordinates: {x: 0, y: 0}};
+  players[player.index] = player;
+  return { players, animations: newAnimmations.concat(teleportAnimation) }
 }
 
 const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime) => {

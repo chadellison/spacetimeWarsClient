@@ -7,6 +7,8 @@ import armorBoost from '../images/armorBoost.png';
 import damageIncrease from '../images/damageIncrease.png';
 import healthIncrease from '../images/healthIncrease.png';
 import stun from '../images/stun.png';
+// import returnDamageIcon from '../images/returnDamageIcon.png';
+// import evasionIcon from '../images/evasionIcon.png';
 
 export const ITEMS = [
   {
@@ -89,4 +91,16 @@ export const ITEMS = [
     durationCount: 0,
     description: 'Increases your ship\'s hitpoints by 1200'
   }
+  //
+  // {
+  //   index: 15,
+  //   type: 'passive',
+  //   description: '(%10, %20, %30) of damage taken will be inflicted on the opponent who fires on this ship (passive ability)',
+  //   cooldown: 0,
+  //   image: returnDamageIcon,
+  // },
+
+  // {
+  //   evasion
+  // }
 ];

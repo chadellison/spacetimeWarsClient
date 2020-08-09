@@ -30,6 +30,7 @@ import missileAudio from '../audio/missile.wav';
 // images
 import levelUpAnimation from '../images/levelUpAnimation.png';
 import blinkAnimation from '../images/invisibleAnimation.png';
+import teleportAnimation from '../images/teleportAnimation.png';
 
 // constants
 export const BOARD_WIDTH = 1800;
@@ -94,6 +95,22 @@ export const GAME_ANIMATIONS = [
     height: 114,
     rowCount: 4,
     columnCount: 5,
+    rate: 0,
+    startRate: 0,
+    xOffset: 0,
+    yOffset: 0,
+    renderWidth: 150,
+    renderHeight: 150,
+  },
+  {
+    name: 'teleport',
+    location: {x: 0, y: 0},
+    coordinates: {x: 0, y: 0},
+    spriteImage: teleportAnimation,
+    width: 128,
+    height: 128,
+    rowCount: 4,
+    columnCount: 6,
     rate: 0,
     startRate: 0,
     xOffset: 0,
