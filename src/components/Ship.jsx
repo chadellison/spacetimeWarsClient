@@ -58,9 +58,9 @@ export const Ship = ({imageSrc, activePlayer, ship, players, updateState, update
         Abilities
       </div>
         {[
-          {abilityImage: ABILITIES[ship.abilities.q].image, key: 'Q', value: 'q'},
-          {abilityImage: ABILITIES[ship.abilities.w].image, key: 'W', value: 'w'},
-          {abilityImage: ABILITIES[ship.abilities.e].image, key: 'E', value: 'e'}
+          {abilityImage: ABILITIES[ship.abilities.q].image, value: 'q'},
+          {abilityImage: ABILITIES[ship.abilities.w].image, value: 'w'},
+          {abilityImage: ABILITIES[ship.abilities.e].image, value: 'e'}
          ].map((abilityData, index) => {
             return (
               <AbilityDisplay key={'displayAbility' + index}

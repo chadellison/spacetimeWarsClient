@@ -6,7 +6,7 @@ export const AbilityDisplay = ({onMouseEnter, onMouseLeave, abilityData}) => {
     <div className="shipAbilityIcon"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}>
-      <div className="abilityKey">{abilityData.key}</div>
+      <div className="abilityKey">{abilityData.value.toUpperCase()}</div>
       <img src={abilityData.abilityImage} className="abilityIcon" alt="ship ability"/>
     </div>
   )
