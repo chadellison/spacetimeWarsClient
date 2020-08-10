@@ -67,9 +67,6 @@ export const Upgrade = ({imageSrc, activePlayer, upgrade, updateState, players, 
           <div className="selectionTitle">
             {`Level ${upgrades[upgrade.index] + 1}`}
           </div>
-          <div className="selectionPrice">
-            {`Price: ${upgrade.price}`}
-          </div>
           <div className="selectionDescription">
             {upgrade.description}
           </div>
