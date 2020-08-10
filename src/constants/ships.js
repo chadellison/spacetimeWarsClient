@@ -34,7 +34,7 @@ export const SHIPS = [
   {
     index: 0,
     name: 'destroyer',
-    price: 600,
+    price: 700,
     armor: 1,
     hitpoints: 900,
     speed: 2,
