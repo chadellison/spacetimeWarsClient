@@ -168,7 +168,6 @@ const renderAbilityIcons = (activePlayer, playerAbilityData) => {
 
 const PlayerData = ({
   modal,
-  updateState,
   defenseData,
   abilityData,
   activePlayer,

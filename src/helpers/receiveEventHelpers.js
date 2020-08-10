@@ -12,7 +12,17 @@ import {
 import {WEAPONS} from '../constants/weapons.js';
 
 export const handleEventPayload = (gameState, playerData, elapsedTime) => {
-  const {players, clockDifference, deployedWeapons, userId, aiShips, index, eventData} = gameState;
+  const {
+    index,
+    userId,
+    players,
+    aiShips,
+    eventData,
+    animations,
+    gameSocket,
+    deployedWeapons,
+    clockDifference,
+  } = gameState;
   switch (playerData.gameEvent) {
     case 'start':
       return handleStartEvent(players, playerData, userId, eventData);
@@ -23,9 +33,9 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     case 'bombers':
       return {aiShips: aiShips.concat(playerData.bombers)}
     case 'ability':
-      return handleAbility(players, deployedWeapons, playerData, elapsedTime, gameState.animations);
+      return handleAbility(players, deployedWeapons, playerData, elapsedTime, animations);
     case 'leak':
-      return handleLeakEvent(playerData, gameState.players, gameState.gameSocket);
+      return handleLeakEvent(playerData, players, gameSocket);
     default:
       if (index !== playerData.index) {
         return handleUpdateEvent([...players], playerData, clockDifference, deployedWeapons, elapsedTime);

@@ -180,7 +180,8 @@ class Canvas extends React.Component {
   };
 
   componentDidUpdate() {
-    const currentPlayer = this.props.players[this.props.index]
+    const {gameBuff, index, players, aiShips, deployedWeapons, animations} = this.props;
+    const currentPlayer = players[index]
     if (currentPlayer && currentPlayer.location) {
       window.scrollTo(
         currentPlayer.location.x - this.state.halfWindowWidth,
@@ -190,13 +191,12 @@ class Canvas extends React.Component {
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
-    if (this.props.gameBuff.color) {
+    if (gameBuff.color) {
       context.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
-      context.fillStyle = this.props.gameBuff.color;
+      context.fillStyle = gameBuff.color;
     }
 
-    this.props.players.concat(this.props.aiShips).forEach((player) => {
-      const {gameBuff, index} = this.props;
+    players.concat(aiShips).forEach((player) => {
       const showShip = shouldRenderShip(player, index);
       if (player.active) {
         if (showShip) {
@@ -214,13 +214,13 @@ class Canvas extends React.Component {
       renderPlayerData(gameBuff, context, player, showShip)
     });
 
-    this.props.deployedWeapons.forEach((weapon) => {
+    deployedWeapons.forEach((weapon) => {
       if (!weapon.invisible || (currentPlayer && weapon.team === currentPlayer.team)) {
         renderWeapon(context, weapon, this.state[weapon.name])
       }
     });
 
-    this.props.animations.forEach((animation) => {
+    animations.forEach((animation) => {
       renderAnimation(context, this.state[animation.name], animation, animation.location);
     });
   }

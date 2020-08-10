@@ -39,10 +39,10 @@ export const Modal = ({
     case 'instructions':
       return (
         <InformationModal
-        updateState={updateState}
-        howToPlay={howToPlay}
-        userId={userId}
-        players={players}
+          updateState={updateState}
+          howToPlay={howToPlay}
+          userId={userId}
+          players={players}
       />
       );
     case 'credits':

@@ -285,7 +285,6 @@ class Layout extends React.Component {
             modal={modal}
             defenseData={defenseData}
             activePlayer={activePlayer}
-            updateState={this.updateState}
             clockDifference={clockDifference}
             handleGameEvent={this.handleGameEvent}
             abilityData={abilityData}
