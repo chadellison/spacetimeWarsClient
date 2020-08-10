@@ -54,11 +54,6 @@ export const handleAbsorbDamage = (player) => {
 
 export const canAbsorbDamage = (player) => {
   const item = getItem(player.items, 4);
-
-  // if (player.shipIndex === 1) { evade item
-  //   attacker.hitpoints -= round(damage / 4);
-  // }
-
   return (player.effects[6]) || (item && item.durationCount >= item.cooldown)
 };
 

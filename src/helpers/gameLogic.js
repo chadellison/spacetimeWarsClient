@@ -8,7 +8,7 @@ import {
 } from '../constants/settings.js';
 import {SHIPS} from '../constants/ships.js';
 import {WEAPONS, EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
-import {handleItems, handleAbsorbDamage, canAbsorbDamage} from '../helpers/itemHelpers';
+import {handleItems, handleAbsorbDamage, canAbsorbDamage, getItem} from '../helpers/itemHelpers';
 import {handleEffects, updateGameBuff, createEffect} from '../helpers/effectHelpers';
 import {updateAnimation} from '../helpers/animationHelpers';
 import {round} from '../helpers/mathHelpers.js';
@@ -294,7 +294,12 @@ const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
   if (player.hitpoints > 0) {
     player = handleNegativeBuff(player, weapon, attacker);
     const damage = calculateDamage(weapon, player);
+
     player.hitpoints -= damage;
+    if (getItem(player.items, 10)) {
+      const newHitpoints = attacker.hitpoints - round(damage * 0.3)
+      attacker.hitpoints = newHitpoints > 0 ? newHitpoints : 1;
+    }
     attacker = handlePositiveBuff(attacker, weapon);
     attacker.score += round(damage * 0.1)
 
@@ -366,9 +371,12 @@ const calculateDamage = (weapon, player) => {
   if (weapon.index === 4 && Math.random() >= 0.8) {
     damage *= 2
   }
-  // if (player.shipIndex === 5 && Math.random() >= 0.8) {
-  //   damage = 0;
-  // }
+
+  if (getItem(player.items, 9) && Math.random() > 0.75) {
+    // play miss sound
+    damage = 0;
+  }
+
   return round(damage * (10 - armor) / 10);
 }
 

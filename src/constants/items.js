@@ -7,8 +7,8 @@ import armorBoost from '../images/armorBoost.png';
 import damageIncrease from '../images/damageIncrease.png';
 import healthIncrease from '../images/healthIncrease.png';
 import stun from '../images/stun.png';
-// import returnDamageIcon from '../images/returnDamageIcon.png';
-// import evasionIcon from '../images/evasionIcon.png';
+import evasion from '../images/evasion.png';
+import returnDamage from '../images/returnDamage.png';
 
 export const ITEMS = [
   {
@@ -89,18 +89,26 @@ export const ITEMS = [
     image: healthIncrease,
     cooldown: 0,
     durationCount: 0,
-    description: 'Increases your ship\'s hitpoints by 1200'
+    description: 'Increases your ship\'s hitpoints by 1200',
+  },
+  {
+    id: 9,
+    index: 8,
+    price: 800,
+    name: 'Evade Attack',
+    image: evasion,
+    cooldown: 0,
+    durationCount: 0,
+    description: 'Allows your ship to evade attacks 25% of the time',
+  },
+  {
+    id: 10,
+    index: 9,
+    price: 1100,
+    name: 'Return Damage',
+    image: returnDamage,
+    cooldown: 0,
+    durationCount: 0,
+    description: 'Your Ship will return 30% of damage dealt to it',
   }
-  //
-  // {
-  //   index: 15,
-  //   type: 'passive',
-  //   description: '(%10, %20, %30) of damage taken will be inflicted on the opponent who fires on this ship (passive ability)',
-  //   cooldown: 0,
-  //   image: returnDamageIcon,
-  // },
-
-  // {
-  //   evasion
-  // }
 ];
