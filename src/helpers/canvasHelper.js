@@ -97,7 +97,7 @@ export const renderAnimation = (context, spriteImage, animation, location) => {
 
 export const renderPlayerData = (gameBuff, context, player, showShip) => {
   if (!gameBuff.color) {
-    if (showShip && player.type === 'human') {
+    if (showShip) {
       context.font = "12px Arial";
       context.fillStyle = findColor(player.hitpoints, player.maxHitpoints);
       renderHealthBar(context, player);
@@ -112,5 +112,5 @@ export const renderPlayerData = (gameBuff, context, player, showShip) => {
 
 const renderHealthBar = (context, player) => {
   context.beginPath();
-  context.fillRect(player.location.x, player.location.y + 90, round((player.hitpoints * 100) / player.maxHitpoints), 4);
+  context.fillRect(player.location.x + 15, player.location.y + 90, round((player.hitpoints * 80) / player.maxHitpoints), 4);
 }
