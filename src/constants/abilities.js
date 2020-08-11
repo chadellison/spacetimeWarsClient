@@ -147,7 +147,7 @@ export const ABILITIES = [
   {
     index: 12,
     type: 'weapon',
-    description: 'Creates an electric field dealing (25, 50, 75) damage per second and slowing enemy units who fly into this field ("E" key to use; 45s cooldown)',
+    description: 'Creates an electric field dealing (25, 50, 75) damage per second and slowing enemy units who fly into this field ("W" key to use; 45s cooldown)',
     cooldown: 45000,
     weaponIndex: 5,
     image: electricFieldIcon,
