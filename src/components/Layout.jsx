@@ -48,7 +48,8 @@ const DEFAULT_STATE = {
     shipCount: 0,
     shipHitpoints: 100,
     userEvents: {},
-    sendInterval: 30
+    sendInterval: 30,
+    slowResponseCount: 0,
   },
 };
 
@@ -177,16 +178,23 @@ class Layout extends React.Component {
   };
 
   handleReceivedEvent = (playerData) => {
-    const {clockDifference} = this.state;
-    this.handleEventData(playerData);
+    const {clockDifference, eventData} = this.state;
     const elapsedTime = Date.now() + clockDifference - playerData.serverTime;
-    const gameState = handleEventPayload(this.state, playerData, elapsedTime);
-    this.setState(gameState);
-
-    if (elapsedTime > 400) {
-      // maybe throw away events
+    if (elapsedTime > 700) {
       console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime);
-    };
+      if (eventData.slowResponseCount > 5) {
+        alert('Slow response times detected. Please check your internet connection.');
+        this.setState({ eventData: {...eventData, slowResponseCount: 0 }})
+      } else {
+        this.setState({ eventData: {...eventData, slowResponseCount: eventData.slowResponseCount + 1 }})
+      }
+    } else {
+      this.handleEventData(playerData);
+      const gameState = handleEventPayload(this.state, playerData, elapsedTime);
+      if (gameState) {
+        this.setState(gameState)
+      };
+    }
   };
 
   handleEventData = (playerData) => {
@@ -195,7 +203,7 @@ class Layout extends React.Component {
       const sentTime = userEvents[playerData.eventId]
       this.handleClockUpdate(Date.now() - sentTime, playerData.updatedAt - sentTime);
       delete userEvents[playerData.eventId]
-      const eventData = handleAiEvents({...this.state.eventData, userEvents}, playerData.team, this.handleGameEvent);
+      const eventData = handleAiEvents({...this.state.eventData, userEvents, slowResponseCount: 0}, playerData.team, this.handleGameEvent);
 
       this.setState({eventData})
     }
