@@ -1,0 +1,26 @@
+.slowConnectionBanner {
+  position: fixed;
+  width: 100%;
+  margin-top: 0px;
+  padding-top: 1em;
+  height: 2.5em;
+  background-color: #9c1616;
+  text-align: center;
+}
+
+.bannerButton {
+  margin-top: 3em;
+  font-size: 20px;
+  height: 30px;
+  padding-top: 5px;
+  margin-left: 45%;
+  width: 10%;
+  cursor: pointer;
+  background-color: #9c1616;
+}
+
+.bannerButton:hover {
+  cursor: pointer;
+  opacity: 0.8;
+  transition: ease-in .3s;
+}

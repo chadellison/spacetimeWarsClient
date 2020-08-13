@@ -6,6 +6,7 @@ import PlayerData from './PlayerData';
 import {Modal} from './Modal';
 import {GameButton} from './GameButton';
 import {HeaderButtons} from './HeaderButtons';
+import {Banner} from './Banner';
 import '../styles/styles.css';
 import {ANAIMATION_FRAME_RATE, REQUEST_COUNT} from '../constants/settings.js';
 import {KEY_MAP} from '../constants/keyMap.js';
@@ -51,6 +52,7 @@ const DEFAULT_STATE = {
     sendInterval: 30,
     slowResponseCount: 0,
   },
+  slowConnectionBanner: false,
 };
 
 class Layout extends React.Component {
@@ -183,8 +185,7 @@ class Layout extends React.Component {
     if (elapsedTime > 900) {
       console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime);
       if (eventData.slowResponseCount > 10) {
-        alert('Slow response times detected. Please check your internet connection.');
-        this.setState({ eventData: {...eventData, slowResponseCount: 0 }})
+        this.setState({ eventData: {...eventData, slowResponseCount: 0 }, slowConnectionBanner: true})
       } else {
         this.setState({ eventData: {...eventData, slowResponseCount: eventData.slowResponseCount + 1 }})
       }
@@ -265,6 +266,12 @@ class Layout extends React.Component {
 
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
+        {this.state.slowConnectionBanner &&
+          <Banner
+            updateState={this.updateState}
+            content={'Slow response times detected. Please check your internet connection.'}
+          />
+        }
         <div className='game row'>
           {modal && <Modal
             page={page}
