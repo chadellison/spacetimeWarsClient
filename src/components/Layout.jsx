@@ -180,9 +180,9 @@ class Layout extends React.Component {
   handleReceivedEvent = (playerData) => {
     const {clockDifference, eventData} = this.state;
     const elapsedTime = Date.now() + clockDifference - playerData.serverTime;
-    if (elapsedTime > 700) {
+    if (elapsedTime > 900) {
       console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime);
-      if (eventData.slowResponseCount > 5) {
+      if (eventData.slowResponseCount > 10) {
         alert('Slow response times detected. Please check your internet connection.');
         this.setState({ eventData: {...eventData, slowResponseCount: 0 }})
       } else {
