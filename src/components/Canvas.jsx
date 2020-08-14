@@ -17,7 +17,7 @@ import {
 } from '../constants/settings.js';
 import {SHIPS, SUPPLY_SHIP, BOMBERS} from '../constants/ships.js';
 import {WEAPONS, ABILITY_WEAPONS, EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
-import {GAME_EFFECTS} from '../constants/effects.js';
+import {GAME_EFFECTS, SPRITE_IMAGES} from '../constants/effects.js';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -298,7 +298,7 @@ class Canvas extends React.Component {
           .map((effect, index) => {
             return(
               <img ref={effect.name}
-                src={effect.animation.spriteImage}
+                src={SPRITE_IMAGES[effect.animation.spriteIndex]}
                 className="hidden"
                 alt={effect.name}
                 key={`shipEffect${index}`}

@@ -17,7 +17,7 @@ export const GAME_EFFECTS = [
     color: 'rgba(7, 151, 24, 0.37)',
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: poisonAnimation,
+      spriteIndex: 0,
       width: 256,
       height: 256,
       renderWidth: 100,
@@ -38,7 +38,7 @@ export const GAME_EFFECTS = [
     color: 'rgba(142, 194, 215, 0.54)',
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: coldAnimation,
+      spriteIndex: 1,
       width: 177,
       height: 168,
       renderWidth: 150,
@@ -58,7 +58,7 @@ export const GAME_EFFECTS = [
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: damageReductionAnimation,
+      spriteIndex: 2,
       width: 166,
       height: 164,
       renderWidth: 150,
@@ -79,7 +79,7 @@ export const GAME_EFFECTS = [
     color: 'rgba(3, 2, 29, 0.62)',
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: stunAnimation,
+      spriteIndex: 3,
       width: 128,
       height: 128,
       renderWidth: 100,
@@ -114,7 +114,7 @@ export const GAME_EFFECTS = [
     color: 'rgba(19, 20, 22, 0.45)',
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: healAnimation,
+      spriteIndex: 4,
       width: 128,
       height: 128,
       renderWidth: 100,
@@ -135,7 +135,7 @@ export const GAME_EFFECTS = [
     color: 'rgba(7, 33, 151, 0.37)',
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: armorBoost,
+      spriteIndex: 5,
       width: 100,
       height: 103,
       renderWidth: 30,
@@ -155,7 +155,7 @@ export const GAME_EFFECTS = [
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: warpSpeedAnimation,
+      spriteIndex: 6,
       width: 128,
       height: 64,
       renderWidth: 50,
@@ -181,7 +181,7 @@ export const GAME_EFFECTS = [
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: damageBoostIcon,
+      spriteIndex: 7,
       width: 70,
       height: 70,
       renderWidth: 30,
@@ -201,7 +201,7 @@ export const GAME_EFFECTS = [
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: armorReductionAnimation,
+      spriteIndex: 8,
       width: 177,
       height: 168,
       renderWidth: 150,
@@ -214,4 +214,15 @@ export const GAME_EFFECTS = [
       yOffset: 0,
     }
   },
+]
+export const SPRITE_IMAGES = [
+  poisonAnimation,
+  coldAnimation,
+  damageReductionAnimation,
+  stunAnimation,
+  healAnimation,
+  armorBoost,
+  warpSpeedAnimation,
+  damageBoostIcon,
+  armorReductionAnimation,
 ]
