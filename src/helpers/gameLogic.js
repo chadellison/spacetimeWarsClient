@@ -57,12 +57,12 @@ const updateAiShips = (aiShips, index, handleGameEvent, clockDifference) => {
         const opponentTeam = ship.team === 'red' ? 'blue' : 'red'
         handleGameEvent({id: ship.id, team: opponentTeam, gameEvent: 'leak'});
       } else {
-        if (!ship.active) {
-          ship.explodeAnimation = updateAnimation(ship.explodeAnimation);
-        } else {
+        if (ship.active) {
           ship = handleHitpoints(ship, index, handleGameEvent)
           handleWall(ship);
           handleEffects(ship)
+        } else {
+          ship.explodeAnimation = updateAnimation(ship.explodeAnimation);
         }
         updatePlayer(ship, ANAIMATION_FRAME_RATE, clockDifference)
         updatedAiShips.push(ship);
@@ -75,21 +75,19 @@ const updateAiShips = (aiShips, index, handleGameEvent, clockDifference) => {
 
 const updatePlayers = (gameState, handleGameEvent, updateState) => {
   const {players, clockDifference, index} = gameState;
-  const updatedPlayers = [...players].map((player) => {
+  return [...players].map((player) => {
     if (player.active) {
       player = handleHitpoints(player, index, handleGameEvent);
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
 
       handleWall(player);
-      handleEffects(player)
+      handleEffects(player);
     } else if (!player.explodeAnimation.complete) {
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
       player.explodeAnimation = updateAnimation(player.explodeAnimation);
     }
     return player
   });
-
-  return updatedPlayers;
 }
 
 const handleRepeatedFire = (player, index, space, lastFired, deployedWeapons, updateState, handleGameEvent) => {
