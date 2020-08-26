@@ -204,7 +204,11 @@ class Layout extends React.Component {
       const sentTime = userEvents[playerData.eventId]
       this.handleClockUpdate(Date.now() - sentTime, playerData.updatedAt - sentTime);
       delete userEvents[playerData.eventId]
-      const eventData = handleAiEvents({...this.state.eventData, userEvents, slowResponseCount: 0}, playerData.team, this.handleGameEvent);
+      const eventData = handleAiEvents({
+        ...this.state.eventData,
+        userEvents,
+        slowResponseCount: 0
+      }, playerData.team, this.handleGameEvent);
 
       this.setState({eventData})
     }

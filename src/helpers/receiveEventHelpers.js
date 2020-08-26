@@ -33,7 +33,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     case 'bombers':
       return {aiShips: aiShips.concat(playerData.bombers)}
     case 'ability':
-      return handleAbility(players, deployedWeapons, playerData, elapsedTime, animations);
+      return handleAbility(players, deployedWeapons, playerData, elapsedTime, animations, aiShips);
     case 'leak':
       return handleLeakEvent(playerData, players, gameSocket);
     default:

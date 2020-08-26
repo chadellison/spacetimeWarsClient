@@ -65,8 +65,8 @@ export const GAME_EFFECTS = [
       renderHeight: 150,
       rowCount: 6,
       columnCount: 4,
-      rate: 1,
-      startRate: 1,
+      rate: 0,
+      startRate: 0,
       xOffset: 0,
       yOffset: 0,
     }

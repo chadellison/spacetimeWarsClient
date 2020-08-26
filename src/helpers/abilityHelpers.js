@@ -6,7 +6,7 @@ import {handleFireWeapon, handleAngle, handleLocation} from '../helpers/gameLogi
 import {playSound} from '../helpers/audioHelpers.js';
 import {GAME_ANIMATIONS} from '../constants/settings.js';
 
-export const handleAbility = (players, deployedWeapons, playerData, elapsedTime, animations) => {
+export const handleAbility = (players, deployedWeapons, playerData, elapsedTime, animations, aiShips) => {
   const ability = ABILITIES[SHIPS[playerData.shipIndex].abilities[playerData.usedAbility]]
   let newAnimmations = animations;
 
@@ -18,7 +18,7 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
   if (ability.type === 'weapon') {
     return addAbilityWeapon(ability.weaponIndex, deployedWeapons, playerData, elapsedTime);
   } else if (ability.type === 'effect') {
-    return addAbilityEffect(ability.effectIndex, [...players], playerData, elapsedTime, newAnimmations);
+    return addAbilityEffect(ability.effectIndex, [...players], playerData, elapsedTime, newAnimmations, aiShips);
   } else {
     return applyOtherAbility([...players], playerData, elapsedTime, newAnimmations);
   }
@@ -51,34 +51,39 @@ const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime)
   }
 }
 
-const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animations) => {
+const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animations, aiShips) => {
   let updatedPlayers = [...players]
+  let updatedAiShips = [...aiShips]
   let player = updatedPlayers[playerData.index]
 
-  let effect = {
-    ...GAME_EFFECTS[effectIndex],
-    durationCount: elapsedTime,
-    duration: GAME_EFFECTS[effectIndex].duration + (playerData.abilityLevel * 1000) - 1000
-  };
+  const duration = GAME_EFFECTS[effectIndex].duration + (playerData.abilityLevel * 1000) - 1000;
+  let effect = {...GAME_EFFECTS[effectIndex], duration, durationCount: elapsedTime }
 
   if (effect.id === 11 || (effect.id === 7 && player.shipIndex === 4)) {
     effect = effect.id === 7 ? {...effect, duration: 800 + (playerData.abilityLevel * 1000)} : effect
-
     updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect)
+    updatedAiShips = applyEffectToTeam(updatedAiShips, player.team, effect)
   } else if ([3, 12].includes(effect.id)) {
     const opponentTeam = player.team === 'red' ? 'blue' : 'red';
     updatedPlayers = applyEffectToTeam(updatedPlayers, opponentTeam, effect)
+    updatedAiShips = applyEffectToTeam(updatedAiShips, opponentTeam, effect)
   } else {
     player.effects = {...player.effects, [effect.id]: effect};
     updatedPlayers[playerData.index] = player;
   }
-  return  {players: updatedPlayers, animations};
+  return  {players: updatedPlayers, aiShips: updatedAiShips, animations};
 }
 
 const applyEffectToTeam = (players, team, effect) => {
   return players.map((player) => {
     if (player.team === team) {
-      player.effects = {...player.effects, [effect.id]: effect}
+      player.effects = {
+        ...player.effects,
+        [effect.id]: {
+          ...effect,
+          animation: effect.animation ? {...effect.animation, coordinates: {x: 0, y: 0}} : null
+        }
+      }
     }
     return player;
   });

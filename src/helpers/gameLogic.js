@@ -137,11 +137,8 @@ const handleHitpoints = (player, index, handleGameEvent) => {
 };
 
 export const canFire = (lastFired, cooldown, rapidFireFirect) => {
-  if (rapidFireFirect) {
-    return Date.now() - lastFired > (cooldown / 2);
-  } else {
-    return Date.now() - lastFired > cooldown;
-  }
+  const updatedCooldown = rapidFireFirect ? (cooldown / 2) : cooldown
+  return Date.now() - lastFired > updatedCooldown;
 }
 
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
