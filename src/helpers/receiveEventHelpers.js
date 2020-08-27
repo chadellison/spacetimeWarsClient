@@ -75,7 +75,7 @@ const handleBuff = (playerData, players, aiShips, elapsedTime) => {
   return {players: updatedPlayers, gameBuff: gameBuff, aiShips: updatedAiShips};
 }
 
-const explodePlayer = (player, playerData) => {
+export const explodePlayer = (player, playerData) => {
   player.hitpoints = 0;
   player.explodeAnimation = {...EXPLOSION_ANIMATIONS[2], coordinates: {x: 0, y: 0}}
   player.updatedAt = playerData.updatedAt;

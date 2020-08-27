@@ -124,11 +124,7 @@ class Layout extends React.Component {
             return player;
           }
         });
-        const aiShips = gameData.aiShips.map((ship) => {
-          const elapsedTime = Date.now() + clockDifference - ship.updatedAt
-          return updatePlayer(ship, elapsedTime, clockDifference);
-        });
-        this.setState({players, aiShips, defenseData: gameData.defenseData});
+        this.setState({players, defenseData: gameData.defenseData});
         this.createGameSocket()
     }).catch((error) => console.log('ERROR', error));
   };

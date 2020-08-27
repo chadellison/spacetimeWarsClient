@@ -14,6 +14,7 @@ import {updateAnimation} from '../helpers/animationHelpers';
 import {round} from '../helpers/mathHelpers.js';
 import {updateFrame} from '../helpers/animationHelpers.js';
 import {playSound} from '../helpers/audioHelpers.js';
+import {explodePlayer} from '../helpers/receiveEventHelpers.js';
 import {upgradeSound, GAME_ANIMATIONS} from '../constants/settings.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
@@ -140,7 +141,10 @@ const isLeak = (ship) => {
 
 const handleHitpoints = (player, index, handleGameEvent) => {
   if (player.hitpoints <= 0 && player.active && player.gameEvent !== 'explode') {
-    if (player.killedBy === index || (!player.killedBy && player.index === index)) {
+    const noKilledBy = [undefined, null].includes(player.killedBy);
+    if ((player.type === 'bomber' && player.gameEvent !== 'waiting') || (noKilledBy && player.type === 'supplyShip')) {
+      player = explodePlayer(player, player);
+    } else if (player.killedBy === index || (noKilledBy && player.index === index)) {
       player.gameEvent = 'explode';
       handleGameEvent(player);
     }
