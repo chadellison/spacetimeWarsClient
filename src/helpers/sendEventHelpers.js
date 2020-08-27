@@ -210,20 +210,30 @@ const createBombers = (iterationCount, team) => {
   while (iterationCount > 0) {
     if (iterationCount > 2000) {
       iterationCount -= 2000;
-      bombers.push({...BOMBERS[4], team, image: null, blueImage: null});
+      bombers.push(createBomber(4, team));
     } else if (iterationCount > 1000) {
       iterationCount -= 1000;
-      bombers.push({...BOMBERS[3], team, image: null, blueImage: null});
+      bombers.push(createBomber(3, team));
     } else if (iterationCount > 500) {
       iterationCount -= 500;
-      bombers.push({...BOMBERS[2], team, image: null, blueImage: null});
+      bombers.push(createBomber(2, team));
     } else if (iterationCount > 300) {
       iterationCount -= 300;
-      bombers.push({...BOMBERS[1], team, image: null, blueImage: null});
+      bombers.push(createBomber(1, team));
     } else if (iterationCount <= 300) {
-      bombers.push({...BOMBERS[0], team, image: null, blueImage: null});
+      bombers.push(createBomber(0, team));
       iterationCount = 0;
     }
   }
   return bombers;
+}
+
+const createBomber = (index, team) => {
+  return {
+    ...BOMBERS[index],
+    team,
+    image: null,
+    blueImage: null,
+    lastFired: Date.now(),
+  }
 }

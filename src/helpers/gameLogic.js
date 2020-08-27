@@ -6,7 +6,7 @@ import {
   explosionSound,
   mineTriggerSound
 } from '../constants/settings.js';
-import {SHIPS} from '../constants/ships.js';
+import {SHIPS, BOMBERS} from '../constants/ships.js';
 import {WEAPONS, EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage, getItem} from '../helpers/itemHelpers';
 import {handleEffects, updateGameBuff, createEffect} from '../helpers/effectHelpers';
@@ -20,7 +20,7 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
   const {clockDifference, gameBuff, index, aiShips, space, lastFired} = gameState;
   let updatedPlayers = updatePlayers(gameState, handleGameEvent, updateState);
   let deployedWeapons = handleRepeatedFire(updatedPlayers[index], index, space, lastFired, [...gameState.deployedWeapons], updateState, handleGameEvent);
-
+  deployedWeapons = handleAiWeapons(deployedWeapons, aiShips);
   let gameData = {
     players: updatedPlayers,
     weapons: removeOutOfBoundsShots(deployedWeapons),
@@ -36,6 +36,18 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
     gameBuff: updateGameBuff(gameBuff),
     animations: handleAnimations(gameData.animations),
   };
+};
+
+const handleAiWeapons = (weapons, aiShips) => {
+  aiShips.forEach((ship) => {
+    if (ship.active && ship.type === 'bomber' && canFire(ship.lastFired, WEAPONS[ship.weaponIndex].cooldown * 2, false)) {
+      const weapon = { ...WEAPONS[ship.weaponIndex] }
+      weapons.push(handleFireWeapon(ship, weapon, 0, weapon.damage));
+      ship.lastFired = Date.now();
+      playSound(WEAPONS[ship.weaponIndex].sound);
+    }
+  });
+  return weapons;
 };
 
 const handleAnimations = (animations) => {
@@ -128,7 +140,7 @@ const isLeak = (ship) => {
 
 const handleHitpoints = (player, index, handleGameEvent) => {
   if (player.hitpoints <= 0 && player.active && player.gameEvent !== 'explode') {
-    if (player.killedBy === index) {
+    if (player.killedBy === index || (!player.killedBy && player.index === index)) {
       player.gameEvent = 'explode';
       handleGameEvent(player);
     }
@@ -174,60 +186,94 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   return player
 }
 
-const applyHitToAll = (players, weapon, attacker, handleGameEvent) => {
+const applyHitToAll = (players, weapon, attacker) => {
   players.forEach((player) => {
     if (player.team !== weapon.team) {
-      applyHit(player, weapon, attacker, handleGameEvent)
+      applyHit(player, weapon, attacker)
     }
   });
 }
 
-export const handleWeapons = (gameData, handleGameEvent) => {
+const handleNuclearWeapon = (gameData, weapon, attacker) => {
+  applyHitToAll(gameData.players, weapon, attacker)
+  applyHitToAll(gameData.aiShips, weapon, attacker)
+
+  playSound(explosionSound);
+  const nuclearBlastAnimation = {...EXPLOSION_ANIMATIONS[1], location: weapon.location, coordinates: {x: 0, y: 0}}
+  gameData.animations.push(nuclearBlastAnimation);
+  return gameData;
+}
+
+const weaponFromPlayer = (gameData, weapon, newWeapons) => {
+  let attacker = gameData.players[weapon.playerIndex];
+  weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
+
+  handleCollision(gameData.players, weapon, attacker)
+  handleCollision(gameData.aiShips, weapon, attacker)
+
+  if (weapon.id) {
+    handleAbilityWeapons(gameData, weapon, attacker);
+  }
+
+  if (!weapon.removed) {
+    newWeapons.push(weapon);
+  }
+
+  if (attacker.levelUp) {
+    delete attacker.levelUp
+    attacker.level += 1;
+    playSound(upgradeSound);
+    gameData.animations.push({...GAME_ANIMATIONS[0], location: attacker.location, coordinates: {x: 0, y: 0}});
+  }
+  gameData.weapons = newWeapons;
+  return gameData;
+}
+
+export const handleWeapons = (gameData) => {
   let newWeapons = [];
   gameData.weapons.forEach((weapon) => {
-    let attacker = gameData.players[weapon.playerIndex];
-    weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
-    if (weapon.id === 1) {
-      if (Date.now() - weapon.deployedAt > 2000) {
-        applyHitToAll(gameData.players, weapon, attacker, handleGameEvent)
-        applyHitToAll(gameData.aiShips, weapon, attacker, handleGameEvent)
-
-        playSound(explosionSound);
-        const nuclearBlastAnimation = {...EXPLOSION_ANIMATIONS[1], location: weapon.location, coordinates: {x: 0, y: 0}}
-        gameData.animations.push(nuclearBlastAnimation);
-        weapon.removed = true
-      }
+    if (weapon.from === 'human') {
+      gameData = weaponFromPlayer(gameData, weapon, newWeapons);
     } else {
-      handleCollision(gameData.players, weapon, attacker, handleGameEvent)
-      handleCollision(gameData.aiShips, weapon, attacker, handleGameEvent)
-    }
-
-    if (weapon.id === 6 && (Date.now() - weapon.deployedAt) > 6000) {
-      weapon.removed = true
-    }
-
-    if (weapon.animation) {
-      updateFrame(weapon.animation);
-    }
-    if (!weapon.removed) {
-      newWeapons.push(weapon);
-    } else if (weapon.id === 3) {
-      const mineExplosionAnimation = {...EXPLOSION_ANIMATIONS[0], location: weapon.location, coordinates: {x: 0, y: 0}}
-      gameData.animations.push(mineExplosionAnimation);
-    } else if (weapon.id === 7) {
-      const meteorExplosion = {...EXPLOSION_ANIMATIONS[3], location: weapon.location, coordinates: {x: 0, y: 0}}
-      gameData.animations.push(meteorExplosion);
-    }
-    if (attacker.levelUp) {
-      delete attacker.levelUp
-      attacker.level += 1;
-      playSound(upgradeSound);
-      gameData.animations.push({...GAME_ANIMATIONS[0], location: attacker.location, coordinates: {x: 0, y: 0}});
+      gameData = weaponFromAi(gameData, weapon, newWeapons);
     }
   });
 
-  gameData.weapons = newWeapons;
+  return gameData;
+};
 
+const handleAbilityWeapons = (gameData, weapon, attacker) => {
+  if (weapon.id === 1) {
+    if (Date.now() - weapon.deployedAt > 2000) {
+      gameData = handleNuclearWeapon(gameData, weapon, attacker);
+      weapon.removed = true
+    }
+  } else if (weapon.id === 6 && (Date.now() - weapon.deployedAt) > 6000) {
+    weapon.removed = true
+  } else if (weapon.id === 3 && weapon.removed) {
+    const mineExplosionAnimation = {...EXPLOSION_ANIMATIONS[0], location: weapon.location, coordinates: {x: 0, y: 0}}
+    gameData.animations.push(mineExplosionAnimation);
+  } else if (weapon.id === 7 && weapon.removed) {
+    const meteorExplosion = {...EXPLOSION_ANIMATIONS[3], location: weapon.location, coordinates: {x: 0, y: 0}}
+    gameData.animations.push(meteorExplosion);
+  }
+
+  if (weapon.animation) {
+    updateFrame(weapon.animation);
+  }
+
+  return gameData;
+}
+
+const weaponFromAi = (gameData, weapon, newWeapons) => {
+  weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
+  handleCollision(gameData.players, weapon, {})
+  handleCollision(gameData.aiShips, weapon, {})
+
+  if (!weapon.removed) {
+    newWeapons.push(weapon);
+  }
+  gameData.weapons = newWeapons;
   return gameData;
 };
 
@@ -252,7 +298,7 @@ const findShipBoundingBoxes = (player) => {
   ];
 }
 
-const handleCollision = (players, weapon, attacker, handleGameEvent) => {
+const handleCollision = (players, weapon, attacker) => {
   players.forEach((player) => {
     if (player.team !== weapon.team && player.active) {
       const shipBoundingBoxes = findShipBoundingBoxes(player);
@@ -262,14 +308,14 @@ const handleCollision = (players, weapon, attacker, handleGameEvent) => {
         const distance = findHypotenuse(center, weaponCenter);
 
         if ((index < 3 && distance < (18 + weapon.damageRadius)) || (index > 2 && distance < 23 + weapon.damageRadius)) {
-          applyHit(player, weapon, attacker, handleGameEvent);
+          applyHit(player, weapon, attacker);
         }
       });
     };
   });
 }
 
-const applyHit = (player, weapon, attacker, handleGameEvent) => {
+const applyHit = (player, weapon, attacker) => {
   if (weapon.id === 3) {
     playSound(mineTriggerSound);
   }
@@ -278,16 +324,16 @@ const applyHit = (player, weapon, attacker, handleGameEvent) => {
     handleAbsorbDamage(player);
   } else {
     console.log('BLAM!');
-    updateCollisionData(player, weapon, attacker, handleGameEvent)
+    updateCollisionData(player, weapon, attacker)
   }
   if (![5, 6].includes(weapon.id)) {
     weapon.removed = true
   }
 };
 
-const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
+const updateCollisionData = (player, weapon, attacker) => {
   if (player.hitpoints > 0) {
-    player = handleNegativeBuff(player, weapon, attacker);
+    player = handleNegativeBuff(player, weapon);
     const damage = calculateDamage(weapon, player);
 
     player.hitpoints -= damage;
@@ -295,19 +341,21 @@ const updateCollisionData = (player, weapon, attacker, handleGameEvent) => {
       const newHitpoints = attacker.hitpoints - round(damage * 0.3)
       attacker.hitpoints = newHitpoints > 0 ? newHitpoints : 1;
     }
-    attacker = handlePositiveBuff(attacker, weapon);
-    attacker.score += round(damage * 0.1)
+    if (attacker.type === 'human') {
+      attacker = handlePositiveBuff(attacker, weapon);
+      attacker.score += round(damage * 0.1)
 
-    if (player.hitpoints <= 0) {
-      const bounty = round(player.score * 0.01 + 50);
-      player.killedBy = weapon.playerIndex
-      attacker.kills += 1
-      attacker.gold += bounty;
-      attacker.score += bounty;
+      if (player.hitpoints <= 0) {
+        const bounty = round(player.score * 0.01 + 50);
+        player.killedBy = weapon.playerIndex
+        attacker.kills += 1
+        attacker.gold += bounty;
+        attacker.score += bounty;
 
-    };
-    if (didLevelUp(attacker.level, attacker.score) && attacker.level < 10) {
-      attacker.levelUp = true;
+      };
+      if (didLevelUp(attacker.level, attacker.score) && attacker.level < 10) {
+        attacker.levelUp = true;
+      }
     }
   }
 };
@@ -378,7 +426,7 @@ const calculateDamage = (weapon, player) => {
 export const handleFireWeapon = (player, weapon, elapsedTime, damage) => {
   const angle = handleAngle(player, elapsedTime);
   const location = player.location;
-  const shipCenter = SHIPS[player.shipIndex].shipCenter;
+  const shipCenter = player.type === 'human' ? SHIPS[player.shipIndex].shipCenter : BOMBERS[player.index].shipCenter;
   const x = location.x + shipCenter.x - (weapon.width / 2);
   const y = location.y + shipCenter.y - (weapon.height / 2);
 
@@ -389,6 +437,7 @@ export const handleFireWeapon = (player, weapon, elapsedTime, damage) => {
   weapon.damage = damage;
   weapon.canStun = player.items[6];
   weapon.invisible = weapon.id === 3;
+  weapon.from = player.type;
 
   return weapon;
 };
