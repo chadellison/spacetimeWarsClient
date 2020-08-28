@@ -1,0 +1,17 @@
+.navIcon {
+  color: #2c66b2;
+  opacity: .5;
+  transition: ease-out .3s;
+  width: 4em;
+}
+
+.navIconImage {
+  margin-top: -1em;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.navIcon:hover {
+  opacity: 1;
+  cursor: pointer;
+}

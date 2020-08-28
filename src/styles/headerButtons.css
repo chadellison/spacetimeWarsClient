@@ -6,12 +6,11 @@
   width: 16em;
   margin-top: 1em;
   position: fixed;
-  margin-left: 75%;
+  margin-left: 85%;
 }
 
 .headerButton {
   font-size: 16px;
-  margin-left: 4em;
   color: #2c66b2;
   transition: ease-out .3s;
   display: inline-block;
