@@ -20,12 +20,12 @@ import stealthShipAbsorb from '../images/stealthAbsorb.png';
 import supplyShip from '../images/supplyShip.png';
 
 import redBomber from '../images/redBomber.png';
-import redBomber2 from '../images/redBomber2.png';
+import redBomber2 from '../images/redBomberShip2.png';
 import redBomber3 from '../images/redBomber3.png';
 import redBomber4 from '../images/redBomber4.png';
 import redBomber5 from '../images/redBomber5.png';
 import blueBomber from '../images/blueBomber.png';
-import blueBomber2 from '../images/blueBomber2.png';
+import blueBomber2 from '../images/blueBomberShip2.png';
 import blueBomber3 from '../images/blueBomber3.png';
 import blueBomber4 from '../images/blueBomber4.png';
 import blueBomber5 from '../images/blueBomber5.png';
