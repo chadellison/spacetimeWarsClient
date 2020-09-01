@@ -7,6 +7,13 @@
   color: #c1cadb
 }
 
+.leaderboardTitle {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-weight: bold;
+  font-size: 30px;
+}
+
 .introduction {
   font-size: 20px;
   height: 30px;

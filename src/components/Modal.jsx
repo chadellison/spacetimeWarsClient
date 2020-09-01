@@ -4,12 +4,14 @@ import {InformationModal} from './InformationModal';
 import {CreditsModal} from './CreditsModal';
 import {GameOverModal} from './GameOverModal';
 import {NameFormModal} from './NameFormModal';
+import {LeaderboardModal} from './LeaderboardModal';
 
 export const Modal = ({
   page,
   modal,
   index,
   userId,
+  scores,
   players,
   upgrades,
   activeTab,
@@ -46,16 +48,13 @@ export const Modal = ({
       />
       );
     case 'credits':
-      return <CreditsModal updateState={updateState} index={index}/>
+      return <CreditsModal updateState={updateState} />
     case 'nameForm':
       return <NameFormModal updateState={updateState} activePlayer={activePlayer} />
     case 'gameOver':
-      return (
-        <GameOverModal
-          gameOverStats={gameOverStats}
-          resetGame={resetGame}
-        />
-      )
+      return <GameOverModal gameOverStats={gameOverStats} resetGame={resetGame} />
+    case 'leaderboard':
+      return <LeaderboardModal scores={scores} updateState={updateState} />
     default:
       return <div></div>
   }

@@ -53,6 +53,7 @@ const DEFAULT_STATE = {
     slowResponseCount: 0,
   },
   slowConnectionBanner: false,
+  scores: [],
 };
 
 class Layout extends React.Component {
@@ -128,6 +129,14 @@ class Layout extends React.Component {
         this.createGameSocket()
     }).catch((error) => console.log('ERROR', error));
   };
+
+  handleLeaderBoard = () => {
+    fetch(`${API_HOST}/api/v1/scores`)
+      .then((response) => response.json())
+      .then((scoreData) => {
+        this.setState({ scores: scoreData, modal: 'leaderboard' });
+    }).catch((error) => console.log('ERROR', error));
+  }
 
   handleGameEvent = (eventPayload) => {
     let eventData = {...this.state.eventData}
@@ -248,6 +257,7 @@ class Layout extends React.Component {
       modal,
       index,
       userId,
+      scores,
       aiShips,
       players,
       gameBuff,
@@ -256,10 +266,10 @@ class Layout extends React.Component {
       howToPlay,
       animations,
       defenseData,
+      abilityData,
       gameOverStats,
       deployedWeapons,
       clockDifference,
-      abilityData,
     } = this.state;
 
     const activePlayer = this.findActivePlayer();
@@ -278,6 +288,7 @@ class Layout extends React.Component {
             modal={modal}
             index={index}
             userId={userId}
+            scores={scores}
             players={players}
             upgrades={upgrades}
             activeTab={activeTab}
@@ -295,7 +306,10 @@ class Layout extends React.Component {
             onClick={() => this.updateState({modal: 'selection'})}
             buttonText={'shop'}
           />}
-          <HeaderButtons updateState={this.updateState} />
+          {!modal && <HeaderButtons
+            updateState={this.updateState}
+            handleLeaderBoard={this.handleLeaderBoard}
+          />}
           {activePlayer.name && <PlayerData
             modal={modal}
             defenseData={defenseData}

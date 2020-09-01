@@ -146,7 +146,7 @@ const handleSendInterval = (players) => {
     }
   });
   if ([red, blue].includes(0)) {
-    return 15000;
+    return 10000;
   } else {
     return 60000;
   }

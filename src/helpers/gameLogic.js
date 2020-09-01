@@ -25,7 +25,7 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
   let gameData = {
     players: updatedPlayers,
     weapons: removeOutOfBoundsShots(deployedWeapons),
-    aiShips: updateAiShips(aiShips, index, handleGameEvent, clockDifference),
+    aiShips: updateAiShips(aiShips, index, handleGameEvent, clockDifference, updatedPlayers),
     animations: [...gameState.animations],
   }
   gameData = handleWeapons(gameData, handleGameEvent);
@@ -62,13 +62,21 @@ const handleAnimations = (animations) => {
   return updatedAnimations;
 }
 
-const updateAiShips = (aiShips, index, handleGameEvent, clockDifference) => {
+const updateAiShips = (aiShips, index, handleGameEvent, clockDifference, players) => {
   let updatedAiShips = [];
   [...aiShips].forEach((ship) => {
     if (!ship.explodeAnimation.complete) {
       if (isLeak(ship)) {
-        const opponentTeam = ship.team === 'red' ? 'blue' : 'red'
-        handleGameEvent({id: ship.id, team: opponentTeam, gameEvent: 'leak'});
+        let lowestIndex = players.length
+        players.forEach((player) => {
+          if (player.index < lowestIndex) {
+            lowestIndex = player.index;
+          }
+        });
+        if (index === lowestIndex) {
+          const opponentTeam = ship.team === 'red' ? 'blue' : 'red'
+          handleGameEvent({id: ship.id, team: opponentTeam, gameEvent: 'leak'});
+        }
       } else {
         if (ship.active) {
           ship = handleHitpoints(ship, index, handleGameEvent)
