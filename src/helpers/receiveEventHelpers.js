@@ -8,6 +8,7 @@ import {
   thruster,
   supplyPop,
   leakSound,
+  shipExplosionSound,
 } from '../constants/settings.js';
 import {WEAPONS} from '../constants/weapons.js';
 
@@ -76,6 +77,7 @@ const handleBuff = (playerData, players, aiShips, elapsedTime) => {
 }
 
 export const explodePlayer = (player, playerData) => {
+  playSound(shipExplosionSound);
   player.hitpoints = 0;
   player.explodeAnimation = {...EXPLOSION_ANIMATIONS[2], coordinates: {x: 0, y: 0}}
   player.updatedAt = playerData.updatedAt;

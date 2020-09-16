@@ -27,6 +27,7 @@ import electricFieldAudio from '../audio/electricFieldSound.mov';
 import armorReductionAudio from '../audio/armorReductionSound.mp3';
 import missileAudio from '../audio/missile.wav';
 import teleportAudio from '../audio/teleportSound.mp3';
+import shipExplosionAudio from '../audio/shipExplosionSound.mov';
 
 // images
 import levelUpAnimation from '../images/levelUpAnimation.png';
@@ -70,6 +71,7 @@ export const electricFieldSound = new Audio(electricFieldAudio);
 export const armorReductionSound = new Audio(armorReductionAudio);
 export const missileSound = new Audio(missileAudio);
 export const teleportSound = new Audio(teleportAudio);
+export const shipExplosionSound = new Audio(shipExplosionAudio);
 
 export const GAME_ANIMATIONS = [
   {
