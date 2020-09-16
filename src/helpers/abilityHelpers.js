@@ -67,6 +67,10 @@ const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animati
     const opponentTeam = player.team === 'red' ? 'blue' : 'red';
     updatedPlayers = applyEffectToTeam(updatedPlayers, opponentTeam, effect)
     updatedAiShips = applyEffectToTeam(updatedAiShips, opponentTeam, effect)
+  } else if (effect.id === 5) {
+    effect = { ...effect, duration: 8000 * playerData.abilityLevel }
+    player.effects = {...player.effects, [effect.id]: effect};
+    updatedPlayers[playerData.index] = player;
   } else {
     player.effects = {...player.effects, [effect.id]: effect};
     updatedPlayers[playerData.index] = player;
