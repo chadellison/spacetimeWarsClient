@@ -14,7 +14,7 @@ export const ITEMS = [
   {
     id: 1,
     index: 0,
-    price: 800,
+    price: 1200,
     name: 'Health boost',
     image: healthBoost,
     cooldown: 120000,
