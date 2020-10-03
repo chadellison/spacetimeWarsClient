@@ -60,9 +60,9 @@ export const SHIPS = [
   {
     index: 2,
     name: 'warrior',
-    price: 1700,
+    price: 700,
     armor: 1,
-    hitpoints: 700,
+    hitpoints: 1700,
     speed: 2.5,
     shipCenter: {x: 60.5, y: 18.5},
     image: redWarShip,
