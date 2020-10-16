@@ -4,6 +4,7 @@ import {ABILITIES} from '../constants/abilities.js';
 import {canFire, updatePlayer, handleFireWeapon, handlePlayerDamage} from '../helpers/gameLogic.js';
 import {playSound, stopSound} from '../helpers/audioHelpers.js';
 import {thruster, mineDropSound} from '../constants/settings.js';
+import faker from 'faker';
 
 import {
   BOARD_WIDTH,
@@ -232,6 +233,7 @@ const createBomber = (index, team) => {
   return {
     ...BOMBERS[index],
     team,
+    name: faker.name.findName(),
     image: null,
     blueImage: null,
     lastFired: Date.now(),

@@ -167,7 +167,7 @@ class Canvas extends React.Component {
     if (player.type === 'supplyShip') {
       imageReference = 'supplyShip';
     } else if (player.type === 'bomber') {
-      imageReference = player.team === 'blue' ? player.name + 'Blue' : player.name;
+      imageReference = player.team === 'blue' ? player.shipName + 'Blue' : player.shipName;
     } else {
       imageReference = SHIPS[player.shipIndex].name
       if (canAbsorbDamage(player)) {
@@ -319,10 +319,10 @@ class Canvas extends React.Component {
 
         {BOMBERS.map((bomber, index) => {
           return (
-            <img ref={bomber.name}
+            <img ref={bomber.shipName}
               src={bomber.image}
               className="hidden"
-              alt={bomber.name}
+              alt={bomber.shipName}
               key={`bomber${index}`}
             />
           );
@@ -330,10 +330,10 @@ class Canvas extends React.Component {
 
         {BOMBERS.map((bomber, index) => {
           return (
-            <img ref={`${bomber.name}Blue`}
+            <img ref={`${bomber.shipName}Blue`}
               src={bomber.blueImage}
               className="hidden"
-              alt={`blue-${bomber.name}`}
+              alt={`blue-${bomber.shipName}`}
               key={`blueBomber${index}`}
             />
           );
