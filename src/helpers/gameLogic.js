@@ -85,6 +85,7 @@ const updateAiShips = (aiShips, index, handleGameEvent, clockDifference, players
         } else {
           ship.explodeAnimation = updateAnimation(ship.explodeAnimation);
         }
+        ship.rotate = ship.type === 'bomber' ? rotateAiShip(ship.angle, ship.team) : 'left'
         updatePlayer(ship, ANAIMATION_FRAME_RATE, clockDifference)
         updatedAiShips.push(ship);
       }
@@ -92,6 +93,33 @@ const updateAiShips = (aiShips, index, handleGameEvent, clockDifference, players
   });
 
   return updatedAiShips;
+}
+
+const rotateAiShip = (angle, team) => {
+  const randomValue = Math.random();
+
+  if (randomValue > 0.7 || [0, 180].includes(angle)) {
+    if (team === 'red') {
+      if (angle > 280 || angle < 80) {
+        angle = getRandomAngle(randomValue);
+      }
+    } else {
+      if (angle > 100 && angle < 260) {
+        angle = getRandomAngle(randomValue);
+      }
+    }
+  }
+  return angle;
+}
+
+const getRandomAngle = (randomValue) => {
+  if (randomValue > 0.9) {
+    return 'left';
+  } else if (randomValue > 0.8) {
+    return 'right';
+  } else {
+    return 'nonte';
+  }
 }
 
 const updatePlayers = (gameState, handleGameEvent, updateState) => {
