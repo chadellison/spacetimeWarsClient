@@ -233,9 +233,23 @@ const createBomber = (index, team) => {
   return {
     ...BOMBERS[index],
     team,
+    flightPath: createFlightPath(),
     name: faker.name.findName(),
     image: null,
     blueImage: null,
     lastFired: Date.now(),
+    angle: team === 'red' ? 0 : 180,
+    trajectory: team === 'red' ? 0 : 180,
   }
+}
+
+const createFlightPath = () => {
+  let flightPath = []
+  let i = 0
+  const directions = ['left', 'right', 'none'];
+  while (i < 10) {
+    flightPath.push(directions[Math.floor(Math.random() * 3)]);
+    i += 1
+  }
+  return flightPath;
 }
