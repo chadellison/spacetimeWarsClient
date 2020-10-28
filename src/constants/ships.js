@@ -187,7 +187,7 @@ export const BOMBERS = [
     hitpoints: 1800,
     maxHitpoints: 1800,
     velocity: 3,
-    weaponIndex: 3,
+    weaponIndex: 5,
     accelerate: true,
     effects: {},
     items: {},
