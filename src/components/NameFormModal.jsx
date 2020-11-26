@@ -3,6 +3,7 @@ import '../styles/modal.css';
 import {GameButton} from './GameButton';
 import {playSound} from '../helpers/audioHelpers.js';
 import {mineDropSound} from '../constants/settings.js';
+import faker from 'faker';
 
 const updateName = (event, updateState, activePlayer) => {
   updateState({startingPlayer: {...activePlayer, name: event.target.value}})
@@ -11,6 +12,17 @@ const updateName = (event, updateState, activePlayer) => {
 const updateTeam = (updateState, activePlayer, team) => {
   playSound(mineDropSound)
   updateState({startingPlayer: {...activePlayer, team: team}})
+}
+
+const submitForm = (activePlayer, updateState) => {
+  if (activePlayer.name) {
+    updateState({modal: 'selection'})
+  } else {
+    updateState({
+      startingPlayer: {...activePlayer, name: faker.name.findName()},
+      modal: 'selection'
+    })
+  }
 }
 
 export const NameFormModal = ({updateState, activePlayer}) => {
@@ -39,7 +51,7 @@ export const NameFormModal = ({updateState, activePlayer}) => {
         className={`blueTeamButton ${activePlayer.team === 'blue' ? 'blueBackground' : ''}`}
       />
       <GameButton
-        onClick={() => updateState({modal: 'selection'})}
+        onClick={() => submitForm(activePlayer, updateState)}
         buttonText={'submit'}
         className={'paginateButton'}
       />
