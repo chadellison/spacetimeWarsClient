@@ -1,0 +1,8 @@
+.waveData {
+  position: fixed;
+  width: 100%;
+  margin-top: 0px;
+  padding-top: 1em;
+  height: 2.5em;
+  text-align: center;
+}

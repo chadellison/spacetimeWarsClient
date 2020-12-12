@@ -18,6 +18,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     userId,
     players,
     aiShips,
+    waveData,
     eventData,
     animations,
     gameSocket,
@@ -26,7 +27,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   } = gameState;
   switch (playerData.gameEvent) {
     case 'start':
-      return handleStartEvent(players, playerData, userId, eventData);
+      return handleStartEvent(players, playerData, userId, eventData, waveData);
     case 'explode':
       return handleExplodeEvent(players, aiShips, playerData, elapsedTime);
     case 'supplyShip':
@@ -113,10 +114,11 @@ const handleGameOver = (players, playerData, gameSocket) => {
     startingPlayer: {},
     deployedWeapons: [],
     gameOverStats: {playerStats: players, winningTeam: winningTeam},
+    waveData: {wave: 1, count: 5, active: false},
   }
 }
 
-const handleStartEvent = (players, playerData, userId, eventData) => {
+const handleStartEvent = (players, playerData, userId, eventData, waveData) => {
   let newPlayers = [...players];
   newPlayers[playerData.index] = playerData
 
@@ -128,6 +130,7 @@ const handleStartEvent = (players, playerData, userId, eventData) => {
       left: false,
       right: false,
       space: false,
+      waveData: {...waveData, active: true},
       players: newPlayers,
       index: playerData.index,
       eventData: updatedEventData,

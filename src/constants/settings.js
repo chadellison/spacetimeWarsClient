@@ -37,7 +37,6 @@ import teleportAnimation from '../images/teleportAnimation.png';
 // constants
 export const BOARD_WIDTH = 1800;
 export const BOARD_HEIGHT = 1125;
-export const EVENT_DIVIDER = 200;
 export const ANAIMATION_FRAME_RATE = 40;
 export const REQUEST_COUNT = 10;
 export const DRIFT = 2;

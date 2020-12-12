@@ -7,11 +7,12 @@ import {Modal} from './Modal';
 import {GameButton} from './GameButton';
 import {HeaderButtons} from './HeaderButtons';
 import {Banner} from './Banner';
+import {WaveData} from './WaveData';
 import '../styles/styles.css';
 import {ANAIMATION_FRAME_RATE, REQUEST_COUNT} from '../constants/settings.js';
 import {KEY_MAP} from '../constants/keyMap.js';
 import {updatePlayer, updateGameState} from '../helpers/gameLogic.js';
-import {keyDownEvent, keyUpEventPayload, handleAiEvents} from '../helpers/sendEventHelpers.js';
+import {keyDownEvent, keyUpEventPayload, createBombers} from '../helpers/sendEventHelpers.js';
 import {handleEventPayload} from '../helpers/receiveEventHelpers.js';
 
 const DEFAULT_STATE = {
@@ -44,16 +45,12 @@ const DEFAULT_STATE = {
   animations: [],
   howToPlay: false,
   eventData: {
-    lastSend: 0,
     count: 0,
-    shipCount: 0,
-    shipHitpoints: 100,
-    userEvents: {},
-    sendInterval: 30,
     slowResponseCount: 0,
   },
   slowConnectionBanner: false,
   scores: [],
+  waveData: {wave: 1, count: 15, active: false}
 };
 
 class Layout extends React.Component {
@@ -66,11 +63,34 @@ class Layout extends React.Component {
     this.syncClocks(REQUEST_COUNT)
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
-    this.interval = setInterval(() => this.renderGame(), ANAIMATION_FRAME_RATE);
+    this.interval = setInterval(this.renderGame, ANAIMATION_FRAME_RATE);
+    this.waveInterval = setInterval(this.updateWaveData, 1000);
   };
 
   componentWillUnmount() {
     clearInterval(this.interval);
+    clearInterval(this.waveInterval);
+  }
+
+  updateWaveData = () => {
+    const {waveData, players, index} = this.state;
+    const {wave, count, active} = waveData;
+    if (active) {
+      if (Math.random() > 0.95) {
+        this.handleGameEvent({gameEvent: 'supplyShip'});
+      }
+      if (count > 0) {
+        this.setState({waveData: {...waveData, count: count - 1} });
+      } else {
+        const opponentTeam = players[index].team === 'red' ? 'blue' : 'red';
+        this.handleGameEvent({
+          gameEvent: 'bombers',
+          team: opponentTeam,
+          bombers: createBombers(wave, opponentTeam)
+        });
+        this.setState({waveData: {...waveData, wave: wave + 1, count: 30} });
+      }
+    }
   }
 
   createGameSocket() {
@@ -140,7 +160,6 @@ class Layout extends React.Component {
 
   handleGameEvent = (eventPayload) => {
     let eventData = {...this.state.eventData}
-    let userEvents = {...eventData.userEvents};
     eventData.count += 1;
     const sentTime = Date.now();
     this.state.gameSocket.create({
@@ -148,8 +167,6 @@ class Layout extends React.Component {
       eventId: eventData.count,
       serverTime: sentTime + this.state.clockDifference
     });
-    userEvents[eventData.count] = sentTime;
-    eventData.userEvents = userEvents
     this.setState({eventData})
   };
 
@@ -195,29 +212,12 @@ class Layout extends React.Component {
         this.setState({ eventData: {...eventData, slowResponseCount: eventData.slowResponseCount + 1 }})
       }
     } else {
-      this.handleEventData(playerData);
       const gameState = handleEventPayload(this.state, playerData, elapsedTime);
       if (gameState) {
         this.setState(gameState)
       };
     }
   };
-
-  handleEventData = (playerData) => {
-    if (playerData.index === this.state.index) {
-      let userEvents = {...this.state.eventData.userEvents}
-      const sentTime = userEvents[playerData.eventId]
-      this.handleClockUpdate(Date.now() - sentTime, playerData.updatedAt - sentTime);
-      delete userEvents[playerData.eventId]
-      const eventData = handleAiEvents({
-        ...this.state.eventData,
-        userEvents,
-        slowResponseCount: 0
-      }, playerData.team, this.handleGameEvent);
-
-      this.setState({eventData})
-    }
-  }
 
   handleClockUpdate = (roundTripTime, difference) => {
     if (roundTripTime < this.state.shortestRoundTripTime) {
@@ -262,6 +262,7 @@ class Layout extends React.Component {
       players,
       gameBuff,
       upgrades,
+      waveData,
       activeTab,
       howToPlay,
       animations,
@@ -270,17 +271,21 @@ class Layout extends React.Component {
       gameOverStats,
       deployedWeapons,
       clockDifference,
+      slowConnectionBanner,
     } = this.state;
 
     const activePlayer = this.findActivePlayer();
 
     return (
       <div className="layout" onKeyDown={this.handleKeyDown}>
-        {this.state.slowConnectionBanner &&
+        {slowConnectionBanner &&
           <Banner
             updateState={this.updateState}
             content={'Slow response times detected. Please check your internet connection.'}
           />
+        }
+        {waveData.count < 16 && waveData.active &&
+          <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`}/>
         }
         <div className='game row'>
           {modal && <Modal

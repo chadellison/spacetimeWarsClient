@@ -9,7 +9,6 @@ import faker from 'faker';
 import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
-  EVENT_DIVIDER,
 } from '../constants/settings.js';
 
 export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState) => {
@@ -186,44 +185,25 @@ const canUseAbility = (ability, player, pressedKey) => {
   return Date.now() - ability.lastUsed > ABILITIES[SHIPS[player.shipIndex].abilities[pressedKey]].cooldown
 }
 
-export const handleAiEvents = (eventData, team, handleGameEvent) => {
-  if (eventData.count % EVENT_DIVIDER === 0) {
-    handleGameEvent({gameEvent: 'supplyShip'});
-  };
-  if (Date.now() - eventData.lastSend > eventData.sendInterval) {
-    let updatedEventData = {...eventData, userEvents: {}};
-    const opponentTeam = team === 'red' ? 'blue' : 'red';
-
-    handleGameEvent({
-      gameEvent: 'bombers',
-      team: opponentTeam,
-      bombers: createBombers(updatedEventData.count, opponentTeam)
-    });
-    updatedEventData.lastSend = Date.now();
-    return updatedEventData;
-  } else {
-    return eventData;
-  }
-}
-
-const createBombers = (iterationCount, team) => {
+export const createBombers = (wave, team) => {
   let bombers = [];
-  while (iterationCount > 0) {
-    if (iterationCount > 2000) {
-      iterationCount -= 2000;
+  while (wave > 0) {
+    if (wave > 10) {
+      wave -= 10;
       bombers.push(createBomber(4, team));
-    } else if (iterationCount > 1000) {
-      iterationCount -= 1000;
+    } else if (wave > 5) {
+      wave -= 5;
       bombers.push(createBomber(3, team));
-    } else if (iterationCount > 500) {
-      iterationCount -= 500;
+    } else if (wave > 3) {
+      wave -= 3;
       bombers.push(createBomber(2, team));
-    } else if (iterationCount > 300) {
-      iterationCount -= 300;
+    } else if (wave >= 2) {
+      wave -= 2;
       bombers.push(createBomber(1, team));
-    } else if (iterationCount <= 300) {
+    } else if (wave < 2) {
       bombers.push(createBomber(0, team));
-      iterationCount = 0;
+      bombers.push(createBomber(0, team));
+      wave = 0;
     }
   }
   return bombers;
