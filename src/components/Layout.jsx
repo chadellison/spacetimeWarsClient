@@ -76,7 +76,7 @@ class Layout extends React.Component {
     const {waveData, players, index} = this.state;
     const {wave, count, active} = waveData;
     if (active) {
-      if (Math.random() > 0.98) {
+      if (Math.random() > 0.97) {
         this.handleGameEvent({gameEvent: 'supplyShip'});
       }
       if (count > 0) {
