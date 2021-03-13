@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/modal.css';
 import {Ship} from './Ship';
 import {Weapon} from './Weapon';
@@ -125,43 +125,30 @@ const renderTabs = (activeTab, updateState, activePlayer) => {
   });
 };
 
-export class SelectionModal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      description: ''
-    }
-  }
-
-  updateDescription = (description) => {
-    this.setState({description})
-  }
-
-  render() {
-    const {
-      page,
-      players,
-      upgrades,
-      activeTab,
-      updateState,
-      activePlayer,
-      clockDifference,
-      handleGameEvent
-    } = this.props;
-    const experiencePoints = activePlayer.level - upgrades.reduce((accumulator, value) => accumulator + value, 1)
-    return (
-      <div className="modal">
-        <div className="modalTabs">
-          {renderTabs(activeTab, updateState, activePlayer)}
-        </div>
-        {renderStart(updateState, handleGameEvent, activePlayer, clockDifference)}
-        {activeTab === 'Upgrades' && <div className="experiencePoints">{'Experience points ' + experiencePoints}</div>}
-        {renderOptions(activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, this.updateDescription)}
-        <div className="description">
-          {this.state.description}
-        </div>
-        <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />
+export const SelectionModal = ({
+  page,
+  players,
+  upgrades,
+  activeTab,
+  updateState,
+  activePlayer,
+  clockDifference,
+  handleGameEvent
+}) => {
+  const experiencePoints = activePlayer.level - upgrades.reduce((accumulator, value) => accumulator + value, 1)
+  const [description, setDesscription] = useState('');
+  return (
+    <div className="modal">
+      <div className="modalTabs">
+        {renderTabs(activeTab, updateState, activePlayer)}
       </div>
-    );
-  }
-};
+      {renderStart(updateState, handleGameEvent, activePlayer, clockDifference)}
+      {activeTab === 'Upgrades' && <div className="experiencePoints">{'Experience points ' + experiencePoints}</div>}
+      {renderOptions(activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, (description) => setDesscription(description))}
+      <div className="description">
+        {description}
+      </div>
+      <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />
+    </div>
+  );
+}
