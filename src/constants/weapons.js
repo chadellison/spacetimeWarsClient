@@ -45,7 +45,7 @@ export const WEAPONS = [
     cooldown: 300,
     speed: 18,
     damage: 60,
-    price: 100,
+    price: 60,
     width: 16,
     height: 16,
     damageRadius: 2,

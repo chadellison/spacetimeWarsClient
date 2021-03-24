@@ -35,7 +35,7 @@ const DEFAULT_STATE = {
   page: 1,
   gameBuff: {},
   gameOverStats: {},
-  defenseData: { red: 10, blue: 10 },
+  defenseData: { red: 100, blue: 100 },
   abilityData: {
     q: {lastUsed: 0, level: 0},
     w: {lastUsed: 0, level: 0},
