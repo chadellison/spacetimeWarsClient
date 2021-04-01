@@ -86,7 +86,7 @@ export const SHIPS = [
   {
     index: 4,
     name: 'carrier',
-    price: 900,
+    price: 800,
     armor: 2,
     hitpoints: 2100,
     speed: 2,
