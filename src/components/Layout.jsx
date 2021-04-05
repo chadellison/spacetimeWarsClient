@@ -251,7 +251,7 @@ class Layout extends React.Component {
     this.setState(updatedGameState);
   };
 
-  render = () => {
+  render() {
     const {
       page,
       modal,

@@ -179,23 +179,17 @@ class Canvas extends React.Component {
     return this.state[imageReference];
   };
 
-  componentDidUpdate() {
-    const {gameBuff, index, players, aiShips, deployedWeapons, animations} = this.props;
-    const currentPlayer = players[index]
+  handleScroll = (currentPlayer) => {
     if (currentPlayer && currentPlayer.location) {
       window.scrollTo(
         currentPlayer.location.x - this.state.halfWindowWidth,
         currentPlayer.location.y - this.state.halfWindowHeight
       )
     }
-    const canvas = this.canvasRef.current;
-    const context = canvas.getContext('2d');
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    if (gameBuff.color) {
-      context.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
-      context.fillStyle = gameBuff.color;
-    }
+  }
 
+  handleShips = (players, context, index, gameBuff) => {
+    const { aiShips } = this.props
     players.concat(aiShips).forEach((player) => {
       const showShip = shouldRenderShip(player, index);
       if (player.active) {
@@ -213,19 +207,44 @@ class Canvas extends React.Component {
       };
       renderPlayerData(gameBuff, context, player, showShip)
     });
+  }
 
-    deployedWeapons.forEach((weapon) => {
-      if (!weapon.invisible || (currentPlayer && weapon.team === currentPlayer.team)) {
-        renderWeapon(context, weapon, this.state[weapon.name])
-      }
-    });
-
-    animations.forEach((animation) => {
+  renderAnimations = (context) => {
+    this.props.animations.forEach((animation) => {
       renderAnimation(context, this.state[animation.name], animation, animation.location);
     });
   }
 
+  renderWeapons = (currentPlayer, context) => {
+    this.props.deployedWeapons.forEach((weapon) => {
+      if (!weapon.invisible || (currentPlayer && weapon.team === currentPlayer.team)) {
+        renderWeapon(context, weapon, this.state[weapon.name])
+      }
+    });
+  }
+
+  renderCanvas = () => {
+    const {gameBuff, index, players} = this.props;
+    const currentPlayer = players[index]
+    this.handleScroll(currentPlayer)
+
+    const canvas = this.canvasRef.current;
+    if (canvas) {
+      const context = canvas.getContext('2d');
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      if (gameBuff.color) {
+        context.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
+        context.fillStyle = gameBuff.color;
+      }
+
+      this.handleShips(players, context, index, gameBuff);
+      this.renderWeapons(currentPlayer, context);
+      this.renderAnimations(context);
+    }
+  }
+
   render() {
+    this.renderCanvas();
     return (
       <div>
         <canvas
