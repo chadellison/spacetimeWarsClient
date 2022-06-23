@@ -413,21 +413,21 @@ const didLevelUp = (level, score) => {
 
 const handleNegativeBuff = (player, weapon) => {
   if (weapon.index === 5) {
-    const effect = createEffect(0, 3000);
+    const effect = createEffect(0, 3000, player.effects[1]);
     player.effects[effect.id] = effect;
   } else if (weapon.index === 6 || (weapon.id === 6 && !player.effects[2])) {
-    const effect = createEffect(1, 2000);
+    const effect = createEffect(1, 2000, player.effects[2]);
     player.effects[effect.id] = effect;
   } else if (weapon.id === 7) {
-    const slow = createEffect(1, 9000);
+    const slow = createEffect(1, 9000, player.effects[2]);
     player.effects[slow.id] = slow;
 
-    const poison = createEffect(0, 9000);
+    const poison = createEffect(0, 9000, player.effects[1]);
     player.effects[poison.id] = poison;
   }
 
   if ((weapon.canStun && Math.random() <= 0.1) || weapon.id === 2) {
-    const effect = createEffect(3, 3000);
+    const effect = createEffect(3, 3000, player.effects[4]);
     player.effects[effect.id] = effect;
   };
   return player;

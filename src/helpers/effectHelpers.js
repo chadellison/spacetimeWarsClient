@@ -54,12 +54,12 @@ const updateEffects = (effects, effect) => {
   }
 }
 
-export const createEffect = (index, duration) => {
-  let effect = {...GAME_EFFECTS[index]};
+export const createEffect = (index, duration, existingEffect) => {
+  const effect = {...GAME_EFFECTS[index]};
   return {
     ...effect,
     duration,
-    animation: {...effect.animation, coordinates: {x: 0, y: 0} }
+    animation: existingEffect ? existingEffect.animation : {...effect.animation, coordinates: {x: 0, y: 0} }
   }
 }
 

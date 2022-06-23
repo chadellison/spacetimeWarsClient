@@ -1,9 +1,8 @@
-import poisonAnimation from '../images/greenGasAnimation.png'
+import poisonAnimation from '../images/poisonAnimation2.png'
 import healAnimation from '../images/healAnimation.png'
-import armorBoost from '../images/armorBoost.png'
-import coldAnimation from '../images/coldEffectAnimation.png'
-import invulnerableAnimation from '../images/coldEffectAnimation.png'
-// import coldAnimation from '../images/slowAnimation.png'
+import armorBoost from '../images/armorBoostAnimation.png'
+import invulnerableAnimation from '../images/invulnerableAnimation.png'
+import coldAnimation from '../images/coldAnimation.png'
 import stunAnimation from '../images/stunAnimation.png'
 import warpSpeedAnimation from '../images/warpSpeedAnimation.png'
 import damageBoostIcon from '../images/damageBoostIcon.png';
@@ -20,12 +19,12 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteIndex: 0,
-      width: 256,
-      height: 256,
-      renderWidth: 100,
-      renderHeight: 100,
-      rowCount: 4,
-      columnCount: 4,
+      width: 400,
+      height: 225,
+      renderWidth: 400,
+      renderHeight: 225,
+      rowCount: 91,
+      columnCount: 1,
       rate: 1,
       startRate: 1,
       xOffset: 0,
@@ -45,7 +44,7 @@ export const GAME_EFFECTS = [
       height: 225,
       renderWidth: 400,
       renderHeight: 225,
-      rowCount: 150,
+      rowCount: 91,
       columnCount: 1,
       rate: 0,
       startRate: 0,
@@ -82,13 +81,13 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteIndex: 3,
-      width: 128,
-      height: 128,
-      renderWidth: 100,
-      renderHeight: 100,
-      rowCount: 4,
-      columnCount: 3,
-      rate: 1,
+      width: 400,
+      height: 225,
+      renderWidth: 400,
+      renderHeight: 225,
+      rowCount: 40,
+      columnCount: 1,
+      rate: 0,
       startRate: 1,
       xOffset: 0,
       yOffset: -50,
@@ -152,16 +151,16 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteIndex: 6,
-      width: 100,
-      height: 103,
-      renderWidth: 30,
-      renderHeight: 30,
-      rowCount: 1,
+      width: 400,
+      height: 225,
+      renderWidth: 400,
+      renderHeight: 225,
+      rowCount: 150,
       columnCount: 1,
-      rate: 1,
-      startRate: 1,
-      xOffset: 25,
-      yOffset: -25,
+      rate: 0,
+      startRate: 0,
+      xOffset: 0,
+      yOffset: 0,
     }
   },
   {

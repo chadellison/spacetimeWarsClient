@@ -2,7 +2,7 @@ import {ABILITY_WEAPONS} from '../constants/weapons.js';
 import {ABILITIES} from '../constants/abilities.js';
 import {GAME_EFFECTS} from '../constants/effects.js';
 import {SHIPS} from '../constants/ships.js';
-import {handleFireWeapon, handleAngle, handleLocation} from '../helpers/gameLogic.js';
+import {handleFireWeapon, handleAngle, handleLocation, findCenterCoordinates} from '../helpers/gameLogic.js';
 import {playSound} from '../helpers/audioHelpers.js';
 import {GAME_ANIMATIONS} from '../constants/settings.js';
 
@@ -28,7 +28,10 @@ const applyOtherAbility = (players, playerData, newAnimmations) => {
   let player = players[playerData.index];
   const distance = 200 * playerData.abilityLevel;
   player.location = handleLocation(player.angle, player.location, distance);
-  const teleportAnimation = {...GAME_ANIMATIONS[2], location: player.location, coordinates: {x: 0, y: 0}};
+  const shipCenter = SHIPS[player.shipIndex].shipCenter;
+  const teleportAnimation = {...GAME_ANIMATIONS[2], coordinates: {x: 0, y: 0}};
+  const coordinates = findCenterCoordinates(player.location, shipCenter, {width: teleportAnimation.renderWidth, height: teleportAnimation.renderHeight})
+  teleportAnimation.location = coordinates;
   players[player.index] = player;
   return { players, animations: newAnimmations.concat(teleportAnimation) }
 }
