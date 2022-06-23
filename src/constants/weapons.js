@@ -1,19 +1,19 @@
 // weapons
-import fireball from '../images/fireball.png';
+import fireballAnimation from '../images/fireballAnimation.png';
 import displayFireball from '../images/displayFireball.png';
 import missile from '../images/missile.png';
 import displayMissile from '../images/displayMissile.png';
 import trifecta from '../images/trifecta.png';
 import displayTrifecta from '../images/displayTrifecta.png';
-import poisonCannon from '../images/poisonCannon.png';
+import poisonCannonAnimation from '../images/poisonCannonAnimation.png';
 import displayPoisonCannon from '../images/displayPoisonCannon.png';
 import bomb from '../images/bomb.png';
 import displayBomb from '../images/displayBomb.png';
-import laser from '../images/laser.png';
+import laserAnimation from '../images/laserAnimation.png';
+// import laser from '../images/laser.png';
 import displayLaser from '../images/displayLaser.png';
-import blueFire from '../images/blueFire.png';
 import displayBlueFire from '../images/displayBlueFire.png';
-import plasmaCannon from '../images/plasmaCannon.png';
+import plasmaCannonAnimation from '../images/plasmaCannonAnimation.png';
 import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
 import spaceMine from '../images/spaceMine.png';
 import nuclearExplosionAnimation from '../images/nuclearExplosionAnimation.png';
@@ -23,18 +23,35 @@ import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
 import stunGunAnimation from '../images/stunGunAnimation.png';
 import meteorShowerAnimation from '../images/meteorShowerAnimation.png';
 import piercerAnimation from '../images/piercerAnimation.png';
-import electricFieldAnimation from '../images/electricFieldAnimation.png';
+import electricFieldAnimation from '../images/redEnergyAnimation.png';
+// import electricFieldAnimation from '../images/electricFieldAnimation.png';
 import redMeteorAnimation from '../images/redMeteorAnimation.png';
 import meteorExplosionAnimation from '../images/meteorExplosionAnimation.png';
+import coldShotAnimation from '../images/coldShotAnimation.png';
 
 import cannonAudio from '../audio/cannon.wav';
-import missileAudio from '../audio/missile.wav';
+import missileAudio from '../audio/missile2.wav';
 import trifectaAudio from '../audio/trifecta.wav';
 import bombAudio from '../audio/bomb.wav';
 import plasmaCannonAudio from '../audio/plasmaSound.wav';
 import laserAudio from '../audio/laser.wav';
 import lightLazer from '../audio/lightLazer.mp3';
-import mediumLaser from '../audio/mediumLaser.mp3';
+import mediumLaser from '../audio/mediumLaser.wav';
+
+const AUDIO = [
+  cannonAudio,
+  missileAudio,
+  bombAudio,
+  laserAudio,
+  trifectaAudio,
+  lightLazer,
+  plasmaCannonAudio,
+  mediumLaser
+].map((audio) => {
+  const audioObject = new Audio(audio);
+  audioObject.volume = 0.2;
+  return audioObject;
+});
 
 export const WEAPONS = [
   {
@@ -46,13 +63,26 @@ export const WEAPONS = [
     speed: 18,
     damage: 60,
     price: 60,
-    width: 16,
-    height: 16,
+    width: 80,
+    height: 40,
     damageRadius: 2,
     ability: 'none',
-    sound: new Audio(cannonAudio),
-    image: fireball,
-    selectionImage: displayFireball
+    sound: AUDIO[0],
+    selectionImage: displayFireball,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: fireballAnimation,
+      width: 128,
+      height: 64,
+      rowCount: 4,
+      columnCount: 2,
+      rate: 1,
+      startRate: 1,
+      renderWidth: 80,
+      renderHeight: 40,
+      xOffset: 0,
+      yOffset: 0
+    }
   },
   {
     index: 1,
@@ -63,11 +93,11 @@ export const WEAPONS = [
     speed: 20,
     damage: 100,
     price: 200,
-    width: 40,
-    height: 15,
-    damageRadius: 2,
+    width: 50,
+    height: 46,
+    damageRadius: 3,
     ability: 'none',
-    sound: new Audio(missileAudio),
+    sound: AUDIO[1],
     image: missile,
     selectionImage: displayMissile
   },
@@ -85,7 +115,7 @@ export const WEAPONS = [
     damageRadius: 3,
     image: bomb,
     ability: 'none',
-    sound: new Audio(bombAudio),
+    sound: AUDIO[2],
     selectionImage: displayBomb
   },
   {
@@ -97,13 +127,26 @@ export const WEAPONS = [
     speed: 24,
     damage: 135,
     price: 950,
-    width: 40,
-    height: 16,
+    width: 75,
+    height: 45,
     damageRadius: 2,
-    image: laser,
     ability: 'energy steal: 15% of damage dealt will be added to your hitpoints',
-    sound: new Audio(laserAudio),
-    selectionImage: displayLaser
+    sound: AUDIO[3],
+    selectionImage: displayLaser,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: laserAnimation,
+      width: 128,
+      height: 72,
+      rowCount: 5,
+      columnCount: 3,
+      rate: 1,
+      startRate: 1,
+      renderWidth: 75,
+      renderHeight: 45,
+      xOffset: 0,
+      yOffset: 0
+    }
   },
   {
     index: 4,
@@ -119,7 +162,7 @@ export const WEAPONS = [
     damageRadius: 2,
     ability: 'critical damage: 20% chance to do double damage',
     image: trifecta,
-    sound: new Audio(trifectaAudio),
+    sound: AUDIO[4],
     selectionImage: displayTrifecta
   },
   {
@@ -131,13 +174,26 @@ export const WEAPONS = [
     speed: 22,
     damage: 80,
     price: 1000,
-    width: 16,
-    height: 16,
-    damageRadius: 3,
+    width: 100,
+    height: 50,
+    damageRadius: 6,
     ability: 'poison damage: drains 17% of opponent\'s total hitpoints over 3 seconds',
-    image: poisonCannon,
-    sound: new Audio(lightLazer),
-    selectionImage: displayPoisonCannon
+    sound: AUDIO[5],
+    selectionImage: displayPoisonCannon,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: poisonCannonAnimation,
+      width: 128,
+      height: 64,
+      rowCount: 1,
+      columnCount: 6,
+      rate: 1,
+      startRate: 1,
+      renderWidth: 100,
+      renderHeight: 50,
+      xOffset: 0,
+      yOffset: 0
+    }
   },
   {
     index: 6,
@@ -145,16 +201,29 @@ export const WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     cooldown: 350,
-    speed: 20,
+    speed: 18,
     damage: 80,
     price: 300,
-    width: 20,
-    height: 20,
-    damageRadius: 3,
+    width: 80,
+    height: 40,
+    damageRadius: 5,
     ability: 'cold damage: significanlty slows enemy speed for two seconds',
-    image: blueFire,
-    sound: new Audio(plasmaCannonAudio),
-    selectionImage: displayBlueFire
+    sound: AUDIO[6],
+    selectionImage: displayBlueFire,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: coldShotAnimation,
+      width: 128,
+      height: 64,
+      rowCount: 4,
+      columnCount: 2,
+      rate: 1,
+      startRate: 1,
+      renderWidth: 80,
+      renderHeight: 40,
+      xOffset: 0,
+      yOffset: 0
+    }
   },
   {
     index: 7,
@@ -165,13 +234,26 @@ export const WEAPONS = [
     speed: 18,
     damage: 130,
     price: 750,
-    width: 20,
-    height: 20,
-    damageRadius: 3,
+    width: 100,
+    height: 50,
+    damageRadius: 6,
     ability: 'armor piercing damage: disregards all armor on enemy ship',
-    image: plasmaCannon,
-    sound: new Audio(mediumLaser),
-    selectionImage: displayPlasmaCannon
+    sound: AUDIO[7],
+    selectionImage: displayPlasmaCannon,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteImage: plasmaCannonAnimation,
+      width: 128,
+      height: 64,
+      rowCount: 1,
+      columnCount: 5,
+      rate: 1,
+      startRate: 1,
+      renderWidth: 100,
+      renderHeight: 50,
+      xOffset: 0,
+      yOffset: 0
+    }
   }
 ];
 
@@ -206,10 +288,10 @@ export const ABILITY_WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 14,
-    width: 120,
-    height: 60,
+    width: 240,
+    height: 120,
     damage: 230,
-    damageRadius: 12,
+    damageRadius: 24,
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: stunGunAnimation,
@@ -218,8 +300,8 @@ export const ABILITY_WEAPONS = [
       rowCount: 4,
       columnCount: 2,
       rate: 1,
-      renderWidth: 120,
-      renderHeight: 60,
+      renderWidth: 240,
+      renderHeight: 120,
       startRate: 1,
       xOffset: 0,
       yOffset: 0,
@@ -231,9 +313,9 @@ export const ABILITY_WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 0,
-    width: 80,
-    height: 80,
-    damageRadius: 16,
+    width: 100,
+    height: 100,
+    damageRadius: 30,
     damage: 400,
     image: spaceMine
   },
@@ -243,9 +325,9 @@ export const ABILITY_WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 10,
-    width: 20,
-    height: 20,
-    damageRadius: 3,
+    width: 30,
+    height: 30,
+    damageRadius: 5,
     damage: 200,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -255,8 +337,8 @@ export const ABILITY_WEAPONS = [
       rowCount: 1,
       columnCount: 5,
       rate: 1,
-      renderWidth: 100,
-      renderHeight: 50,
+      renderWidth: 150,
+      renderHeight: 75,
       startRate: 1,
       xOffset: 0,
       yOffset: 0,
@@ -268,10 +350,10 @@ export const ABILITY_WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 14,
-    width: 180,
-    height: 90,
+    width: 270,
+    height: 135,
     damage: 80,
-    damageRadius: 4,
+    damageRadius: 6,
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: piercerAnimation,
@@ -280,8 +362,8 @@ export const ABILITY_WEAPONS = [
       rowCount: 4,
       columnCount: 2,
       rate: 1,
-      renderWidth: 180,
-      renderHeight: 90,
+      renderWidth: 270,
+      renderHeight: 135,
       startRate: 1,
       xOffset: 0,
       yOffset: 0,
@@ -294,18 +376,18 @@ export const ABILITY_WEAPONS = [
     trajectory: 0,
     speed: 0,
     width: 400,
-    height: 400,
-    damageRadius: 125,
+    height: 225,
+    damageRadius: 200,
     damage: 1,
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: electricFieldAnimation,
-      width: 256,
-      height: 256,
+      width: 400,
+      height: 225,
       renderWidth: 400,
-      renderHeight: 400,
-      rowCount: 4,
-      columnCount: 7,
+      renderHeight: 225,
+      rowCount: 89,
+      columnCount: 1,
       rate: 0,
       startRate: 0,
       xOffset: 0,
@@ -318,17 +400,17 @@ export const ABILITY_WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 20,
-    width: 60,
-    height: 30,
-    damageRadius: 10,
+    width: 90,
+    height: 45,
+    damageRadius: 15,
     damage: 100,
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: redMeteorAnimation,
       width: 128,
       height: 64,
-      renderWidth: 60,
-      renderHeight: 30,
+      renderWidth: 90,
+      renderHeight: 45,
       rowCount: 4,
       columnCount: 2,
       rate: 0,

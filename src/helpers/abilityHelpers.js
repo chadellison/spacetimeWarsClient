@@ -20,11 +20,11 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
   } else if (ability.type === 'effect') {
     return addAbilityEffect(ability.effectIndex, [...players], playerData, elapsedTime, newAnimmations, aiShips);
   } else {
-    return applyOtherAbility([...players], playerData, elapsedTime, newAnimmations);
+    return applyOtherAbility([...players], playerData, newAnimmations);
   }
 }
 
-const applyOtherAbility = (players, playerData, elapsedTime, newAnimmations) => {
+const applyOtherAbility = (players, playerData, newAnimmations) => {
   let player = players[playerData.index];
   const distance = 200 * playerData.abilityLevel;
   player.location = handleLocation(player.angle, player.location, distance);
@@ -34,7 +34,7 @@ const applyOtherAbility = (players, playerData, elapsedTime, newAnimmations) => 
 }
 
 const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime) => {
-  let weapon = {...ABILITY_WEAPONS[weaponIndex], deployedAt: Date.now() - elapsedTime}
+  const weapon = {...ABILITY_WEAPONS[weaponIndex], deployedAt: Date.now() - elapsedTime}
   if (weapon.id === 4) {
     return handleMeteorShower(deployedWeapons, playerData, weapon, elapsedTime);
   } else {
@@ -114,6 +114,7 @@ const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime) => {
       playerIndex: player.index,
       team: player.team,
       damage: 200 * player.abilityLevel,
+      from: player.type
     }
   });
   return {deployedWeapons: deployedWeapons.concat(meteors)}

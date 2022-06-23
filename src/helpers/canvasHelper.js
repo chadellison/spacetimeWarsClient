@@ -1,5 +1,6 @@
 import {findColor} from '../helpers/colorHelpers.js';
 import {round} from '../helpers/mathHelpers.js';
+import {isInvisable} from '../helpers/gameLogic.js';
 
 export const drawShip = (context, player, ship, warpSpeed) => {
   handleDirection(context, ship, player.location, player.angle)
@@ -23,7 +24,7 @@ export const renderWeapon = (context, weapon, image) => {
   context.restore();
 }
 
-export const handleAnimatedWeapon = (context, weapon, spriteImage) => {
+const handleAnimatedWeapon = (context, weapon, spriteImage) => {
   const {x, y} = weapon.location;
   context.save();
   const cx = round(x + 0.5 * weapon.width);
@@ -70,11 +71,11 @@ const handleAcceleration = (context, player, ship) => {
 }
 
 export const shouldRenderShip = (player, index) => {
-  return (player.active) && (!player.effects[5] || (player.index === index));
+  return (player.active) && (!isInvisable(player.effects) || (player.index === index));
 }
 
 export const handleInvisibleFilter = (context, player, index) => {
-  if (player.effects[5] && player.index === index) {
+  if (isInvisable(player.effects) && player.index === index) {
     context.filter = 'opacity(0.5)';
   } else {
     context.filter = 'none';

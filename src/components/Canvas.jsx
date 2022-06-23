@@ -7,7 +7,7 @@ import {
   handleInvisibleFilter,
   renderWeapon,
 } from '../helpers/canvasHelper.js';
-import {canAbsorbDamage} from '../helpers/itemHelpers.js';
+import { findCenterCoordinates } from '../helpers/gameLogic';
 import '../styles/styles.css';
 import {round} from '../helpers/mathHelpers.js';
 import {
@@ -72,6 +72,7 @@ class Canvas extends React.Component {
     const poison = this.refs.poison
     const slow = this.refs.slow
     const stun = this.refs.stun
+    const invulnerable = this.refs.invulnerable
     const heal = this.refs.heal
     const armorBoost = this.refs.armorBoost
     const warpSpeed = this.refs.warpSpeed
@@ -93,8 +94,8 @@ class Canvas extends React.Component {
     const teleport = this.refs.teleport
 
     this.setState({
-      canvas: canvas,
-      context: context,
+      canvas,
+      context,
       hunter: hunter,
       hunterBlue: hunterBlue,
       hunterAbsorb: hunterAbsorb,
@@ -136,6 +137,7 @@ class Canvas extends React.Component {
       poison: poison,
       slow: slow,
       stun: stun,
+      invulnerable,
       heal: heal,
       armorBoost: armorBoost,
       warpSpeed: warpSpeed,
@@ -170,10 +172,8 @@ class Canvas extends React.Component {
       imageReference = player.team === 'blue' ? player.shipName + 'Blue' : player.shipName;
     } else {
       imageReference = SHIPS[player.shipIndex].name
-      if (canAbsorbDamage(player)) {
-        imageReference += 'Absorb';
-      } else if (player.team === 'blue') {
-          imageReference += 'Blue'
+      if (player.team === 'blue') {
+        imageReference += 'Blue'
       }
     }
     return this.state[imageReference];
@@ -194,11 +194,15 @@ class Canvas extends React.Component {
       const showShip = shouldRenderShip(player, index);
       if (player.active) {
         if (showShip) {
+
           handleInvisibleFilter(context, player, index);
           drawShip(context, player, this.handleImage(player), this.state.warpSpeed);
+          const shipCenter = ['supplyShip', 'bomber'].includes(player.type) ? {x: 60, y: 30} : SHIPS[player.shipIndex].shipCenter;
+
           Object.values(player.effects).forEach((effect) => {
             if (effect.animation && effect.id !== 9) {
-              renderAnimation(context, this.state[effect.name], effect.animation, player.location);
+              const effectCoordinates = findCenterCoordinates(player.location, shipCenter, {width: effect.animation?.renderWidth || 0, height: effect.animation?.renderHeight || 0});
+              renderAnimation(context, this.state[effect.name], effect.animation, effectCoordinates);
             }
           });
         }
@@ -273,20 +277,10 @@ class Canvas extends React.Component {
             />
           );
         })}
-        {SHIPS.map((ship, index) => {
-          return (
-            <img ref={`${ship.name}Absorb`}
-              src={ship.absorbImage}
-              className="hidden"
-              alt={`${ship.name} Absorb`}
-              key={`ship${index}Absorb`}
-            />
-          );
-        })}
         {WEAPONS.map((weapon, index) => {
           return(
             <img ref={weapon.name}
-              src={weapon.image}
+              src={weapon.animation ? weapon.animation.spriteImage : weapon.image}
               className="hidden"
               alt={weapon.name}
               key={`weapon${index}`}
@@ -313,7 +307,7 @@ class Canvas extends React.Component {
             />
           );
         })}
-        {GAME_EFFECTS.filter((effect, index) => effect.animation)
+        {GAME_EFFECTS.filter((effect) => effect.animation)
           .map((effect, index) => {
             return(
               <img ref={effect.name}

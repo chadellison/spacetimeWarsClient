@@ -168,7 +168,6 @@ const renderAbilityIcons = (activePlayer, playerAbilityData) => {
 
 const PlayerData = ({
   modal,
-  defenseData,
   abilityData,
   activePlayer,
   handleGameEvent,
@@ -195,9 +194,8 @@ const PlayerData = ({
         {renderSpeed(activePlayer)}
         <div className="ScoreInfo">{`Score: ${activePlayer.score}`}</div>
         <PlayerItems items={activePlayer.items} />
-        <div className="defenseData">Defenses</div>
-        <div className="redDefenseData">{defenseData.red}</div>
-        <div className="blueDefenseData">{defenseData.blue}</div>
+        <div className="lives">Lives</div>
+        <div className="playerLives">{activePlayer.lives}</div>
       </div>
     </div>
   );

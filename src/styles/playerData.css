@@ -86,7 +86,12 @@
   transform: rotate(270deg);
 }
 
-.redDefenseData {
+.lives {
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.playerLives {
   display: inline-block;
   font-size: 20px;
   font-weight: bold;
@@ -95,21 +100,6 @@
   padding-bottom: .75rem;
   margin-right: 1em;
 }
-
-.blueDefenseData {
-  display: inline-block;
-  font-size: 20px;
-  font-weight: bold;
-  color: #2c66b2;
-  padding-top: .75rem;
-  padding-bottom: .75rem;
-}
-
-.defenseData {
-  margin-top: 2em;
-  margin-bottom: 1em;
-}
-
 .startButton {
   font-size: 20px;
   transition: ease-in .3s;

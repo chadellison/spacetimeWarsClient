@@ -32,18 +32,6 @@ const renderHowToPlay = (howToPlay) => {
         <div className="informationText">
           <span className="instructionControl">"Q", "W", "E":</span> use ship ability respectively
         </div>
-        <div className="informationContext">
-          Each bomber that crosses the threshold reduces your team's defenses (starts at 10)
-        </div>
-        <div className="informationContext">
-          The red team's goal is to stop the blue bombers and the blue team's goal is to stop the red bombers.
-        </div>
-        <div className="informationContext">
-          The defense values will be located on the lower left of the screen during game play.
-        </div>
-        <div className="informationContext">
-          The first team to bring the opponents defenses down to 0 wins!
-        </div>
         <div className="noteText">Note the other tabs, "Upgrades" and "Items". As you collect more gold you</div>
         <div className="noteText">may return to this menu at any time to purchase ships, weapons, upgrades and items.</div>
         <div className="noteText">Information about each is listed below the icon (price, description, etc.).</div>

@@ -35,7 +35,6 @@ const DEFAULT_STATE = {
   page: 1,
   gameBuff: {},
   gameOverStats: {},
-  defenseData: { red: 100, blue: 100 },
   abilityData: {
     q: {lastUsed: 0, level: 0},
     w: {lastUsed: 0, level: 0},
@@ -145,7 +144,7 @@ class Layout extends React.Component {
             return player;
           }
         });
-        this.setState({players, defenseData: gameData.defenseData});
+        this.setState({players});
         this.createGameSocket()
     }).catch((error) => console.log('ERROR', error));
   };
@@ -266,7 +265,6 @@ class Layout extends React.Component {
       activeTab,
       howToPlay,
       animations,
-      defenseData,
       abilityData,
       gameOverStats,
       deployedWeapons,
@@ -298,7 +296,6 @@ class Layout extends React.Component {
             upgrades={upgrades}
             activeTab={activeTab}
             howToPlay={howToPlay}
-            defenseData={defenseData}
             resetGame={this.resetGame}
             activePlayer={activePlayer}
             gameOverStats={gameOverStats}
@@ -317,7 +314,6 @@ class Layout extends React.Component {
           />}
           {activePlayer.name && <PlayerData
             modal={modal}
-            defenseData={defenseData}
             activePlayer={activePlayer}
             clockDifference={clockDifference}
             handleGameEvent={this.handleGameEvent}

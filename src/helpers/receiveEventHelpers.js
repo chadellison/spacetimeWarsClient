@@ -6,8 +6,6 @@ import {playSound, stopSound} from '../helpers/audioHelpers.js';
 import {handleAbility} from '../helpers/abilityHelpers.js';
 import {
   thruster,
-  supplyPop,
-  leakSound,
   shipExplosionSound,
 } from '../constants/settings.js';
 import {WEAPONS} from '../constants/weapons.js';
@@ -29,15 +27,13 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     case 'start':
       return handleStartEvent(players, playerData, userId, eventData, waveData);
     case 'explode':
-      return handleExplodeEvent(players, aiShips, playerData, elapsedTime);
+      return handleExplodeEvent(players, aiShips, playerData, elapsedTime, gameSocket);
     case 'supplyShip':
       return {aiShips: [...aiShips, playerData]}
     case 'bombers':
       return {aiShips: aiShips.concat(playerData.bombers)}
     case 'ability':
       return handleAbility(players, deployedWeapons, playerData, elapsedTime, animations, aiShips);
-    case 'leak':
-      return handleLeakEvent(playerData, players, gameSocket);
     default:
       if (index !== playerData.index) {
         return handleUpdateEvent([...players], playerData, clockDifference, deployedWeapons, elapsedTime);
@@ -45,15 +41,20 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   };
 }
 
-const handleExplodeEvent = (players, aiShips, playerData, elapsedTime) => {
+const handleExplodeEvent = (players, aiShips, playerData, elapsedTime, gameSocket) => {
   if (playerData.type === 'human') {
     let updatedPlayers = [...players];
     let player = updatedPlayers[playerData.index]
     player = explodePlayer(player, playerData);
     updatedPlayers[playerData.index] = player
-    return {players: updatedPlayers}
+
+    if (updatedPlayers.filter(p => p.lives > 0).length === 0) {
+      return handleGameOver(updatedPlayers, playerData, gameSocket);
+    } else {
+      return {players: updatedPlayers}
+    }
   } else {
-    let updatedAiShips = [...aiShips].map((ship) => {
+    const updatedAiShips = [...aiShips].map((ship) => {
       if (playerData.id === ship.id && ship.active) {
         ship = explodePlayer(ship, ship)
       };
@@ -73,7 +74,6 @@ const handleBuff = (playerData, players, aiShips, elapsedTime) => {
   const team = players[playerData.killedBy].team;
   const updatedPlayers = applyGameBuff(team, [...players], gameBuff);
   const updatedAiShips = applyGameBuff(team, aiShips, gameBuff);
-  playSound(supplyPop);
   return {players: updatedPlayers, gameBuff: gameBuff, aiShips: updatedAiShips};
 }
 
@@ -90,21 +90,12 @@ export const explodePlayer = (player, playerData) => {
   player.effects = {};
   player.active = false;
   player.gameEvent = 'waiting';
+  player.lives -= 1;
   return player;
-}
-
-const handleLeakEvent = (playerData, players, gameSocket) => {
-  playSound(leakSound)
-  if (playerData.defenseData[playerData.team] < 1) {
-    return handleGameOver(players, playerData, gameSocket);
-  } else {
-    return { defenseData: playerData.defenseData }
-  }
 }
 
 const handleGameOver = (players, playerData, gameSocket) => {
   gameSocket.unsubscribe();
-  const winningTeam = playerData.team === 'red' ? 'blue' : 'red'
   return {
     index: null,
     players: [],
@@ -113,7 +104,7 @@ const handleGameOver = (players, playerData, gameSocket) => {
     modal: 'gameOver',
     startingPlayer: {},
     deployedWeapons: [],
-    gameOverStats: {playerStats: players, winningTeam: winningTeam},
+    gameOverStats: {playerStats: players, winningTeam: playerData.team},
     waveData: {wave: 1, count: 5, active: false},
   }
 }

@@ -9,7 +9,6 @@ import {LeaderboardModal} from './LeaderboardModal';
 export const Modal = ({
   page,
   modal,
-  index,
   userId,
   scores,
   players,
@@ -17,7 +16,6 @@ export const Modal = ({
   activeTab,
   resetGame,
   howToPlay,
-  defenseData,
   updateState,
   activePlayer,
   gameOverStats,
