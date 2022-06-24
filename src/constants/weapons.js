@@ -10,7 +10,6 @@ import displayPoisonCannon from '../images/displayPoisonCannon.png';
 import bomb from '../images/bomb.png';
 import displayBomb from '../images/displayBomb.png';
 import laserAnimation from '../images/laserAnimation.png';
-// import laser from '../images/laser.png';
 import displayLaser from '../images/displayLaser.png';
 import displayBlueFire from '../images/displayBlueFire.png';
 import plasmaCannonAnimation from '../images/plasmaCannonAnimation.png';
@@ -20,11 +19,10 @@ import nuclearExplosionAnimation from '../images/nuclearExplosionAnimation.png';
 import mineExplosionAnimation from '../images/mineExplosionAnimation.png';
 import nuclearBlastAnimation from '../images/nuclearBlastAnimation.png';
 import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
-import stunGunAnimation from '../images/stunGunAnimation.png';
+import stunGunAnimation from '../images/stunBoltAnimation.png';
 import meteorShowerAnimation from '../images/meteorShowerAnimation.png';
 import piercerAnimation from '../images/piercerAnimation.png';
 import electricFieldAnimation from '../images/redEnergyAnimation.png';
-// import electricFieldAnimation from '../images/electricFieldAnimation.png';
 import redMeteorAnimation from '../images/redMeteorAnimation.png';
 import meteorExplosionAnimation from '../images/meteorExplosionAnimation.png';
 import coldShotAnimation from '../images/coldShotAnimation.png';
@@ -128,7 +126,7 @@ export const WEAPONS = [
     damage: 135,
     price: 950,
     width: 75,
-    height: 45,
+    height: 41,
     damageRadius: 2,
     ability: 'energy steal: 15% of damage dealt will be added to your hitpoints',
     sound: AUDIO[3],
@@ -136,14 +134,14 @@ export const WEAPONS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: laserAnimation,
-      width: 128,
-      height: 72,
-      rowCount: 5,
-      columnCount: 3,
+      width: 300,
+      height: 169,
+      rowCount: 24,
+      columnCount: 1,
       rate: 1,
       startRate: 1,
       renderWidth: 75,
-      renderHeight: 45,
+      renderHeight: 41,
       xOffset: 0,
       yOffset: 0
     }
@@ -288,20 +286,20 @@ export const ABILITY_WEAPONS = [
     location: {x: 0, y: 0},
     trajectory: 0,
     speed: 14,
-    width: 240,
-    height: 120,
+    width: 300,
+    height: 169,
     damage: 230,
     damageRadius: 24,
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: stunGunAnimation,
-      width: 128,
-      height: 64,
-      rowCount: 4,
-      columnCount: 2,
+      width: 300,
+      height: 169,
+      rowCount: 30,
+      columnCount: 1,
       rate: 1,
-      renderWidth: 240,
-      renderHeight: 120,
+      renderWidth: 300,
+      renderHeight: 169,
       startRate: 1,
       xOffset: 0,
       yOffset: 0,

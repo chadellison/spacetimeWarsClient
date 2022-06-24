@@ -48,17 +48,6 @@ class Canvas extends React.Component {
     const stealthBlue = this.refs.stealthBlue
     const stealthAbsorb = this.refs.stealthAbsorb
 
-    const b1 = this.refs.b1
-    const b1Blue = this.refs.b1Blue
-    const b2 = this.refs.b2
-    const b2Blue = this.refs.b2Blue
-    const b3 = this.refs.b3
-    const b3Blue = this.refs.b3Blue
-    const b4 = this.refs.b4
-    const b4Blue = this.refs.b4Blue
-    const b5 = this.refs.b5
-    const b5Blue = this.refs.b5Blue
-
     const fireball = this.refs.fireball
     const missile = this.refs.missile
     const trifecta = this.refs.trifecta
@@ -76,6 +65,7 @@ class Canvas extends React.Component {
     const heal = this.refs.heal
     const armorBoost = this.refs.armorBoost
     const warpSpeed = this.refs.warpSpeed
+    const thruster = this.refs.thruster
     const nuclearBlast = this.refs.nuclearBlast
     const stunGun = this.refs.stunGun
     const spaceMine = this.refs.spaceMine
@@ -115,17 +105,6 @@ class Canvas extends React.Component {
       stealthBlue: stealthBlue,
       stealthAbsorb: stealthAbsorb,
 
-      b1: b1,
-      b1Blue: b1Blue,
-      b2: b2,
-      b2Blue: b2Blue,
-      b3: b3,
-      b3Blue: b3Blue,
-      b4: b4,
-      b4Blue: b4Blue,
-      b5: b5,
-      b5Blue: b5Blue,
-
       fireball: fireball,
       missile: missile,
       trifecta: trifecta,
@@ -141,6 +120,7 @@ class Canvas extends React.Component {
       heal: heal,
       armorBoost: armorBoost,
       warpSpeed: warpSpeed,
+      thruster,
       nuclearBlast: nuclearBlast,
       stunGun: stunGun,
       spaceMine: spaceMine,
@@ -196,7 +176,9 @@ class Canvas extends React.Component {
         if (showShip) {
 
           handleInvisibleFilter(context, player, index);
-          drawShip(context, player, this.handleImage(player), this.state.warpSpeed);
+
+          const thruster = player.effects[9] ? this.state.warpSpeed : this.state.thruster;
+          drawShip(context, player, this.handleImage(player), thruster);
           const shipCenter = ['supplyShip', 'bomber'].includes(player.type) ? {x: 60, y: 30} : SHIPS[player.shipIndex].shipCenter;
 
           Object.values(player.effects).forEach((effect) => {
@@ -326,28 +308,6 @@ class Canvas extends React.Component {
               className="hidden"
               alt={animation.name}
               key={`gameAnimation${index}`}
-            />
-          );
-        })}
-
-        {BOMBERS.map((bomber, index) => {
-          return (
-            <img ref={bomber.shipName}
-              src={bomber.image}
-              className="hidden"
-              alt={bomber.shipName}
-              key={`bomber${index}`}
-            />
-          );
-        })}
-
-        {BOMBERS.map((bomber, index) => {
-          return (
-            <img ref={`${bomber.shipName}Blue`}
-              src={bomber.blueImage}
-              className="hidden"
-              alt={`blue-${bomber.shipName}`}
-              key={`blueBomber${index}`}
             />
           );
         })}

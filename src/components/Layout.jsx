@@ -303,7 +303,7 @@ class Layout extends React.Component {
             clockDifference={clockDifference}
             handleGameEvent={this.handleGameEvent}
           />}
-          {activePlayer && !modal && <GameButton
+          {activePlayer && !modal && activePlayer.lives > 0 && <GameButton
             className={'gameButton'}
             onClick={() => this.updateState({modal: 'selection'})}
             buttonText={'shop'}

@@ -332,7 +332,12 @@ const removeOutOfBoundsShots = (weapons) => {
 };
 
 const findShipBoundingBoxes = (player) => {
-  const startCenter = ['supplyShip', 'bomber'].includes(player.type) ? {x: 60, y: 30} : SHIPS[player.shipIndex].shipCenter;
+  let startCenter = {x: 60, y: 30};
+  if (player.type === 'bomber') {
+    startCenter = BOMBERS[player.index].shipCenter;
+  } else if (player.type === 'human') {
+    startCenter = SHIPS[player.shipIndex].shipCenter;
+  }
   const shipCenter = {x: player.location.x + startCenter.x, y: player.location.y + startCenter.y}
 
   return [

@@ -13,17 +13,6 @@ import redStealthShip from '../images/redStealthShip.png';
 import blueStealthShip from '../images/blueStealthShip.png';
 import supplyShip from '../images/supplyShip.png';
 
-import redBomber from '../images/redBomber.png';
-import redBomber2 from '../images/redBomberShip2.png';
-import redBomber3 from '../images/redBomber3.png';
-import redBomber4 from '../images/redBomber4.png';
-import redBomber5 from '../images/redBomber5.png';
-import blueBomber from '../images/blueBomber.png';
-import blueBomber2 from '../images/blueBomberShip2.png';
-import blueBomber3 from '../images/blueBomber3.png';
-import blueBomber4 from '../images/blueBomber4.png';
-import blueBomber5 from '../images/blueBomber5.png';
-
 export const SHIPS = [
   {
     index: 0,
@@ -36,6 +25,7 @@ export const SHIPS = [
     image: destroyerShip,
     blueImage: blueDestroyerShip,
     abilities: {q: 0, w: 12, e: 15},
+    thrusterOffset: {x: 10, y: 2}
   },
   {
     index: 1,
@@ -47,7 +37,8 @@ export const SHIPS = [
     shipCenter: {x: 60.5, y: 51},
     image: hunterShip,
     blueImage: blueHunterShip,
-    abilities: {q: 1, w: 6, e: 7}
+    abilities: {q: 1, w: 6, e: 7},
+    thrusterOffset: {x: 20, y: 3}
   },
   {
     index: 2,
@@ -59,7 +50,8 @@ export const SHIPS = [
     shipCenter: {x: 60.5, y: 18.5},
     image: redWarShip,
     blueImage: blueWarShip,
-    abilities: {q: 2, w: 8, e: 14}
+    abilities: {q: 2, w: 8, e: 14},
+    thrusterOffset: {x: 10, y: 3}
   },
   {
     index: 3,
@@ -71,7 +63,8 @@ export const SHIPS = [
     shipCenter: {x: 60.5, y: 50.5},
     image: cruiserShip,
     blueImage: blueCruiserShip,
-    abilities: {q: 3, w: 9, e: 11}
+    abilities: {q: 3, w: 9, e: 11},
+    thrusterOffset: {x: 24, y: 3}
   },
   {
     index: 4,
@@ -83,7 +76,8 @@ export const SHIPS = [
     shipCenter: {x: 60.5, y: 42.5},
     image: carrierShip,
     blueImage: blueCarrierShip,
-    abilities: {q: 4, w: 10, e: 16}
+    abilities: {q: 4, w: 10, e: 16},
+    thrusterOffset: {x: 24, y: 3}
   },
   {
     index: 5,
@@ -95,14 +89,16 @@ export const SHIPS = [
     shipCenter: {x: 60.5, y: 57},
     image: redStealthShip,
     blueImage: blueStealthShip,
-    abilities: {q: 5, w: 13, e: 17}
+    abilities: {q: 5, w: 13, e: 17},
+    thrusterOffset: {x: 16, y: 3}
   }
 ];
 
 export const SUPPLY_SHIP = {
   name: 'supplyShip',
   shipCenter: {x: 60, y: 34},
-  image: supplyShip
+  image: supplyShip,
+  thrusterOffset: {x: 10, y: 2},
 }
 
 export const BOMBERS = [
@@ -110,7 +106,7 @@ export const BOMBERS = [
     index: 0,
     active: true,
     type: 'bomber',
-    shipName: 'b1',
+    shipName: 'destroyer',
     armor: 0,
     hitpoints: 200,
     maxHitpoints: 200,
@@ -122,15 +118,16 @@ export const BOMBERS = [
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
-    shipCenter: {x: 60.5, y: 57},
-    image: redBomber,
-    blueImage: blueBomber,
+    shipCenter: {x: 60.5, y: 37.5},
+    image: destroyerShip,
+    blueImage: blueDestroyerShip,
+    thrusterOffset: {x: 10, y: 2},
   },
   {
     index: 1,
     active: true,
     type: 'bomber',
-    shipName: 'b2',
+    shipName: 'hunter',
     armor: 1,
     hitpoints: 600,
     maxHitpoints: 600,
@@ -142,15 +139,16 @@ export const BOMBERS = [
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
-    shipCenter: {x: 60.5, y: 57},
-    image: redBomber2,
-    blueImage: blueBomber2,
+    shipCenter: {x: 60.5, y: 51},
+    image: hunterShip,
+    blueImage: blueHunterShip,
+    thrusterOffset: {x: 20, y: 3}
   },
   {
     index: 2,
     active: true,
     type: 'bomber',
-    shipName: 'b3',
+    shipName: 'warrior',
     armor: 3,
     hitpoints: 1200,
     maxHitpoints: 1200,
@@ -162,15 +160,16 @@ export const BOMBERS = [
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
-    shipCenter: {x: 60.5, y: 57},
-    image: redBomber3,
-    blueImage: blueBomber3,
+    shipCenter: {x: 60.5, y: 18.5},
+    image: redWarShip,
+    blueImage: blueWarShip,
+    thrusterOffset: {x: 10, y: 3}
   },
   {
     index: 3,
     active: true,
     type: 'bomber',
-    shipName: 'b4',
+    shipName: 'cruiser',
     armor: 1,
     hitpoints: 1800,
     maxHitpoints: 1800,
@@ -182,15 +181,16 @@ export const BOMBERS = [
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
-    shipCenter: {x: 60.5, y: 57},
-    image: redBomber4,
-    blueImage: blueBomber4,
+    shipCenter: {x: 60.5, y: 50.5},
+    image: cruiserShip,
+    blueImage: blueCruiserShip,
+    thrusterOffset: {x: 24, y: 3}
   },
   {
     index: 4,
     active: true,
     type: 'bomber',
-    shipName: 'b5',
+    shipName: 'stealth',
     armor: 4,
     hitpoints: 2400,
     maxHitpoints: 2400,
@@ -198,12 +198,13 @@ export const BOMBERS = [
     weaponIndex: 7,
     accelerate: true,
     effects: {},
-    items: { 10: { index: 9, durationCount: 0, cooldown: 0 } },
+    items: {},
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
     shipCenter: {x: 60.5, y: 57},
-    image: redBomber5,
-    blueImage: blueBomber5,
+    image: redStealthShip,
+    blueImage: blueStealthShip,
+    thrusterOffset: {x: 16, y: 3}
   },
 ];

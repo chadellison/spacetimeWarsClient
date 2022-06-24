@@ -1,18 +1,34 @@
 import {findColor} from '../helpers/colorHelpers.js';
 import {round} from '../helpers/mathHelpers.js';
 import {isInvisable} from '../helpers/gameLogic.js';
+import { GAME_ANIMATIONS } from '../constants/settings.js';
+import {BOMBERS, SHIPS} from '../constants/ships.js';
 
-export const drawShip = (context, player, ship, warpSpeed) => {
+export const drawShip = (context, player, ship, thruster) => {
   handleDirection(context, ship, player.location, player.angle)
   if (player.accelerate) {
-    if (player.effects[9]) {
-      renderAnimation(context, warpSpeed, player.effects[9].animation, player.location)
-    } else {
-      handleAcceleration(context, player, ship);
-    }
+    const thrusterAnimation = player.effects[9]?.animation || GAME_ANIMATIONS[3]
+    renderThruster(context, thruster, player, thrusterAnimation);
   }
 
   context.restore();
+}
+
+const renderThruster = (context, thruster, player, animation) => {
+  const ship = player.type === 'bomber' ? BOMBERS[player.index] : SHIPS[player.shipIndex]
+  const xOffset = player.location.x - ship.shipCenter.x - (animation.renderWidth / 2) + ship.thrusterOffset.x + animation.xOffset;
+  const yOffset = player.location.y + ship.shipCenter.y - (animation.renderHeight / 2) + ship.thrusterOffset.y + animation.yOffset;
+  context.drawImage(
+    thruster,
+    animation.coordinates.x,
+    animation.coordinates.y,
+    animation.width,
+    animation.height,
+    xOffset,
+    yOffset,
+    animation.renderWidth,
+    animation.renderHeight
+  )
 }
 
 export const renderWeapon = (context, weapon, image) => {
@@ -46,28 +62,6 @@ export const handleDirection = (context, image, location, trajectory) => {
   context.rotate((Math.PI / 180) * trajectory);
   context.translate(-cx, -cy);
   context.drawImage(image, x, y);
-}
-
-const handleAcceleration = (context, player, ship) => {
-  context.beginPath();
-  const halfShipHeight = round(ship.height / 2);
-  context.moveTo(player.location.x - 8, player.location.y + 4 + halfShipHeight);
-  context.lineTo(player.location.x - 8, player.location.y - 2 + halfShipHeight);
-  context.lineTo(player.location.x, player.location.y - 4 + halfShipHeight);
-  context.lineTo(player.location.x, player.location.y + 5 + halfShipHeight);
-
-  let grd = context.createLinearGradient(
-    player.location.x - 8,
-    round(player.location.y - 5 + halfShipHeight),
-    player.location.x,
-    round(player.location.y + 6 + halfShipHeight)
-  );
-  grd.addColorStop(0, "#5c93e6");
-  grd.addColorStop(1, "#f0f6ff");
-
-  context.stroke();
-  context.fillStyle = grd;
-  context.fill();
 }
 
 export const shouldRenderShip = (player, index) => {

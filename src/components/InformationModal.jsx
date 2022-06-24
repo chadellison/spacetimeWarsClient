@@ -1,7 +1,5 @@
 import React from 'react';
 import '../styles/modal.css';
-import redBomber from '../images/redBomber.png';
-import blueBomber from '../images/blueBomber.png';
 import {addPlayer} from '../helpers/playerHelpers.js';
 import {GameButton} from './GameButton';
 
@@ -48,10 +46,6 @@ export const InformationModal = ({updateState, howToPlay, userId, players}) => {
       <h2 className="informationTitle">Space Wars</h2>
       <div className="introduction">
         Shoot and destroy your opponents' "bombers" before they cross your team's edge of the screen.
-      </div>
-      <div>
-        <img src={redBomber} className="infoImage" alt="bomber" />
-        <img src={blueBomber} className="infoImage blueShipInfo" alt="bomber" />
       </div>
 
       <GameButton

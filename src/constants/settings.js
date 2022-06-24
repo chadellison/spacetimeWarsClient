@@ -31,6 +31,7 @@ import shipExplosionAudio from '../audio/shipExplosionSound.mov';
 import levelUpAnimation from '../images/levelUpAnimation.png';
 import blinkAnimation from '../images/invisibleAnimation.png';
 import teleportAnimation from '../images/teleportAnimation.png';
+import thrusterAnimation from '../images/thrusterAnimation.png'
 
 // constants
 export const BOARD_WIDTH = 1800;
@@ -84,7 +85,7 @@ export const GAME_ANIMATIONS = [
     xOffset: 0,
     yOffset: -50,
     renderWidth: 150,
-    renderHeight: 150,
+    renderHeight: 150
   },
   {
     name: 'blink',
@@ -100,7 +101,7 @@ export const GAME_ANIMATIONS = [
     xOffset: 0,
     yOffset: 0,
     renderWidth: 150,
-    renderHeight: 150,
+    renderHeight: 150
   },
   {
     name: 'teleport',
@@ -116,6 +117,22 @@ export const GAME_ANIMATIONS = [
     xOffset: 0,
     yOffset: 0,
     renderWidth: 400,
-    renderHeight: 225,
-  }
+    renderHeight: 225
+  },
+  {
+    name: 'thruster',
+    location: {x: 0, y: 0},
+    coordinates: {x: 0, y: 0},
+    spriteImage: thrusterAnimation,
+    width: 200,
+    height: 113,
+    renderWidth: 100,
+    renderHeight: 56,
+    rowCount: 10,
+    columnCount: 1,
+    rate: 0,
+    startRate: 0,
+    xOffset: 0,
+    yOffset: 0
+  },
 ];

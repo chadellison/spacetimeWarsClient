@@ -26,7 +26,7 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
 
 const applyOtherAbility = (players, playerData, newAnimmations) => {
   let player = players[playerData.index];
-  const distance = 200 * playerData.abilityLevel;
+  const distance = 300 * playerData.abilityLevel;
   player.location = handleLocation(player.angle, player.location, distance);
   const shipCenter = SHIPS[player.shipIndex].shipCenter;
   const teleportAnimation = {...GAME_ANIMATIONS[2], coordinates: {x: 0, y: 0}};

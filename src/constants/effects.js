@@ -4,10 +4,10 @@ import armorBoost from '../images/armorBoostAnimation.png'
 import invulnerableAnimation from '../images/invulnerableAnimation.png'
 import coldAnimation from '../images/coldAnimation.png'
 import stunAnimation from '../images/stunAnimation.png'
-import warpSpeedAnimation from '../images/warpSpeedAnimation.png'
+import warpSpeedAnimation from '../images/warpSpeedAnimation2.png'
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import damageReductionAnimation from '../images/damageReductionAnimation.png';
-import armorReductionAnimation from '../images/armorReductionAnimation.png';
+import armorReductionAnimation from '../images/reducedArmorAnimation.png';
 
 export const GAME_EFFECTS = [
   {
@@ -113,7 +113,7 @@ export const GAME_EFFECTS = [
       height: 225,
       renderWidth: 400,
       renderHeight: 225,
-      rowCount: 150,
+      rowCount: 105,
       columnCount: 1,
       rate: 0,
       startRate: 0,
@@ -171,16 +171,16 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteIndex: 7,
-      width: 128,
-      height: 64,
-      renderWidth: 50,
-      renderHeight: 50,
-      rowCount: 4,
-      columnCount: 2,
-      rate: 1,
-      startRate: 1,
-      xOffset: -30,
-      yOffset: 26,
+      width: 200,
+      height: 113,
+      renderWidth: 200,
+      renderHeight: 113,
+      rowCount: 24,
+      columnCount: 1,
+      rate: 0,
+      startRate: 0,
+      xOffset: 0,
+      yOffset: -2,
     }
   },
   {
@@ -217,12 +217,12 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteIndex: 9,
-      width: 177,
-      height: 168,
-      renderWidth: 150,
-      renderHeight: 150,
-      rowCount: 5,
-      columnCount: 5,
+      width: 400,
+      height: 225,
+      renderWidth: 200,
+      renderHeight: 112,
+      rowCount: 130,
+      columnCount: 1,
       rate: 0,
       startRate: 0,
       xOffset: 0,
