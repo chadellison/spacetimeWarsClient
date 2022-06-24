@@ -2,7 +2,7 @@ import nuclearExplosionIcon from '../images/nuclearExplosionIcon.png';
 import warpSpeedIcon from '../images/warpSpeedIcon.png';
 import mineIcon from '../images/mineIcon.png';
 import stunGunIcon from '../images/stunGunIcon.png';
-import invulnerabilityIcon from '../images/invulnerabilityIcon.png';
+import invulnerabilityIcon from '../images/invulnerableIcon.png';
 import stealthModeIcon from '../images/stealthMode.png';
 import meteorShowerIcon from '../images/meteorShowerIcon.png';
 import healingIcon from '../images/healthBoost.jpg';
@@ -10,11 +10,11 @@ import piercerIcon from '../images/piercerIcon.png';
 import rapidFireIcon from '../images/rapidFireIcon.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import damageReductionIcon from '../images/damageReductionIcon.png';
-import electricFieldIcon from '../images/electricFieldIcon.png';
+import energyFieldIcon from '../images/energyFieldIcon.png';
 import armorReductionIcon from '../images/armorReductionIcon.png';
 import redMeteorIcon from '../images/redMeteorIcon.png';
 import teleportIcon from '../images/teleportIcon.png';
-import armorBoost from '../images/armorBoost.png';
+import armorBoost from '../images/shieldIcon.png';
 import {
   windSound,
   warpSpeedSound,
@@ -138,7 +138,7 @@ export const ABILITIES = [
   {
     index: 11,
     type: 'effect',
-    description: 'Boosts armor by 4 for (15, 16, 17) seconds',
+    description: 'Surrounds the ship with a shield boosting its armor by 4 for (15, 16, 17) seconds',
     cooldown: 55000,
     effectIndex: 7,
     image: armorBoost,
@@ -147,10 +147,10 @@ export const ABILITIES = [
   {
     index: 12,
     type: 'weapon',
-    description: 'Creates an electric field dealing (25, 50, 75) damage per second and slowing enemy units who fly into this field ("W" key to use; 45s cooldown)',
+    description: 'Surrounds the ship with hot energy inflicting grevious damage on nearby ships (25, 50, 75) damage per second and slowing enemy units ("W" key to use; 45s cooldown)',
     cooldown: 45000,
     weaponIndex: 5,
-    image: electricFieldIcon,
+    image: energyFieldIcon,
     sound: electricFieldSound,
   },
   {
@@ -175,7 +175,7 @@ export const ABILITIES = [
     index: 15,
     type: '',
     weaponIndex: 6,
-    description: 'Teleports the ship a short distance (200, 400, 600) ("E" key to use; 35s cooldown)',
+    description: 'Teleports the ship a short distance (300, 600, 800) ("E" key to use; 35s cooldown)',
     cooldown: 35000,
     image: teleportIcon,
     sound: teleportSound,

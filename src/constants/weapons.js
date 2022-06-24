@@ -22,7 +22,7 @@ import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
 import stunGunAnimation from '../images/stunBoltAnimation.png';
 import meteorShowerAnimation from '../images/meteorShowerAnimation.png';
 import piercerAnimation from '../images/piercerAnimation.png';
-import electricFieldAnimation from '../images/redEnergyAnimation.png';
+import redEnergyAnimation from '../images/redEnergyAnimation.png';
 import redMeteorAnimation from '../images/redMeteorAnimation.png';
 import meteorExplosionAnimation from '../images/meteorExplosionAnimation.png';
 import coldShotAnimation from '../images/coldShotAnimation.png';
@@ -379,7 +379,7 @@ export const ABILITY_WEAPONS = [
     damage: 1,
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteImage: electricFieldAnimation,
+      spriteImage: redEnergyAnimation,
       width: 400,
       height: 225,
       renderWidth: 400,
