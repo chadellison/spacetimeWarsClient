@@ -105,6 +105,15 @@ export const renderPlayerData = (gameBuff, context, player, showShip) => {
   }
 };
 
+export const renderMotherShipData = (gameBuff, context, ship) => {
+  if (!gameBuff.color) {
+    context.font = "12px Arial";
+    context.fillStyle = findColor(ship.hitpoints, ship.maxHitpoints);
+    context.beginPath();
+    context.fillRect(ship.location.x + 15, ship.location.y + 90, round((ship.hitpoints * 190) / ship.maxHitpoints), 4);
+  }
+};
+
 const renderHealthBar = (context, player) => {
   context.beginPath();
   context.fillRect(player.location.x + 15, player.location.y + 90, round((player.hitpoints * 80) / player.maxHitpoints), 4);

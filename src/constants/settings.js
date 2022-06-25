@@ -134,5 +134,5 @@ export const GAME_ANIMATIONS = [
     startRate: 0,
     xOffset: 0,
     yOffset: 0
-  },
+  }
 ];

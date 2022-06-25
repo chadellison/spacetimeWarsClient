@@ -8,8 +8,9 @@ import {GameButton} from './GameButton';
 import {HeaderButtons} from './HeaderButtons';
 import {Banner} from './Banner';
 import {WaveData} from './WaveData';
+import {SHIPS, MOTHER_SHIP} from '../constants/ships.js';
 import '../styles/styles.css';
-import {ANAIMATION_FRAME_RATE, REQUEST_COUNT} from '../constants/settings.js';
+import {ANAIMATION_FRAME_RATE, REQUEST_COUNT, BOARD_WIDTH, BOARD_HEIGHT} from '../constants/settings.js';
 import {KEY_MAP} from '../constants/keyMap.js';
 import {updatePlayer, updateGameState} from '../helpers/gameLogic.js';
 import {keyDownEvent, keyUpEventPayload, createBombers} from '../helpers/sendEventHelpers.js';
@@ -49,7 +50,11 @@ const DEFAULT_STATE = {
   },
   slowConnectionBanner: false,
   scores: [],
-  waveData: {wave: 1, count: 15, active: false}
+  waveData: {wave: 1, count: 15, active: false},
+  motherships: [
+    {...MOTHER_SHIP, location: {x: 50, y: 50}, team: 'red' },
+    {...MOTHER_SHIP, location: {x: BOARD_WIDTH - 250, y: BOARD_HEIGHT - 159}, team: 'blue' }
+  ]
 };
 
 class Layout extends React.Component {
@@ -127,11 +132,11 @@ class Layout extends React.Component {
       iteration -= 1
       this.syncClocks(iteration)
     } else {
-      this.fetchPlayers();
+      this.fetchGameData();
     };
   };
 
-  fetchPlayers() {
+  fetchGameData() {
     const {clockDifference} = this.state;
     fetch(`${API_HOST}/api/v1/players`)
       .then((response) => response.json())
@@ -144,8 +149,8 @@ class Layout extends React.Component {
             return player;
           }
         });
-        this.setState({players});
-        this.createGameSocket()
+        this.setState({ players });
+        this.createGameSocket();
     }).catch((error) => console.log('ERROR', error));
   };
 
@@ -266,6 +271,7 @@ class Layout extends React.Component {
       howToPlay,
       animations,
       abilityData,
+      motherships,
       gameOverStats,
       deployedWeapons,
       clockDifference,
@@ -303,7 +309,7 @@ class Layout extends React.Component {
             clockDifference={clockDifference}
             handleGameEvent={this.handleGameEvent}
           />}
-          {activePlayer && !modal && activePlayer.lives > 0 && <GameButton
+          {activePlayer && !modal && <GameButton
             className={'gameButton'}
             onClick={() => this.updateState({modal: 'selection'})}
             buttonText={'shop'}
@@ -325,6 +331,7 @@ class Layout extends React.Component {
             aiShips={aiShips}
             gameBuff={gameBuff}
             animations={animations}
+            motherships={motherships}
             deployedWeapons={deployedWeapons}
           />
         </div>

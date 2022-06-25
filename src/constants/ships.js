@@ -12,6 +12,7 @@ import blueCarrierShip from '../images/blueCarrierShip.png';
 import redStealthShip from '../images/redStealthShip.png';
 import blueStealthShip from '../images/blueStealthShip.png';
 import supplyShip from '../images/supplyShip.png';
+import mothershipAnimation from '../images/mothershipAnimation.png'
 
 export const SHIPS = [
   {
@@ -101,6 +102,37 @@ export const SUPPLY_SHIP = {
   thrusterOffset: {x: 10, y: 2},
 }
 
+export const MOTHER_SHIP = {
+  name: 'mothership',
+  type: 'bomber',
+  shipCenter: { x: 0, y: 0 },
+  armor: 5,
+  hitpoints: 50000,
+  maxHitpoints: 50000,
+  shipCenter: {x: 100, y: 54},
+  effects: {},
+  items: { 10: { index: 9, durationCount: 0, cooldown: 0 }, 5: {index: 4, durationCount: 0, cooldown: 0 } },
+  angle: 0,
+  width: 200,
+  height: 108,
+  active: true,
+  animation: {
+    spriteImage: mothershipAnimation,
+    location: {x: 200, y: 200},
+    coordinates: {x: 0, y: 0},
+    width: 200,
+    height: 108,
+    renderWidth: 200,
+    renderHeight: 108,
+    rowCount: 150,
+    columnCount: 1,
+    rate: 0,
+    startRate: 0,
+    xOffset: 0,
+    yOffset: 0
+  }
+}
+
 export const BOMBERS = [
   {
     index: 0,
@@ -121,7 +153,7 @@ export const BOMBERS = [
     shipCenter: {x: 60.5, y: 37.5},
     image: destroyerShip,
     blueImage: blueDestroyerShip,
-    thrusterOffset: {x: 10, y: 2},
+    thrusterOffset: {x: 10, y: 3},
   },
   {
     index: 1,

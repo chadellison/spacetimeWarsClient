@@ -48,23 +48,24 @@ const handleExplodeEvent = (players, aiShips, playerData, elapsedTime, gameSocke
     player = explodePlayer(player, playerData);
     updatedPlayers[playerData.index] = player
 
-    if (updatedPlayers.filter(p => p.lives > 0).length === 0) {
-      return handleGameOver(updatedPlayers, playerData, gameSocket);
-    } else {
-      return {players: updatedPlayers}
-    }
+    return { players: updatedPlayers }
   } else {
-    const updatedAiShips = [...aiShips].map((ship) => {
-      if (playerData.id === ship.id && ship.active) {
-        ship = explodePlayer(ship, ship)
-      };
-      return ship;
-    });
-
-    if (playerData.type === 'supplyShip') {
-      return handleBuff(playerData, players, updatedAiShips, elapsedTime);
+    if (playerData.name === 'mothership') {
+      // animation...
+      return handleGameOver(players, playerData, gameSocket);
     } else {
-      return {aiShips: updatedAiShips};
+      const updatedAiShips = [...aiShips].map((ship) => {
+        if (playerData.id === ship.id && ship.active) {
+          ship = explodePlayer(ship, ship)
+        };
+        return ship;
+      });
+
+      if (playerData.type === 'supplyShip') {
+        return handleBuff(playerData, players, updatedAiShips, elapsedTime);
+      } else {
+        return { aiShips: updatedAiShips };
+      }
     }
   }
 }
@@ -90,7 +91,6 @@ export const explodePlayer = (player, playerData) => {
   player.effects = {};
   player.active = false;
   player.gameEvent = 'waiting';
-  player.lives -= 1;
   return player;
 }
 
@@ -104,7 +104,7 @@ const handleGameOver = (players, playerData, gameSocket) => {
     modal: 'gameOver',
     startingPlayer: {},
     deployedWeapons: [],
-    gameOverStats: {playerStats: players, winningTeam: playerData.team},
+    gameOverStats: { playerStats: players, winningTeam: playerData.team === 'red' ? 'Blue' : 'Red' },
     waveData: {wave: 1, count: 5, active: false},
   }
 }

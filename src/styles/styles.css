@@ -19,7 +19,7 @@ body {
 }
 
 .canvas {
-  background-image: url("../images/spaceBackground.jpg");
+  background: url("../images/spaceBackground.jpg");
 }
 
 .hidden {

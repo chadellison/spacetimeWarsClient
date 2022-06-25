@@ -141,13 +141,13 @@ export const startEventPayload = (player) => {
 export const getStartData = (team) => {
   if (team === 'red') {
     return {
-      location: {x: 60, y: [80, BOARD_HEIGHT - 80][Math.floor(Math.random() * 2)]},
+      location: {x: 100, y: 100},
       angle: 1,
       trajectory: 0
     }
   } else {
     return {
-      location: {x: BOARD_WIDTH - 60, y: [80, BOARD_HEIGHT - 80][Math.floor(Math.random() * 2)]},
+      location: {x: BOARD_WIDTH - 100, y: BOARD_HEIGHT - 100},
       angle: 181,
       trajectory: 180
     }
@@ -185,6 +185,35 @@ const canUseAbility = (ability, player, pressedKey) => {
   return Date.now() - ability.lastUsed > ABILITIES[SHIPS[player.shipIndex].abilities[pressedKey]].cooldown
 }
 
+// export const createBombers = (wave, team, availableShips) => {
+  // const hitpoints = wave * 100 + 100;
+  // const bombers = [];
+  // while (wave > 0) {
+  //   if (wave > 10) {
+  //     const bomber = prepareBomber(team, availableShips, hitpoints, 4, 9);
+  //     bombers.push(bomber);
+  //     wave -= 10;
+  //   } else if (wave > 5) {
+  //     const bomber = prepareBomber(team, availableShips, hitpoints, 2, 7);
+  //     bombers.push(bomber);
+  //     wave -= 5;
+  //   } else if (wave > 3) {
+  //     const bomber = prepareBomber(team, availableShips, hitpoints, 1, 5);
+  //     bombers.push(bomber);
+  //     wave -= 3;
+  //   } else if (wave >= 2) {
+  //     const bomber = prepareBomber(team, availableShips, hitpoints, 0, 3);
+  //     bombers.push(bomber);
+  //     wave -= 2;
+  //   } else if (wave < 2) {
+  //     bombers.push(createBomber(0, team, hitpoints, 0));
+  //     bombers.push(createBomber(0, team, hitpoints, 0));
+  //     wave = 0;
+  //   }
+  // }
+  // return bombers;
+// }
+
 export const createBombers = (wave, team) => {
   let bombers = [];
   while (wave > 0) {
@@ -209,6 +238,12 @@ export const createBombers = (wave, team) => {
   return bombers;
 }
 
+const prepareBomber = (team, availableShips, hitpoints, range1, range2) => {
+  const shipIndex = Math.floor(Math.random() * availableShips.length);
+  const weaponIndex = Math.floor(Math.random() * WEAPONS.slice(range1, range2).length)
+  return createBomber(shipIndex, team, hitpoints, weaponIndex);
+}
+
 const createBomber = (index, team) => {
   return {
     ...BOMBERS[index],
@@ -221,3 +256,26 @@ const createBomber = (index, team) => {
     trajectory: team === 'red' ? 0 : 180,
   }
 }
+
+// const createBomber = (shipIndex, team, hitpoints, weaponIndex) => {
+//   return {
+//     ...BOMBERS[shipIndex],
+//     team,
+//     type: 'bomber',
+//     name: faker.name.findName(),
+//     image: null,
+//     blueImage: null,
+//     lastFired: Date.now(),
+//     angle: team === 'red' ? 0 : 180,
+//     trajectory: team === 'red' ? 0 : 180,
+//     hitpoints,
+//     maxHitpoints: hitpoints,
+//     accelerate: true,
+//     weaponIndex,
+//     effects: {},
+//     items: {},
+//     score: 0,
+//     explodeAnimation: {},
+//     rotate: 'none'
+//   }
+// }

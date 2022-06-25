@@ -104,7 +104,7 @@ const handlePlayerIcon = (activePlayer, countDown, modal, handleGameEvent) => {
         alt="player"
       />
     );
-  } else if (countDown > 0 || activePlayer.lives < 1) {
+  } else if (countDown > 0) {
     return <span className="waitCountDown">{countDown}</span>;
   } else if (!modal) {
     return (
@@ -194,8 +194,6 @@ const PlayerData = ({
         {renderSpeed(activePlayer)}
         <div className="ScoreInfo">{`Score: ${activePlayer.score}`}</div>
         <PlayerItems items={activePlayer.items} />
-        <div className="lives">Lives</div>
-        <div className="playerLives">{activePlayer.lives > 0 ? activePlayer.lives : 0}</div>
       </div>
     </div>
   );

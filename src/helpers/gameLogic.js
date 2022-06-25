@@ -6,7 +6,7 @@ import {
   explosionSound,
   mineTriggerSound
 } from '../constants/settings.js';
-import {SHIPS, BOMBERS} from '../constants/ships.js';
+import {SHIPS, BOMBERS, MOTHER_SHIP} from '../constants/ships.js';
 import {WEAPONS, EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
 import {handleItems, handleAbsorbDamage, canAbsorbDamage, getItem} from '../helpers/itemHelpers';
 import {handleEffects, updateGameBuff, createEffect} from '../helpers/effectHelpers';
@@ -18,25 +18,38 @@ import {explodePlayer} from '../helpers/receiveEventHelpers.js';
 import {upgradeSound, GAME_ANIMATIONS} from '../constants/settings.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
-  const {clockDifference, gameBuff, index, aiShips, space, lastFired} = gameState;
+  const {clockDifference, gameBuff, index, aiShips, space, lastFired, motherships} = gameState;
   let updatedPlayers = updatePlayers(gameState, handleGameEvent);
   let deployedWeapons = handleRepeatedFire(updatedPlayers[index], space, lastFired, [...gameState.deployedWeapons], updateState, handleGameEvent);
   deployedWeapons = handleAiWeapons(deployedWeapons, aiShips);
   let gameData = {
     players: updatedPlayers,
     weapons: removeOutOfBoundsShots(deployedWeapons),
-    aiShips: updateAiShips(aiShips, index, handleGameEvent, clockDifference, updatedPlayers),
-    animations: [...gameState.animations]
+    aiShips: updateAiShips(aiShips, index, handleGameEvent, clockDifference, updatedPlayers, motherships),
+    animations: [...gameState.animations],
+    motherships: [...motherships]
   }
   gameData = handleWeapons(gameData, handleGameEvent);
+
+  const updatedMotherships = handleMotherships(gameData.motherships, index, handleGameEvent);
   return {
     players: gameData.players,
     aiShips: gameData.aiShips,
     deployedWeapons: gameData.weapons,
     gameBuff: updateGameBuff(gameBuff),
     animations: handleAnimations(gameData.animations),
+    motherships: updatedMotherships
   };
 };
+
+const handleMotherships = (motherships, index, handleGameEvent) => {
+  return motherships.map((ship) => {
+    updateFrame(ship.animation);
+    handleHitpoints(ship, index, handleGameEvent);
+    handleItems(ship)
+    return ship;
+  })
+}
 
 const handleAiWeapons = (weapons, aiShips) => {
   aiShips.forEach((ship) => {
@@ -61,33 +74,35 @@ const handleAnimations = (animations) => {
   return updatedAnimations;
 }
 
-const updateAiShips = (aiShips, index, handleGameEvent, clockDifference, players) => {
+const updateAiShips = (aiShips, index, handleGameEvent, clockDifference, players, motherships) => {
   let updatedAiShips = [];
   aiShips.forEach((ship) => {
     if (!ship.explodeAnimation.complete) {
-        if (ship.active) {
-          ship = handleHitpoints(ship, index, handleGameEvent)
-          handleWall(ship);
-          handleEffects(ship)
-        } else {
-          ship.explodeAnimation = updateAnimation(ship.explodeAnimation);
-        }
-        const target = nearestTarget(ship, players);
+      if (ship.active) {
+        ship = handleHitpoints(ship, index, handleGameEvent)
+        handleWall(ship);
+        handleEffects(ship)
+      } else {
+        ship.explodeAnimation = updateAnimation(ship.explodeAnimation);
+      }
+      const target = nearestTarget(ship, players.concat(aiShips, motherships));
 
-        if (ship.type === 'supplyShip') {
-          ship.rotate = 'left';
-        } else if (target && !isInvisable(target.effects) && target.active) {
-          ship.rotate = handleAiDirection(ship, target);
-        } else {
-          ship.rotate = 'none';
-        }
-        updatePlayer(ship, ANAIMATION_FRAME_RATE, clockDifference)
-        updatedAiShips.push(ship);
+      if (ship.type === 'supplyShip') {
+        ship.rotate = 'left';
+      } else if (target && !isInvisable(target.effects) && target.active) {
+        ship.rotate = handleAiDirection(ship, target);
+      } else {
+        ship.rotate = 'none';
+      }
+      updatePlayer(ship, ANAIMATION_FRAME_RATE, clockDifference)
+      updatedAiShips.push(ship);
     }
   });
 
   return updatedAiShips;
 }
+
+// const updatMotherships
 
 const nearestTarget = (ship, players) => {
   const opponentColor = ship.team === 'red' ? 'blue' : 'red';
@@ -172,7 +187,11 @@ export const handlePlayerDamage = (player) => {
 const handleHitpoints = (player, index, handleGameEvent) => {
   if (player.hitpoints <= 0 && player.active && player.gameEvent !== 'explode') {
     const noKilledBy = [undefined, null].includes(player.killedBy);
-    if ((player.type === 'bomber' && player.gameEvent !== 'waiting') || (noKilledBy && player.type === 'supplyShip')) {
+    if (player.type === 'bomber' && player.name === 'mothership') {
+      player.gameEvent = 'explode';
+      handleGameEvent(player);
+    } else if ((player.type === 'bomber' && player.gameEvent !== 'waiting') || (noKilledBy && player.type === 'supplyShip')) {
+      // not telling server that bombers have been blown up...
       player = explodePlayer(player, player);
     } else if (player.killedBy === index || (noKilledBy && player.index === index)) {
       player.gameEvent = 'explode';
@@ -242,8 +261,9 @@ const weaponFromPlayer = (gameData, weapon, newWeapons) => {
   let attacker = gameData.players[weapon.playerIndex];
   weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
 
-  handleCollision(gameData.players, weapon, attacker)
-  handleCollision(gameData.aiShips, weapon, attacker)
+  handleCollision(gameData.players, weapon, attacker);
+  handleCollision(gameData.aiShips, weapon, attacker);
+  handleCollision(gameData.motherships, weapon, attacker);
 
   if (weapon.id) {
     handleAbilityWeapons(gameData, weapon, attacker);
@@ -314,6 +334,7 @@ const weaponFromAi = (gameData, weapon, newWeapons) => {
   weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
   handleCollision(gameData.players, weapon, {})
   handleCollision(gameData.aiShips, weapon, {})
+  handleCollision(gameData.motherships, weapon, {})
 
   if (!weapon.removed) {
     newWeapons.push(weapon);
@@ -331,13 +352,19 @@ const removeOutOfBoundsShots = (weapons) => {
   });
 };
 
-const findShipBoundingBoxes = (player) => {
+export const findStartCenter = (player) => {
   let startCenter = {x: 60, y: 30};
   if (player.type === 'bomber') {
-    startCenter = BOMBERS[player.index].shipCenter;
+    startCenter = player.name === 'mothership' ? MOTHER_SHIP.shipCenter : BOMBERS[player.index].shipCenter;
   } else if (player.type === 'human') {
     startCenter = SHIPS[player.shipIndex].shipCenter;
   }
+
+  return startCenter;
+}
+
+const findShipBoundingBoxes = (player) => {
+  const startCenter = findStartCenter(player);
   const shipCenter = {x: player.location.x + startCenter.x, y: player.location.y + startCenter.y}
 
   return [
