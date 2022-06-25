@@ -185,97 +185,77 @@ const canUseAbility = (ability, player, pressedKey) => {
   return Date.now() - ability.lastUsed > ABILITIES[SHIPS[player.shipIndex].abilities[pressedKey]].cooldown
 }
 
-// export const createBombers = (wave, team, availableShips) => {
-  // const hitpoints = wave * 100 + 100;
-  // const bombers = [];
-  // while (wave > 0) {
-  //   if (wave > 10) {
-  //     const bomber = prepareBomber(team, availableShips, hitpoints, 4, 9);
-  //     bombers.push(bomber);
-  //     wave -= 10;
-  //   } else if (wave > 5) {
-  //     const bomber = prepareBomber(team, availableShips, hitpoints, 2, 7);
-  //     bombers.push(bomber);
-  //     wave -= 5;
-  //   } else if (wave > 3) {
-  //     const bomber = prepareBomber(team, availableShips, hitpoints, 1, 5);
-  //     bombers.push(bomber);
-  //     wave -= 3;
-  //   } else if (wave >= 2) {
-  //     const bomber = prepareBomber(team, availableShips, hitpoints, 0, 3);
-  //     bombers.push(bomber);
-  //     wave -= 2;
-  //   } else if (wave < 2) {
-  //     bombers.push(createBomber(0, team, hitpoints, 0));
-  //     bombers.push(createBomber(0, team, hitpoints, 0));
-  //     wave = 0;
-  //   }
-  // }
-  // return bombers;
-// }
+const findShipCounts = (ships, opponentTeam) => {
+  let allyCount = 0;
+  let opponentCount = 0
 
-export const createBombers = (wave, team) => {
-  let bombers = [];
-  while (wave > 0) {
-    if (wave > 10) {
-      wave -= 10;
-      bombers.push(createBomber(4, team));
-    } else if (wave > 5) {
-      wave -= 5;
-      bombers.push(createBomber(3, team));
-    } else if (wave > 3) {
-      wave -= 3;
-      bombers.push(createBomber(2, team));
-    } else if (wave >= 2) {
-      wave -= 2;
-      bombers.push(createBomber(1, team));
-    } else if (wave < 2) {
-      bombers.push(createBomber(0, team));
-      bombers.push(createBomber(0, team));
-      wave = 0;
+  ships.forEach((ship) => {
+    if (ship.type != 'supplyShip') {
+      if (ship.team === opponentTeam) {
+        opponentCount += 1;
+      } else {
+        allyCount += 1;
+      }
     }
+  });
+
+  return { allyCount, opponentCount }
+}
+
+export const createBombers = (wave, team, aiShips) => {
+
+  const { allyCount, opponentCount } = findShipCounts(aiShips, team);
+
+  let bombers = [];
+  let range1 = 0;
+  let range2 = 0;
+
+  const shipIndex = Math.floor(Math.random() * BOMBERS.length);
+  const shipIndex2 = Math.floor(Math.random() * BOMBERS.length);
+
+  if (wave > 10) {
+    range1 = 3;
+    range2 = WEAPONS.length;
+  } else if (wave > 5) {
+    range1 = 2;
+    range2 = 6;
+  } else if (wave > 3) {
+    range1 = 1;
+    range2 = 3;
+  } else if (wave >= 2) {
+    range1 = 0;
+    range2 = 2;
+  }
+  const hitpoints = 100 + wave * 100;
+
+  const weaponIndex = Math.floor(Math.random() * WEAPONS.slice(range1, range2).length);
+  if (opponentCount < 10) {
+    const opponentBomber1 = createBomber(shipIndex, weaponIndex, hitpoints, team);
+    bombers.push(opponentBomber1);
+  }
+  if (allyCount < 10) {
+    const allyBomber = createBomber(shipIndex2, weaponIndex === 0 ? weaponIndex : weaponIndex - 1, hitpoints / 2, team === 'red' ? 'blue' : 'red');
+    bombers.push(allyBomber);
+  }
+
+  if (wave < 7) {
+    bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team));
   }
   return bombers;
 }
 
-const prepareBomber = (team, availableShips, hitpoints, range1, range2) => {
-  const shipIndex = Math.floor(Math.random() * availableShips.length);
-  const weaponIndex = Math.floor(Math.random() * WEAPONS.slice(range1, range2).length)
-  return createBomber(shipIndex, team, hitpoints, weaponIndex);
-}
-
-const createBomber = (index, team) => {
+const createBomber = (index, weaponIndex, hitpoints, team) => {
   return {
     ...BOMBERS[index],
     team,
     name: faker.name.findName(),
     image: null,
     blueImage: null,
+    hitpoints,
+    maxHitpoints: hitpoints,
     lastFired: Date.now(),
     angle: team === 'red' ? 0 : 180,
+    weaponIndex,
     trajectory: team === 'red' ? 0 : 180,
   }
 }
-
-// const createBomber = (shipIndex, team, hitpoints, weaponIndex) => {
-//   return {
-//     ...BOMBERS[shipIndex],
-//     team,
-//     type: 'bomber',
-//     name: faker.name.findName(),
-//     image: null,
-//     blueImage: null,
-//     lastFired: Date.now(),
-//     angle: team === 'red' ? 0 : 180,
-//     trajectory: team === 'red' ? 0 : 180,
-//     hitpoints,
-//     maxHitpoints: hitpoints,
-//     accelerate: true,
-//     weaponIndex,
-//     effects: {},
-//     items: {},
-//     score: 0,
-//     explodeAnimation: {},
-//     rotate: 'none'
-//   }
-// }

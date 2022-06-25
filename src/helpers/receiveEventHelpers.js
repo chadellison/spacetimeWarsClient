@@ -100,6 +100,7 @@ const handleGameOver = (players, playerData, gameSocket) => {
     index: null,
     players: [],
     aiShips: [],
+    motherships: [],
     animations: [],
     modal: 'gameOver',
     startingPlayer: {},

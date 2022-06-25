@@ -174,14 +174,7 @@ class Canvas extends React.Component {
 
           const thruster = player.effects[9] ? this.state.warpSpeed : this.state.thruster;
           drawShip(context, player, this.handleImage(player), thruster);
-          const startCenter = findStartCenter(player);
-
-          Object.values(player.effects).forEach((effect) => {
-            if (effect.animation && effect.id !== 9) {
-              const effectCoordinates = findCenterCoordinates(player.location, startCenter, {width: effect.animation?.renderWidth || 0, height: effect.animation?.renderHeight || 0});
-              renderAnimation(context, this.state[effect.name], effect.animation, effectCoordinates);
-            }
-          });
+          this.renderEffects(context, player)
         }
       } else if (!player.explodeAnimation.complete) {
         renderAnimation(context, this.state.shipExplosion, player.explodeAnimation, player.location);
@@ -190,8 +183,20 @@ class Canvas extends React.Component {
     });
 
     motherships.forEach((ship) => {
-      renderAnimation(context, this.state.mothership, ship.animation, ship.location)
+      renderAnimation(context, this.state.mothership, ship.animation, ship.location);
+      this.renderEffects(context, ship)
       renderMotherShipData(gameBuff, context, ship);
+    });
+  }
+
+  renderEffects = (context, ship) => {
+    const startCenter = findStartCenter(ship);
+
+    Object.values(ship.effects).forEach((effect) => {
+      if (effect.animation && effect.id !== 9) {
+        const effectCoordinates = findCenterCoordinates(ship.location, startCenter, {width: effect.animation?.renderWidth || 0, height: effect.animation?.renderHeight || 0});
+        renderAnimation(context, this.state[effect.name], effect.animation, effectCoordinates);
+      }
     });
   }
 

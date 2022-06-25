@@ -31,7 +31,7 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
   }
   gameData = handleWeapons(gameData, handleGameEvent);
 
-  const updatedMotherships = handleMotherships(gameData.motherships, index, handleGameEvent);
+  const updatedMotherships = updateMotherships(gameData.motherships, index, handleGameEvent);
   return {
     players: gameData.players,
     aiShips: gameData.aiShips,
@@ -42,11 +42,12 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
   };
 };
 
-const handleMotherships = (motherships, index, handleGameEvent) => {
+const updateMotherships = (motherships, index, handleGameEvent) => {
   return motherships.map((ship) => {
     updateFrame(ship.animation);
     handleHitpoints(ship, index, handleGameEvent);
-    handleItems(ship)
+    handleEffects(ship);
+    handleItems(ship);
     return ship;
   })
 }
@@ -101,8 +102,6 @@ const updateAiShips = (aiShips, index, handleGameEvent, clockDifference, players
 
   return updatedAiShips;
 }
-
-// const updatMotherships
 
 const nearestTarget = (ship, players) => {
   const opponentColor = ship.team === 'red' ? 'blue' : 'red';

@@ -3,18 +3,18 @@ import { WEBSOCKET_HOST, API_HOST } from '../api';
 import Cable from 'actioncable';
 import Canvas from './Canvas';
 import PlayerData from './PlayerData';
-import {Modal} from './Modal';
-import {GameButton} from './GameButton';
-import {HeaderButtons} from './HeaderButtons';
-import {Banner} from './Banner';
-import {WaveData} from './WaveData';
-import {SHIPS, MOTHER_SHIP} from '../constants/ships.js';
+import { Modal } from './Modal';
+import { GameButton } from './GameButton';
+import { HeaderButtons } from './HeaderButtons';
+import { Banner } from './Banner';
+import { WaveData } from './WaveData';
+import { MOTHER_SHIP } from '../constants/ships.js';
 import '../styles/styles.css';
-import {ANAIMATION_FRAME_RATE, REQUEST_COUNT, BOARD_WIDTH, BOARD_HEIGHT} from '../constants/settings.js';
-import {KEY_MAP} from '../constants/keyMap.js';
-import {updatePlayer, updateGameState} from '../helpers/gameLogic.js';
-import {keyDownEvent, keyUpEventPayload, createBombers} from '../helpers/sendEventHelpers.js';
-import {handleEventPayload} from '../helpers/receiveEventHelpers.js';
+import { ANAIMATION_FRAME_RATE, REQUEST_COUNT, BOARD_WIDTH, BOARD_HEIGHT } from '../constants/settings.js';
+import { KEY_MAP } from '../constants/keyMap.js';
+import { updatePlayer, updateGameState } from '../helpers/gameLogic.js';
+import { keyDownEvent, keyUpEventPayload, createBombers } from '../helpers/sendEventHelpers.js';
+import { handleEventPayload } from '../helpers/receiveEventHelpers.js';
 
 const DEFAULT_STATE = {
   userId: Date.now(),
@@ -50,10 +50,10 @@ const DEFAULT_STATE = {
   },
   slowConnectionBanner: false,
   scores: [],
-  waveData: {wave: 1, count: 15, active: false},
+  waveData: {wave: 1, count: 5, active: false},
   motherships: [
-    {...MOTHER_SHIP, location: {x: 50, y: 50}, team: 'red' },
-    {...MOTHER_SHIP, location: {x: BOARD_WIDTH - 250, y: BOARD_HEIGHT - 159}, team: 'blue' }
+    {...MOTHER_SHIP, location: {x: 50, y: 50}, team: 'red', effects: {}, items: { ...MOTHER_SHIP.items } },
+    {...MOTHER_SHIP, location: {x: BOARD_WIDTH - 250, y: BOARD_HEIGHT - 159}, team: 'blue', effects: {}, items: { ...MOTHER_SHIP.items } }
   ]
 };
 
@@ -77,7 +77,7 @@ class Layout extends React.Component {
   }
 
   updateWaveData = () => {
-    const {waveData, players, index} = this.state;
+    const {waveData, players, index, aiShips} = this.state;
     const {wave, count, active} = waveData;
     if (active) {
       if (Math.random() > 0.97) {
@@ -90,9 +90,9 @@ class Layout extends React.Component {
         this.handleGameEvent({
           gameEvent: 'bombers',
           team: opponentTeam,
-          bombers: createBombers(wave, opponentTeam)
+          bombers: createBombers(wave, opponentTeam, aiShips)
         });
-        this.setState({waveData: {...waveData, wave: wave + 1, count: 30} });
+        this.setState({waveData: {...waveData, wave: wave + 1, count: 10} });
       }
     }
   }
