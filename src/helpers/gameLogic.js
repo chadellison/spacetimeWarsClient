@@ -46,8 +46,8 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
 };
 
 const handleMothershipHitAnimations = (gameAnimations, motherships, mothershipHpData) => {
-  mothershipHpData.red != motherships[0]?.hitpoints && gameAnimations.push({...GAME_ANIMATIONS[4], location: motherships[0]?.location, coordinates: {x: 0, y: 0}});
-  mothershipHpData.blue != motherships[1]?.hitpoints && gameAnimations.push({...GAME_ANIMATIONS[4], location: motherships[1]?.location, coordinates: {x: 0, y: 0}});
+  mothershipHpData.red !== motherships[0]?.hitpoints && gameAnimations.push({...GAME_ANIMATIONS[4], location: motherships[0]?.location, coordinates: {x: 0, y: 0}});
+  mothershipHpData.blue !== motherships[1]?.hitpoints && gameAnimations.push({...GAME_ANIMATIONS[4], location: motherships[1]?.location, coordinates: {x: 0, y: 0}});
 }
 
 const updateMotherships = (motherships, index, handleGameEvent) => {
@@ -407,7 +407,7 @@ const handleCollision = (players, weapon, attacker) => {
 }
 
 const handleMothershipEffect = (player) => {
-  if (player.type != 'bomber' || player.name != 'mothership') {
+  if (player.type !== 'bomber' || player.name !== 'mothership') {
     const shipCenter = findStartCenter(player);
     const centerCoordinates = findCenterCoordinates(player.location, shipCenter, { width: 0, height: 0 });
 
@@ -420,7 +420,7 @@ const handleMothershipEffect = (player) => {
 }
 
 const applyMothershipEffect = (player, team) => {
-  if (player.team != team) {
+  if (player.team !== team) {
     applyMothershipZap(player);
   } else {
     const effect = createEffect(6, 1000, player.effects[7]);

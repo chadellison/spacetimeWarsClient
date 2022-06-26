@@ -190,7 +190,7 @@ const findShipCounts = (ships, opponentTeam) => {
   let opponentCount = 0
 
   ships.forEach((ship) => {
-    if (ship.type != 'supplyShip') {
+    if (ship.type !== 'supplyShip') {
       if (ship.team === opponentTeam) {
         opponentCount += 1;
       } else {
