@@ -71,7 +71,9 @@ export const armorReductionSound = new Audio(armorReductionAudio);
 export const missileSound = new Audio(missileAudio);
 export const teleportSound = new Audio(teleportAudio);
 export const shipExplosionSound = new Audio(shipExplosionAudio);
-export const zapSound = new Audio(zapAudio);
+const zap = new Audio(zapAudio);
+zap.volume = 0.2;
+export const zapSound = zap;
 
 export const GAME_ANIMATIONS = [
   {

@@ -222,9 +222,6 @@ export const createBombers = (wave, team, aiShips, motherships) => {
   }
 
   const mothership = team === motherships[0].team ? motherships[0] : motherships[1];
-  if (wave < 10) {
-    bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team));
-  }
   if (mothership.hitpoints < mothership.maxHitpoints / 2) {
     bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team));
     bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team));
@@ -234,11 +231,11 @@ export const createBombers = (wave, team, aiShips, motherships) => {
 
 const findWeaponIndex = (wave) => {
   let index = Math.floor(Math.random() * WEAPONS.slice(0, 3).length);
-  if (wave > 15) {
+  if (wave > 25) {
     index += 5
-  } else if (wave > 10) {
+  } else if (wave > 20) {
     index += 3
-  } else if (wave > 5) {
+  } else if (wave > 15) {
     index += 1
   }
 

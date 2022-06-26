@@ -1,13 +1,12 @@
 import {findColor} from '../helpers/colorHelpers.js';
 import {round} from '../helpers/mathHelpers.js';
 import {isInvisable} from '../helpers/gameLogic.js';
-import { GAME_ANIMATIONS } from '../constants/settings.js';
 import {BOMBERS, SHIPS} from '../constants/ships.js';
 
 export const drawShip = (context, player, ship, thruster) => {
   handleDirection(context, ship, player.location, player.angle)
   if (player.accelerate) {
-    const thrusterAnimation = player.effects[9]?.animation || GAME_ANIMATIONS[3]
+    const thrusterAnimation = player.effects[9]?.animation || player.thrusterAnimation
     renderThruster(context, thruster, player, thrusterAnimation);
   }
 
@@ -16,8 +15,9 @@ export const drawShip = (context, player, ship, thruster) => {
 
 const renderThruster = (context, thruster, player, animation) => {
   const ship = player.type === 'bomber' ? BOMBERS[player.index] : SHIPS[player.shipIndex]
-  const xOffset = player.location.x - ship.shipCenter.x - (animation.renderWidth / 2) + ship.thrusterOffset.x + animation.xOffset;
-  const yOffset = player.location.y + ship.shipCenter.y - (animation.renderHeight / 2) + ship.thrusterOffset.y + animation.yOffset;
+  const xOffset = player.location.x - ship.shipCenter.x - (animation.renderWidth / 2) + animation.xOffset;
+  const yOffset = player.location.y + ship.shipCenter.y - (animation.renderHeight / 2) + animation.yOffset;
+
   context.drawImage(
     thruster,
     animation.coordinates.x,

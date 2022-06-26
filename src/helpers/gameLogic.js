@@ -153,6 +153,7 @@ const updatePlayers = (gameState, handleGameEvent) => {
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
       player.explodeAnimation = updateAnimation(player.explodeAnimation);
     }
+
     return player
   });
 }
@@ -242,6 +243,10 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   }
   if (player.type === 'human') {
     handleItems(player);
+  }
+
+  if (player.thrusterAnimation) {
+    updateFrame(player.thrusterAnimation);
   }
   return player
 }
@@ -385,15 +390,7 @@ const findShipBoundingBoxes = (player) => {
 
 const handleCollision = (players, weapon, attacker) => {
   players.forEach((player) => {
-    if (withinMotherShipRange(player) && !player.effects[13]) {
-      if (canAbsorbDamage(player)) {
-        handleAbsorbDamage(player);
-      } else {
-        zapSound.play();
-        const effect = createEffect(12, 1000, player.effects[13]);
-        player.effects[effect.id] = effect;
-      }
-    };
+    handleMothershipEffect(player);
     if (player.team !== weapon.team && player.active) {
       const shipBoundingBoxes = findShipBoundingBoxes(player);
       const weaponCenter = {x: weapon.location.x + (weapon.width / 2), y: weapon.location.y + (weapon.height / 2)}
@@ -409,15 +406,37 @@ const handleCollision = (players, weapon, attacker) => {
   });
 }
 
-const withinMotherShipRange = (player) => {
-  const shipCenter = findStartCenter(player);
-  const centerCoordinates = findCenterCoordinates(player.location, shipCenter, { width: 0, height: 0 });
-  if (player.team === 'red') {
-    return centerCoordinates.x > BOARD_WIDTH - 250 && centerCoordinates.y > BOARD_HEIGHT - 159;
-  } else {
-    return centerCoordinates.x < 250 && centerCoordinates.y < 159;
+const handleMothershipEffect = (player) => {
+  if (player.type != 'bomber' || player.name != 'mothership') {
+    const shipCenter = findStartCenter(player);
+    const centerCoordinates = findCenterCoordinates(player.location, shipCenter, { width: 0, height: 0 });
+
+    if (centerCoordinates.x > BOARD_WIDTH - 250 && centerCoordinates.y > BOARD_HEIGHT - 159) {
+      applyMothershipEffect(player, 'blue');
+    } else if (centerCoordinates.x < 250 && centerCoordinates.y < 159) {
+      applyMothershipEffect(player, 'red');
+    }
   }
-};
+}
+
+const applyMothershipEffect = (player, team) => {
+  if (player.team != team) {
+    applyMothershipZap(player);
+  } else {
+    const effect = createEffect(6, 1000, player.effects[7]);
+    player.effects[effect.id] = effect;
+  }
+}
+
+const applyMothershipZap = (player) => {
+  if (canAbsorbDamage(player)) {
+    handleAbsorbDamage(player);
+  } else {
+    zapSound.play();
+    const effect = createEffect(12, 1000, player.effects[13]);
+    player.effects[effect.id] = effect;
+  }
+}
 
 const applyHit = (player, weapon, attacker) => {
   if (weapon.id === 3) {

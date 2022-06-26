@@ -22,7 +22,7 @@ export const handleEffects = (player) => {
         player.hitpoints = newHitpoints > 1 ? newHitpoints : 0;
       };
       if (effect.animation) {
-        updateFrame(effect.animation)
+        updateFrame(effect.animation);
       }
       effect.durationCount += ANAIMATION_FRAME_RATE
     }

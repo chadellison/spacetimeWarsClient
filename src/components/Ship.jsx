@@ -1,9 +1,9 @@
 import React from 'react';
 import '../styles/ship.css';
 import {gong, notEnoughResources} from '../constants/settings.js';
-import {SHIPS} from '../constants/ships.js';
-import {ABILITIES} from '../constants/abilities.js';
-import {AbilityDisplay} from './AbilityDisplay';
+import { SHIPS, generateThrusterAnimation } from '../constants/ships.js';
+import { ABILITIES } from '../constants/abilities.js';
+import { AbilityDisplay } from './AbilityDisplay';
 
 const handleClick = (activePlayer, updateState, players, shipIndex) => {
   const gold = activePlayer.gold - SHIPS[shipIndex].price;
@@ -18,6 +18,7 @@ const handleClick = (activePlayer, updateState, players, shipIndex) => {
       hitpoints: SHIPS[shipIndex].hitpoints,
       maxHitpoints: SHIPS[shipIndex].hitpoints,
       velocity: SHIPS[shipIndex].speed,
+      thrusterAnimation: generateThrusterAnimation(SHIPS[shipIndex].thrusterOffset.x, SHIPS[shipIndex].thrusterOffset.y)
     }
     if (activePlayer.index >= 0) {
       let updatedPlayers = [...players];

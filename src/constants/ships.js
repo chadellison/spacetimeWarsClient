@@ -13,6 +13,11 @@ import redStealthShip from '../images/redStealthShip.png';
 import blueStealthShip from '../images/blueStealthShip.png';
 import supplyShip from '../images/supplyShip.png';
 import mothershipAnimation from '../images/mothershipAnimation.png'
+import { GAME_ANIMATIONS } from './settings';
+
+export const generateThrusterAnimation = (x, y) => {
+  return {...GAME_ANIMATIONS[3], location: {x: 0, y: 0 }, coordinates: { x: 0, y: 0 }, xOffset: x, yOffset: y }
+}
 
 export const SHIPS = [
   {
@@ -99,7 +104,6 @@ export const SUPPLY_SHIP = {
   name: 'supplyShip',
   shipCenter: {x: 60, y: 34},
   image: supplyShip,
-  thrusterOffset: {x: 10, y: 2},
 }
 
 export const MOTHER_SHIP = {
@@ -158,7 +162,7 @@ export const BOMBERS = [
     shipCenter: {x: 60.5, y: 37.5},
     image: destroyerShip,
     blueImage: blueDestroyerShip,
-    thrusterOffset: {x: 10, y: 3},
+    thrusterAnimation: generateThrusterAnimation(10, 3)
   },
   {
     index: 1,
@@ -179,7 +183,7 @@ export const BOMBERS = [
     shipCenter: {x: 60.5, y: 51},
     image: hunterShip,
     blueImage: blueHunterShip,
-    thrusterOffset: {x: 20, y: 3}
+    thrusterAnimation: generateThrusterAnimation(20, 3)
   },
   {
     index: 2,
@@ -200,7 +204,7 @@ export const BOMBERS = [
     shipCenter: {x: 60.5, y: 18.5},
     image: redWarShip,
     blueImage: blueWarShip,
-    thrusterOffset: {x: 10, y: 3}
+    thrusterAnimation: generateThrusterAnimation(10, 3)
   },
   {
     index: 3,
@@ -221,7 +225,7 @@ export const BOMBERS = [
     shipCenter: {x: 60.5, y: 50.5},
     image: cruiserShip,
     blueImage: blueCruiserShip,
-    thrusterOffset: {x: 24, y: 3}
+    thrusterAnimation: generateThrusterAnimation(24, 3)
   },
   {
     index: 4,
@@ -242,6 +246,6 @@ export const BOMBERS = [
     shipCenter: {x: 60.5, y: 57},
     image: redStealthShip,
     blueImage: blueStealthShip,
-    thrusterOffset: {x: 16, y: 3}
+    thrusterAnimation: generateThrusterAnimation(16, 3)
   },
 ];
