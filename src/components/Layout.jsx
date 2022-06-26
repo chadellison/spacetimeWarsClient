@@ -77,7 +77,7 @@ class Layout extends React.Component {
   }
 
   updateWaveData = () => {
-    const {waveData, players, index, aiShips} = this.state;
+    const {waveData, players, index, aiShips, motherships} = this.state;
     const {wave, count, active} = waveData;
     if (active) {
       if (Math.random() > 0.97) {
@@ -90,7 +90,7 @@ class Layout extends React.Component {
         this.handleGameEvent({
           gameEvent: 'bombers',
           team: opponentTeam,
-          bombers: createBombers(wave, opponentTeam, aiShips)
+          bombers: createBombers(wave, opponentTeam, aiShips, motherships)
         });
         this.setState({waveData: {...waveData, wave: wave + 1, count: 10} });
       }

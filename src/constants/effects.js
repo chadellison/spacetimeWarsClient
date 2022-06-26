@@ -7,7 +7,8 @@ import stunAnimation from '../images/stunAnimation.png'
 import warpSpeedAnimation from '../images/warpSpeedAnimation2.png'
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import damageReductionAnimation from '../images/damageReductionAnimation.png';
-import armorReductionAnimation from '../images/reducedArmorAnimation.png';
+import armorReductionAnimation from '../images/armorReductionAnimation.png';
+import electricFieldAnimation from '../images/electricFieldAnimation.png'
 
 export const GAME_EFFECTS = [
   {
@@ -217,11 +218,11 @@ export const GAME_EFFECTS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteIndex: 9,
-      width: 400,
-      height: 225,
-      renderWidth: 200,
-      renderHeight: 112,
-      rowCount: 130,
+      width: 300,
+      height: 169,
+      renderWidth: 300,
+      renderHeight: 169,
+      rowCount: 210,
       columnCount: 1,
       rate: 0,
       startRate: 0,
@@ -229,6 +230,26 @@ export const GAME_EFFECTS = [
       yOffset: 0,
     }
   },
+  {
+    id: 13,
+    name: 'zapped',
+    duration: 0,
+    durationCount: 0,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteIndex: 10,
+      width: 256,
+      height: 256,
+      renderWidth: 192,
+      renderHeight: 192,
+      rowCount: 4,
+      columnCount: 7,
+      rate: 0,
+      startRate: 0,
+      xOffset: 0,
+      yOffset: 0
+    }
+  }
 ]
 export const SPRITE_IMAGES = [
   poisonAnimation,
@@ -241,4 +262,5 @@ export const SPRITE_IMAGES = [
   warpSpeedAnimation,
   damageBoostIcon,
   armorReductionAnimation,
+  electricFieldAnimation
 ]

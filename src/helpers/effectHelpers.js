@@ -9,13 +9,17 @@ export const handleEffects = (player) => {
       delete player.effects[effect.id];
     } else {
       if (effect.id === 1) {
-        const damage = round((player.maxHitpoints * 0.17) / (effect.duration / ANAIMATION_FRAME_RATE));
+        const multiplyer = player.type === 'bomber' && player.name === 'mothership' ? 0.05 : 0.17;
+        const damage = round((player.maxHitpoints * multiplyer) / (effect.duration / ANAIMATION_FRAME_RATE));
         const newHitpoints = player.hitpoints - damage;
         player.hitpoints = newHitpoints > 1 ? newHitpoints : 1;
       } else if (effect.id === 7) {
         const health = round((player.maxHitpoints * 0.5) / (effect.duration / ANAIMATION_FRAME_RATE))
         const newHitpoints = player.hitpoints + health;
         player.hitpoints = newHitpoints > player.maxHitpoints ? player.maxHitpoints : newHitpoints;
+      } else if (effect.id === 13) {
+        const newHitpoints = player.hitpoints - 25;
+        player.hitpoints = newHitpoints > 1 ? newHitpoints : 0;
       };
       if (effect.animation) {
         updateFrame(effect.animation)

@@ -105,7 +105,6 @@ export const SUPPLY_SHIP = {
 export const MOTHER_SHIP = {
   name: 'mothership',
   type: 'bomber',
-  shipCenter: { x: 0, y: 0 },
   armor: 5,
   hitpoints: 5000,
   maxHitpoints: 5000,

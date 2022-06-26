@@ -26,12 +26,14 @@ import armorReductionAudio from '../audio/armorReductionSound.mp3';
 import missileAudio from '../audio/missile.wav';
 import teleportAudio from '../audio/teleportSound.mp3';
 import shipExplosionAudio from '../audio/shipExplosionSound.mov';
+import zapAudio from '../audio/zapSound.wav';
 
 // images
 import levelUpAnimation from '../images/levelUpAnimation.png';
 import blinkAnimation from '../images/invisibleAnimation.png';
 import teleportAnimation from '../images/teleportAnimation.png';
 import thrusterAnimation from '../images/thrusterAnimation.png'
+import mothershipHitAnimation from '../images/mothershipHitAnimation.png'
 
 // constants
 export const BOARD_WIDTH = 1800;
@@ -69,6 +71,7 @@ export const armorReductionSound = new Audio(armorReductionAudio);
 export const missileSound = new Audio(missileAudio);
 export const teleportSound = new Audio(teleportAudio);
 export const shipExplosionSound = new Audio(shipExplosionAudio);
+export const zapSound = new Audio(zapAudio);
 
 export const GAME_ANIMATIONS = [
   {
@@ -129,6 +132,22 @@ export const GAME_ANIMATIONS = [
     renderWidth: 100,
     renderHeight: 56,
     rowCount: 10,
+    columnCount: 1,
+    rate: 0,
+    startRate: 0,
+    xOffset: 0,
+    yOffset: 0
+  },
+  {
+    name: 'mothershipHit',
+    location: {x: 0, y: 0},
+    coordinates: {x: 0, y: 0},
+    spriteImage: mothershipHitAnimation,
+    width: 400,
+    height: 225,
+    renderWidth: 200,
+    renderHeight: 112,
+    rowCount: 20,
     columnCount: 1,
     rate: 0,
     startRate: 0,

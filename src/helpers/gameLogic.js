@@ -4,7 +4,8 @@ import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
   explosionSound,
-  mineTriggerSound
+  mineTriggerSound,
+  zapSound
 } from '../constants/settings.js';
 import {SHIPS, BOMBERS, MOTHER_SHIP} from '../constants/ships.js';
 import {WEAPONS, EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
@@ -20,6 +21,7 @@ import {upgradeSound, GAME_ANIMATIONS} from '../constants/settings.js';
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
   const {clockDifference, gameBuff, index, aiShips, space, lastFired, motherships} = gameState;
   let updatedPlayers = updatePlayers(gameState, handleGameEvent);
+  const mothershipHpData = { red: motherships[0]?.hitpoints, blue: motherships[1]?.hitpoints }
   let deployedWeapons = handleRepeatedFire(updatedPlayers[index], space, lastFired, [...gameState.deployedWeapons], updateState, handleGameEvent);
   deployedWeapons = handleAiWeapons(deployedWeapons, aiShips);
   let gameData = {
@@ -30,8 +32,9 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
     motherships: [...motherships]
   }
   gameData = handleWeapons(gameData, handleGameEvent);
-
+  handleMothershipHitAnimations(gameData.animations, gameData.motherships, mothershipHpData)
   const updatedMotherships = updateMotherships(gameData.motherships, index, handleGameEvent);
+
   return {
     players: gameData.players,
     aiShips: gameData.aiShips,
@@ -41,6 +44,11 @@ export const updateGameState = (gameState, updateState, handleGameEvent) => {
     motherships: updatedMotherships
   };
 };
+
+const handleMothershipHitAnimations = (gameAnimations, motherships, mothershipHpData) => {
+  mothershipHpData.red != motherships[0]?.hitpoints && gameAnimations.push({...GAME_ANIMATIONS[4], location: motherships[0]?.location, coordinates: {x: 0, y: 0}});
+  mothershipHpData.blue != motherships[1]?.hitpoints && gameAnimations.push({...GAME_ANIMATIONS[4], location: motherships[1]?.location, coordinates: {x: 0, y: 0}});
+}
 
 const updateMotherships = (motherships, index, handleGameEvent) => {
   return motherships.map((ship) => {
@@ -247,8 +255,9 @@ const applyHitToAll = (players, weapon, attacker) => {
 }
 
 const handleNuclearWeapon = (gameData, weapon, attacker) => {
-  applyHitToAll(gameData.players, weapon, attacker)
-  applyHitToAll(gameData.aiShips, weapon, attacker)
+  applyHitToAll(gameData.players, weapon, attacker);
+  applyHitToAll(gameData.aiShips, weapon, attacker);
+  applyHitToAll(gameData.motherships, weapon, attacker);
 
   playSound(explosionSound);
   const nuclearBlastAnimation = {...EXPLOSION_ANIMATIONS[1], location: weapon.location, coordinates: {x: 0, y: 0}}
@@ -376,6 +385,15 @@ const findShipBoundingBoxes = (player) => {
 
 const handleCollision = (players, weapon, attacker) => {
   players.forEach((player) => {
+    if (withinMotherShipRange(player) && !player.effects[13]) {
+      if (canAbsorbDamage(player)) {
+        handleAbsorbDamage(player);
+      } else {
+        zapSound.play();
+        const effect = createEffect(12, 1000, player.effects[13]);
+        player.effects[effect.id] = effect;
+      }
+    };
     if (player.team !== weapon.team && player.active) {
       const shipBoundingBoxes = findShipBoundingBoxes(player);
       const weaponCenter = {x: weapon.location.x + (weapon.width / 2), y: weapon.location.y + (weapon.height / 2)}
@@ -391,6 +409,16 @@ const handleCollision = (players, weapon, attacker) => {
   });
 }
 
+const withinMotherShipRange = (player) => {
+  const shipCenter = findStartCenter(player);
+  const centerCoordinates = findCenterCoordinates(player.location, shipCenter, { width: 0, height: 0 });
+  if (player.team === 'red') {
+    return centerCoordinates.x > BOARD_WIDTH - 250 && centerCoordinates.y > BOARD_HEIGHT - 159;
+  } else {
+    return centerCoordinates.x < 250 && centerCoordinates.y < 159;
+  }
+};
+
 const applyHit = (player, weapon, attacker) => {
   if (weapon.id === 3) {
     playSound(mineTriggerSound);
@@ -400,7 +428,7 @@ const applyHit = (player, weapon, attacker) => {
     handleAbsorbDamage(player);
   } else {
     console.log('BLAM!');
-    updateCollisionData(player, weapon, attacker)
+    updateCollisionData(player, weapon, attacker);
   }
   if (![5, 6].includes(weapon.id)) {
     weapon.removed = true

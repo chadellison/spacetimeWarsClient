@@ -70,6 +70,7 @@ class Canvas extends React.Component {
     this.redMeteor = React.createRef();
     this.blink = React.createRef();
     this.teleport = React.createRef();
+    this.zapped = React.createRef();
     // game animations
     this.shipExplosion = React.createRef();
     this.thruster = React.createRef();
@@ -77,6 +78,7 @@ class Canvas extends React.Component {
     this.levelUp = React.createRef();
     this.nuclearExplosion = React.createRef();
     this.mothership = React.createRef();
+    this.mothershipHit = React.createRef();
   }
 
   componentDidMount() {
@@ -129,11 +131,13 @@ class Canvas extends React.Component {
       spaceMineExplosion: this.spaceMineExplosion.current,
       nuclearExplosion: this.nuclearExplosion.current,
       mothership: this.mothership.current,
+      mothershipHit: this.mothershipHit.current,
       meteorExplosion: this.meteorExplosion.current,
       shipExplosion: this.shipExplosion.current,
       levelUp: this.levelUp.current,
       blink: this.blink.current,
       teleport: this.teleport.current,
+      zapped: this.zapped.current,
       halfWindowWidth: round(window.innerWidth / 2),
       halfWindowHeight: round(window.innerHeight / 2)
     });
@@ -194,7 +198,7 @@ class Canvas extends React.Component {
 
     Object.values(ship.effects).forEach((effect) => {
       if (effect.animation && effect.id !== 9) {
-        const effectCoordinates = findCenterCoordinates(ship.location, startCenter, {width: effect.animation?.renderWidth || 0, height: effect.animation?.renderHeight || 0});
+        const effectCoordinates = findCenterCoordinates(ship.location, startCenter, { width: effect.animation?.renderWidth || 0, height: effect.animation?.renderHeight || 0 });
         renderAnimation(context, this.state[effect.name], effect.animation, effectCoordinates);
       }
     });
