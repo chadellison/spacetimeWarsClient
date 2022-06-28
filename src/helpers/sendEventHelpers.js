@@ -94,7 +94,7 @@ const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateSta
 const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
   const {lastFired, players, deployedWeapons, index} = gameState;
   const currentPlayer = players[index]
-  if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown, currentPlayer.effects[10])) {
+  if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown, false, false)) {
     let player = {...currentPlayer, gameEvent: 'fire'}
     updateState({lastFired: Date.now()});
     const damage = handlePlayerDamage(player);
@@ -175,14 +175,33 @@ const handleAbilityEvent = (player, abilityData, handleGameEvent, updateState, p
     playSound(mineDropSound);
     updateState({abilityData: {...abilityData, [pressedKey]: {...ability, level: ability.level + 1}}});
   } else if (canUseAbility(ability, player, pressedKey) && ability.level > 0) {
-    handleGameEvent({...player, gameEvent: 'ability', usedAbility: pressedKey, abilityLevel: abilityData[pressedKey].level});
+    let payload = {...player, gameEvent: 'ability', usedAbility: pressedKey, abilityLevel: abilityData[pressedKey].level}
+    if (isCallForBackup(player, pressedKey)) {
+      const backupShips = createBackupShips(abilityData[pressedKey].level, player.team);
+      payload = { gameEvent: 'bombers', team: player.team, bombers: backupShips }
+    }
+    handleGameEvent(payload)
     abilityData[pressedKey].lastUsed = Date.now()
-    updateState({abilityData});
+    updateState({ abilityData });
   }
+}
+
+const isCallForBackup = (player, pressedKey) => {
+  return player.shipIndex === 6 && pressedKey === 'q';
 }
 
 const canUseAbility = (ability, player, pressedKey) => {
   return Date.now() - ability.lastUsed > ABILITIES[SHIPS[player.shipIndex].abilities[pressedKey]].cooldown
+}
+
+const createBackupShips = (abilityLevel, team) => {
+  let i = 0
+  const backupShips = [];
+  while (i < abilityLevel) {
+    backupShips.push(createBomber(i, i + 1, 300 * (i + 1), team));
+    i += 1;
+  }
+  return backupShips;
 }
 
 const findShipCounts = (ships, opponentTeam) => {
@@ -242,7 +261,7 @@ const findWeaponIndex = (wave) => {
   return index;
 }
 
-const createBomber = (index, weaponIndex, hitpoints, team) => {
+export const createBomber = (index, weaponIndex, hitpoints, team) => {
   return {
     ...BOMBERS[index],
     team,

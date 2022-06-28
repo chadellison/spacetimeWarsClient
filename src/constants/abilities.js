@@ -15,6 +15,9 @@ import armorReductionIcon from '../images/armorReductionIcon.png';
 import redMeteorIcon from '../images/redMeteorIcon.png';
 import teleportIcon from '../images/teleportIcon.png';
 import armorBoost from '../images/shieldIcon.png';
+import homingAttackIcon from '../images/homingAttackIcon.png';
+import backupIcon from '../images/backupIcon.png';
+
 import {
   windSound,
   warpSpeedSound,
@@ -156,7 +159,7 @@ export const ABILITIES = [
   {
     index: 13,
     type: 'effect',
-    description: 'Reduces the attack damage of all enemy ships by %50 for (11, 12, 13) seconds ("E" key to use; 50s cooldown)',
+    description: 'Reduces the attack damage of all enemy ships by %50 for (8, 16, 24) seconds ("E" key to use; 50s cooldown)',
     cooldown: 50000,
     effectIndex: 2,
     image: damageReductionIcon,
@@ -165,7 +168,7 @@ export const ABILITIES = [
   {
     index: 14,
     type: 'effect',
-    description: 'Reduces the armor of all enemy ships by 3 for (11, 12, 13) seconds ("E" key to use; 45s cooldown)',
+    description: 'Reduces the armor of all enemy ships by 3 for (8, 16, 24) seconds respectively ("E" key to use; 50s cooldown)',
     cooldown: 45000,
     effectIndex: 11,
     image: armorReductionIcon,
@@ -173,7 +176,7 @@ export const ABILITIES = [
   },
   {
     index: 15,
-    type: '',
+    type: 'other',
     weaponIndex: 6,
     description: 'Teleports the ship a short distance (300, 600, 800) ("E" key to use; 35s cooldown)',
     cooldown: 35000,
@@ -199,4 +202,30 @@ export const ABILITIES = [
     image: redMeteorIcon,
     sound: meteorConeSound,
   },
+  {
+    index: 18,
+    type: 'other',
+    description: 'Calls for reinforcements adding (1, 2, 3) ally ship(s) respectively',
+    cooldown: 45000,
+    image: backupIcon,
+    sound: meteorConeSound,
+  },
+  {
+    index: 19,
+    type: 'effect',
+    description: 'Homing attack that allows the weapons to always find their targets for (8, 16, 24) seconds respectively',
+    cooldown: 30000,
+    effectIndex: 13,
+    image: homingAttackIcon,
+    sound: meteorConeSound,
+  },
+  {
+    index: 20,
+    type: 'effect',
+    description: 'Criples opponents for (4, 8, 12) seconds reducing their movement speed, and attack speed',
+    cooldown: 50000,
+    effectIndex: 14,
+    image: damageReductionIcon,
+    sound: meteorConeSound,
+  }
 ]

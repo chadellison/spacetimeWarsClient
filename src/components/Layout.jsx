@@ -218,7 +218,7 @@ class Layout extends React.Component {
     } else {
       const gameState = handleEventPayload(this.state, playerData, elapsedTime);
       if (gameState) {
-        this.setState(gameState)
+        this.setState(gameState);
       };
     }
   };

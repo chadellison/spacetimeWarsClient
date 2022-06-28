@@ -12,8 +12,8 @@ import displayBomb from '../images/displayBomb.png';
 import laserAnimation from '../images/laserAnimation.png';
 import displayLaser from '../images/displayLaser.png';
 import displayBlueFire from '../images/displayBlueFire.png';
-import plasmaCannonAnimation from '../images/plasmaCannonAnimation.png';
-import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
+import plasmaCannonAnimation from '../images/redPlasmaCannonAnimation.png';
+import displayPlasmaCannon from '../images/displayRedPlasma.png';
 import spaceMine from '../images/spaceMine.png';
 import nuclearExplosionAnimation from '../images/nuclearExplosionAnimation.png';
 import mineExplosionAnimation from '../images/mineExplosionAnimation.png';
@@ -34,7 +34,7 @@ import bombAudio from '../audio/bomb.wav';
 import plasmaCannonAudio from '../audio/plasmaSound.wav';
 import laserAudio from '../audio/laser.wav';
 import lightLazer from '../audio/lightLazer.mp3';
-import mediumLaser from '../audio/mediumLaser.wav';
+import redPlasmaCannonAudio from '../audio/plasmaCannonSound.wav';
 
 const AUDIO = [
   cannonAudio,
@@ -44,7 +44,7 @@ const AUDIO = [
   trifectaAudio,
   lightLazer,
   plasmaCannonAudio,
-  mediumLaser
+  redPlasmaCannonAudio
 ].map((audio) => {
   const audioObject = new Audio(audio);
   audioObject.volume = 0.2;
@@ -231,9 +231,9 @@ export const WEAPONS = [
     cooldown: 450,
     speed: 18,
     damage: 130,
-    price: 750,
-    width: 100,
-    height: 50,
+    price: 1050,
+    width: 38,
+    height: 21,
     damageRadius: 6,
     ability: 'armor piercing damage: disregards all armor on enemy ship',
     sound: AUDIO[7],
@@ -241,14 +241,14 @@ export const WEAPONS = [
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: plasmaCannonAnimation,
-      width: 128,
-      height: 64,
-      rowCount: 1,
-      columnCount: 5,
-      rate: 1,
-      startRate: 1,
-      renderWidth: 100,
-      renderHeight: 50,
+      width: 50,
+      height: 28,
+      rowCount: 71,
+      columnCount: 1,
+      rate: 0,
+      startRate: 0,
+      renderWidth: 38,
+      renderHeight: 21,
       xOffset: 0,
       yOffset: 0
     }

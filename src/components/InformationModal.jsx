@@ -45,7 +45,7 @@ export const InformationModal = ({updateState, howToPlay, userId, players}) => {
     <div className="modal">
       <h2 className="informationTitle">Space Wars</h2>
       <div className="introduction">
-        Shoot and destroy your opponents' "bombers" before they cross your team's edge of the screen.
+        Destroy your opponent's mothership while protecting your own.
       </div>
 
       <GameButton

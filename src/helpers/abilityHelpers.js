@@ -1,10 +1,10 @@
-import {ABILITY_WEAPONS} from '../constants/weapons.js';
-import {ABILITIES} from '../constants/abilities.js';
-import {GAME_EFFECTS} from '../constants/effects.js';
-import {SHIPS} from '../constants/ships.js';
-import {handleFireWeapon, handleAngle, handleLocation, findCenterCoordinates} from '../helpers/gameLogic.js';
-import {playSound} from '../helpers/audioHelpers.js';
-import {GAME_ANIMATIONS} from '../constants/settings.js';
+import { ABILITY_WEAPONS } from '../constants/weapons.js';
+import { ABILITIES } from '../constants/abilities.js';
+import { GAME_EFFECTS } from '../constants/effects.js';
+import { SHIPS } from '../constants/ships.js';
+import { handleFireWeapon , handleAngle, handleLocation, findCenterCoordinates} from '../helpers/gameLogic.js';
+import { playSound } from '../helpers/audioHelpers.js';
+import { GAME_ANIMATIONS } from '../constants/settings.js';
 
 export const handleAbility = (players, deployedWeapons, playerData, elapsedTime, animations, aiShips) => {
   const ability = ABILITIES[SHIPS[playerData.shipIndex].abilities[playerData.usedAbility]]
@@ -25,7 +25,8 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
 }
 
 const applyOtherAbility = (players, playerData, newAnimmations) => {
-  let player = players[playerData.index];
+  const player = players[playerData.index];
+
   const distance = 300 * playerData.abilityLevel;
   player.location = handleLocation(player.angle, player.location, distance);
   const shipCenter = SHIPS[player.shipIndex].shipCenter;
@@ -41,15 +42,7 @@ const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime)
   if (weapon.id === 4) {
     return handleMeteorShower(deployedWeapons, playerData, weapon, elapsedTime);
   } else {
-    const updatedWeapons = [
-        ...deployedWeapons,
-        handleFireWeapon(
-        playerData,
-        weapon,
-        elapsedTime,
-        weapon.damage * playerData.abilityLevel
-      )
-    ];
+    const updatedWeapons = [...deployedWeapons, handleFireWeapon(playerData, weapon, elapsedTime, weapon.damage * playerData.abilityLevel)];
     return {deployedWeapons: updatedWeapons}
   }
 }
@@ -66,12 +59,13 @@ const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animati
     effect = effect.id === 7 ? {...effect, duration: 800 + (playerData.abilityLevel * 1000)} : effect
     updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect)
     updatedAiShips = applyEffectToTeam(updatedAiShips, player.team, effect)
-  } else if ([3, 12].includes(effect.id)) {
+  } else if ([3, 12, 15].includes(effect.id)) {
     const opponentTeam = player.team === 'red' ? 'blue' : 'red';
-    updatedPlayers = applyEffectToTeam(updatedPlayers, opponentTeam, effect)
-    updatedAiShips = applyEffectToTeam(updatedAiShips, opponentTeam, effect)
-  } else if (effect.id === 5) {
-    effect = { ...effect, duration: 8000 * playerData.abilityLevel }
+    effect = { ...GAME_EFFECTS[effectIndex], duration: effect.duration * playerData.abilityLevel }
+    updatedPlayers = applyEffectToTeam(updatedPlayers, opponentTeam, effect);
+    updatedAiShips = applyEffectToTeam(updatedAiShips, opponentTeam, effect);
+  } else if ([5, 14].includes(effect.id)) {
+    effect = { ...GAME_EFFECTS[effectIndex], duration: effect.duration * playerData.abilityLevel }
     player.effects = {...player.effects, [effect.id]: effect};
     updatedPlayers[playerData.index] = player;
   } else {
@@ -97,7 +91,7 @@ const applyEffectToTeam = (players, team, effect) => {
 }
 
 const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime) => {
-  const angle = handleAngle(player, elapsedTime);
+  const angle = handleAngle(player.rotate, player.angle, elapsedTime);
   const meteors = [-40, -20, 0, 20, 40].map((degree) => {
     let weaponAngle = angle + degree
     if (weaponAngle < 0) {

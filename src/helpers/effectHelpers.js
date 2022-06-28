@@ -20,7 +20,7 @@ export const handleEffects = (player) => {
       } else if (effect.id === 13) {
         const newHitpoints = player.hitpoints - 25;
         player.hitpoints = newHitpoints > 1 ? newHitpoints : 0;
-      };
+      }
       if (effect.animation) {
         updateFrame(effect.animation);
       }

@@ -37,6 +37,8 @@ class Canvas extends React.Component {
     this.carrierBlue = React.createRef();
     this.stealth = React.createRef();
     this.stealthBlue = React.createRef();
+    this.commander = React.createRef();
+    this.commanderBlue = React.createRef();
     this.supplyShip = React.createRef();
 
     // weapons
@@ -71,6 +73,7 @@ class Canvas extends React.Component {
     this.blink = React.createRef();
     this.teleport = React.createRef();
     this.zapped = React.createRef();
+    this.cripple = React.createRef();
     // game animations
     this.shipExplosion = React.createRef();
     this.thruster = React.createRef();
@@ -101,6 +104,8 @@ class Canvas extends React.Component {
       carrierBlue: this.carrierBlue.current,
       stealth: this.stealth.current,
       stealthBlue: this.stealthBlue.current,
+      commander: this.commander.current,
+      commanderBlue: this.commanderBlue.current,
       supplyShip: this.supplyShip.current,
       fireball: this.fireball.current,
       missile: this.missile.current,
@@ -138,6 +143,7 @@ class Canvas extends React.Component {
       blink: this.blink.current,
       teleport: this.teleport.current,
       zapped: this.zapped.current,
+      cripple: this.cripple.current,
       halfWindowWidth: round(window.innerWidth / 2),
       halfWindowHeight: round(window.innerHeight / 2)
     });

@@ -7,8 +7,9 @@ import stunAnimation from '../images/stunAnimation.png'
 import warpSpeedAnimation from '../images/warpSpeedAnimation2.png'
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import damageReductionAnimation from '../images/damageReductionAnimation.png';
-import armorReductionAnimation from '../images/armorReductionAnimation.png';
 import electricFieldAnimation from '../images/electricFieldAnimation.png'
+import armorReductionAnimation from '../images/armorReductionAnimation.png'
+import crippleAnimation from '../images/crippleAnimation.png'
 
 export const GAME_EFFECTS = [
   {
@@ -56,7 +57,7 @@ export const GAME_EFFECTS = [
   {
     id: 3,
     name: 'damageReduction',
-    duration: 11000,
+    duration: 8000,
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -97,7 +98,7 @@ export const GAME_EFFECTS = [
   {
     id: 5,
     name: 'invisible',
-    duration: 11000,
+    duration: 8000,
     durationCount: 0,
     color: 'rgba(151, 7, 7, 0.37)',
   },
@@ -213,21 +214,22 @@ export const GAME_EFFECTS = [
   {
     id: 12,
     name: 'armorReduction',
-    duration: 15000,
+    duration: 8000,
     durationCount: 0,
     animation: {
-      coordinates: {x: 0, y: 0},
       spriteIndex: 9,
-      width: 300,
-      height: 169,
+      location: {x: 0, y: 0},
+      coordinates: {x: 0, y: 0},
+      width: 400,
+      height: 225,
       renderWidth: 300,
-      renderHeight: 169,
-      rowCount: 210,
+      renderHeight: 168,
+      rowCount: 141,
       columnCount: 1,
       rate: 0,
       startRate: 0,
       xOffset: 0,
-      yOffset: 0,
+      yOffset: 0
     }
   },
   {
@@ -249,6 +251,32 @@ export const GAME_EFFECTS = [
       xOffset: 0,
       yOffset: 0
     }
+  },
+  {
+    id: 14,
+    name: 'homingAttack',
+    duration: 8000,
+    durationCount: 0,
+  },
+  {
+    id: 15,
+    name: 'cripple',
+    duration: 4000,
+    durationCount: 0,
+    animation: {
+      coordinates: {x: 0, y: 0},
+      spriteIndex: 11,
+      width: 300,
+      height: 169,
+      renderWidth: 300,
+      renderHeight: 169,
+      rowCount: 210,
+      columnCount: 1,
+      rate: 0,
+      startRate: 0,
+      xOffset: 0,
+      yOffset: 0,
+    }
   }
 ]
 export const SPRITE_IMAGES = [
@@ -262,5 +290,6 @@ export const SPRITE_IMAGES = [
   warpSpeedAnimation,
   damageBoostIcon,
   armorReductionAnimation,
-  electricFieldAnimation
+  electricFieldAnimation,
+  crippleAnimation
 ]

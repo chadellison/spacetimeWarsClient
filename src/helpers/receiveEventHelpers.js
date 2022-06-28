@@ -1,9 +1,9 @@
-import {handleFireWeapon, updatePlayer, handlePlayerDamage} from '../helpers/gameLogic.js';
-import {applyGameBuff} from '../helpers/effectHelpers.js';
-import {GAME_EFFECTS} from '../constants/effects.js';
-import {EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
-import {playSound, stopSound} from '../helpers/audioHelpers.js';
-import {handleAbility} from '../helpers/abilityHelpers.js';
+import { handleFireWeapon, updatePlayer, handlePlayerDamage } from '../helpers/gameLogic.js';
+import { applyGameBuff } from '../helpers/effectHelpers.js';
+import { GAME_EFFECTS } from '../constants/effects.js';
+import { EXPLOSION_ANIMATIONS } from '../constants/weapons.js';
+import { playSound , stopSound} from '../helpers/audioHelpers.js';
+import { handleAbility } from '../helpers/abilityHelpers.js';
 import {
   thruster,
   shipExplosionSound,

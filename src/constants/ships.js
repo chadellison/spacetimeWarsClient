@@ -11,6 +11,8 @@ import carrierShip from '../images/redCarrierShip.png';
 import blueCarrierShip from '../images/blueCarrierShip.png';
 import redStealthShip from '../images/redStealthShip.png';
 import blueStealthShip from '../images/blueStealthShip.png';
+import commanderShip from '../images/commanderShip.png';
+import blueCommanderShip from '../images/blueCommanderShip.png';
 import supplyShip from '../images/supplyShip.png';
 import mothershipAnimation from '../images/mothershipAnimation.png'
 import { GAME_ANIMATIONS } from './settings';
@@ -97,6 +99,19 @@ export const SHIPS = [
     blueImage: blueStealthShip,
     abilities: {q: 5, w: 13, e: 17},
     thrusterOffset: {x: 16, y: 3}
+  },
+  {
+    index: 6,
+    name: 'commander',
+    price: 900,
+    armor: 1,
+    hitpoints: 1900,
+    speed: 3,
+    shipCenter: {x: 60.5, y: 44},
+    image: commanderShip,
+    blueImage: blueCommanderShip,
+    abilities: {q: 18, w: 19, e: 20},
+    thrusterOffset: {x: 40, y: 4}
   }
 ];
 
@@ -115,7 +130,7 @@ export const MOTHER_SHIP = {
   shipCenter: {x: 100, y: 54},
   effects: {},
   items: {
-    1: { index: 0, cooldown: 120000, durationCount: 120000 },
+    1: { index: 0, cooldown: 120000, durationCount: 5000 },
     2: { index: 1, durationCount: 1000, cooldown: 3000 },
     4: { index: 3, durationCount: 10000, cooldown: 30000 },
     5: {index: 4, durationCount: 0, cooldown: 0 },
@@ -127,7 +142,7 @@ export const MOTHER_SHIP = {
   active: true,
   animation: {
     spriteImage: mothershipAnimation,
-    location: {x: 200, y: 200},
+    location: {x: 0, y: 0},
     coordinates: {x: 0, y: 0},
     width: 200,
     height: 108,

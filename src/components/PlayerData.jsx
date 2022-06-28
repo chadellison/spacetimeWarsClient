@@ -130,19 +130,18 @@ const renderHitPoints = (activePlayer) => {
 
 const renderAbilityIcons = (activePlayer, playerAbilityData) => {
   if (activePlayer.shipIndex === 0 || activePlayer.shipIndex) {
-    let abilityIcons = [];
     const shipAbilities = SHIPS[activePlayer.shipIndex].abilities;
     const levelSum = playerAbilityData.q.level + playerAbilityData.w.level + playerAbilityData.e.level;
 
     const hasLevelPoints = activePlayer.level > levelSum;
-    [
+    return [
       {ability: ABILITIES[shipAbilities.q], key: 'q'},
       {ability: ABILITIES[shipAbilities.w], key: 'w'},
       {ability: ABILITIES[shipAbilities.e], key: 'e'},
-    ].forEach((abilityData, index) => {
+    ].map((abilityData, index) => {
       const abilityLevel = playerAbilityData[abilityData.key].level;
       if (hasLevelPoints && abilityLevel < 3) {
-        abilityIcons.push(
+        return(
           <LevelUpIcon
             ability={abilityData.ability}
             key={'abilityIcon' + index}
@@ -150,8 +149,8 @@ const renderAbilityIcons = (activePlayer, playerAbilityData) => {
             abilityLevel={abilityLevel}
           />
         )
-      } else if (playerAbilityData[abilityData.key].level > 0) {
-        abilityIcons.push(
+      } else {
+        return (
           <AbilityIcon
             ability={abilityData.ability}
             key={'abilityIcon' + index}
@@ -162,7 +161,6 @@ const renderAbilityIcons = (activePlayer, playerAbilityData) => {
         )
       };
     });
-    return abilityIcons;
   }
 };
 
