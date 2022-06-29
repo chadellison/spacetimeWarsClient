@@ -28,6 +28,9 @@ import missileAudio from '../audio/missile.wav';
 import teleportAudio from '../audio/teleportSound.mp3';
 import shipExplosionAudio from '../audio/shipExplosionSound.mov';
 import zapAudio from '../audio/zapSound.wav';
+import backupAudio from '../audio/backupSound.wav';
+import homingAudio from '../audio/homingSound.wav';
+import crippleAudio from '../audio/crippleSound.wav';
 
 // images
 import levelUpAnimation from '../images/levelUpAnimation.png';
@@ -72,6 +75,9 @@ export const armorReductionSound = new Audio(armorReductionAudio);
 export const missileSound = new Audio(missileAudio);
 export const teleportSound = new Audio(teleportAudio);
 export const shipExplosionSound = new Audio(shipExplosionAudio);
+export const backupSound = new Audio(backupAudio);
+export const homingSound = new Audio(homingAudio);
+export const crippleSound = new Audio(crippleAudio);
 const zap = new Audio(zapAudio);
 zap.volume = 0.2;
 export const zapSound = zap;

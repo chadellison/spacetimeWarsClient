@@ -3,7 +3,7 @@ import {SHIPS, BOMBERS} from '../constants/ships.js';
 import {ABILITIES} from '../constants/abilities.js';
 import {canFire, updatePlayer, handleFireWeapon, handlePlayerDamage} from '../helpers/gameLogic.js';
 import {playSound, stopSound} from '../helpers/audioHelpers.js';
-import {thruster, mineDropSound} from '../constants/settings.js';
+import {thruster, mineDropSound, backupSound} from '../constants/settings.js';
 import faker from 'faker';
 
 import {
@@ -177,6 +177,7 @@ const handleAbilityEvent = (player, abilityData, handleGameEvent, updateState, p
   } else if (canUseAbility(ability, player, pressedKey) && ability.level > 0) {
     let payload = {...player, gameEvent: 'ability', usedAbility: pressedKey, abilityLevel: abilityData[pressedKey].level}
     if (isCallForBackup(player, pressedKey)) {
+      playSound(backupSound);
       const backupShips = createBackupShips(abilityData[pressedKey].level, player.team);
       payload = { gameEvent: 'bombers', team: player.team, bombers: backupShips }
     }

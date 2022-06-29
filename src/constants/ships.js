@@ -103,9 +103,10 @@ export const SHIPS = [
   {
     index: 6,
     name: 'commander',
-    price: 900,
-    armor: 1,
-    hitpoints: 1900,
+    price: 150,
+    // price: 1250,
+    armor: 2,
+    hitpoints: 2400,
     speed: 3,
     shipCenter: {x: 60.5, y: 44},
     image: commanderShip,

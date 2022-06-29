@@ -17,6 +17,7 @@ import teleportIcon from '../images/teleportIcon.png';
 import armorBoost from '../images/shieldIcon.png';
 import homingAttackIcon from '../images/homingAttackIcon.png';
 import backupIcon from '../images/backupIcon.png';
+import crippleIcon from '../images/crippleIcon.png';
 
 import {
   windSound,
@@ -35,6 +36,9 @@ import {
   electricFieldSound,
   armorReductionSound,
   teleportSound,
+  backupSound,
+  homingSound,
+  crippleSound
 } from '../constants/settings.js';
 
 export const ABILITIES = [
@@ -208,7 +212,7 @@ export const ABILITIES = [
     description: 'Calls for reinforcements adding (1, 2, 3) ally ship(s) respectively',
     cooldown: 45000,
     image: backupIcon,
-    sound: meteorConeSound,
+    sound: backupSound,
   },
   {
     index: 19,
@@ -217,7 +221,7 @@ export const ABILITIES = [
     cooldown: 30000,
     effectIndex: 13,
     image: homingAttackIcon,
-    sound: meteorConeSound,
+    sound: homingSound,
   },
   {
     index: 20,
@@ -225,7 +229,7 @@ export const ABILITIES = [
     description: 'Criples opponents for (4, 8, 12) seconds reducing their movement speed, and attack speed',
     cooldown: 50000,
     effectIndex: 14,
-    image: damageReductionIcon,
-    sound: meteorConeSound,
+    image: crippleIcon,
+    sound: crippleSound,
   }
 ]
