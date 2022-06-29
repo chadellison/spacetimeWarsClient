@@ -54,7 +54,8 @@ const DEFAULT_STATE = {
   motherships: [
     {...MOTHER_SHIP, location: {x: 50, y: 50}, team: 'red', effects: {}, items: { ...MOTHER_SHIP.items } },
     {...MOTHER_SHIP, location: {x: BOARD_WIDTH - 250, y: BOARD_HEIGHT - 159}, team: 'blue', effects: {}, items: { ...MOTHER_SHIP.items } }
-  ]
+  ],
+  pageIsLoaded: false
 };
 
 class Layout extends React.Component {
@@ -64,6 +65,11 @@ class Layout extends React.Component {
   };
 
   componentDidMount() {
+    if (document.readyState === 'complete') {
+      this.setState({ pageIsLoaded: true })
+    } else {
+      window.addEventListener('load', () => this.setState({pageIsLoaded: true}))
+    }
     this.syncClocks(REQUEST_COUNT)
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
@@ -74,6 +80,9 @@ class Layout extends React.Component {
   componentWillUnmount() {
     clearInterval(this.interval);
     clearInterval(this.waveInterval);
+    if (document.readyState !== 'complete') {
+      window.removeEventListener('load', () => this.setState({pageIsLoaded: true}));
+    }
   }
 
   updateWaveData = () => {
@@ -292,7 +301,7 @@ class Layout extends React.Component {
         {waveData.count < 16 && waveData.active &&
           <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`}/>
         }
-        <div className='game row'>
+        {this.state.pageIsLoaded && <div className='game row'>
           {modal && <Modal
             page={page}
             modal={modal}
@@ -335,7 +344,7 @@ class Layout extends React.Component {
             motherships={motherships}
             deployedWeapons={deployedWeapons}
           />
-        </div>
+        </div>}
       </div>
     );
   };

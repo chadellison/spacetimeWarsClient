@@ -464,7 +464,6 @@ const applyHit = (player, weapon, attacker) => {
   if (canAbsorbDamage(player)) {
     handleAbsorbDamage(player);
   } else {
-    console.log('BLAM!');
     updateCollisionData(player, weapon, attacker);
   }
   if (![5, 6].includes(weapon.id)) {
