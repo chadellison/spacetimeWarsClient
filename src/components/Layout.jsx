@@ -164,6 +164,7 @@ class Layout extends React.Component {
 
   handleGameEvent = (eventPayload) => {
     let eventData = {...this.state.eventData}
+    // could send bombers here...?
     eventData.count += 1;
     const sentTime = Date.now();
     this.state.gameSocket.create({

@@ -196,15 +196,18 @@ export const handlePlayerDamage = (player) => {
 const handleHitpoints = (player, index, handleGameEvent) => {
   if (player.hitpoints <= 0 && player.active && player.gameEvent !== 'explode') {
     const noKilledBy = [undefined, null].includes(player.killedBy);
-    if (player.type === 'bomber' && player.name === 'mothership') {
+    if (noKilledBy) {
+      if (player.type === 'supplyShip') {
+        player = explodePlayer(player, player);
+      } else if (player.gameEvent !== 'waiting') {
+        player.gameEvent = 'explode';
+        handleGameEvent(player);
+      }
+    } else if (player.killedBy === index) {
       player.gameEvent = 'explode';
       handleGameEvent(player);
-    } else if ((player.type === 'bomber' && player.gameEvent !== 'waiting') || (noKilledBy && player.type === 'supplyShip')) {
-      // not telling server that bombers have been blown up...
+    } else if ((new Date()).getTime() - player.updatedAt > 1000) {
       player = explodePlayer(player, player);
-    } else if (player.killedBy === index || (noKilledBy && player.index === index)) {
-      player.gameEvent = 'explode';
-      handleGameEvent(player);
     }
   }
   return player;
@@ -280,7 +283,7 @@ const weaponFromPlayer = (gameData, weapon, newWeapons) => {
   const attacker = players[weapon.playerIndex];
   const player = players[index];
 
-  if (player.effects[14]) {
+  if (attacker?.effects[14]) {
     const target = nearestTarget(weapon.location, player.team, players.concat(aiShips, motherships));
     const direction = handleAiDirection(weapon.location, weapon.trajectory, target);
     weapon.trajectory = handleAngle(direction, weapon.trajectory, ANAIMATION_FRAME_RATE);
