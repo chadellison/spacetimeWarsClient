@@ -50,7 +50,7 @@ const handleExplodeEvent = (players, aiShips, playerData, elapsedTime, gameSocke
 
     return { players: updatedPlayers }
   } else {
-    if (playerData.name === 'mothership') {
+    if (['redMothership', 'blueMothership'].includes(playerData.name)) {
       // animation...
       return handleGameOver(players, playerData, gameSocket);
     } else {

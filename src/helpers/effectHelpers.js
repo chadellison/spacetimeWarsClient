@@ -9,7 +9,7 @@ export const handleEffects = (player) => {
       delete player.effects[effect.id];
     } else {
       if (effect.id === 1) {
-        const multiplyer = player.type === 'bomber' && player.name === 'mothership' ? 0.05 : 0.17;
+        const multiplyer = player.type === 'bomber' && ['redMothership', 'blueMothership'].includes(player.name) ? 0.05 : 0.17;
         const damage = round((player.maxHitpoints * multiplyer) / (effect.duration / ANAIMATION_FRAME_RATE));
         const newHitpoints = player.hitpoints - damage;
         player.hitpoints = newHitpoints > 1 ? newHitpoints : 1;

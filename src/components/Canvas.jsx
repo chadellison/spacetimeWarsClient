@@ -16,7 +16,7 @@ import {
   BOARD_HEIGHT,
   GAME_ANIMATIONS,
 } from '../constants/settings.js';
-import {MOTHER_SHIP, SHIPS, SUPPLY_SHIP} from '../constants/ships.js';
+import {RED_MOTHER_SHIP, BLUE_MOTHER_SHIP, SHIPS, SUPPLY_SHIP} from '../constants/ships.js';
 import {WEAPONS, ABILITY_WEAPONS, EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
 import {GAME_EFFECTS, SPRITE_IMAGES} from '../constants/effects.js';
 
@@ -80,7 +80,8 @@ class Canvas extends React.Component {
     this.spaceMineExplosion = React.createRef();
     this.levelUp = React.createRef();
     this.nuclearExplosion = React.createRef();
-    this.mothership = React.createRef();
+    this.redMothership = React.createRef();
+    this.blueMothership = React.createRef();
     this.mothershipHit = React.createRef();
   }
 
@@ -135,7 +136,8 @@ class Canvas extends React.Component {
       redMeteor: this.redMeteor.current,
       spaceMineExplosion: this.spaceMineExplosion.current,
       nuclearExplosion: this.nuclearExplosion.current,
-      mothership: this.mothership.current,
+      redMothership: this.redMothership.current,
+      blueMothership: this.blueMothership.current,
       mothershipHit: this.mothershipHit.current,
       meteorExplosion: this.meteorExplosion.current,
       shipExplosion: this.shipExplosion.current,
@@ -193,7 +195,8 @@ class Canvas extends React.Component {
     });
 
     motherships.forEach((ship) => {
-      renderAnimation(context, this.state.mothership, ship.animation, ship.location);
+      const mothership = ship.team === 'red' ? this.state.redMothership : this.state.blueMothership;
+      renderAnimation(context, mothership, ship.animation, ship.location);
       this.renderEffects(context, ship)
       renderMotherShipData(gameBuff, context, ship);
     });
@@ -328,7 +331,8 @@ class Canvas extends React.Component {
         })}
 
         <img ref={this[SUPPLY_SHIP.name]} src={SUPPLY_SHIP.image} className="hidden" alt={SUPPLY_SHIP.name} />
-        <img ref={this[MOTHER_SHIP.name]} src={MOTHER_SHIP.animation.spriteImage} className="hidden" alt={MOTHER_SHIP.name} />
+        <img ref={this[RED_MOTHER_SHIP.name]} src={RED_MOTHER_SHIP.animation.spriteImage} className="hidden" alt={RED_MOTHER_SHIP.name} />
+        <img ref={this[BLUE_MOTHER_SHIP.name]} src={BLUE_MOTHER_SHIP.animation.spriteImage} className="hidden" alt={BLUE_MOTHER_SHIP.name} />
       </div>
     );
   };

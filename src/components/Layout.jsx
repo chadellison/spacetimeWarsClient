@@ -8,7 +8,7 @@ import { GameButton } from './GameButton';
 import { HeaderButtons } from './HeaderButtons';
 import { Banner } from './Banner';
 import { WaveData } from './WaveData';
-import { MOTHER_SHIP } from '../constants/ships.js';
+import { RED_MOTHER_SHIP, BLUE_MOTHER_SHIP } from '../constants/ships.js';
 import '../styles/styles.css';
 import { ANAIMATION_FRAME_RATE, REQUEST_COUNT, BOARD_WIDTH, BOARD_HEIGHT } from '../constants/settings.js';
 import { KEY_MAP } from '../constants/keyMap.js';
@@ -52,8 +52,8 @@ const DEFAULT_STATE = {
   scores: [],
   waveData: {wave: 1, count: 5, active: false},
   motherships: [
-    {...MOTHER_SHIP, location: {x: 50, y: 50}, team: 'red', effects: {}, items: { ...MOTHER_SHIP.items } },
-    {...MOTHER_SHIP, location: {x: BOARD_WIDTH - 250, y: BOARD_HEIGHT - 159}, team: 'blue', effects: {}, items: { ...MOTHER_SHIP.items } }
+    {...RED_MOTHER_SHIP, location: {x: 50, y: 50}, team: 'red', effects: {}, items: { ...RED_MOTHER_SHIP.items } },
+    {...BLUE_MOTHER_SHIP, location: {x: BOARD_WIDTH - 250, y: BOARD_HEIGHT - 159}, team: 'blue', effects: {}, items: { ...BLUE_MOTHER_SHIP.items } }
   ],
   pageIsLoaded: false
 };
@@ -198,7 +198,7 @@ class Layout extends React.Component {
     if (!modal) {
       const pressedKey = KEY_MAP[event.keyCode];
       const currentPlayer = players[index];
-      if (currentPlayer.active && !this.state[pressedKey]) {
+      if (currentPlayer && currentPlayer.active && !this.state[pressedKey]) {
         this.setState({[pressedKey]: true})
         keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState);
       }

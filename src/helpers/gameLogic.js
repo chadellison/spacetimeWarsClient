@@ -7,7 +7,7 @@ import {
   mineTriggerSound,
   zapSound
 } from '../constants/settings.js';
-import { SHIPS, BOMBERS, MOTHER_SHIP } from '../constants/ships.js';
+import { SHIPS, BOMBERS, RED_MOTHER_SHIP } from '../constants/ships.js';
 import { WEAPONS, EXPLOSION_ANIMATIONS } from '../constants/weapons.js';
 import { handleItems, handleAbsorbDamage, canAbsorbDamage, getItem } from '../helpers/itemHelpers';
 import { handleEffects, updateGameBuff, createEffect } from '../helpers/effectHelpers';
@@ -384,7 +384,7 @@ const removeOutOfBoundsShots = (weapons) => {
 export const findStartCenter = (player) => {
   let startCenter = {x: 60, y: 30};
   if (player.type === 'bomber') {
-    startCenter = player.name === 'mothership' ? MOTHER_SHIP.shipCenter : BOMBERS[player.index].shipCenter;
+    startCenter = ['redMothership', 'blueMothership'].includes(player.name) ? RED_MOTHER_SHIP.shipCenter : BOMBERS[player.index].shipCenter;
   } else if (player.type === 'human') {
     startCenter = SHIPS[player.shipIndex].shipCenter;
   }
@@ -423,7 +423,7 @@ const handleCollision = (players, weapon, attacker) => {
 }
 
 const handleMothershipEffect = (player) => {
-  if (player.type !== 'bomber' || player.name !== 'mothership') {
+  if (player.type !== 'bomber' || !['redMothership', 'blueMothership'].includes(player.name)) {
     const shipCenter = findStartCenter(player);
     const centerCoordinates = findCenterCoordinates(player.location, shipCenter, { width: 0, height: 0 });
 

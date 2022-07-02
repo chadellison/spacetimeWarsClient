@@ -14,7 +14,8 @@ import blueStealthShip from '../images/blueStealthShip.png';
 import commanderShip from '../images/commanderShip.png';
 import blueCommanderShip from '../images/blueCommanderShip.png';
 import supplyShip from '../images/supplyShip.png';
-import mothershipAnimation from '../images/mothershipAnimation.png'
+import redMothershipAnimation from '../images/mothershipAnimationRed.png'
+import blueMothershipAnimation from '../images/mothershipAnimationBlue.png'
 import { GAME_ANIMATIONS } from './settings';
 
 export const generateThrusterAnimation = (x, y) => {
@@ -121,8 +122,8 @@ export const SUPPLY_SHIP = {
   image: supplyShip,
 }
 
-export const MOTHER_SHIP = {
-  name: 'mothership',
+export const RED_MOTHER_SHIP = {
+  name: 'redMothership',
   type: 'bomber',
   armor: 5,
   hitpoints: 5000,
@@ -141,7 +142,43 @@ export const MOTHER_SHIP = {
   height: 108,
   active: true,
   animation: {
-    spriteImage: mothershipAnimation,
+    spriteImage: redMothershipAnimation,
+    location: {x: 0, y: 0},
+    coordinates: {x: 0, y: 0},
+    width: 200,
+    height: 108,
+    renderWidth: 200,
+    renderHeight: 108,
+    rowCount: 150,
+    columnCount: 1,
+    rate: 0,
+    startRate: 0,
+    xOffset: 0,
+    yOffset: 0
+  }
+}
+
+export const BLUE_MOTHER_SHIP = {
+  name: 'blueMothership',
+  type: 'bomber',
+  armor: 5,
+  hitpoints: 5000,
+  maxHitpoints: 5000,
+  shipCenter: {x: 100, y: 54},
+  effects: {},
+  items: {
+    1: { index: 0, cooldown: 120000, durationCount: 5000 },
+    2: { index: 1, durationCount: 1000, cooldown: 3000 },
+    4: { index: 3, durationCount: 10000, cooldown: 30000 },
+    5: {index: 4, durationCount: 0, cooldown: 0 },
+    10: { index: 9, durationCount: 0, cooldown: 0 }
+  },
+  angle: 0,
+  width: 200,
+  height: 108,
+  active: true,
+  animation: {
+    spriteImage: blueMothershipAnimation,
     location: {x: 0, y: 0},
     coordinates: {x: 0, y: 0},
     width: 200,
