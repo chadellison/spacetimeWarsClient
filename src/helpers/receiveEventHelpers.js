@@ -106,7 +106,7 @@ const handleGameOver = (players, playerData, gameSocket) => {
     startingPlayer: {},
     deployedWeapons: [],
     gameOverStats: { playerStats: players, winningTeam: playerData.team === 'red' ? 'Blue' : 'Red' },
-    waveData: {wave: 1, count: 5, active: false},
+    waveData: {wave: 1, count: 5, active: false}
   }
 }
 

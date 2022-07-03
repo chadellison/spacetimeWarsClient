@@ -66,9 +66,9 @@ class Layout extends React.Component {
 
   componentDidMount() {
     if (document.readyState === 'complete') {
-      this.setState({ pageIsLoaded: true })
+      this.setState({ pageIsLoaded: true });
     } else {
-      window.addEventListener('load', () => this.setState({pageIsLoaded: true}))
+      window.addEventListener('load', () => this.setState({ pageIsLoaded: true }))
     }
     this.syncClocks(REQUEST_COUNT)
     window.addEventListener('keydown', this.handleKeyDown);
@@ -250,10 +250,11 @@ class Layout extends React.Component {
       ...DEFAULT_STATE,
       userId: this.state.userId,
       clockDifference: this.state.clockDifference,
-      shortestRoundTripTime: this.state.shortestRoundTripTime
+      shortestRoundTripTime: this.state.shortestRoundTripTime,
+      pageIsLoaded: true
     }
     this.updateState(newState);
-    this.syncClocks(3)
+    this.syncClocks(3);
   }
 
   renderGame = () => {
