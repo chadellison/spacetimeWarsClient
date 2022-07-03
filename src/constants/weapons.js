@@ -264,7 +264,7 @@ export const ABILITY_WEAPONS = [
     speed: 7,
     width: 96,
     height: 48,
-    damage: 300,
+    damage: 900,
     animation: {
       coordinates: {x: 0, y: 0},
       spriteImage: nuclearBlastAnimation,

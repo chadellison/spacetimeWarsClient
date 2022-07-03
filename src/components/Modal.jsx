@@ -15,12 +15,12 @@ export const Modal = ({
   upgrades,
   activeTab,
   resetGame,
-  howToPlay,
   updateState,
   activePlayer,
   gameOverStats,
   clockDifference,
   handleGameEvent,
+  showInstructions
 }) => {
   switch (modal) {
     case 'selection':
@@ -40,7 +40,7 @@ export const Modal = ({
       return (
         <InformationModal
           updateState={updateState}
-          howToPlay={howToPlay}
+          showInstructions={showInstructions}
           userId={userId}
           players={players}
       />

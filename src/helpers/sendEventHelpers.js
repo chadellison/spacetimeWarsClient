@@ -222,29 +222,30 @@ const findShipCounts = (ships, opponentTeam) => {
   return { allyCount, opponentCount }
 }
 
-export const createBombers = (wave, team, aiShips, motherships) => {
-  const { allyCount, opponentCount } = findShipCounts(aiShips, team);
-  const bombers = [];
-
+export const createBombers = (wave, team, players) => {
+  const { allyCount, opponentCount } = findShipCounts(players, team);
   const shipIndex = Math.floor(Math.random() * BOMBERS.length);
-  const shipIndex2 = Math.floor(Math.random() * BOMBERS.length);
 
   const hitpoints = 100 + wave * 50;
 
   const weaponIndex = findWeaponIndex(wave);
-  if (opponentCount < 10) {
-    const opponentBomber1 = createBomber(shipIndex, weaponIndex, hitpoints, team);
-    bombers.push(opponentBomber1);
-  }
-  if (allyCount < 10) {
-    const allyBomber = createBomber(shipIndex2, weaponIndex === 0 ? weaponIndex : weaponIndex - 1, hitpoints / 2, team === 'red' ? 'blue' : 'red');
-    bombers.push(allyBomber);
-  }
 
-  const mothership = team === motherships[0].team ? motherships[0] : motherships[1];
-  if (mothership.hitpoints < mothership.maxHitpoints / 2) {
+  if (allyCount < opponentCount) {
+    const bomberTeam = team === 'red' ? 'blue' : 'red';
+    const count = opponentCount - allyCount
+    return bombersByCount(bomberTeam, count, shipIndex, weaponIndex, hitpoints);
+  } else if (opponentCount < allyCount) {
+    const count = allyCount - opponentCount
+    return bombersByCount(team, count, shipIndex, weaponIndex, hitpoints);
+  }
+}
+
+const bombersByCount = (team, count, shipIndex, weaponIndex, hitpoints) => {
+  const bombers = [];
+  while (count > 0) {
     bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team));
     bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team));
+    count -= 1
   }
   return bombers;
 }

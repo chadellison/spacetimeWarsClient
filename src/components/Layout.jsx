@@ -43,7 +43,7 @@ const DEFAULT_STATE = {
   },
   aiShips: [],
   animations: [],
-  howToPlay: false,
+  showInstructions: false,
   eventData: {
     count: 0,
     slowResponseCount: 0,
@@ -86,7 +86,7 @@ class Layout extends React.Component {
   }
 
   updateWaveData = () => {
-    const {waveData, players, index, aiShips, motherships} = this.state;
+    const { waveData, players, index } = this.state;
     const {wave, count, active} = waveData;
     if (active) {
       if (Math.random() > 0.97) {
@@ -99,9 +99,9 @@ class Layout extends React.Component {
         this.handleGameEvent({
           gameEvent: 'bombers',
           team: opponentTeam,
-          bombers: createBombers(wave, opponentTeam, aiShips, motherships)
+          bombers: createBombers(wave, opponentTeam, players)
         });
-        this.setState({waveData: {...waveData, wave: wave + 1, count: 10} });
+        this.setState({waveData: {...waveData, wave: wave + 1, count: 15} });
       }
     }
   }
@@ -278,13 +278,13 @@ class Layout extends React.Component {
       upgrades,
       waveData,
       activeTab,
-      howToPlay,
       animations,
       abilityData,
       motherships,
       gameOverStats,
       deployedWeapons,
       clockDifference,
+      showInstructions,
       slowConnectionBanner,
     } = this.state;
 
@@ -311,7 +311,7 @@ class Layout extends React.Component {
             players={players}
             upgrades={upgrades}
             activeTab={activeTab}
-            howToPlay={howToPlay}
+            showInstructions={showInstructions}
             resetGame={this.resetGame}
             activePlayer={activePlayer}
             gameOverStats={gameOverStats}
