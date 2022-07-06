@@ -3,7 +3,7 @@ export const updateFrame = (animation) => {
     if (animation.coordinates.x >= animation.width * (animation.rowCount - 1) && animation.coordinates.y >= animation.height * (animation.columnCount - 1)) {
       animation.coordinates = {x: 0, y: 0}
     } else if (animation.coordinates.x >= animation.width * (animation.rowCount - 1)) {
-      animation.coordinates.x = 0
+      animation.coordinates.x = 0;
       animation.coordinates.y += animation.height
     } else {
       animation.coordinates.x += animation.width

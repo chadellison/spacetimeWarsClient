@@ -8,9 +8,9 @@ import { GameButton } from './GameButton';
 import { HeaderButtons } from './HeaderButtons';
 import { Banner } from './Banner';
 import { WaveData } from './WaveData';
-import { RED_MOTHER_SHIP, BLUE_MOTHER_SHIP } from '../constants/ships.js';
+import { motherships, mothershipItems } from '../constants/ships.js';
 import '../styles/styles.css';
-import { ANAIMATION_FRAME_RATE, REQUEST_COUNT, BOARD_WIDTH, BOARD_HEIGHT } from '../constants/settings.js';
+import { ANAIMATION_FRAME_RATE, REQUEST_COUNT } from '../constants/settings.js';
 import { KEY_MAP } from '../constants/keyMap.js';
 import { updatePlayer, updateGameState } from '../helpers/gameLogic.js';
 import { keyDownEvent, keyUpEventPayload, createBombers } from '../helpers/sendEventHelpers.js';
@@ -50,11 +50,8 @@ const DEFAULT_STATE = {
   },
   slowConnectionBanner: false,
   scores: [],
-  waveData: {wave: 1, count: 5, active: false},
-  motherships: [
-    {...RED_MOTHER_SHIP, location: {x: 50, y: 50}, team: 'red', effects: {}, items: { ...RED_MOTHER_SHIP.items } },
-    {...BLUE_MOTHER_SHIP, location: {x: BOARD_WIDTH - 250, y: BOARD_HEIGHT - 159}, team: 'blue', effects: {}, items: { ...BLUE_MOTHER_SHIP.items } }
-  ],
+  waveData: { wave: 1, count: 5, active: false },
+  motherships,
   pageIsLoaded: false
 };
 
@@ -248,6 +245,7 @@ class Layout extends React.Component {
   resetGame = () => {
     const newState = {
       ...DEFAULT_STATE,
+      motherships: motherships.map((ship) => ({...ship, hitpoints: 5000, maxHitpoints: 5000, items: {...mothershipItems}, effects: {}})),
       userId: this.state.userId,
       clockDifference: this.state.clockDifference,
       shortestRoundTripTime: this.state.shortestRoundTripTime,

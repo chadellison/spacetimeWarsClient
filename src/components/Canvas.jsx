@@ -16,9 +16,9 @@ import {
   BOARD_HEIGHT,
   GAME_ANIMATIONS,
 } from '../constants/settings.js';
-import {RED_MOTHER_SHIP, BLUE_MOTHER_SHIP, SHIPS, SUPPLY_SHIP} from '../constants/ships.js';
-import {WEAPONS, ABILITY_WEAPONS, EXPLOSION_ANIMATIONS} from '../constants/weapons.js';
-import {GAME_EFFECTS, SPRITE_IMAGES} from '../constants/effects.js';
+import { motherships, SHIPS, SUPPLY_SHIP } from '../constants/ships.js';
+import { WEAPONS, ABILITY_WEAPONS, EXPLOSION_ANIMATIONS } from '../constants/weapons.js';
+import { GAME_EFFECTS, SPRITE_IMAGES } from '../constants/effects.js';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -330,9 +330,11 @@ class Canvas extends React.Component {
           );
         })}
 
+        {motherships.map((mothership, index) => {
+          return <img ref={this[mothership.name]} src={mothership.animation.spriteImage} className="hidden" alt={mothership.name} key={`mothership${index}`}/>
+        })}
+
         <img ref={this[SUPPLY_SHIP.name]} src={SUPPLY_SHIP.image} className="hidden" alt={SUPPLY_SHIP.name} />
-        <img ref={this[RED_MOTHER_SHIP.name]} src={RED_MOTHER_SHIP.animation.spriteImage} className="hidden" alt={RED_MOTHER_SHIP.name} />
-        <img ref={this[BLUE_MOTHER_SHIP.name]} src={BLUE_MOTHER_SHIP.animation.spriteImage} className="hidden" alt={BLUE_MOTHER_SHIP.name} />
       </div>
     );
   };

@@ -87,10 +87,10 @@ export const InformationModal = ({updateState, userId, players, showInstructions
         The Object of the game:
       </div>
       <div className="informationText">
-        Use weapons, items, and upgrades to destroy your opponents’ mothership before yours gets destroyed
+        Use weapons, items, and upgrades to destroy your opponents’ mothership before yours gets destroyed.
       </div>
       <div className="informationText">
-        The Red mothership is located at the top left and the blue mothership is located at the bottom right of the screen
+        The Red mothership is located at the top left of the map and the blue mothership is located at the bottom right of the map.
       </div>
       {showInstructions && renderHowToPlay()}
     </div>

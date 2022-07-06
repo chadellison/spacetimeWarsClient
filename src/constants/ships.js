@@ -16,7 +16,7 @@ import blueCommanderShip from '../images/blueCommanderShip.png';
 import supplyShip from '../images/supplyShip.png';
 import redMothershipAnimation from '../images/mothershipAnimationRed.png'
 import blueMothershipAnimation from '../images/mothershipAnimationBlue.png'
-import { GAME_ANIMATIONS } from './settings';
+import { GAME_ANIMATIONS, BOARD_WIDTH, BOARD_HEIGHT } from './settings.js';
 
 export const generateThrusterAnimation = (x, y) => {
   return {...GAME_ANIMATIONS[3], location: {x: 0, y: 0 }, coordinates: { x: 0, y: 0 }, xOffset: x, yOffset: y }
@@ -122,7 +122,7 @@ export const SUPPLY_SHIP = {
   image: supplyShip,
 }
 
-export const RED_MOTHER_SHIP = {
+export const MOTHER_SHIP = {
   name: 'redMothership',
   type: 'bomber',
   armor: 5,
@@ -130,69 +130,55 @@ export const RED_MOTHER_SHIP = {
   maxHitpoints: 5000,
   shipCenter: {x: 100, y: 54},
   effects: {},
-  items: {
-    1: { index: 0, cooldown: 120000, durationCount: 5000 },
-    2: { index: 1, durationCount: 1000, cooldown: 3000 },
-    4: { index: 3, durationCount: 10000, cooldown: 30000 },
-    5: {index: 4, durationCount: 0, cooldown: 0 },
-    10: { index: 9, durationCount: 0, cooldown: 0 }
-  },
+  items: {},
   angle: 0,
   width: 200,
   height: 108,
-  active: true,
-  animation: {
-    spriteImage: redMothershipAnimation,
-    location: {x: 0, y: 0},
-    coordinates: {x: 0, y: 0},
-    width: 200,
-    height: 108,
-    renderWidth: 200,
-    renderHeight: 108,
-    rowCount: 150,
-    columnCount: 1,
-    rate: 0,
-    startRate: 0,
-    xOffset: 0,
-    yOffset: 0
-  }
+  active: true
 }
 
-export const BLUE_MOTHER_SHIP = {
-  name: 'blueMothership',
-  type: 'bomber',
-  armor: 5,
-  hitpoints: 5000,
-  maxHitpoints: 5000,
-  shipCenter: {x: 100, y: 54},
-  effects: {},
-  items: {
-    1: { index: 0, cooldown: 120000, durationCount: 5000 },
-    2: { index: 1, durationCount: 1000, cooldown: 3000 },
-    4: { index: 3, durationCount: 10000, cooldown: 30000 },
-    5: {index: 4, durationCount: 0, cooldown: 0 },
-    10: { index: 9, durationCount: 0, cooldown: 0 }
-  },
-  angle: 0,
+export const mothershipItems = {
+  1: { index: 0, cooldown: 120000, durationCount: 5000 },
+  2: { index: 1, durationCount: 1000, cooldown: 3000 },
+  4: { index: 3, durationCount: 10000, cooldown: 30000 },
+  5: { index: 4, durationCount: 0, cooldown: 0 },
+  10: { index: 9, durationCount: 0, cooldown: 0 }
+}
+
+const mothershipAnimation = {
+  spriteImage: redMothershipAnimation,
+  location: {x: 0, y: 0},
+  coordinates: {x: 0, y: 0},
   width: 200,
   height: 108,
-  active: true,
-  animation: {
-    spriteImage: blueMothershipAnimation,
-    location: {x: 0, y: 0},
-    coordinates: {x: 0, y: 0},
-    width: 200,
-    height: 108,
-    renderWidth: 200,
-    renderHeight: 108,
-    rowCount: 150,
-    columnCount: 1,
-    rate: 0,
-    startRate: 0,
-    xOffset: 0,
-    yOffset: 0
-  }
+  renderWidth: 200,
+  renderHeight: 108,
+  rowCount: 252,
+  columnCount: 1,
+  rate: 0,
+  startRate: 0,
+  xOffset: 0,
+  yOffset: 0
 }
+
+export const motherships = [
+  {...MOTHER_SHIP, name:
+    'redMothership',
+    location: {x: 50, y: 50},
+    team: 'red',
+    effects: {},
+    items: { ...mothershipItems },
+    animation: {...mothershipAnimation, spriteImage: redMothershipAnimation }
+  },
+  {...MOTHER_SHIP,
+    name: 'blueMothership',
+    location: {x: BOARD_WIDTH - 250, y: BOARD_HEIGHT - 159},
+    team: 'blue',
+    effects: {},
+    items: { ...mothershipItems },
+    animation: {...mothershipAnimation, spriteImage: blueMothershipAnimation }
+  }
+]
 
 export const BOMBERS = [
   {
