@@ -134,10 +134,12 @@ export const isInvisable = (effects) => {
 const handleAiDirection = (location, angle, target) => {
   const targetAngle = Math.atan2(location.y - target.location.y, location.x - target.location.x) * 180 / Math.PI + 180;
 
-  if (targetAngle > angle) {
-    return targetAngle - angle < 180 ? 'right' : 'left'
-  } else {
-    return angle - targetAngle < 180 ? 'left' : 'right'
+  if (Math.abs(targetAngle - angle) > 2) {
+    if (targetAngle > angle) {
+      return targetAngle - angle < 180 ? 'right' : 'left'
+    } else {
+      return angle - targetAngle < 180 ? 'left' : 'right'
+    }
   }
 }
 

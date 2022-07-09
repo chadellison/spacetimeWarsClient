@@ -93,11 +93,15 @@ class Layout extends React.Component {
         this.setState({waveData: {...waveData, count: count - 1} });
       } else {
         const opponentTeam = players[index].team === 'red' ? 'blue' : 'red';
-        this.handleGameEvent({
-          gameEvent: 'bombers',
-          team: opponentTeam,
-          bombers: createBombers(wave, opponentTeam, players)
-        });
+        const bombers = createBombers(wave, opponentTeam, players);
+
+        if (bombers) {
+          this.handleGameEvent({
+            gameEvent: 'bombers',
+            team: opponentTeam,
+            bombers
+          });
+        }
         this.setState({waveData: {...waveData, wave: wave + 1, count: 15} });
       }
     }
