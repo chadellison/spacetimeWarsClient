@@ -119,7 +119,7 @@ export const SHIPS = [
   {
     index: 7,
     name: 'spider',
-    price: 250,
+    price: 1900,
     armor: 4,
     hitpoints: 3400,
     speed: 4,
