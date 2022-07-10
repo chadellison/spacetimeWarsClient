@@ -38,12 +38,12 @@ const applyOtherAbility = (players, playerData, newAnimmations) => {
 }
 
 const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime) => {
-  const weapon = {...ABILITY_WEAPONS[weaponIndex], deployedAt: Date.now() - elapsedTime}
+  const weapon = { ...ABILITY_WEAPONS[weaponIndex], deployedAt: Date.now() - elapsedTime }
   if (weapon.id === 4) {
     return handleMeteorShower(deployedWeapons, playerData, weapon, elapsedTime);
   } else {
     const updatedWeapons = [...deployedWeapons, handleFireWeapon(playerData, weapon, elapsedTime, weapon.damage * playerData.abilityLevel)];
-    return {deployedWeapons: updatedWeapons}
+    return { deployedWeapons: updatedWeapons }
   }
 }
 
@@ -59,7 +59,7 @@ const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animati
     effect = effect.id === 7 ? {...effect, duration: 800 + (playerData.abilityLevel * 1000)} : effect
     updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect)
     updatedAiShips = applyEffectToTeam(updatedAiShips, player.team, effect)
-  } else if ([3, 12, 15].includes(effect.id)) {
+  } else if ([1, 3, 4, 12, 15].includes(effect.id)) {
     const opponentTeam = player.team === 'red' ? 'blue' : 'red';
     effect = { ...GAME_EFFECTS[effectIndex], duration: effect.duration * playerData.abilityLevel }
     updatedPlayers = applyEffectToTeam(updatedPlayers, opponentTeam, effect);
@@ -69,10 +69,10 @@ const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animati
     player.effects = {...player.effects, [effect.id]: effect};
     updatedPlayers[playerData.index] = player;
   } else {
-    player.effects = {...player.effects, [effect.id]: effect};
+    player.effects = { ...player.effects, [effect.id]: effect };
     updatedPlayers[playerData.index] = player;
   }
-  return  {players: updatedPlayers, aiShips: updatedAiShips, animations};
+  return  { players: updatedPlayers, aiShips: updatedAiShips, animations };
 }
 
 const applyEffectToTeam = (players, team, effect) => {
@@ -82,7 +82,7 @@ const applyEffectToTeam = (players, team, effect) => {
         ...player.effects,
         [effect.id]: {
           ...effect,
-          animation: effect.animation ? {...effect.animation, coordinates: {x: 0, y: 0}} : null
+          animation: effect.animation && { ...effect.animation, coordinates: { x: 0, y: 0 } }
         }
       }
     }

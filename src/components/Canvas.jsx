@@ -39,6 +39,8 @@ class Canvas extends React.Component {
     this.stealthBlue = React.createRef();
     this.commander = React.createRef();
     this.commanderBlue = React.createRef();
+    this.spider = React.createRef();
+    this.spiderBlue = React.createRef();
     this.supplyShip = React.createRef();
 
     // weapons
@@ -74,6 +76,8 @@ class Canvas extends React.Component {
     this.teleport = React.createRef();
     this.zapped = React.createRef();
     this.cripple = React.createRef();
+    this.poisonDart = React.createRef();
+
     // game animations
     this.shipExplosion = React.createRef();
     this.thruster = React.createRef();
@@ -88,7 +92,6 @@ class Canvas extends React.Component {
   componentDidMount() {
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
-    // context.fillRect(0, 0, canvas.width, canvas.height);
 
     this.setState({
       canvas,
@@ -107,6 +110,8 @@ class Canvas extends React.Component {
       stealthBlue: this.stealthBlue.current,
       commander: this.commander.current,
       commanderBlue: this.commanderBlue.current,
+      spider: this.spider.current,
+      spiderBlue: this.spiderBlue.current,
       supplyShip: this.supplyShip.current,
       fireball: this.fireball.current,
       missile: this.missile.current,
@@ -146,6 +151,7 @@ class Canvas extends React.Component {
       teleport: this.teleport.current,
       zapped: this.zapped.current,
       cripple: this.cripple.current,
+      poisonDart: this.poisonDart.current,
       halfWindowWidth: round(window.innerWidth / 2),
       halfWindowHeight: round(window.innerHeight / 2)
     });
@@ -167,7 +173,7 @@ class Canvas extends React.Component {
   };
 
   handleScroll = (currentPlayer) => {
-    if (currentPlayer && currentPlayer.location) {
+    if (currentPlayer?.location) {
       window.scrollTo(
         currentPlayer.location.x - this.state.halfWindowWidth,
         currentPlayer.location.y - this.state.halfWindowHeight

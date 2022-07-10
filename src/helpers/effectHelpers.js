@@ -1,7 +1,7 @@
-import {ANAIMATION_FRAME_RATE} from '../constants/settings.js';
-import {updateFrame} from '../helpers/animationHelpers.js';
-import {round} from '../helpers/mathHelpers.js';
-import {GAME_EFFECTS} from '../constants/effects.js';
+import { ANAIMATION_FRAME_RATE } from '../constants/settings.js';
+import { updateFrame } from '../helpers/animationHelpers.js';
+import { round } from '../helpers/mathHelpers.js';
+import { GAME_EFFECTS } from '../constants/effects.js';
 
 export const handleEffects = (player) => {
   Object.values(player.effects).forEach((effect) => {
@@ -9,8 +9,8 @@ export const handleEffects = (player) => {
       delete player.effects[effect.id];
     } else {
       if (effect.id === 1) {
-        const multiplyer = player.type === 'bomber' && ['redMothership', 'blueMothership'].includes(player.name) ? 0.05 : 0.17;
-        const damage = round((player.maxHitpoints * multiplyer) / (effect.duration / ANAIMATION_FRAME_RATE));
+        const multiplyer = player.type === 'bomber' && ['redMothership', 'blueMothership'].includes(player.name) ? 0.001 : 0.002;
+        const damage = (round(player.maxHitpoints * multiplyer)) || 1;
         const newHitpoints = player.hitpoints - damage;
         player.hitpoints = newHitpoints > 1 ? newHitpoints : 1;
       } else if (effect.id === 7) {

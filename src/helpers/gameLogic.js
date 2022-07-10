@@ -19,7 +19,7 @@ import { explodePlayer } from '../helpers/receiveEventHelpers.js';
 import { upgradeSound, GAME_ANIMATIONS } from '../constants/settings.js';
 
 export const updateGameState = (gameState, updateState, handleGameEvent) => {
-  const {clockDifference, gameBuff, index, aiShips, space, lastFired, motherships} = gameState;
+  const { clockDifference, gameBuff, index, aiShips, space, lastFired, motherships } = gameState;
   let updatedPlayers = updatePlayers(gameState, handleGameEvent);
   const mothershipHpData = { red: motherships[0]?.hitpoints, blue: motherships[1]?.hitpoints }
   let deployedWeapons = handleRepeatedFire(updatedPlayers[index], space, lastFired, [...gameState.deployedWeapons], updateState, handleGameEvent);
@@ -99,12 +99,12 @@ const updateAiShips = (aiShips, index, handleGameEvent, clockDifference, players
 
       if (ship.type === 'supplyShip') {
         ship.rotate = 'left';
-      } else if (target && !isInvisable(target.effects) && target.active) {
+      } else if (!isInvisable(target.effects) && target?.active) {
         ship.rotate = handleAiDirection(ship.location, ship.angle, target);
       } else {
         ship.rotate = 'none';
       }
-      updatePlayer(ship, ANAIMATION_FRAME_RATE, clockDifference)
+      updatePlayer(ship, ANAIMATION_FRAME_RATE, clockDifference);
       updatedAiShips.push(ship);
     }
   });
@@ -144,8 +144,9 @@ const handleAiDirection = (location, angle, target) => {
 }
 
 const updatePlayers = (gameState, handleGameEvent) => {
-  const {players, clockDifference, index} = gameState;
-  return [...players].map((player) => {
+  const { players, clockDifference, index } = gameState;
+
+  return players.map((player) => {
     if (player.active) {
       player = handleHitpoints(player, index, handleGameEvent);
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
@@ -164,16 +165,16 @@ const updatePlayers = (gameState, handleGameEvent) => {
 const handleRepeatedFire = (player, space, lastFired, deployedWeapons, updateState, handleGameEvent) => {
   if (player && player.active) {
     if (space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown, player.effects[10], player.effects[15])) {
-      const updatedPlayer = {...player, gameEvent: 'fire'};
-      handleGameEvent(updatedPlayer)
-      const damage = handlePlayerDamage(updatedPlayer);
+      player.gameEvent = 'fire';
+      handleGameEvent(player)
+      const damage = handlePlayerDamage(player);
       const weapon = {...WEAPONS[player.weaponIndex]};
       const updatedWeapons = [
         ...deployedWeapons,
-        handleFireWeapon(updatedPlayer, weapon, 0, damage)
+        handleFireWeapon(player, weapon, 0, damage)
       ];
 
-      updateState({lastFired: Date.now()});
+      updateState({ lastFired: Date.now() });
       playSound(WEAPONS[player.weaponIndex].sound);
       return updatedWeapons;
     }
@@ -251,6 +252,7 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
     const trajectory = player.accelerate ? player.angle : player.trajectory;
     player.location = handleLocation(trajectory, player.location, distance);
   }
+
   if (player.type === 'human') {
     handleItems(player);
   }
@@ -261,18 +263,14 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   return player
 }
 
-const applyHitToAll = (players, weapon, attacker) => {
-  players.forEach((player) => {
+const handleNuclearWeapon = (gameData, weapon, attacker) => {
+  const { players, aiShips, motherships } = gameData;
+
+  players.concat(aiShips, motherships).forEach((player) => {
     if (player.team !== weapon.team) {
       applyHit(player, weapon, attacker)
     }
   });
-}
-
-const handleNuclearWeapon = (gameData, weapon, attacker) => {
-  applyHitToAll(gameData.players, weapon, attacker);
-  applyHitToAll(gameData.aiShips, weapon, attacker);
-  applyHitToAll(gameData.motherships, weapon, attacker);
 
   playSound(explosionSound);
   const nuclearBlastAnimation = {...EXPLOSION_ANIMATIONS[1], location: weapon.location, coordinates: {x: 0, y: 0}}
@@ -280,21 +278,19 @@ const handleNuclearWeapon = (gameData, weapon, attacker) => {
   return gameData;
 }
 
-const weaponFromPlayer = (gameData, weapon, newWeapons) => {
-  const { players, index, aiShips, motherships } = gameData;
+const weaponFromPlayer = (gameData, weapon, newWeapons, allShips) => {
+  const { players, index } = gameData;
   const attacker = players[weapon.playerIndex];
   const player = players[index];
 
-  if (attacker?.effects[14]) {
-    const target = nearestTarget(weapon.location, player.team, players.concat(aiShips, motherships));
+  if (attacker?.effects[14] || weapon.id === 8) {
+    const target = nearestTarget(weapon.location, player.team, allShips);
     const direction = handleAiDirection(weapon.location, weapon.trajectory, target);
     weapon.trajectory = handleAngle(direction, weapon.trajectory, ANAIMATION_FRAME_RATE);
   }
-  weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
 
-  handleCollision(gameData.players, weapon, attacker);
-  handleCollision(gameData.aiShips, weapon, attacker);
-  handleCollision(gameData.motherships, weapon, attacker);
+  weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
+  handleCollision(allShips, weapon, attacker);
 
   if (weapon.id) {
     handleAbilityWeapons(gameData, weapon, attacker);
@@ -312,7 +308,7 @@ const weaponFromPlayer = (gameData, weapon, newWeapons) => {
     delete attacker.levelUp
     attacker.level += 1;
     playSound(upgradeSound);
-    gameData.animations.push({...GAME_ANIMATIONS[0], location: attacker.location, coordinates: {x: 0, y: 0}});
+    gameData.animations.push({ ...GAME_ANIMATIONS[0], location: attacker.location, coordinates: { x: 0, y: 0 } });
   }
   gameData.weapons = newWeapons;
   return gameData;
@@ -320,11 +316,14 @@ const weaponFromPlayer = (gameData, weapon, newWeapons) => {
 
 export const handleWeapons = (gameData) => {
   let newWeapons = [];
+  const { players, aiShips, motherships } = gameData;
+  const allShips = players.concat(aiShips, motherships);
+
   gameData.weapons.forEach((weapon) => {
     if (weapon.from === 'human') {
-      gameData = weaponFromPlayer(gameData, weapon, newWeapons);
+      gameData = weaponFromPlayer(gameData, weapon, newWeapons, allShips);
     } else {
-      gameData = weaponFromAi(gameData, weapon, newWeapons);
+      gameData = weaponFromAi(gameData, weapon, newWeapons, allShips);
     }
   });
 
@@ -334,7 +333,7 @@ export const handleWeapons = (gameData) => {
 export const findCenterCoordinates = (location, center, offset) => {
   const x = location.x + center.x - (offset.width / 2);
   const y = location.y + center.y - (offset.height / 2);
-  return {x, y}
+  return { x, y }
 }
 
 const handleAbilityWeapons = (gameData, weapon, attacker) => {
@@ -361,11 +360,9 @@ const handleAbilityWeapons = (gameData, weapon, attacker) => {
   return gameData;
 }
 
-const weaponFromAi = (gameData, weapon, newWeapons) => {
+const weaponFromAi = (gameData, weapon, newWeapons, allShips) => {
   weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
-  handleCollision(gameData.players, weapon, {})
-  handleCollision(gameData.aiShips, weapon, {})
-  handleCollision(gameData.motherships, weapon, {})
+  handleCollision(allShips, weapon, {})
 
   if (!weapon.removed) {
     newWeapons.push(weapon);
@@ -384,7 +381,7 @@ const removeOutOfBoundsShots = (weapons) => {
 };
 
 export const findStartCenter = (player) => {
-  let startCenter = {x: 60, y: 30};
+  let startCenter = { x: 60, y: 30 };
   if (player.type === 'bomber') {
     startCenter = ['redMothership', 'blueMothership'].includes(player.name) ? MOTHER_SHIP.shipCenter : BOMBERS[player.index].shipCenter;
   } else if (player.type === 'human') {
@@ -509,7 +506,7 @@ const didLevelUp = (level, score) => {
 };
 
 const handleNegativeBuff = (player, weapon) => {
-  if (weapon.index === 5) {
+  if (weapon.index === 5 || weapon.id === 8) {
     const effect = createEffect(0, 3000, player.effects[1]);
     player.effects[effect.id] = effect;
   } else if (weapon.index === 6 || (weapon.id === 6 && !player.effects[2])) {

@@ -13,6 +13,8 @@ import redStealthShip from '../images/redStealthShip.png';
 import blueStealthShip from '../images/blueStealthShip.png';
 import commanderShip from '../images/commanderShip.png';
 import blueCommanderShip from '../images/blueCommanderShip.png';
+import spiderShip from '../images/spiderShip.png';
+import blueSpiderShip from '../images/blueSpiderShip.png';
 import supplyShip from '../images/supplyShip.png';
 import redMothershipAnimation from '../images/mothershipAnimationRed.png'
 import blueMothershipAnimation from '../images/mothershipAnimationBlue.png'
@@ -113,6 +115,19 @@ export const SHIPS = [
     blueImage: blueCommanderShip,
     abilities: {q: 18, w: 19, e: 20},
     thrusterOffset: {x: 40, y: 4}
+  },
+  {
+    index: 7,
+    name: 'spider',
+    price: 250,
+    armor: 4,
+    hitpoints: 3400,
+    speed: 4,
+    shipCenter: {x: 60, y: 60},
+    image: spiderShip,
+    blueImage: blueSpiderShip,
+    abilities: {q: 21, w: 22, e: 23},
+    thrusterOffset: {x: 34, y: 4}
   }
 ];
 

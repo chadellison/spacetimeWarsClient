@@ -18,6 +18,9 @@ import armorBoost from '../images/shieldIcon.png';
 import homingAttackIcon from '../images/homingAttackIcon.png';
 import backupIcon from '../images/backupIcon.png';
 import crippleIcon from '../images/crippleIcon.png';
+import poisonDartIcon from '../images/poisonDartIcon.png';
+import massStunIcon from '../images/massStunIcon.png';
+import poisonIcon from '../images/poisonIcon.png';
 
 import {
   windSound,
@@ -38,7 +41,9 @@ import {
   teleportSound,
   backupSound,
   homingSound,
-  crippleSound
+  crippleSound,
+  poisonDartSound
+
 } from '../constants/settings.js';
 
 export const ABILITIES = [
@@ -231,5 +236,32 @@ export const ABILITIES = [
     effectIndex: 14,
     image: crippleIcon,
     sound: crippleSound,
+  },
+  {
+    index: 21,
+    type: 'weapon',
+    description: 'Fires a poison projectile that poisons the nearest target (initial damage of 800, 1600, 2400 respectively + poison damage).',
+    cooldown: 30000,
+    weaponIndex: 7,
+    image: poisonDartIcon,
+    sound: poisonDartSound,
+  },
+  {
+    index: 22,
+    type: 'effect',
+    description: 'Stuns all enemy ships for (3, 6, 9) seconds respectively',
+    cooldown: 35000,
+    effectIndex: 3,
+    image: massStunIcon,
+    sound: poisonDartSound,
+  },
+  {
+    index: 23,
+    type: 'effect',
+    description: 'poisons all enemy ships for (3, 6, 9) seconds respectively',
+    cooldown: 35000,
+    effectIndex: 0,
+    image: poisonIcon,
+    sound: poisonDartSound,
   }
 ]

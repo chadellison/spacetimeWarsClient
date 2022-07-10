@@ -173,9 +173,9 @@ const handleAbilityEvent = (player, abilityData, handleGameEvent, updateState, p
 
   if (player.level > levelSum && abilityData[pressedKey].level < 3) {
     playSound(mineDropSound);
-    updateState({abilityData: {...abilityData, [pressedKey]: {...ability, level: ability.level + 1}}});
+    updateState({ abilityData: { ...abilityData, [pressedKey]: {...ability, level: ability.level + 1 } } });
   } else if (canUseAbility(ability, player, pressedKey) && ability.level > 0) {
-    let payload = {...player, gameEvent: 'ability', usedAbility: pressedKey, abilityLevel: abilityData[pressedKey].level}
+    let payload = { ...player, gameEvent: 'ability', usedAbility: pressedKey, abilityLevel: abilityData[pressedKey].level }
     if (isCallForBackup(player, pressedKey)) {
       playSound(backupSound);
       const backupShips = createBackupShips(abilityData[pressedKey].level, player.team);

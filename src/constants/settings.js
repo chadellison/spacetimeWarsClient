@@ -31,6 +31,7 @@ import zapAudio from '../audio/zapSound.wav';
 import backupAudio from '../audio/backupSound.wav';
 import homingAudio from '../audio/homingSound.wav';
 import crippleAudio from '../audio/crippleSound.wav';
+import poisonDartAudio from '../audio/poisonDartSound.wav';
 
 // images
 import levelUpAnimation from '../images/levelUpAnimation.png';
@@ -78,6 +79,8 @@ export const shipExplosionSound = new Audio(shipExplosionAudio);
 export const backupSound = new Audio(backupAudio);
 export const homingSound = new Audio(homingAudio);
 export const crippleSound = new Audio(crippleAudio);
+export const poisonDartSound = new Audio(poisonDartAudio);
+
 const zap = new Audio(zapAudio);
 zap.volume = 0.2;
 export const zapSound = zap;
