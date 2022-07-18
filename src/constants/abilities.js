@@ -42,7 +42,8 @@ import {
   backupSound,
   homingSound,
   crippleSound,
-  poisonDartSound
+  poisonDartSound,
+  stunSound
 
 } from '../constants/settings.js';
 
@@ -253,7 +254,7 @@ export const ABILITIES = [
     cooldown: 35000,
     effectIndex: 3,
     image: massStunIcon,
-    sound: poisonDartSound,
+    sound: stunSound,
   },
   {
     index: 23,

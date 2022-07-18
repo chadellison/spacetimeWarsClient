@@ -18,9 +18,9 @@ import { playSound } from '../helpers/audioHelpers.js';
 import { explodePlayer } from '../helpers/receiveEventHelpers.js';
 import { upgradeSound, GAME_ANIMATIONS } from '../constants/settings.js';
 
-export const updateGameState = (gameState, updateState, handleGameEvent) => {
+export const updateGameState = (gameState, updateState, handleGameEvent, syncClocks) => {
   const { clockDifference, gameBuff, index, aiShips, space, lastFired, motherships } = gameState;
-  let updatedPlayers = updatePlayers(gameState, handleGameEvent);
+  let updatedPlayers = updatePlayers(gameState, handleGameEvent, syncClocks);
   const mothershipHpData = { red: motherships[0]?.hitpoints, blue: motherships[1]?.hitpoints }
   let deployedWeapons = handleRepeatedFire(updatedPlayers[index], space, lastFired, [...gameState.deployedWeapons], updateState, handleGameEvent);
   deployedWeapons = handleAiWeapons(deployedWeapons, aiShips);
@@ -143,12 +143,12 @@ const handleAiDirection = (location, angle, target) => {
   }
 }
 
-const updatePlayers = (gameState, handleGameEvent) => {
+const updatePlayers = (gameState, handleGameEvent, syncClocks) => {
   const { players, clockDifference, index } = gameState;
 
   return players.map((player) => {
     if (player.active) {
-      player = handleHitpoints(player, index, handleGameEvent);
+      player = handleHitpoints(player, index, handleGameEvent, syncClocks);
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
 
       handleWall(player);
@@ -196,7 +196,7 @@ export const handlePlayerDamage = (player) => {
   return damage;
 }
 
-const handleHitpoints = (player, index, handleGameEvent) => {
+const handleHitpoints = (player, index, handleGameEvent, syncClocks) => {
   if (player.hitpoints <= 0 && player.active && player.gameEvent !== 'explode') {
     const noKilledBy = [undefined, null].includes(player.killedBy);
     if (noKilledBy) {
@@ -211,6 +211,9 @@ const handleHitpoints = (player, index, handleGameEvent) => {
       handleGameEvent(player);
     } else if ((new Date()).getTime() - player.updatedAt > 1000) {
       player = explodePlayer(player, player);
+    }
+    if (index === player.index && syncClocks) {
+      setTimeout(() => syncClocks(5), 1000);
     }
   }
   return player;

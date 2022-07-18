@@ -67,7 +67,7 @@ export const SHIPS = [
   {
     index: 3,
     name: 'cruiser',
-    price: 850,
+    price: 800,
     armor: 1,
     hitpoints: 1600,
     speed: 3,

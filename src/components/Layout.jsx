@@ -6,7 +6,6 @@ import PlayerData from './PlayerData';
 import { Modal } from './Modal';
 import { GameButton } from './GameButton';
 import { HeaderButtons } from './HeaderButtons';
-import { Banner } from './Banner';
 import { WaveData } from './WaveData';
 import { motherships, mothershipItems } from '../constants/ships.js';
 import '../styles/styles.css';
@@ -44,11 +43,6 @@ const DEFAULT_STATE = {
   aiShips: [],
   animations: [],
   showInstructions: false,
-  eventData: {
-    count: 0,
-    slowResponseCount: 0,
-  },
-  slowConnectionBanner: false,
   scores: [],
   waveData: { wave: 1, count: 5, active: false },
   motherships,
@@ -67,7 +61,7 @@ class Layout extends React.Component {
     } else {
       window.addEventListener('load', () => this.setState({ pageIsLoaded: true }))
     }
-    this.syncClocks(REQUEST_COUNT)
+    this.syncClocks(REQUEST_COUNT, this.fetchGameData);
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
     this.interval = setInterval(this.renderGame, ANAIMATION_FRAME_RATE);
@@ -125,28 +119,28 @@ class Layout extends React.Component {
     this.setState({gameSocket: gameSocket})
   };
 
-  syncClocks = (iteration) => {
+  syncClocks = (iteration, callback) => {
     const sentTime = Date.now();
     fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
       .then((response) => response.json())
-      .then((timeData) => this.handleTimeResponse(sentTime, timeData, iteration))
+      .then((timeData) => this.handleTimeResponse(sentTime, timeData, iteration, callback))
       .catch((error) => console.log('ERROR', error));
   }
 
-  handleTimeResponse = (sentTime, timeData, iteration) => {
+  handleTimeResponse = (sentTime, timeData, iteration, callback) => {
     const responseTime = Date.now();
     const roundTripTime = responseTime - sentTime;
     this.handleClockUpdate(roundTripTime, timeData.difference);
 
     if (iteration > 0) {
       iteration -= 1
-      this.syncClocks(iteration)
-    } else {
-      this.fetchGameData();
+      this.syncClocks(iteration, callback);
+    } else if (callback) {
+      callback();
     };
   };
 
-  fetchGameData() {
+  fetchGameData = () => {
     const {clockDifference} = this.state;
     fetch(`${API_HOST}/api/v1/players`)
       .then((response) => response.json())
@@ -173,16 +167,10 @@ class Layout extends React.Component {
   }
 
   handleGameEvent = (eventPayload) => {
-    let eventData = {...this.state.eventData}
-    // could send bombers here...?
-    eventData.count += 1;
-    const sentTime = Date.now();
     this.state.gameSocket.create({
       ...eventPayload,
-      eventId: eventData.count,
-      serverTime: sentTime + this.state.clockDifference
+      serverTime: Date.now() + this.state.clockDifference,
     });
-    this.setState({eventData})
   };
 
   updateState = (newState) => {
@@ -217,20 +205,16 @@ class Layout extends React.Component {
   };
 
   handleReceivedEvent = (playerData) => {
-    const {clockDifference, eventData} = this.state;
+    const { clockDifference } = this.state;
     const elapsedTime = Date.now() + clockDifference - playerData.serverTime;
+
     if (elapsedTime > 2000) {
-      console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime);
-      if (eventData.slowResponseCount > 50) {
-        this.setState({ eventData: {...eventData, slowResponseCount: 0 }, slowConnectionBanner: true})
-      } else {
-        this.setState({ eventData: {...eventData, slowResponseCount: eventData.slowResponseCount + 1 }})
-      }
-    } else {
-      const gameState = handleEventPayload(this.state, playerData, elapsedTime);
-      if (gameState) {
-        this.setState(gameState);
-      };
+      console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime)
+    }
+    const gameState = handleEventPayload(this.state, playerData, elapsedTime) || {};
+
+    if (gameState) {
+      this.setState(gameState);
     }
   };
 
@@ -256,14 +240,15 @@ class Layout extends React.Component {
       pageIsLoaded: true
     }
     this.updateState(newState);
-    this.syncClocks(3);
+    this.syncClocks(3, this.fetchGameData);
   }
 
   renderGame = () => {
     const updatedGameState = updateGameState(
       this.state,
       this.updateState,
-      this.handleGameEvent
+      this.handleGameEvent,
+      this.syncClocks
     );
     this.setState(updatedGameState);
   };
@@ -284,72 +269,69 @@ class Layout extends React.Component {
       animations,
       abilityData,
       motherships,
+      pageIsLoaded,
       gameOverStats,
       deployedWeapons,
       clockDifference,
-      showInstructions,
-      slowConnectionBanner,
+      showInstructions
     } = this.state;
 
     const activePlayer = this.findActivePlayer();
-
-    return (
-      <div className="layout" onKeyDown={this.handleKeyDown}>
-        {slowConnectionBanner &&
-          <Banner
-            updateState={this.updateState}
-            content={'Slow response times detected. Please check your internet connection.'}
-          />
-        }
-        {waveData.count < 16 && waveData.active &&
-          <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`}/>
-        }
-        {this.state.pageIsLoaded && <div className='game row'>
-          {modal && <Modal
-            page={page}
-            modal={modal}
-            index={index}
-            userId={userId}
-            scores={scores}
-            players={players}
-            upgrades={upgrades}
-            activeTab={activeTab}
-            showInstructions={showInstructions}
-            resetGame={this.resetGame}
-            activePlayer={activePlayer}
-            gameOverStats={gameOverStats}
-            updateState={this.updateState}
-            clockDifference={clockDifference}
-            handleGameEvent={this.handleGameEvent}
-          />}
-          {activePlayer && !modal && <GameButton
-            className={'gameButton'}
-            onClick={() => this.updateState({modal: 'selection'})}
-            buttonText={'shop'}
-          />}
-          {!modal && <HeaderButtons
-            updateState={this.updateState}
-            handleLeaderBoard={this.handleLeaderBoard}
-          />}
-          {activePlayer.name && <PlayerData
-            modal={modal}
-            activePlayer={activePlayer}
-            clockDifference={clockDifference}
-            handleGameEvent={this.handleGameEvent}
-            abilityData={abilityData}
-          />}
-          <Canvas
-            index={index}
-            players={players}
-            aiShips={aiShips}
-            gameBuff={gameBuff}
-            animations={animations}
-            motherships={motherships}
-            deployedWeapons={deployedWeapons}
-          />
-        </div>}
-      </div>
-    );
+    if (pageIsLoaded) {
+      return (
+        <div className="layout" onKeyDown={this.handleKeyDown}>
+          {waveData.count < 16 && waveData.active &&
+            <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`}/>
+          }
+          <div className='game row'>
+            {modal && <Modal
+              page={page}
+              modal={modal}
+              index={index}
+              userId={userId}
+              scores={scores}
+              players={players}
+              upgrades={upgrades}
+              activeTab={activeTab}
+              showInstructions={showInstructions}
+              resetGame={this.resetGame}
+              activePlayer={activePlayer}
+              gameOverStats={gameOverStats}
+              updateState={this.updateState}
+              clockDifference={clockDifference}
+              handleGameEvent={this.handleGameEvent}
+            />}
+            {activePlayer && !modal && <GameButton
+              className={'gameButton'}
+              onClick={() => this.updateState({modal: 'selection'})}
+              buttonText={'shop'}
+            />}
+            {!modal && <HeaderButtons
+              updateState={this.updateState}
+              handleLeaderBoard={this.handleLeaderBoard}
+            />}
+            {activePlayer.name && <PlayerData
+              modal={modal}
+              activePlayer={activePlayer}
+              clockDifference={clockDifference}
+              handleGameEvent={this.handleGameEvent}
+              abilityData={abilityData}
+            />}
+            <Canvas
+              index={index}
+              players={players}
+              aiShips={aiShips}
+              gameBuff={gameBuff}
+              animations={animations}
+              motherships={motherships}
+              deployedWeapons={deployedWeapons}
+            />
+          </div>
+        </div>
+      );
+    } else {
+      return <div>Loading...</div>
+    }
   };
 }
 
