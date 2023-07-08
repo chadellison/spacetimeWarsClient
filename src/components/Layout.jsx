@@ -1,19 +1,18 @@
 import React from 'react';
-import { WEBSOCKET_HOST, API_HOST } from '../api';
-import Cable from 'actioncable';
+import { createGameSocket, fetchGameData, fetchScoreData, getClockData } from '../api/gameData';
+import { KEY_MAP } from '../constants/keyMap.js';
+import { ANAIMATION_FRAME_RATE, REQUEST_COUNT } from '../constants/settings.js';
+import { mothershipItems, motherships } from '../constants/ships.js';
+import { updateGameState, updatePlayer } from '../helpers/gameLogic.js';
+import { handleEventPayload } from '../helpers/receiveEventHelpers.js';
+import { createBombers, keyDownEvent, keyUpEventPayload } from '../helpers/sendEventHelpers.js';
+import '../styles/styles.css';
 import Canvas from './Canvas';
-import PlayerData from './PlayerData';
-import { Modal } from './Modal';
 import { GameButton } from './GameButton';
 import { HeaderButtons } from './HeaderButtons';
+import { Modal } from './Modal';
+import PlayerData from './PlayerData';
 import { WaveData } from './WaveData';
-import { motherships, mothershipItems } from '../constants/ships.js';
-import '../styles/styles.css';
-import { ANAIMATION_FRAME_RATE, REQUEST_COUNT } from '../constants/settings.js';
-import { KEY_MAP } from '../constants/keyMap.js';
-import { updatePlayer, updateGameState } from '../helpers/gameLogic.js';
-import { keyDownEvent, keyUpEventPayload, createBombers } from '../helpers/sendEventHelpers.js';
-import { handleEventPayload } from '../helpers/receiveEventHelpers.js';
 
 const DEFAULT_STATE = {
   userId: Date.now(),
@@ -61,7 +60,7 @@ class Layout extends React.Component {
     } else {
       window.addEventListener('load', () => this.setState({ pageIsLoaded: true }))
     }
-    this.syncClocks(REQUEST_COUNT, this.fetchGameData);
+    this.syncClocks(REQUEST_COUNT, () => fetchGameData(this.handleGameDataResponse));
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
     this.interval = setInterval(this.renderGame, ANAIMATION_FRAME_RATE);
@@ -101,30 +100,27 @@ class Layout extends React.Component {
     }
   }
 
-  createGameSocket() {
-    let cable = Cable.createConsumer(WEBSOCKET_HOST)
-    let gameSocket = cable.subscriptions.create({
-      channel: 'GameDataChannel',
-      userId: this.state.userId
-    },
-    {
-      connected: () => {},
-      received: (response) => this.handleReceivedEvent(response.playerData),
-      create: function(gameData) {
-        this.perform('create', {
-          gameData: gameData
-        });
-      }
-    });
-    this.setState({gameSocket: gameSocket})
-  };
+  // createGameSocket() {
+  //   let cable = Cable.createConsumer(WEBSOCKET_HOST)
+  //   let gameSocket = cable.subscriptions.create({
+  //     channel: 'GameDataChannel',
+  //     userId: this.state.userId
+  //   },
+  //   {
+  //     connected: () => {},
+  //     received: (response) => this.handleReceivedEvent(response.playerData),
+  //     create: function(gameData) {
+  //       this.perform('create', {
+  //         gameData: gameData
+  //       });
+  //     }
+  //   });
+  //   this.setState({gameSocket: gameSocket})
+  // };
 
   syncClocks = (iteration, callback) => {
     const sentTime = Date.now();
-    fetch(`${API_HOST}/api/v1/time?sent_time=${sentTime}`)
-      .then((response) => response.json())
-      .then((timeData) => this.handleTimeResponse(sentTime, timeData, iteration, callback))
-      .catch((error) => console.log('ERROR', error));
+    getClockData(sentTime, (timeData) => this.handleTimeResponse(sentTime, timeData, iteration, callback))
   }
 
   handleTimeResponse = (sentTime, timeData, iteration, callback) => {
@@ -140,30 +136,27 @@ class Layout extends React.Component {
     };
   };
 
-  fetchGameData = () => {
-    const {clockDifference} = this.state;
-    fetch(`${API_HOST}/api/v1/players`)
-      .then((response) => response.json())
-      .then((gameData) => {
-        const players = gameData.players.map((player) => {
-          const elapsedTime = Date.now() + clockDifference - player.updatedAt
-          if (player.active) {
-            return updatePlayer(player, elapsedTime, clockDifference)
-          } else {
-            return player;
-          }
-        });
-        this.setState({ players });
-        this.createGameSocket();
-    }).catch((error) => console.log('ERROR', error));
-  };
+  updateState = (newState) => {
+    this.setState(newState);
+  }
 
-  handleLeaderBoard = () => {
-    fetch(`${API_HOST}/api/v1/scores`)
-      .then((response) => response.json())
-      .then((scoreData) => {
-        this.setState({ scores: scoreData, modal: 'leaderboard' });
-    }).catch((error) => console.log('ERROR', error));
+  handleGameDataResponse = (gameData) => {
+    const { clockDifference } = this.state;
+    const players = gameData.players.map((player) => {
+      const elapsedTime = Date.now() + clockDifference - player.updatedAt
+      if (player.active) {
+        return updatePlayer(player, elapsedTime, clockDifference)
+      } else {
+        return player;
+      }
+    });
+    this.setState({ players });
+    const received = (response) => this.handleReceivedEvent(response.playerData);
+    createGameSocket(this.state.userId, received, this.updateState);
+  }
+
+  handleLeaderBoard = (scoreData) => {
+    fetchScoreData(this.setState({ scores: scoreData, modal: 'leaderboard' }))
   }
 
   handleGameEvent = (eventPayload) => {
@@ -172,10 +165,6 @@ class Layout extends React.Component {
       serverTime: Date.now() + this.state.clockDifference,
     });
   };
-
-  updateState = (newState) => {
-    this.setState(newState);
-  }
 
   findActivePlayer = () => {
     const {index, players, startingPlayer} = this.state
@@ -240,7 +229,7 @@ class Layout extends React.Component {
       pageIsLoaded: true
     }
     this.updateState(newState);
-    this.syncClocks(3, this.fetchGameData);
+    this.syncClocks(3, () => fetchGameData(this.handleGameDataResponse));
   }
 
   renderGame = () => {
@@ -336,3 +325,4 @@ class Layout extends React.Component {
 }
 
 export default Layout;
+
