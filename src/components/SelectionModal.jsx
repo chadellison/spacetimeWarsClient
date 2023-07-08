@@ -53,7 +53,7 @@ const renderOptions = (activeTab, page, activePlayer, updateState, players, upgr
         )
       });
     case 'Upgrades':
-      return UPGRADES.map((upgrade, upgradeIndex) => {
+      return UPGRADES.map((upgrade) => {
         return (
           <Upgrade
             upgrade={upgrade}
