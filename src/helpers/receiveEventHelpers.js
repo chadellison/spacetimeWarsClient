@@ -12,7 +12,6 @@ import {WEAPONS} from '../constants/weapons.js';
 
 export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   const {
-    index,
     userId,
     players,
     aiShips,
@@ -35,7 +34,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     case 'ability':
       return handleAbility(players, deployedWeapons, playerData, elapsedTime, animations, aiShips);
     default:
-      if (index !== playerData.index) {
+      if (userId !== playerData.userId) {
         return handleUpdateEvent([...players], playerData, clockDifference, deployedWeapons, elapsedTime);
       }
   };
@@ -43,10 +42,13 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
 
 const handleExplodeEvent = (players, aiShips, playerData, elapsedTime, gameSocket) => {
   if (playerData.type === 'human') {
-    let updatedPlayers = [...players];
-    let player = updatedPlayers[playerData.index]
-    player = explodePlayer(player, playerData);
-    updatedPlayers[playerData.index] = player
+    const updatedPlayers = [...players].map((player) => {
+      if (player.userId === playerData.userId) {
+        return explodePlayer(player, playerData);
+      } else {
+        return player;
+      }
+    })
 
     return { players: updatedPlayers }
   } else {
@@ -72,7 +74,8 @@ const handleExplodeEvent = (players, aiShips, playerData, elapsedTime, gameSocke
 
 const handleBuff = (playerData, players, aiShips, elapsedTime) => {
   const gameBuff = {...GAME_EFFECTS[playerData.buffIndex], durationCount: elapsedTime};
-  const team = players[playerData.killedBy].team;
+  const killedBy = players.find((p) => p.userId === playerData.killedBy);
+  const team = killedBy.team;
   const updatedPlayers = applyGameBuff(team, [...players], gameBuff);
   const updatedAiShips = applyGameBuff(team, aiShips, gameBuff);
   return {players: updatedPlayers, gameBuff: gameBuff, aiShips: updatedAiShips};
@@ -97,7 +100,6 @@ export const explodePlayer = (player, playerData) => {
 const handleGameOver = (players, playerData, gameSocket) => {
   gameSocket.unsubscribe();
   return {
-    index: null,
     players: [],
     aiShips: [],
     motherships: [],
@@ -111,8 +113,19 @@ const handleGameOver = (players, playerData, gameSocket) => {
 }
 
 const handleStartEvent = (players, playerData, userId, eventData, waveData) => {
-  let newPlayers = [...players];
-  newPlayers[playerData.index] = playerData
+  let eventPlayer = players.find((player) => player.userId === playerData.userId);
+  let newPlayers;
+  if (eventPlayer) {
+    newPlayers = [...players].map((player) => {
+      if (player.userId === eventPlayer.userId) {
+        return playerData;
+      } else {
+        return player;
+      }
+    })
+  } else {
+    newPlayers = [...players, playerData]
+  }
 
   const updatedEventData = {...eventData, sendInterval: handleSendInterval(newPlayers)}
 
@@ -124,7 +137,7 @@ const handleStartEvent = (players, playerData, userId, eventData, waveData) => {
       space: false,
       waveData: {...waveData, active: true},
       players: newPlayers,
-      index: playerData.index,
+      userId: playerData.userId,
       eventData: updatedEventData,
     }
   } else {
@@ -152,7 +165,7 @@ const handleSendInterval = (players) => {
 export const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, elapsedTime) => {
   let updatedWeapons = [...deployedWeapons];
   let updatedPlayers = [...players];
-  let updatedPlayer = players[playerData.index];
+  let updatedPlayer = updatedPlayers.find((player) => player.userId === playerData.userId);
 
   switch (playerData.gameEvent) {
     case 'fire':
@@ -183,7 +196,14 @@ export const handleUpdateEvent = (players, playerData, clockDifference, deployed
       updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
       break;
   }
-  updatedPlayers[playerData.index] = updatedPlayer
+
+  updatedPlayers = updatedPlayers.map((player) => {
+    if (player.userId === playerData.userId) {
+      return updatedPlayer;
+    } else {
+      return player;
+    }
+  })
 
   return {
     players: updatedPlayers,

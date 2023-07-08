@@ -13,10 +13,10 @@ import { HeaderButtons } from './HeaderButtons';
 import { Modal } from './Modal';
 import PlayerData from './PlayerData';
 import { WaveData } from './WaveData';
+import { findCurrentPlayer } from '../helpers/playerHelpers';
 
 const DEFAULT_STATE = {
   userId: Date.now(),
-  index: null,
   startingPlayer: {},
   gameSocket: {},
   players: [],
@@ -35,9 +35,9 @@ const DEFAULT_STATE = {
   gameBuff: {},
   gameOverStats: {},
   abilityData: {
-    q: {lastUsed: 0, level: 0},
-    w: {lastUsed: 0, level: 0},
-    e: {lastUsed: 0, level: 0},
+    q: { lastUsed: 0, level: 0 },
+    w: { lastUsed: 0, level: 0 },
+    e: { lastUsed: 0, level: 0 },
   },
   aiShips: [],
   animations: [],
@@ -71,21 +71,23 @@ class Layout extends React.Component {
     clearInterval(this.interval);
     clearInterval(this.waveInterval);
     if (document.readyState !== 'complete') {
-      window.removeEventListener('load', () => this.setState({pageIsLoaded: true}));
+      window.removeEventListener('load', () => this.setState({ pageIsLoaded: true }));
     }
   }
 
   updateWaveData = () => {
-    const { waveData, players, index } = this.state;
-    const {wave, count, active} = waveData;
+    const { waveData, players, userId, startingPlayer } = this.state;
+    const { wave, count, active } = waveData;
     if (active) {
       if (Math.random() > 0.97) {
-        this.handleGameEvent({gameEvent: 'supplyShip'});
+        this.handleGameEvent({ gameEvent: 'supplyShip' });
       }
       if (count > 0) {
-        this.setState({waveData: {...waveData, count: count - 1} });
+        this.setState({ waveData: { ...waveData, count: count - 1 } });
       } else {
-        const opponentTeam = players[index].team === 'red' ? 'blue' : 'red';
+        const existingPlayer = findCurrentPlayer(userId, players);
+        const currentPlayer = existingPlayer || startingPlayer;
+        const opponentTeam = currentPlayer.team === 'red' ? 'blue' : 'red';
         const bombers = createBombers(wave, opponentTeam, players);
 
         if (bombers) {
@@ -95,28 +97,10 @@ class Layout extends React.Component {
             bombers
           });
         }
-        this.setState({waveData: {...waveData, wave: wave + 1, count: 15} });
+        this.setState({ waveData: { ...waveData, wave: wave + 1, count: 15 } });
       }
     }
   }
-
-  // createGameSocket() {
-  //   let cable = Cable.createConsumer(WEBSOCKET_HOST)
-  //   let gameSocket = cable.subscriptions.create({
-  //     channel: 'GameDataChannel',
-  //     userId: this.state.userId
-  //   },
-  //   {
-  //     connected: () => {},
-  //     received: (response) => this.handleReceivedEvent(response.playerData),
-  //     create: function(gameData) {
-  //       this.perform('create', {
-  //         gameData: gameData
-  //       });
-  //     }
-  //   });
-  //   this.setState({gameSocket: gameSocket})
-  // };
 
   syncClocks = (iteration, callback) => {
     const sentTime = Date.now();
@@ -166,30 +150,27 @@ class Layout extends React.Component {
     });
   };
 
-  findActivePlayer = () => {
-    const {index, players, startingPlayer} = this.state
-    return index !== null ? players[index] : startingPlayer;
-  }
-
   handleKeyDown = (event) => {
-    const {modal, players, index} = this.state;
+    const { modal, userId, players, startingPlayer } = this.state;
     if (!modal) {
       const pressedKey = KEY_MAP[event.keyCode];
-      const currentPlayer = players[index];
+      const existingPlayer = findCurrentPlayer(userId, players)
+      const currentPlayer = existingPlayer || startingPlayer;
       if (currentPlayer && currentPlayer.active && !this.state[pressedKey]) {
-        this.setState({[pressedKey]: true})
-        keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState);
+        this.setState({ [pressedKey]: true })
+        keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState, currentPlayer);
       }
     }
   };
 
   handleKeyUp = (event) => {
-    const {players, index} = this.state;
-    const currentPlayer = players[index]
+    const { userId, players, startingPlayer } = this.state;
+    const existingPlayer = findCurrentPlayer(userId, players)
+    const currentPlayer = existingPlayer || startingPlayer;
     const pressedKey = KEY_MAP[event.keyCode];
     if (currentPlayer && currentPlayer.active && !this.state.modal && this.state[pressedKey]) {
-      this.setState({[pressedKey]: false});
-      keyUpEventPayload(pressedKey, this.state, this.handleGameEvent, this.updateState)
+      this.setState({ [pressedKey]: false });
+      keyUpEventPayload(pressedKey, this.state, this.handleGameEvent, this.updateState, currentPlayer)
     };
   };
 
@@ -222,7 +203,7 @@ class Layout extends React.Component {
   resetGame = () => {
     const newState = {
       ...DEFAULT_STATE,
-      motherships: motherships.map((ship) => ({...ship, hitpoints: 5000, maxHitpoints: 5000, items: {...mothershipItems}, effects: {}})),
+      motherships: motherships.map((ship) => ({ ...ship, hitpoints: 5000, maxHitpoints: 5000, items: { ...mothershipItems }, effects: {} })),
       userId: this.state.userId,
       clockDifference: this.state.clockDifference,
       shortestRoundTripTime: this.state.shortestRoundTripTime,
@@ -246,7 +227,6 @@ class Layout extends React.Component {
     const {
       page,
       modal,
-      index,
       userId,
       scores,
       aiShips,
@@ -260,23 +240,25 @@ class Layout extends React.Component {
       motherships,
       pageIsLoaded,
       gameOverStats,
+      startingPlayer,
       deployedWeapons,
       clockDifference,
       showInstructions
     } = this.state;
 
-    const activePlayer = this.findActivePlayer();
+    const existingPlayer = findCurrentPlayer(userId, players);
+    const activePlayer = existingPlayer || startingPlayer;
+
     if (pageIsLoaded) {
       return (
         <div className="layout" onKeyDown={this.handleKeyDown}>
           {waveData.count < 16 && waveData.active &&
-            <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`}/>
+            <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`} />
           }
           <div className='game row'>
             {modal && <Modal
               page={page}
               modal={modal}
-              index={index}
               userId={userId}
               scores={scores}
               players={players}
@@ -292,7 +274,7 @@ class Layout extends React.Component {
             />}
             {activePlayer && !modal && <GameButton
               className={'gameButton'}
-              onClick={() => this.updateState({modal: 'selection'})}
+              onClick={() => this.updateState({ modal: 'selection' })}
               buttonText={'shop'}
             />}
             {!modal && <HeaderButtons
@@ -307,7 +289,7 @@ class Layout extends React.Component {
               abilityData={abilityData}
             />}
             <Canvas
-              index={index}
+              currentPlayer={existingPlayer}
               players={players}
               aiShips={aiShips}
               gameBuff={gameBuff}

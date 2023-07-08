@@ -10,7 +10,7 @@ import {
 } from '../helpers/canvasHelper.js';
 import { findCenterCoordinates, findStartCenter } from '../helpers/gameLogic';
 import '../styles/styles.css';
-import {round} from '../helpers/mathHelpers.js';
+import { round } from '../helpers/mathHelpers.js';
 import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
@@ -181,14 +181,14 @@ class Canvas extends React.Component {
     }
   }
 
-  handleShips = (players, context, index, gameBuff) => {
+  handleShips = (players, context, userId, gameBuff) => {
     const { aiShips, motherships } = this.props
     players.concat(aiShips).forEach((player) => {
-      const showShip = shouldRenderShip(player, index);
+      const showShip = shouldRenderShip(player, userId);
       if (player.active) {
         if (showShip) {
 
-          handleInvisibleFilter(context, player, index);
+          handleInvisibleFilter(context, player, userId);
 
           const thruster = player.effects[9] ? this.state.warpSpeed : this.state.thruster;
           drawShip(context, player, this.handleImage(player), thruster);
@@ -234,8 +234,7 @@ class Canvas extends React.Component {
   }
 
   renderCanvas = () => {
-    const {gameBuff, index, players} = this.props;
-    const currentPlayer = players[index]
+    const { gameBuff, userId, players, currentPlayer } = this.props;
     this.handleScroll(currentPlayer)
 
     const canvas = this.canvasRef.current;
@@ -247,7 +246,7 @@ class Canvas extends React.Component {
         context.fillStyle = gameBuff.color;
       }
 
-      this.handleShips(players, context, index, gameBuff);
+      this.handleShips(players, context, userId, gameBuff);
       this.renderWeapons(currentPlayer, context);
       this.renderAnimations(context);
     }
@@ -284,7 +283,7 @@ class Canvas extends React.Component {
           );
         })}
         {WEAPONS.map((weapon, index) => {
-          return(
+          return (
             <img ref={this[weapon.name]}
               src={weapon.animation ? weapon.animation.spriteImage : weapon.image}
               className="hidden"
@@ -294,7 +293,7 @@ class Canvas extends React.Component {
           );
         })}
         {ABILITY_WEAPONS.map((weapon, index) => {
-          return(
+          return (
             <img ref={this[weapon.name]}
               src={weapon.animation ? weapon.animation.spriteImage : weapon.image}
               className="hidden"
@@ -304,7 +303,7 @@ class Canvas extends React.Component {
           );
         })}
         {EXPLOSION_ANIMATIONS.map((weaponAnimation, index) => {
-          return(
+          return (
             <img ref={this[weaponAnimation.name]}
               src={weaponAnimation.spriteImage}
               className="hidden"
@@ -315,7 +314,7 @@ class Canvas extends React.Component {
         })}
         {GAME_EFFECTS.filter((effect) => effect.animation)
           .map((effect, index) => {
-            return(
+            return (
               <img ref={this[effect.name]}
                 src={SPRITE_IMAGES[effect.animation.spriteIndex]}
                 className="hidden"
@@ -326,7 +325,7 @@ class Canvas extends React.Component {
           })}
 
         {GAME_ANIMATIONS.map((animation, index) => {
-          return(
+          return (
             <img ref={this[animation.name]}
               src={animation.spriteImage}
               className="hidden"
@@ -337,7 +336,7 @@ class Canvas extends React.Component {
         })}
 
         {motherships.map((mothership, index) => {
-          return <img ref={this[mothership.name]} src={mothership.animation.spriteImage} className="hidden" alt={mothership.name} key={`mothership${index}`}/>
+          return <img ref={this[mothership.name]} src={mothership.animation.spriteImage} className="hidden" alt={mothership.name} key={`mothership${index}`} />
         })}
 
         <img ref={this[SUPPLY_SHIP.name]} src={SUPPLY_SHIP.image} className="hidden" alt={SUPPLY_SHIP.name} />

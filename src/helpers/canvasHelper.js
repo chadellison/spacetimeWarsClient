@@ -1,7 +1,7 @@
-import {findColor} from '../helpers/colorHelpers.js';
-import {round} from '../helpers/mathHelpers.js';
-import {isInvisable} from '../helpers/gameLogic.js';
-import {BOMBERS, SHIPS} from '../constants/ships.js';
+import { findColor } from '../helpers/colorHelpers.js';
+import { round } from '../helpers/mathHelpers.js';
+import { isInvisable } from '../helpers/gameLogic.js';
+import { BOMBERS, SHIPS } from '../constants/ships.js';
 
 export const drawShip = (context, player, ship, thruster) => {
   handleDirection(context, ship, player.location, player.angle)
@@ -41,7 +41,7 @@ export const renderWeapon = (context, weapon, image) => {
 }
 
 const handleAnimatedWeapon = (context, weapon, spriteImage) => {
-  const {x, y} = weapon.location;
+  const { x, y } = weapon.location;
   context.save();
   const cx = round(x + 0.5 * weapon.width);
   const cy = round(y + 0.5 * weapon.height);
@@ -53,7 +53,7 @@ const handleAnimatedWeapon = (context, weapon, spriteImage) => {
 }
 
 export const handleDirection = (context, image, location, trajectory) => {
-  const {x, y} = location;
+  const { x, y } = location;
   context.save();
   const cx = round(x + 0.5 * image.width);
   const cy = round(y + 0.5 * image.height);
@@ -64,12 +64,12 @@ export const handleDirection = (context, image, location, trajectory) => {
   context.drawImage(image, x, y);
 }
 
-export const shouldRenderShip = (player, index) => {
-  return (player.active) && (!isInvisable(player.effects) || (player.index === index));
+export const shouldRenderShip = (player, userId) => {
+  return (player.active) && (!isInvisable(player.effects) || (player.userId === userId));
 }
 
-export const handleInvisibleFilter = (context, player, index) => {
-  if (isInvisable(player.effects) && player.index === index) {
+export const handleInvisibleFilter = (context, player, userId) => {
+  if (isInvisable(player.effects) && player.userId === userId) {
     context.filter = 'opacity(0.5)';
   } else {
     context.filter = 'none';

@@ -11,7 +11,8 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
   let newAnimmations = animations;
 
   if (ability.animationIndex >= 0) {
-    const location = players[playerData.index].location;
+    const currentPlayer = players.find((player) => player.userId === playerData.userId);
+    const location = currentPlayer.location;
     newAnimmations = [...animations, {...GAME_ANIMATIONS[ability.animationIndex], location, coordinates: {x: 0, y: 0}}];
   }
   playSound(ability.sound);
@@ -25,7 +26,8 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
 }
 
 const applyOtherAbility = (players, playerData, newAnimmations) => {
-  const player = players[playerData.index];
+  // const player = players[playerData.index];
+  const player = players.find((player) => player.userId === playerData.userId);
 
   const distance = 300 * playerData.abilityLevel;
   player.location = handleLocation(player.angle, player.location, distance);
@@ -33,8 +35,15 @@ const applyOtherAbility = (players, playerData, newAnimmations) => {
   const teleportAnimation = {...GAME_ANIMATIONS[2], coordinates: {x: 0, y: 0}};
   const coordinates = findCenterCoordinates(player.location, shipCenter, {width: teleportAnimation.renderWidth, height: teleportAnimation.renderHeight})
   teleportAnimation.location = coordinates;
-  players[player.index] = player;
-  return { players, animations: newAnimmations.concat(teleportAnimation) }
+  // players[player.index] = player;
+  const udpatedPlayers = players.map((p) => {
+    if (p.userId === player.userId) {
+      return player;
+    } else {
+      return p
+    }
+  })
+  return { players: udpatedPlayers, animations: newAnimmations.concat(teleportAnimation) }
 }
 
 const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime) => {
@@ -50,7 +59,8 @@ const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime)
 const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animations, aiShips) => {
   let updatedPlayers = [...players]
   let updatedAiShips = [...aiShips]
-  let player = updatedPlayers[playerData.index]
+  let player = updatedPlayers.find((p) => p.userId === playerData.userId);
+  // let player = updatedPlayers[playerData.index]
 
   const duration = GAME_EFFECTS[effectIndex].duration + (playerData.abilityLevel * 1000) - 1000;
   let effect = {...GAME_EFFECTS[effectIndex], duration, durationCount: elapsedTime }
@@ -67,10 +77,24 @@ const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animati
   } else if ([5, 14].includes(effect.id)) {
     effect = { ...GAME_EFFECTS[effectIndex], duration: effect.duration * playerData.abilityLevel }
     player.effects = {...player.effects, [effect.id]: effect};
-    updatedPlayers[playerData.index] = player;
+
+    updatedPlayers = updatedPlayers.map((p) => {
+      if (p.userId === player.userId) {
+        return player;
+      } else {
+        return p;
+      }
+    })
   } else {
     player.effects = { ...player.effects, [effect.id]: effect };
-    updatedPlayers[playerData.index] = player;
+
+    updatedPlayers = updatedPlayers.map((p) => {
+      if (p.userId === player.userId) {
+        return player;
+      } else {
+        return p;
+      }
+    })
   }
   return  { players: updatedPlayers, aiShips: updatedAiShips, animations };
 }
@@ -108,7 +132,7 @@ const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime) => {
       ...weapon,
       location: handleLocation(weaponAngle, {x, y}, 50),
       trajectory: weaponAngle,
-      playerIndex: player.index,
+      playerIndex: player.userId,
       team: player.team,
       damage: 200 * player.abilityLevel,
       from: player.type

@@ -52,3 +52,5 @@ const handleStartingLevel = (players) => {
     return 1;
   }
 }
+
+export const findCurrentPlayer = (userId, players) => players.find((player) => player.userId === userId);

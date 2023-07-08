@@ -1,9 +1,9 @@
-import {WEAPONS} from '../constants/weapons.js';
-import {SHIPS, BOMBERS} from '../constants/ships.js';
-import {ABILITIES} from '../constants/abilities.js';
-import {canFire, updatePlayer, handleFireWeapon, handlePlayerDamage} from '../helpers/gameLogic.js';
-import {playSound, stopSound} from '../helpers/audioHelpers.js';
-import {thruster, mineDropSound, backupSound} from '../constants/settings.js';
+import { WEAPONS } from '../constants/weapons.js';
+import { SHIPS, BOMBERS } from '../constants/ships.js';
+import { ABILITIES } from '../constants/abilities.js';
+import { canFire, updatePlayer, handleFireWeapon, handlePlayerDamage } from '../helpers/gameLogic.js';
+import { playSound, stopSound } from '../helpers/audioHelpers.js';
+import { thruster, mineDropSound, backupSound } from '../constants/settings.js';
 import faker from 'faker';
 
 import {
@@ -11,22 +11,22 @@ import {
   BOARD_HEIGHT,
 } from '../constants/settings.js';
 
-export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState) => {
+export const keyDownEvent = (pressedKey, gameState, handleGameEvent, updateState, currentPlayer) => {
   switch (pressedKey) {
     case 'space':
-      handleSpaceBarEvent(gameState, handleGameEvent, updateState);
+      handleSpaceBarEvent(gameState, handleGameEvent, updateState, currentPlayer);
       break;
     case 'left':
     case 'right':
-      handleRotateEvent(gameState, pressedKey, handleGameEvent, updateState);
+      handleRotateEvent(gameState, pressedKey, handleGameEvent, updateState, currentPlayer);
       break;
     case 'up':
-      handleAccelerateEvent(gameState, pressedKey, handleGameEvent, updateState);
+      handleAccelerateEvent(gameState, pressedKey, handleGameEvent, updateState, currentPlayer);
       break;
     case 'q':
     case 'w':
     case 'e':
-      handleAbilityEvent(gameState.players[gameState.index], {...gameState.abilityData}, handleGameEvent, updateState, pressedKey);
+      handleAbilityEvent(currentPlayer, { ...gameState.abilityData }, handleGameEvent, updateState, pressedKey);
       break;
     default:
       break;
@@ -37,10 +37,11 @@ export const keyUpEventPayload = (
   pressedKey,
   gameState,
   handleGameEvent,
-  updateState
+  updateState,
+  currentPlayer
 ) => {
-  const {players, index, up, left, right, clockDifference} = gameState;
-  let updatedPlayer = handlePlayerOrientation({...players[index]}, up, left, right)
+  const { players, up, left, right, clockDifference } = gameState;
+  let updatedPlayer = handlePlayerOrientation({ ...currentPlayer }, up, left, right)
   let updatedPlayers = [...players]
 
   switch (pressedKey) {
@@ -73,34 +74,33 @@ const handlePlayerOrientation = (player, up, left, right) => {
     rotate = 'right';
   }
 
-  return {...player, rotate, accelerate: up}
+  return { ...player, rotate, accelerate: up }
 }
 
-const handleRotateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
-  const {players, index, up, left, right} = gameState;
+const handleRotateEvent = (gameState, pressedKey, handleGameEvent, updateState, currentPlayer) => {
+  const { players, up, left, right } = gameState;
   let updatedPlayers = [...players];
-  let updatedPlayer = handlePlayerOrientation(updatedPlayers[index], up, left, right)
+  let updatedPlayer = handlePlayerOrientation(currentPlayer, up, left, right)
   updatedPlayer = rotateEventPayload(updatedPlayer, pressedKey);
   queueForPlayerUpdate(updatedPlayers, updatedPlayer, updateState, handleGameEvent);
 };
 
-const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateState) => {
-  const {players, index, up, left, right} = gameState;
-  let updatedPlayer = handlePlayerOrientation([...players][index], up, left, right)
+const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateState, currentPlayer) => {
+  const { players, up, left, right } = gameState;
+  let updatedPlayer = handlePlayerOrientation(currentPlayer, up, left, right);
   updatedPlayer = accelerateEventPayload(updatedPlayer, pressedKey)
   queueForPlayerUpdate([...players], updatedPlayer, updateState, handleGameEvent, () => playSound(thruster));
 };
 
-const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
-  const {lastFired, players, deployedWeapons, index} = gameState;
-  const currentPlayer = players[index]
+const handleSpaceBarEvent = (gameState, handleGameEvent, updateState, currentPlayer) => {
+  const { lastFired, deployedWeapons } = gameState;
   if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown, false, false)) {
-    let player = {...currentPlayer, gameEvent: 'fire'}
-    updateState({lastFired: Date.now()});
+    let player = { ...currentPlayer, gameEvent: 'fire' }
+    updateState({ lastFired: Date.now() });
     const damage = handlePlayerDamage(player);
     const updatedWeapons = [
       ...deployedWeapons,
-      handleFireWeapon(player, {...WEAPONS[player.weaponIndex]}, 0, damage)
+      handleFireWeapon(player, { ...WEAPONS[player.weaponIndex] }, 0, damage)
     ];
     queueForWeaponUpdate(player, updateState, handleGameEvent, () => playSound(WEAPONS[player.weaponIndex].sound), updatedWeapons);
   };
@@ -108,8 +108,15 @@ const handleSpaceBarEvent = (gameState, handleGameEvent, updateState) => {
 
 const queueForPlayerUpdate = (updatedPlayers, updatedPlayer, updateState, handleGameEvent, soundEffect) => {
   handleGameEvent(updatedPlayer);
-  updatedPlayers[updatedPlayer.index] = updatePlayer(updatedPlayer, 0, 0);
-  updateState({players: updatedPlayers})
+
+  const newPlayerState = updatedPlayers.map((player) => {
+    if (player.userId === updatedPlayer.userId) {
+      return updatePlayer(updatedPlayer, 0, 0);
+    } else {
+      return player
+    }
+  });
+  updateState({ players: newPlayerState })
   if (soundEffect) {
     soundEffect();
   }
@@ -117,7 +124,7 @@ const queueForPlayerUpdate = (updatedPlayers, updatedPlayer, updateState, handle
 
 export const queueForWeaponUpdate = (player, updateState, handleGameEvent, soundEffect, updatedWeapons) => {
   handleGameEvent(player);
-  updateState({deployedWeapons: updatedWeapons})
+  updateState({ deployedWeapons: updatedWeapons })
   if (soundEffect) {
     soundEffect();
   }
@@ -141,13 +148,13 @@ export const startEventPayload = (player) => {
 export const getStartData = (team) => {
   if (team === 'red') {
     return {
-      location: {x: 100, y: 100},
+      location: { x: 100, y: 100 },
       angle: 1,
       trajectory: 0
     }
   } else {
     return {
-      location: {x: BOARD_WIDTH - 100, y: BOARD_HEIGHT - 100},
+      location: { x: BOARD_WIDTH - 100, y: BOARD_HEIGHT - 100 },
       angle: 181,
       trajectory: 180
     }
@@ -164,7 +171,7 @@ const accelerateEventPayload = (player, pressedKey) => {
 };
 
 const rotateEventPayload = (player, pressedKey) => {
-  return {...player, gameEvent: pressedKey, rotate: pressedKey};
+  return { ...player, gameEvent: pressedKey, rotate: pressedKey };
 }
 
 const handleAbilityEvent = (player, abilityData, handleGameEvent, updateState, pressedKey) => {
@@ -173,7 +180,7 @@ const handleAbilityEvent = (player, abilityData, handleGameEvent, updateState, p
 
   if (player.level > levelSum && abilityData[pressedKey].level < 3) {
     playSound(mineDropSound);
-    updateState({ abilityData: { ...abilityData, [pressedKey]: {...ability, level: ability.level + 1 } } });
+    updateState({ abilityData: { ...abilityData, [pressedKey]: { ...ability, level: ability.level + 1 } } });
   } else if (canUseAbility(ability, player, pressedKey) && ability.level > 0) {
     let payload = { ...player, gameEvent: 'ability', usedAbility: pressedKey, abilityLevel: abilityData[pressedKey].level }
     if (isCallForBackup(player, pressedKey)) {

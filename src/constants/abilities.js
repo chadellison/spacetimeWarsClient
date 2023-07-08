@@ -1,27 +1,4 @@
-import nuclearExplosionIcon from '../images/nuclearExplosionIcon.png';
-import warpSpeedIcon from '../images/warpSpeedIcon.png';
-import mineIcon from '../images/mineIcon.png';
-import stunGunIcon from '../images/stunGunIcon.png';
-import invulnerabilityIcon from '../images/invulnerableIcon.png';
-import stealthModeIcon from '../images/stealthMode.png';
-import meteorShowerIcon from '../images/meteorShowerIcon.png';
-import healingIcon from '../images/healthBoost.jpg';
-import piercerIcon from '../images/piercerIcon.png';
-import rapidFireIcon from '../images/rapidFireIcon.png';
-import damageBoostIcon from '../images/damageBoostIcon.png';
-import damageReductionIcon from '../images/damageReductionIcon.png';
-import energyFieldIcon from '../images/energyFieldIcon.png';
-import armorReductionIcon from '../images/armorReductionIcon.png';
-import redMeteorIcon from '../images/redMeteorIcon.png';
-import teleportIcon from '../images/teleportIcon.png';
-import armorBoost from '../images/shieldIcon.png';
-import homingAttackIcon from '../images/homingAttackIcon.png';
-import backupIcon from '../images/backupIcon.png';
-import crippleIcon from '../images/crippleIcon.png';
-import poisonDartIcon from '../images/poisonDartIcon.png';
-import massStunIcon from '../images/massStunIcon.png';
-import poisonIcon from '../images/poisonIcon.png';
-
+import { API_RESOURCE_URL } from '../api/apiHelpers.js';
 import {
   windSound,
   warpSpeedSound,
@@ -44,8 +21,31 @@ import {
   crippleSound,
   poisonDartSound,
   stunSound
-
 } from '../constants/settings.js';
+
+const nuclearExplosionIcon = `${API_RESOURCE_URL}/nuclearExplosionIcon`;
+const warpSpeedIcon = `${API_RESOURCE_URL}/warpSpeedIcon`;
+const mineIcon = `${API_RESOURCE_URL}/mineIcon`;
+const stunGunIcon = `${API_RESOURCE_URL}/stunGunIcon`;
+const invulnerabilityIcon = `${API_RESOURCE_URL}/invulnerableIcon`;
+const stealthModeIcon = `${API_RESOURCE_URL}/stealthMode`;
+const meteorShowerIcon = `${API_RESOURCE_URL}/meteorShowerIcon`;
+const healingIcon = `${API_RESOURCE_URL}/healthBoost`;
+const piercerIcon = `${API_RESOURCE_URL}/piercerIcon`;
+const rapidFireIcon = `${API_RESOURCE_URL}/rapidFireIcon`;
+const damageBoostIcon = `${API_RESOURCE_URL}/damageBoostIcon`;
+const damageReductionIcon = `${API_RESOURCE_URL}/damageReductionIcon`;
+const energyFieldIcon = `${API_RESOURCE_URL}/energyFieldIcon`;
+const armorReductionIcon = `${API_RESOURCE_URL}/armorReductionIcon`;
+const redMeteorIcon = `${API_RESOURCE_URL}/redMeteorIcon`;
+const teleportIcon = `${API_RESOURCE_URL}/teleportIcon`;
+const armorBoost = `${API_RESOURCE_URL}/shieldIcon`;
+const homingAttackIcon = `${API_RESOURCE_URL}/homingAttackIcon`;
+const backupIcon = `${API_RESOURCE_URL}/backupIcon`;
+const crippleIcon = `${API_RESOURCE_URL}/crippleIcon`;
+const poisonDartIcon = `${API_RESOURCE_URL}/poisonDartIcon`;
+const massStunIcon = `${API_RESOURCE_URL}/massStunIcon`;
+const poisonIcon = `${API_RESOURCE_URL}/poisonIcon`;
 
 export const ABILITIES = [
   {
