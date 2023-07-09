@@ -42,7 +42,7 @@ import redMothershipAnimation from '../images/mothershipAnimationRed.png'
 import blueMothershipAnimation from '../images/mothershipAnimationBlue.png'
 
 export const generateThrusterAnimation = (x, y) => {
-  return {...GAME_ANIMATIONS[3], location: {x: 0, y: 0 }, coordinates: { x: 0, y: 0 }, xOffset: x, yOffset: y }
+  return { ...GAME_ANIMATIONS[3], location: { x: 0, y: 0 }, coordinates: { x: 0, y: 0 }, xOffset: x, yOffset: y }
 }
 
 export const SHIPS = [
@@ -53,11 +53,11 @@ export const SHIPS = [
     armor: 1,
     hitpoints: 1900,
     speed: 2,
-    shipCenter: {x: 60.5, y: 37.5},
+    shipCenter: { x: 60.5, y: 37.5 },
     image: destroyerShip,
     blueImage: blueDestroyerShip,
-    abilities: {q: 0, w: 12, e: 15},
-    thrusterOffset: {x: 10, y: 2}
+    abilities: { q: 0, w: 12, e: 15 },
+    thrusterOffset: { x: 10, y: 2 }
   },
   {
     index: 1,
@@ -66,11 +66,11 @@ export const SHIPS = [
     armor: 0,
     hitpoints: 1600,
     speed: 2,
-    shipCenter: {x: 60.5, y: 51},
+    shipCenter: { x: 60.5, y: 51 },
     image: hunterShip,
     blueImage: blueHunterShip,
-    abilities: {q: 1, w: 6, e: 7},
-    thrusterOffset: {x: 20, y: 3}
+    abilities: { q: 1, w: 6, e: 7 },
+    thrusterOffset: { x: 20, y: 3 }
   },
   {
     index: 2,
@@ -79,11 +79,11 @@ export const SHIPS = [
     armor: 1,
     hitpoints: 1700,
     speed: 2.5,
-    shipCenter: {x: 60.5, y: 18.5},
+    shipCenter: { x: 60.5, y: 18.5 },
     image: redWarShip,
     blueImage: blueWarShip,
-    abilities: {q: 2, w: 8, e: 14},
-    thrusterOffset: {x: 10, y: 3}
+    abilities: { q: 2, w: 8, e: 14 },
+    thrusterOffset: { x: 10, y: 3 }
   },
   {
     index: 3,
@@ -92,11 +92,11 @@ export const SHIPS = [
     armor: 1,
     hitpoints: 1600,
     speed: 3,
-    shipCenter: {x: 60.5, y: 50.5},
+    shipCenter: { x: 60.5, y: 50.5 },
     image: cruiserShip,
     blueImage: blueCruiserShip,
-    abilities: {q: 3, w: 9, e: 11},
-    thrusterOffset: {x: 24, y: 3}
+    abilities: { q: 3, w: 9, e: 11 },
+    thrusterOffset: { x: 24, y: 3 }
   },
   {
     index: 4,
@@ -105,11 +105,11 @@ export const SHIPS = [
     armor: 3,
     hitpoints: 2900,
     speed: 3,
-    shipCenter: {x: 60.5, y: 42.5},
+    shipCenter: { x: 60.5, y: 42.5 },
     image: carrierShip,
     blueImage: blueCarrierShip,
-    abilities: {q: 4, w: 10, e: 16},
-    thrusterOffset: {x: 24, y: 3}
+    abilities: { q: 4, w: 10, e: 16 },
+    thrusterOffset: { x: 24, y: 3 }
   },
   {
     index: 5,
@@ -118,11 +118,11 @@ export const SHIPS = [
     armor: 1,
     hitpoints: 1900,
     speed: 3,
-    shipCenter: {x: 60.5, y: 57},
+    shipCenter: { x: 60.5, y: 57 },
     image: redStealthShip,
     blueImage: blueStealthShip,
-    abilities: {q: 5, w: 13, e: 17},
-    thrusterOffset: {x: 16, y: 3}
+    abilities: { q: 5, w: 13, e: 17 },
+    thrusterOffset: { x: 16, y: 3 }
   },
   {
     index: 6,
@@ -131,11 +131,11 @@ export const SHIPS = [
     armor: 3,
     hitpoints: 2400,
     speed: 3,
-    shipCenter: {x: 60.5, y: 44},
+    shipCenter: { x: 60.5, y: 44 },
     image: commanderShip,
     blueImage: blueCommanderShip,
-    abilities: {q: 18, w: 19, e: 20},
-    thrusterOffset: {x: 40, y: 4}
+    abilities: { q: 18, w: 19, e: 20 },
+    thrusterOffset: { x: 40, y: 4 }
   },
   {
     index: 7,
@@ -144,17 +144,17 @@ export const SHIPS = [
     armor: 4,
     hitpoints: 3400,
     speed: 4,
-    shipCenter: {x: 60, y: 60},
+    shipCenter: { x: 60, y: 60 },
     image: spiderShip,
     blueImage: blueSpiderShip,
-    abilities: {q: 21, w: 22, e: 23},
-    thrusterOffset: {x: 34, y: 4}
+    abilities: { q: 21, w: 22, e: 23 },
+    thrusterOffset: { x: 34, y: 4 }
   }
 ];
 
 export const SUPPLY_SHIP = {
   name: 'supplyShip',
-  shipCenter: {x: 60, y: 34},
+  shipCenter: { x: 60, y: 34 },
   image: supplyShip,
 }
 
@@ -164,7 +164,7 @@ export const MOTHER_SHIP = {
   armor: 5,
   hitpoints: 5000,
   maxHitpoints: 5000,
-  shipCenter: {x: 100, y: 54},
+  shipCenter: { x: 100, y: 54 },
   effects: {},
   items: {},
   angle: 0,
@@ -183,8 +183,8 @@ export const mothershipItems = {
 
 const mothershipAnimation = {
   spriteImage: redMothershipAnimation,
-  location: {x: 0, y: 0},
-  coordinates: {x: 0, y: 0},
+  location: { x: 0, y: 0 },
+  coordinates: { x: 0, y: 0 },
   width: 200,
   height: 108,
   renderWidth: 200,
@@ -198,21 +198,23 @@ const mothershipAnimation = {
 }
 
 export const motherships = [
-  {...MOTHER_SHIP, name:
-    'redMothership',
-    location: {x: 50, y: 50},
+  {
+    ...MOTHER_SHIP, name:
+      'redMothership',
+    location: { x: 50, y: 50 },
     team: 'red',
     effects: {},
     items: { ...mothershipItems },
-    animation: {...mothershipAnimation, spriteImage: redMothershipAnimation }
+    animation: { ...mothershipAnimation, spriteImage: redMothershipAnimation }
   },
-  {...MOTHER_SHIP,
+  {
+    ...MOTHER_SHIP,
     name: 'blueMothership',
-    location: {x: BOARD_WIDTH - 250, y: BOARD_HEIGHT - 159},
+    location: { x: BOARD_WIDTH - 250, y: BOARD_HEIGHT - 159 },
     team: 'blue',
     effects: {},
     items: { ...mothershipItems },
-    animation: {...mothershipAnimation, spriteImage: blueMothershipAnimation }
+    animation: { ...mothershipAnimation, spriteImage: blueMothershipAnimation }
   }
 ]
 
@@ -233,7 +235,7 @@ export const BOMBERS = [
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
-    shipCenter: {x: 60.5, y: 37.5},
+    shipCenter: { x: 60.5, y: 37.5 },
     image: destroyerShip,
     blueImage: blueDestroyerShip,
     thrusterAnimation: generateThrusterAnimation(10, 3)
@@ -254,7 +256,7 @@ export const BOMBERS = [
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
-    shipCenter: {x: 60.5, y: 51},
+    shipCenter: { x: 60.5, y: 51 },
     image: hunterShip,
     blueImage: blueHunterShip,
     thrusterAnimation: generateThrusterAnimation(20, 3)
@@ -275,7 +277,7 @@ export const BOMBERS = [
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
-    shipCenter: {x: 60.5, y: 18.5},
+    shipCenter: { x: 60.5, y: 18.5 },
     image: redWarShip,
     blueImage: blueWarShip,
     thrusterAnimation: generateThrusterAnimation(10, 3)
@@ -296,7 +298,7 @@ export const BOMBERS = [
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
-    shipCenter: {x: 60.5, y: 50.5},
+    shipCenter: { x: 60.5, y: 50.5 },
     image: cruiserShip,
     blueImage: blueCruiserShip,
     thrusterAnimation: generateThrusterAnimation(24, 3)
@@ -317,7 +319,7 @@ export const BOMBERS = [
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
-    shipCenter: {x: 60.5, y: 57},
+    shipCenter: { x: 60.5, y: 57 },
     image: redStealthShip,
     blueImage: blueStealthShip,
     thrusterAnimation: generateThrusterAnimation(16, 3)

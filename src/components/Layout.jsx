@@ -45,8 +45,6 @@ const DEFAULT_STATE = {
   scores: [],
   waveData: { wave: 1, count: 5, active: false },
   motherships,
-  pageIsLoaded: false,
-  loading: true
 };
 
 class Layout extends React.Component {
@@ -56,11 +54,6 @@ class Layout extends React.Component {
   };
 
   componentDidMount() {
-    if (document.readyState === 'complete') {
-      this.setState({ pageIsLoaded: true });
-    } else {
-      window.addEventListener('load', () => this.setState({ pageIsLoaded: true }))
-    }
     this.syncClocks(REQUEST_COUNT, () => fetchGameData(this.handleGameDataResponse));
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
@@ -71,9 +64,6 @@ class Layout extends React.Component {
   componentWillUnmount() {
     clearInterval(this.interval);
     clearInterval(this.waveInterval);
-    if (document.readyState !== 'complete') {
-      window.removeEventListener('load', () => this.setState({ pageIsLoaded: true }));
-    }
   }
 
   updateWaveData = () => {
@@ -135,7 +125,7 @@ class Layout extends React.Component {
         return player;
       }
     });
-    this.setState({ players, loading: false });
+    this.setState({ players });
     const received = (response) => this.handleReceivedEvent(response.playerData);
     createGameSocket(this.state.userId, received, this.updateState);
   }
@@ -208,7 +198,6 @@ class Layout extends React.Component {
       userId: this.state.userId,
       clockDifference: this.state.clockDifference,
       shortestRoundTripTime: this.state.shortestRoundTripTime,
-      pageIsLoaded: true
     }
     this.updateState(newState);
     this.syncClocks(3, () => fetchGameData(this.handleGameDataResponse));
@@ -232,7 +221,6 @@ class Layout extends React.Component {
       scores,
       aiShips,
       players,
-      loading,
       gameBuff,
       upgrades,
       waveData,
@@ -289,7 +277,6 @@ class Layout extends React.Component {
             abilityData={abilityData}
           />}
           <Canvas
-            loading={loading}
             userId={userId}
             currentPlayer={existingPlayer}
             players={players}

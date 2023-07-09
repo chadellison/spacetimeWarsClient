@@ -1,28 +1,30 @@
 import React from 'react';
+import { GAME_EFFECTS, SPRITE_IMAGES } from '../constants/effects.js';
 import {
-  drawShip,
-  shouldRenderShip,
-  renderPlayerData,
-  renderAnimation,
-  handleInvisibleFilter,
-  renderWeapon,
-  renderMotherShipData
-} from '../helpers/canvasHelper.js';
-import { findCenterCoordinates, findStartCenter } from '../helpers/gameLogic';
-import '../styles/styles.css';
-import { round } from '../helpers/mathHelpers.js';
-import {
-  BOARD_WIDTH,
   BOARD_HEIGHT,
+  BOARD_WIDTH,
   GAME_ANIMATIONS,
 } from '../constants/settings.js';
-import { motherships, SHIPS, SUPPLY_SHIP } from '../constants/ships.js';
-import { WEAPONS, ABILITY_WEAPONS, EXPLOSION_ANIMATIONS } from '../constants/weapons.js';
-import { GAME_EFFECTS, SPRITE_IMAGES } from '../constants/effects.js';
+import { SHIPS, SUPPLY_SHIP, motherships } from '../constants/ships.js';
+import { ABILITY_WEAPONS, EXPLOSION_ANIMATIONS, WEAPONS } from '../constants/weapons.js';
+import { CANVAS_IMAGE_ASSETS } from '../helpers/assetHelpers.js';
+import {
+  drawShip,
+  handleInvisibleFilter,
+  renderAnimation,
+  renderMotherShipData,
+  renderPlayerData,
+  renderWeapon,
+  shouldRenderShip
+} from '../helpers/canvasHelper.js';
+import { findCenterCoordinates, findStartCenter } from '../helpers/gameLogic';
+import { round } from '../helpers/mathHelpers.js';
+import '../styles/styles.css';
 
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { loadedImageCount: 0 }
     this.canvasRef = React.createRef();
     // ships
     this.hunter = React.createRef();
@@ -93,6 +95,10 @@ class Canvas extends React.Component {
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
 
+    CANVAS_IMAGE_ASSETS.forEach((img) => {
+      img.addEventListener('load', () => this.setState({ loadedImageCount: this.state.loadedImageCount + 1 }));
+    });
+
     this.setState({
       canvas,
       context,
@@ -154,6 +160,12 @@ class Canvas extends React.Component {
       poisonDart: this.poisonDart.current,
       halfWindowWidth: round(window.innerWidth / 2),
       halfWindowHeight: round(window.innerHeight / 2)
+    });
+  }
+
+  componentWillUnmount() {
+    CANVAS_IMAGE_ASSETS.forEach((img) => {
+      img.removeEventListener('load', () => {});
     });
   }
 
@@ -253,15 +265,18 @@ class Canvas extends React.Component {
   }
 
   render() {
+    const loading = this.state.loadedImageCount < CANVAS_IMAGE_ASSETS.length;
     this.renderCanvas();
     return (
       <div>
         <canvas
-          className={`canvas column${this.props.loading ? ' hidden' : ''}`}
+          className={`canvas column${loading ? 'hidden' : ''}`}
           ref={this.canvasRef}
           width={BOARD_WIDTH}
           height={BOARD_HEIGHT}
         />
+        {loading && '...loading'}
+
         {SHIPS.map((ship, index) => {
           return (
             <img ref={this[ship.name]}
