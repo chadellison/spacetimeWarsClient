@@ -1,18 +1,18 @@
 import React from 'react';
 import '../styles/playerData.css';
-import {WEAPONS} from '../constants/weapons.js';
-import {UPGRADES} from '../constants/upgrades.js';
-import {ABILITIES} from '../constants/abilities.js';
+import { WEAPONS } from '../constants/weapons.js';
+import { UPGRADES } from '../constants/upgrades.js';
+import { ABILITIES } from '../constants/abilities.js';
 import goldIcon from '../images/gold.png';
-import {Hitpoints} from './Hitpoints';
-import {PlayerItems} from './PlayerItems';
-import {PlayerStat} from './PlayerStat';
-import {AbilityIcon} from './AbilityIcon';
-import {LevelUpIcon} from './LevelUpIcon';
-import {GameButton} from './GameButton';
-import {SHIPS} from '../constants/ships';
-import {round} from '../helpers/mathHelpers';
-import {startEventPayload} from '../helpers/sendEventHelpers';
+import { Hitpoints } from './Hitpoints';
+import { PlayerItems } from './PlayerItems';
+import { PlayerStat } from './PlayerStat';
+import { AbilityIcon } from './AbilityIcon';
+import { LevelUpIcon } from './LevelUpIcon';
+import { GameButton } from './GameButton';
+import { SHIPS } from '../constants/ships';
+import { round } from '../helpers/mathHelpers';
+import { startEventPayload } from '../helpers/sendEventHelpers';
 
 const renderWeapon = (weaponIndex) => {
   if (weaponIndex >= 0) {
@@ -135,13 +135,13 @@ const renderAbilityIcons = (activePlayer, playerAbilityData) => {
 
     const hasLevelPoints = activePlayer.level > levelSum;
     return [
-      {ability: ABILITIES[shipAbilities.q], key: 'q'},
-      {ability: ABILITIES[shipAbilities.w], key: 'w'},
-      {ability: ABILITIES[shipAbilities.e], key: 'e'},
+      { ability: ABILITIES[shipAbilities.q], key: 'q' },
+      { ability: ABILITIES[shipAbilities.w], key: 'w' },
+      { ability: ABILITIES[shipAbilities.e], key: 'e' },
     ].map((abilityData, index) => {
       const abilityLevel = playerAbilityData[abilityData.key].level;
       if (hasLevelPoints && abilityLevel < 3) {
-        return(
+        return (
           <LevelUpIcon
             ability={abilityData.ability}
             key={'abilityIcon' + index}
@@ -176,14 +176,14 @@ const PlayerData = ({
   if (!activePlayer.active && elapsedSeconds < 10) {
     countDown = round(10 - elapsedSeconds);
   }
-  const {gold} = activePlayer;
+  const { gold } = activePlayer;
   return (
     <div className={`playerData column ${!activePlayer.active ? 'waiting' : ''}`}>
       <div className="row">
         {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown, modal, handleGameEvent)}
         <div className="playerLevel">{'level: ' + activePlayer.level}</div>
         <div className="nameInfo">{activePlayer.name}</div>
-        {gold >= 0 && <PlayerStat image={goldIcon} alt={'gold'} value={gold} className="goldInfo"/>}
+        {gold >= 0 && <PlayerStat image={goldIcon} alt={'gold'} value={gold} className="goldInfo" />}
         {renderHitPoints(activePlayer)}
         {renderAbilityIcons(activePlayer, abilityData)}
         {renderWeapon(activePlayer.weaponIndex)}

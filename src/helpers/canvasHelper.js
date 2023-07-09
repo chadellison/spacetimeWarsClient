@@ -65,7 +65,7 @@ export const handleDirection = (context, image, location, trajectory) => {
 }
 
 export const shouldRenderShip = (player, userId) => {
-  return (player.active) && (!isInvisable(player.effects) || (player.userId === userId));
+  return player.active && (!isInvisable(player.effects) || (player.userId === userId));
 }
 
 export const handleInvisibleFilter = (context, player, userId) => {

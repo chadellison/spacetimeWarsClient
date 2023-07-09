@@ -1,17 +1,15 @@
-import { API_RESOURCE_URL } from '../api/apiHelpers.js';
-
-const poisonAnimation = `${API_RESOURCE_URL}/poisonAnimation2`;
-const healAnimation = `${API_RESOURCE_URL}/healAnimation`;
-const armorBoost = `${API_RESOURCE_URL}/armorBoostAnimation`;
-const invulnerableAnimation = `${API_RESOURCE_URL}/invulnerableAnimation`;
-const coldAnimation = `${API_RESOURCE_URL}/coldAnimation`;
-const stunAnimation = `${API_RESOURCE_URL}/stunAnimation`;
-const warpSpeedAnimation = `${API_RESOURCE_URL}/warpSpeedAnimation2`;
-const damageBoostIcon = `${API_RESOURCE_URL}/damageBoostIcon.`;
-const damageReductionAnimation = `${API_RESOURCE_URL}/damageReductionAnimation.`;
-const electricFieldAnimation = `${API_RESOURCE_URL}/electricFieldAnimation`;
-const armorReductionAnimation = `${API_RESOURCE_URL}/armorReductionAnimation`;
-const crippleAnimation = `${API_RESOURCE_URL}/crippleAnimation`;
+import poisonAnimation from '../images/poisonAnimation2.png';
+import healAnimation from '../images/healAnimation.png';
+import armorBoost from '../images/armorBoostAnimation.png';
+import invulnerableAnimation from '../images/invulnerableAnimation.png';
+import coldAnimation from '../images/coldAnimation.png';
+import stunAnimation from '../images/stunAnimation.png';
+import warpSpeedAnimation from '../images/warpSpeedAnimation2.png';
+import damageBoostIcon from '../images/damageBoostIcon.png';
+import damageReductionAnimation from '../images/damageReductionAnimation.png';
+import electricFieldAnimation from '../images/electricFieldAnimation.png';
+import armorReductionAnimation from '../images/armorReductionAnimation.png';
+import crippleAnimation from '../images/crippleAnimation.png';
 
 export const GAME_EFFECTS = [
   {

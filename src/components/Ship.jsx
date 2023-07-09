@@ -20,9 +20,15 @@ const handleClick = (activePlayer, updateState, players, shipIndex) => {
       velocity: SHIPS[shipIndex].speed,
       thrusterAnimation: generateThrusterAnimation(SHIPS[shipIndex].thrusterOffset.x, SHIPS[shipIndex].thrusterOffset.y)
     }
-    if (activePlayer.index >= 0) {
-      let updatedPlayers = [...players];
-      updatedPlayers[activePlayer.index] = player
+
+    if (activePlayer.inPlayers) {
+      const updatedPlayers = players.map((p) => {
+        if (p.userId === activePlayer.userId) {
+          return player;
+        } else {
+          return p;
+        }
+      })
       updateState({players: updatedPlayers})
     } else {
       updateState({startingPlayer: player, activeTab: 'Weapons', page: 1});

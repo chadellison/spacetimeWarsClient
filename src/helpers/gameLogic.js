@@ -214,7 +214,7 @@ const handleHitpoints = (player, userId, handleGameEvent, syncClocks) => {
       player = explodePlayer(player, player);
     }
     if (userId === player.userId && syncClocks) {
-      setTimeout(() => syncClocks(5), 1000);
+      setTimeout(() => syncClocks(5, () => {}), 1000);
     }
   }
   return player;

@@ -1,9 +1,9 @@
 import React from 'react';
 import '../styles/item.css';
-import {getItem} from '../helpers/itemHelpers.js';
-import {handleUpdate} from '../helpers/selectionModalHelpers.js';
-import {notEnoughResources, goldAudio} from '../constants/settings.js';
-import {ITEMS} from '../constants/items.js';
+import { getItem } from '../helpers/itemHelpers.js';
+import { handleUpdate } from '../helpers/selectionModalHelpers.js';
+import { notEnoughResources, goldAudio } from '../constants/settings.js';
+import { ITEMS } from '../constants/items.js';
 
 const handleClick = (activePlayer, item, updateState, players) => {
   const gold = activePlayer.gold - ITEMS[item.index].price;
@@ -29,21 +29,21 @@ const handleClick = (activePlayer, item, updateState, players) => {
   }
 };
 
-export const Item = ({imageSrc, activePlayer, item, updateState, players, updateDescription}) => {
+export const Item = ({ imageSrc, activePlayer, item, updateState, players, updateDescription }) => {
   return (
     <div className="itemSelection"
       onClick={() => handleClick(activePlayer, item, updateState, players)}
       onMouseEnter={() => updateDescription(item.description)}
       onMouseLeave={() => updateDescription('')}>
-        <div className="itemImageWrapper">
-          <img id={item.index} src={imageSrc} alt="item" className="itemSelectionImage"/>
-        </div>
-        <div className="itemSelectionTitle">
-          {`${item.name}`}
-        </div>
-        <div className="itemSelectionPrice">
-          {`Price: ${item.price}`}
-        </div>
+      <div className="itemImageWrapper">
+        <img id={item.index} src={imageSrc} alt="item" className="itemSelectionImage" />
+      </div>
+      <div className="itemSelectionTitle">
+        {`${item.name}`}
+      </div>
+      <div className="itemSelectionPrice">
+        {`Price: ${item.price}`}
+      </div>
     </div>
   );
 };

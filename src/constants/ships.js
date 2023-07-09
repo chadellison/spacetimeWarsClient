@@ -2,44 +2,44 @@
 import { API_RESOURCE_URL } from '../api/apiHelpers.js';
 import { GAME_ANIMATIONS, BOARD_WIDTH, BOARD_HEIGHT } from './settings.js';
 
-const hunterShip = `${API_RESOURCE_URL}/redHunterShip`;
-const blueHunterShip = `${API_RESOURCE_URL}/blueHunterShip`;
-const destroyerShip = `${API_RESOURCE_URL}/redDestroyer`;
-const blueDestroyerShip = `${API_RESOURCE_URL}/blueDestroyer`;
-const redWarShip = `${API_RESOURCE_URL}/redWar`;
-const blueWarShip = `${API_RESOURCE_URL}/blueWar`;
-const cruiserShip = `${API_RESOURCE_URL}/redCruiser`;
-const blueCruiserShip = `${API_RESOURCE_URL}/blueCruiser`;
-const carrierShip = `${API_RESOURCE_URL}/redCarrierShip`;
-const blueCarrierShip = `${API_RESOURCE_URL}/blueCarrierShip`;
-const redStealthShip = `${API_RESOURCE_URL}/redStealthShip`;
-const blueStealthShip = `${API_RESOURCE_URL}/blueStealthShip`;
-const commanderShip = `${API_RESOURCE_URL}/commanderShip`;
-const blueCommanderShip = `${API_RESOURCE_URL}/blueCommanderShip`;
-const spiderShip = `${API_RESOURCE_URL}/spiderShip`;
-const blueSpiderShip = `${API_RESOURCE_URL}/blueSpiderShip`;
-const supplyShip = `${API_RESOURCE_URL}/supplyShip`;
-const redMothershipAnimation = `${API_RESOURCE_URL}/mothershipAnimationRed`;
-const blueMothershipAnimation = `${API_RESOURCE_URL}/mothershipAnimationBlue`;
-// import hunterShip from '../images/redHunterShip.png';
-// import blueHunterShip from '../images/blueHunterShip.png';
-// import destroyerShip from '../images/redDestroyer.png';
-// import blueDestroyerShip from '../images/blueDestroyer.png';
-// import redWarShip from '../images/redWar.png';
-// import blueWarShip from '../images/blueWar.png';
-// import cruiserShip from '../images/redCruiser.png';
-// import blueCruiserShip from '../images/blueCruiser.png';
-// import carrierShip from '../images/redCarrierShip.png';
-// import blueCarrierShip from '../images/blueCarrierShip.png';
-// import redStealthShip from '../images/redStealthShip.png';
-// import blueStealthShip from '../images/blueStealthShip.png';
-// import commanderShip from '../images/commanderShip.png';
-// import blueCommanderShip from '../images/blueCommanderShip.png';
-// import spiderShip from '../images/spiderShip.png';
-// import blueSpiderShip from '../images/blueSpiderShip.png';
-// import supplyShip from '../images/supplyShip.png';
-// import redMothershipAnimation from '../images/mothershipAnimationRed.png'
-// import blueMothershipAnimation from '../images/mothershipAnimationBlue.png'
+// const hunterShip = `${API_RESOURCE_URL}/redHunterShip`;
+// const blueHunterShip = `${API_RESOURCE_URL}/blueHunterShip`;
+// const destroyerShip = `${API_RESOURCE_URL}/redDestroyer`;
+// const blueDestroyerShip = `${API_RESOURCE_URL}/blueDestroyer`;
+// const redWarShip = `${API_RESOURCE_URL}/redWar`;
+// const blueWarShip = `${API_RESOURCE_URL}/blueWar`;
+// const cruiserShip = `${API_RESOURCE_URL}/redCruiser`;
+// const blueCruiserShip = `${API_RESOURCE_URL}/blueCruiser`;
+// const carrierShip = `${API_RESOURCE_URL}/redCarrierShip`;
+// const blueCarrierShip = `${API_RESOURCE_URL}/blueCarrierShip`;
+// const redStealthShip = `${API_RESOURCE_URL}/redStealthShip`;
+// const blueStealthShip = `${API_RESOURCE_URL}/blueStealthShip`;
+// const commanderShip = `${API_RESOURCE_URL}/commanderShip`;
+// const blueCommanderShip = `${API_RESOURCE_URL}/blueCommanderShip`;
+// const spiderShip = `${API_RESOURCE_URL}/spiderShip`;
+// const blueSpiderShip = `${API_RESOURCE_URL}/blueSpiderShip`;
+// const supplyShip = `${API_RESOURCE_URL}/supplyShip`;
+// const redMothershipAnimation = `${API_RESOURCE_URL}/mothershipAnimationRed`;
+// const blueMothershipAnimation = `${API_RESOURCE_URL}/mothershipAnimationBlue`;
+import hunterShip from '../images/redHunterShip.png';
+import blueHunterShip from '../images/blueHunterShip.png';
+import destroyerShip from '../images/redDestroyer.png';
+import blueDestroyerShip from '../images/blueDestroyer.png';
+import redWarShip from '../images/redWar.png';
+import blueWarShip from '../images/blueWar.png';
+import cruiserShip from '../images/redCruiser.png';
+import blueCruiserShip from '../images/blueCruiser.png';
+import carrierShip from '../images/redCarrierShip.png';
+import blueCarrierShip from '../images/blueCarrierShip.png';
+import redStealthShip from '../images/redStealthShip.png';
+import blueStealthShip from '../images/blueStealthShip.png';
+import commanderShip from '../images/commanderShip.png';
+import blueCommanderShip from '../images/blueCommanderShip.png';
+import spiderShip from '../images/spiderShip.png';
+import blueSpiderShip from '../images/blueSpiderShip.png';
+import supplyShip from '../images/supplyShip.png';
+import redMothershipAnimation from '../images/mothershipAnimationRed.png'
+import blueMothershipAnimation from '../images/mothershipAnimationBlue.png'
 
 export const generateThrusterAnimation = (x, y) => {
   return {...GAME_ANIMATIONS[3], location: {x: 0, y: 0 }, coordinates: { x: 0, y: 0 }, xOffset: x, yOffset: y }

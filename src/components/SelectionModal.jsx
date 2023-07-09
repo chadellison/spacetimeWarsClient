@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import '../styles/modal.css';
-import {Ship} from './Ship';
-import {Weapon} from './Weapon';
-import {Upgrade} from './Upgrade';
-import {Item} from './Item';
-import {GameButton} from './GameButton';
-import {PaginateButton} from './PaginateButton';
-import {ITEMS} from '../constants/items.js';
-import {SHIPS} from '../constants/ships.js';
-import {WEAPONS} from '../constants/weapons.js';
-import {UPGRADES} from '../constants/upgrades.js';
-import {startEventPayload} from '../helpers/sendEventHelpers.js';
+import { Ship } from './Ship';
+import { Weapon } from './Weapon';
+import { Upgrade } from './Upgrade';
+import { Item } from './Item';
+import { GameButton } from './GameButton';
+import { PaginateButton } from './PaginateButton';
+import { ITEMS } from '../constants/items.js';
+import { SHIPS } from '../constants/ships.js';
+import { WEAPONS } from '../constants/weapons.js';
+import { UPGRADES } from '../constants/upgrades.js';
+import { startEventPayload } from '../helpers/sendEventHelpers.js';
 
 const handleClick = (updateState, handleGameEvent, activePlayer) => {
   if (activePlayer.gameEvent === 'waiting') {
     handleGameEvent(startEventPayload(activePlayer));
   } else {
-    handleGameEvent({...activePlayer, gameEvent: 'shop'})
+    handleGameEvent({ ...activePlayer, gameEvent: 'shop' })
   }
-  updateState({modal: null, activeTab: 'Ships'});
+  updateState({ modal: null, activeTab: 'Ships' });
 };
 
 const renderOptions = (activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, updateDescription) => {
@@ -29,7 +29,7 @@ const renderOptions = (activeTab, page, activePlayer, updateState, players, upgr
         return (
           <Ship
             key={`ship${ship.index}`}
-            imageSrc={activePlayer.team === 'red' ? ship.image : ship.blueImage }
+            imageSrc={activePlayer.team === 'red' ? ship.image : ship.blueImage}
             activePlayer={activePlayer}
             ship={ship}
             players={players}
@@ -118,8 +118,8 @@ const renderTabs = (activeTab, updateState, activePlayer) => {
     return (
       <div className={`selectionText ${activeTab === tab ? 'activeTab' : ''}`}
         key={`tabs${index}`}
-        onClick={() => updateState({activeTab: tab, page: 1})}>
-          {tab}
+        onClick={() => updateState({ activeTab: tab, page: 1 })}>
+        {tab}
       </div>
     );
   });

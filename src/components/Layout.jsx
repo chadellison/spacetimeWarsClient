@@ -45,7 +45,8 @@ const DEFAULT_STATE = {
   scores: [],
   waveData: { wave: 1, count: 5, active: false },
   motherships,
-  pageIsLoaded: false
+  pageIsLoaded: false,
+  loading: true
 };
 
 class Layout extends React.Component {
@@ -115,7 +116,7 @@ class Layout extends React.Component {
     if (iteration > 0) {
       iteration -= 1
       this.syncClocks(iteration, callback);
-    } else if (callback) {
+    } else {
       callback();
     };
   };
@@ -134,7 +135,7 @@ class Layout extends React.Component {
         return player;
       }
     });
-    this.setState({ players });
+    this.setState({ players, loading: false });
     const received = (response) => this.handleReceivedEvent(response.playerData);
     createGameSocket(this.state.userId, received, this.updateState);
   }
@@ -231,6 +232,7 @@ class Layout extends React.Component {
       scores,
       aiShips,
       players,
+      loading,
       gameBuff,
       upgrades,
       waveData,
@@ -238,7 +240,6 @@ class Layout extends React.Component {
       animations,
       abilityData,
       motherships,
-      pageIsLoaded,
       gameOverStats,
       startingPlayer,
       deployedWeapons,
@@ -249,60 +250,58 @@ class Layout extends React.Component {
     const existingPlayer = findCurrentPlayer(userId, players);
     const activePlayer = existingPlayer || startingPlayer;
 
-    if (pageIsLoaded) {
-      return (
-        <div className="layout" onKeyDown={this.handleKeyDown}>
-          {waveData.count < 16 && waveData.active &&
-            <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`} />
-          }
-          <div className='game row'>
-            {modal && <Modal
-              page={page}
-              modal={modal}
-              userId={userId}
-              scores={scores}
-              players={players}
-              upgrades={upgrades}
-              activeTab={activeTab}
-              showInstructions={showInstructions}
-              resetGame={this.resetGame}
-              activePlayer={activePlayer}
-              gameOverStats={gameOverStats}
-              updateState={this.updateState}
-              clockDifference={clockDifference}
-              handleGameEvent={this.handleGameEvent}
-            />}
-            {activePlayer && !modal && <GameButton
-              className={'gameButton'}
-              onClick={() => this.updateState({ modal: 'selection' })}
-              buttonText={'shop'}
-            />}
-            {!modal && <HeaderButtons
-              updateState={this.updateState}
-              handleLeaderBoard={this.handleLeaderBoard}
-            />}
-            {activePlayer.name && <PlayerData
-              modal={modal}
-              activePlayer={activePlayer}
-              clockDifference={clockDifference}
-              handleGameEvent={this.handleGameEvent}
-              abilityData={abilityData}
-            />}
-            <Canvas
-              currentPlayer={existingPlayer}
-              players={players}
-              aiShips={aiShips}
-              gameBuff={gameBuff}
-              animations={animations}
-              motherships={motherships}
-              deployedWeapons={deployedWeapons}
-            />
-          </div>
+    return (
+      <div className="layout" onKeyDown={this.handleKeyDown}>
+        {waveData.count < 16 && waveData.active &&
+          <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`} />
+        }
+        <div className='game row'>
+          {modal && <Modal
+            page={page}
+            modal={modal}
+            userId={userId}
+            scores={scores}
+            players={players}
+            upgrades={upgrades}
+            activeTab={activeTab}
+            showInstructions={showInstructions}
+            resetGame={this.resetGame}
+            activePlayer={{ ...activePlayer, inPlayers: existingPlayer }}
+            gameOverStats={gameOverStats}
+            updateState={this.updateState}
+            clockDifference={clockDifference}
+            handleGameEvent={this.handleGameEvent}
+          />}
+          {activePlayer && !modal && <GameButton
+            className={'gameButton'}
+            onClick={() => this.updateState({ modal: 'selection' })}
+            buttonText={'shop'}
+          />}
+          {!modal && <HeaderButtons
+            updateState={this.updateState}
+            handleLeaderBoard={this.handleLeaderBoard}
+          />}
+          {activePlayer.name && <PlayerData
+            modal={modal}
+            activePlayer={activePlayer}
+            clockDifference={clockDifference}
+            handleGameEvent={this.handleGameEvent}
+            abilityData={abilityData}
+          />}
+          <Canvas
+            loading={loading}
+            userId={userId}
+            currentPlayer={existingPlayer}
+            players={players}
+            aiShips={aiShips}
+            gameBuff={gameBuff}
+            animations={animations}
+            motherships={motherships}
+            deployedWeapons={deployedWeapons}
+          />
         </div>
-      );
-    } else {
-      return <div>Loading...</div>
-    }
+      </div>
+    );
   };
 }
 
