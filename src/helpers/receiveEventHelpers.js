@@ -162,7 +162,7 @@ const handleSendInterval = (players) => {
   }
 }
 
-export const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, elapsedTime) => {
+const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, elapsedTime) => {
   let updatedWeapons = [...deployedWeapons];
   let updatedPlayers = [...players];
   let updatedPlayer = updatedPlayers.find((player) => player.userId === playerData.userId);

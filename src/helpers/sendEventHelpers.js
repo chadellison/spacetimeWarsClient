@@ -48,6 +48,7 @@ export const keyUpEventPayload = (
     case 'left':
     case 'right':
       updatedPlayer.gameEvent = pressedKey + 'Stop'
+      updatedPlayer.rotate = 'none';
       queueForPlayerUpdate(updatedPlayers, updatedPlayer, updateState, handleGameEvent);
       break;
     case 'up':
@@ -109,14 +110,15 @@ const handleSpaceBarEvent = (gameState, handleGameEvent, updateState, currentPla
 const queueForPlayerUpdate = (updatedPlayers, updatedPlayer, updateState, handleGameEvent, soundEffect) => {
   handleGameEvent(updatedPlayer);
 
-  const newPlayerState = updatedPlayers.map((player) => {
+  const newPlayersState = updatedPlayers.map((player) => {
     if (player.userId === updatedPlayer.userId) {
       return updatePlayer(updatedPlayer, 0, 0);
     } else {
       return player
     }
   });
-  updateState({ players: newPlayerState })
+
+  updateState({ players: newPlayersState })
   if (soundEffect) {
     soundEffect();
   }

@@ -266,11 +266,14 @@ class Canvas extends React.Component {
 
   render() {
     const loading = this.state.loadedImageCount < CANVAS_IMAGE_ASSETS.length;
+    // console.log(this.state.loadedImageCount, 'so far')
+    // console.log(CANVAS_IMAGE_ASSETS.length, 'total')
     this.renderCanvas();
     return (
       <div>
         <canvas
-          className={`canvas column${loading ? ' hidden' : ''}`}
+          className={`canvas column`}
+          // className={`canvas column${loading ? ' hidden' : ''}`}
           ref={this.canvasRef}
           width={BOARD_WIDTH}
           height={BOARD_HEIGHT}
