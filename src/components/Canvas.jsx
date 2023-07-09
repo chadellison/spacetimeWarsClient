@@ -270,7 +270,7 @@ class Canvas extends React.Component {
     return (
       <div>
         <canvas
-          className={`canvas column${loading ? 'hidden' : ''}`}
+          className={`canvas column${loading ? ' hidden' : ''}`}
           ref={this.canvasRef}
           width={BOARD_WIDTH}
           height={BOARD_HEIGHT}
