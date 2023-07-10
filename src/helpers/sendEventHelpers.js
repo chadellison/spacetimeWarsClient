@@ -54,7 +54,8 @@ export const keyUpEventPayload = (
     case 'up':
       updatedPlayer.gameEvent = 'upStop';
       updatedPlayer.trajectory = updatedPlayer.angle;
-      updatedPlayer.lastAccelerationTime = Date.now() + clockDifference
+      updatedPlayer.lastAccelerationTime = Date.now() + clockDifference;
+      updatedPlayer.accelerate = false;
       queueForPlayerUpdate(updatedPlayers, updatedPlayer, updateState, handleGameEvent, () => stopSound(thruster));
       break;
     case 'space':

@@ -7,7 +7,6 @@ import {
 } from '../constants/settings.js';
 import { SHIPS, SUPPLY_SHIP, motherships } from '../constants/ships.js';
 import { ABILITY_WEAPONS, EXPLOSION_ANIMATIONS, WEAPONS } from '../constants/weapons.js';
-import { CANVAS_IMAGE_ASSETS } from '../helpers/assetHelpers.js';
 import {
   drawShip,
   handleInvisibleFilter,
@@ -24,7 +23,6 @@ import '../styles/styles.css';
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loadedImageCount: 0 }
     this.canvasRef = React.createRef();
     // ships
     this.hunter = React.createRef();
@@ -88,16 +86,12 @@ class Canvas extends React.Component {
     this.nuclearExplosion = React.createRef();
     this.redMothership = React.createRef();
     this.blueMothership = React.createRef();
-    this.mothershipHit = React.createRef();
+    this.mothershipHit = React.createRef();    
   }
 
   componentDidMount() {
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
-
-    CANVAS_IMAGE_ASSETS.forEach((img) => {
-      img.addEventListener('load', () => this.setState({ loadedImageCount: this.state.loadedImageCount + 1 }));
-    });
 
     this.setState({
       canvas,
@@ -159,13 +153,7 @@ class Canvas extends React.Component {
       cripple: this.cripple.current,
       poisonDart: this.poisonDart.current,
       halfWindowWidth: round(window.innerWidth / 2),
-      halfWindowHeight: round(window.innerHeight / 2)
-    });
-  }
-
-  componentWillUnmount() {
-    CANVAS_IMAGE_ASSETS.forEach((img) => {
-      img.removeEventListener('load', () => {});
+      halfWindowHeight: round(window.innerHeight / 2),
     });
   }
 
@@ -250,6 +238,7 @@ class Canvas extends React.Component {
     this.handleScroll(currentPlayer)
 
     const canvas = this.canvasRef.current;
+
     if (canvas) {
       const context = canvas.getContext('2d');
       context.clearRect(0, 0, canvas.width, canvas.height);
@@ -265,20 +254,15 @@ class Canvas extends React.Component {
   }
 
   render() {
-    const loading = this.state.loadedImageCount < CANVAS_IMAGE_ASSETS.length;
-    // console.log(this.state.loadedImageCount, 'so far')
-    // console.log(CANVAS_IMAGE_ASSETS.length, 'total')
-    this.renderCanvas();
+    this.props.started && this.renderCanvas();
     return (
       <div>
         <canvas
-          className={`canvas column`}
-          // className={`canvas column${loading ? ' hidden' : ''}`}
+          className={'canvas column'}
           ref={this.canvasRef}
           width={BOARD_WIDTH}
           height={BOARD_HEIGHT}
         />
-        {loading && '...loading'}
 
         {SHIPS.map((ship, index) => {
           return (

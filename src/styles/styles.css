@@ -4,10 +4,7 @@ body {
   background: black;
   position: relative;
   overflow: hidden;
-  color: #c1cadb
-}
-
-#app {
+  color: #c1cadb;
 }
 
 .game:focus {

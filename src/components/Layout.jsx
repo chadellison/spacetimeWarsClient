@@ -4,6 +4,7 @@ import { KEY_MAP } from '../constants/keyMap.js';
 import { ANAIMATION_FRAME_RATE, REQUEST_COUNT } from '../constants/settings.js';
 import { mothershipItems, motherships } from '../constants/ships.js';
 import { updateGameState, updatePlayer } from '../helpers/gameLogic.js';
+import { findCurrentPlayer } from '../helpers/playerHelpers';
 import { handleEventPayload } from '../helpers/receiveEventHelpers.js';
 import { createBombers, keyDownEvent, keyUpEventPayload } from '../helpers/sendEventHelpers.js';
 import '../styles/styles.css';
@@ -13,7 +14,6 @@ import { HeaderButtons } from './HeaderButtons';
 import { Modal } from './Modal';
 import PlayerData from './PlayerData';
 import { WaveData } from './WaveData';
-import { findCurrentPlayer } from '../helpers/playerHelpers';
 
 const DEFAULT_STATE = {
   userId: Date.now(),
@@ -45,6 +45,7 @@ const DEFAULT_STATE = {
   scores: [],
   waveData: { wave: 1, count: 5, active: false },
   motherships,
+  started: false,
 };
 
 class Layout extends React.Component {
@@ -172,7 +173,7 @@ class Layout extends React.Component {
     if (elapsedTime > 2000) {
       console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime)
     }
-    const gameState = handleEventPayload(this.state, playerData, elapsedTime) || {};
+    const gameState = handleEventPayload(this.state, playerData, elapsedTime);
 
     if (gameState) {
       this.setState(gameState);
@@ -219,6 +220,7 @@ class Layout extends React.Component {
       modal,
       userId,
       scores,
+      started,
       aiShips,
       players,
       gameBuff,
@@ -243,6 +245,7 @@ class Layout extends React.Component {
         {waveData.count < 16 && waveData.active &&
           <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`} />
         }
+
         <div className='game row'>
           {modal && <Modal
             page={page}
@@ -278,6 +281,7 @@ class Layout extends React.Component {
           />}
           <Canvas
             userId={userId}
+            started={started}
             currentPlayer={existingPlayer}
             players={players}
             aiShips={aiShips}
