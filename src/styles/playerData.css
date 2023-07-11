@@ -89,8 +89,7 @@
 .startButton {
   font-size: 20px;
   transition: ease-in .3s;
-  height: 12px;
-  padding-top: 14px;
+  padding-top: 4px;
   padding-bottom: 5px;
   padding-left: 24px;
   margin-top: 10px;

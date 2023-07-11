@@ -30,7 +30,7 @@ import stunGunIcon from '../images/stunGunIcon.png';
 import invulnerabilityIcon from '../images/invulnerableIcon.png';
 import stealthModeIcon from '../images/stealthMode.png';
 import meteorShowerIcon from '../images/meteorShowerIcon.png';
-import healingIcon from '../images/healthBoost.jpg';
+import healingIcon from '../images/healthBoost.png';
 import piercerIcon from '../images/piercerIcon.png';
 import rapidFireIcon from '../images/rapidFireIcon.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';

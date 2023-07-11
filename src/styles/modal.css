@@ -43,6 +43,7 @@
 }
 
 .informationText {
+  word-wrap: break-word;
   height: 1.25em;
   font-size: 16px;
   padding: 0.25em;
@@ -81,9 +82,7 @@
 .selectionButton {
   font-size: 20px;
   transition: ease-in .3s;
-  height: 12px;
   margin-left: 45%;
-  padding-top: 12.5px;
   padding-bottom: 3px;
   width: 10%;
   color: white;
@@ -214,7 +213,7 @@
 }
 
 .redTeamButton {
-  padding: 12px;
+  padding: 4px 6px 4px 6px;
   font-size: 16px;
   color: white;
   border: 1px solid #9c1616;
@@ -228,7 +227,7 @@
 }
 
 .blueTeamButton {
-  padding: 12px;
+  padding: 4px 6px 4px 6px;
   font-size: 16px;
   color: white;
   border: 1px solid #2c66b2;
@@ -242,7 +241,7 @@
 }
 
 .howToPlayButton {
-  padding: 16px;
+  padding: 6px 8px 6px 8px;
   font-size: 20px;
   color: white;
   border: 1px solid #2c66b2;
@@ -256,7 +255,7 @@
 }
 
 .startGameButton {
-  padding: 16px;
+  padding: 6px 8px 6px 8px;
   font-size: 20px;
   color: white;
   border: 1px solid #9c1616;

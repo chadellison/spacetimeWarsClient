@@ -1,12 +1,12 @@
 .abilityLevel {
   color: #ab8432;
   position: absolute;
-  margin-top: 30px;
-  margin-left: 30px;
+  margin-top: 15px;
+  margin-left: 35px;
 }
 
 .levelUpIcon {
-  margin-top: 50px;
+  margin-top: 60px;
   display: inline-block;
   width: 45px;
 }
@@ -18,12 +18,13 @@
   height: 30px;
   border-radius: 50%;
   border: 3px solid #2c66b2;
-  margin-top: -7px;
+  margin-top: -19px;
   margin-left: 2px;
   padding: 2px;
   border-color: #2c66b2 transparent #2c66b2 transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
+
 @keyframes lds-dual-ring {
   0% {
     transform: rotate(0deg);

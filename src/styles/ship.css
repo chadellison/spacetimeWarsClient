@@ -4,19 +4,17 @@
   margin-top: 2em;
   margin-left: 1em;
   margin-right: 1em;
-  opacity: 0.5;
+  /* opacity: 0.5; */
   transition: ease-out .5s;
   display: inline-block;
 }
 
-.selected {
-  opacity: 1;
+.dim {
+  opacity: 0.5;
 }
 
-.selection:hover {
+.hovered {
   cursor: pointer;
-  opacity: 1;
-  transition: ease-in .5s;
 }
 
 .imageWrapper {

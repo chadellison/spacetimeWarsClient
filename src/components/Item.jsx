@@ -4,6 +4,7 @@ import { getItem } from '../helpers/itemHelpers.js';
 import { handleUpdate } from '../helpers/selectionModalHelpers.js';
 import { notEnoughResources, goldAudio } from '../constants/settings.js';
 import { ITEMS } from '../constants/items.js';
+import { handleHover } from '../helpers/selectionModalHelpers.js';
 
 const handleClick = (activePlayer, item, updateState, players) => {
   const gold = activePlayer.gold - ITEMS[item.index].price;
@@ -29,12 +30,23 @@ const handleClick = (activePlayer, item, updateState, players) => {
   }
 };
 
-export const Item = ({ imageSrc, activePlayer, item, updateState, players, updateDescription }) => {
+
+export const Item = ({ imageSrc, activePlayer, item, updateState, players, updateDescription, hover, setHover }) => {
+  const handleItemHover = (item) => {
+    updateDescription(item.description)
+    setHover(item.index)
+  }
+  
+  const handleItemLeave = () => {
+    updateDescription('')
+    setHover(null)
+  }
+
   return (
-    <div className="itemSelection"
+    <div className={`itemSelection ${handleHover(hover, item.index)}`}
       onClick={() => handleClick(activePlayer, item, updateState, players)}
-      onMouseEnter={() => updateDescription(item.description)}
-      onMouseLeave={() => updateDescription('')}>
+      onMouseEnter={() => handleItemHover(item)}
+      onMouseLeave={handleItemLeave}>
       <div className="itemImageWrapper">
         <img id={item.index} src={imageSrc} alt="item" className="itemSelectionImage" />
       </div>

@@ -12,3 +12,9 @@ export const handleUpdate = (players, player) => {
     return { startingPlayer: player };
   }
 }
+
+export const handleHover = (hover, index) => {
+  if (hover !== null) {
+    return hover === index ? 'hovered' : 'dim'
+  }
+}

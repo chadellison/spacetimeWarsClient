@@ -1,10 +1,11 @@
 import React from "react";
-import {SelectionModal} from './SelectionModal';
-import {InformationModal} from './InformationModal';
-import {CreditsModal} from './CreditsModal';
-import {GameOverModal} from './GameOverModal';
-import {NameFormModal} from './NameFormModal';
-import {LeaderboardModal} from './LeaderboardModal';
+import { CreditsModal } from './CreditsModal';
+import { GameOverModal } from './GameOverModal';
+import { InformationModal } from './InformationModal';
+import { LeaderboardModal } from './LeaderboardModal';
+import { NameFormModal } from './NameFormModal';
+import { NotificationModal } from "./NotificationModal";
+import { SelectionModal } from './SelectionModal';
 
 export const Modal = ({
   page,
@@ -53,6 +54,8 @@ export const Modal = ({
       return <GameOverModal gameOverStats={gameOverStats} resetGame={resetGame} />
     case 'leaderboard':
       return <LeaderboardModal scores={scores} updateState={updateState} />
+    case 'deviceChageNotification':
+      return <NotificationModal title="Device Issue" content="This game is desinged to be played on a device with a larger screen. Please try again with a different device" />;
     default:
       return <div></div>
   }

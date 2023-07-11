@@ -21,7 +21,7 @@ const handleClick = (updateState, handleGameEvent, activePlayer) => {
   updateState({ modal: null, activeTab: 'Ships' });
 };
 
-const renderOptions = (activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, updateDescription) => {
+const renderOptions = (activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, updateDescription, hover, setHover) => {
   switch (activeTab) {
     case 'Ships':
       const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
@@ -29,6 +29,8 @@ const renderOptions = (activeTab, page, activePlayer, updateState, players, upgr
         return (
           <Ship
             key={`ship${ship.index}`}
+            hover={hover}
+            setHover={setHover}
             imageSrc={activePlayer.team === 'red' ? ship.image : ship.blueImage}
             activePlayer={activePlayer}
             ship={ship}
@@ -40,22 +42,24 @@ const renderOptions = (activeTab, page, activePlayer, updateState, players, upgr
       });
     case 'Weapons':
       const weapons = page === 1 ? WEAPONS.slice(0, 4) : WEAPONS.slice(4, 8);
-      return weapons.map((weapon) => {
-        return (
+      return weapons.map(weapon => (
           <Weapon
             key={`weapon${weapon.index}`}
+            hover={hover}
+            setHover={setHover}
             imageSrc={weapon.selectionImage}
             weapon={weapon}
             activePlayer={activePlayer}
             players={players}
             updateState={updateState}
           />
-        )
-      });
+      ));
     case 'Upgrades':
       return UPGRADES.map((upgrade) => {
         return (
           <Upgrade
+            hover={hover}
+            setHover={setHover}
             upgrade={upgrade}
             players={players}
             upgrades={upgrades}
@@ -71,6 +75,8 @@ const renderOptions = (activeTab, page, activePlayer, updateState, players, upgr
       return ITEMS.map((item) => {
         return (
           <Item
+            hover={hover}
+            setHover={setHover}
             key={`item${item.index}`}
             imageSrc={item.image}
             item={item}
@@ -137,6 +143,8 @@ export const SelectionModal = ({
 }) => {
   const experiencePoints = activePlayer.level - upgrades.reduce((accumulator, value) => accumulator + value, 1)
   const [description, setDesscription] = useState('');
+  const [hover, setHover] = useState(null);
+
   return (
     <div className="modal">
       <div className="modalTabs">
@@ -144,7 +152,7 @@ export const SelectionModal = ({
       </div>
       {renderStart(updateState, handleGameEvent, activePlayer, clockDifference)}
       {activeTab === 'Upgrades' && <div className="experiencePoints">{'Experience points ' + experiencePoints}</div>}
-      {renderOptions(activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, (description) => setDesscription(description))}
+      {renderOptions(activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, (description) => setDesscription(description), hover, setHover)}
       <div className="description">
         {description}
       </div>

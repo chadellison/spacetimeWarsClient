@@ -1,31 +1,31 @@
-import React from 'react';
-import '../styles/modal.css';
-import {GameButton} from './GameButton';
-import {playSound} from '../helpers/audioHelpers.js';
-import {mineDropSound} from '../constants/settings.js';
 import faker from 'faker';
+import React from 'react';
+import { mineDropSound } from '../constants/settings.js';
+import { playSound } from '../helpers/audioHelpers.js';
+import '../styles/modal.css';
+import { GameButton } from './GameButton';
 
 const updateName = (event, updateState, activePlayer) => {
-  updateState({startingPlayer: {...activePlayer, name: event.target.value}})
+  updateState({ startingPlayer: { ...activePlayer, name: event.target.value } })
 }
 
 const updateTeam = (updateState, activePlayer, team) => {
   playSound(mineDropSound)
-  updateState({startingPlayer: {...activePlayer, team: team}})
+  updateState({ startingPlayer: { ...activePlayer, team: team } })
 }
 
 const submitForm = (activePlayer, updateState) => {
   if (activePlayer.name) {
-    updateState({modal: 'selection'})
+    updateState({ modal: 'selection' })
   } else {
     updateState({
-      startingPlayer: {...activePlayer, name: faker.name.findName()},
+      startingPlayer: { ...activePlayer, name: faker.name.findName() },
       modal: 'selection'
     })
   }
 }
 
-export const NameFormModal = ({updateState, activePlayer}) => {
+export const NameFormModal = ({ updateState, activePlayer }) => {
   const formValue = activePlayer.name ? activePlayer.name : ''
   return (
     <div className='modal'>
@@ -36,7 +36,7 @@ export const NameFormModal = ({updateState, activePlayer}) => {
         maxLength={16}
         value={formValue}
         className="formInput"
-        onChange={(e) => updateName(e, updateState, activePlayer)}/>
+        onChange={(e) => updateName(e, updateState, activePlayer)} />
       <label className="teamLabel">
         Select a team
       </label>

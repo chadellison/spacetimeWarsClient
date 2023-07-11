@@ -15,6 +15,8 @@ import { Modal } from './Modal';
 import PlayerData from './PlayerData';
 import { WaveData } from './WaveData';
 
+const INITIAL_MODAL = window.innerWidth < 800 ? 'deviceChageNotification' : 'instructions';
+
 const DEFAULT_STATE = {
   userId: Date.now(),
   startingPlayer: {},
@@ -28,7 +30,7 @@ const DEFAULT_STATE = {
   left: false,
   right: false,
   space: false,
-  modal: 'instructions',
+  modal: INITIAL_MODAL,
   activeTab: 'Ships',
   upgrades: [0, 0, 0, 0],
   page: 1,
@@ -245,7 +247,7 @@ class Layout extends React.Component {
           <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`} />
         }
 
-        <div className='row'>
+        <div>
           {modal && <Modal
             page={page}
             modal={modal}
