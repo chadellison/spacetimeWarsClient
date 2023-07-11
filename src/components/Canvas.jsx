@@ -4,6 +4,7 @@ import {
   BOARD_HEIGHT,
   BOARD_WIDTH,
   GAME_ANIMATIONS,
+  EXPLODE_PLAYER_COLOR
 } from '../constants/settings.js';
 import { SHIPS, SUPPLY_SHIP, motherships } from '../constants/ships.js';
 import { ABILITY_WEAPONS, EXPLOSION_ANIMATIONS, WEAPONS } from '../constants/weapons.js';
@@ -181,7 +182,7 @@ class Canvas extends React.Component {
     }
   }
 
-  handleShips = (players, context, userId, gameBuff) => {
+  handleShips = (players, context, userId, currentPlayerIsExploding) => {
     const { aiShips, motherships } = this.props
     players.concat(aiShips).forEach((player) => {
       const showShip = shouldRenderShip(player, userId);
@@ -197,14 +198,14 @@ class Canvas extends React.Component {
       } else if (!player.explodeAnimation.complete) {
         renderAnimation(context, this.state.shipExplosion, player.explodeAnimation, player.location);
       };
-      renderPlayerData(gameBuff, context, player, showShip);
+      renderPlayerData(context, player, showShip, currentPlayerIsExploding);
     });
 
     motherships.forEach((ship) => {
       const mothership = ship.team === 'red' ? this.state.redMothership : this.state.blueMothership;
       renderAnimation(context, mothership, ship.animation, ship.location);
       this.renderEffects(context, ship)
-      renderMotherShipData(gameBuff, context, ship);
+      renderMotherShipData(context, ship, currentPlayerIsExploding);
     });
   }
 
@@ -234,7 +235,7 @@ class Canvas extends React.Component {
   }
 
   renderCanvas = () => {
-    const { gameBuff, userId, players, currentPlayer } = this.props;
+    const { userId, players, currentPlayer } = this.props;
     this.handleScroll(currentPlayer)
 
     const canvas = this.canvasRef.current;
@@ -242,12 +243,13 @@ class Canvas extends React.Component {
     if (canvas) {
       const context = canvas.getContext('2d');
       context.clearRect(0, 0, canvas.width, canvas.height);
-      if (gameBuff.color) {
+      const currentPlayerIsExploding = !currentPlayer.active && !currentPlayer.explodeAnimation.complete;
+      if (currentPlayerIsExploding) {
         context.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
-        context.fillStyle = gameBuff.color;
+        context.fillStyle = EXPLODE_PLAYER_COLOR;
       }
 
-      this.handleShips(players, context, userId, gameBuff);
+      this.handleShips(players, context, userId, currentPlayerIsExploding);
       this.renderWeapons(currentPlayer, context);
       this.renderAnimations(context);
     }

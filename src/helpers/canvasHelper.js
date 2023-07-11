@@ -90,8 +90,8 @@ export const renderAnimation = (context, spriteImage, animation, location) => {
   )
 }
 
-export const renderPlayerData = (gameBuff, context, player, showShip) => {
-  if (!gameBuff.color) {
+export const renderPlayerData = (context, player, showShip, isExploading) => {
+  if (!isExploading) {
     if (showShip) {
       context.font = "12px Arial";
       context.fillStyle = findColor(player.hitpoints, player.maxHitpoints);
@@ -105,8 +105,8 @@ export const renderPlayerData = (gameBuff, context, player, showShip) => {
   }
 };
 
-export const renderMotherShipData = (gameBuff, context, ship) => {
-  if (!gameBuff.color) {
+export const renderMotherShipData = (context, ship, isExploading) => {
+  if (!isExploading) {
     context.font = "12px Arial";
     context.fillStyle = findColor(ship.hitpoints, ship.maxHitpoints);
     context.beginPath();

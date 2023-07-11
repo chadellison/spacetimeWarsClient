@@ -17,7 +17,6 @@ export const GAME_EFFECTS = [
     name: 'poison',
     duration: 4000,
     durationCount: 0,
-    color: 'rgba(7, 151, 24, 0.37)',
     animation: {
       coordinates: {x: 0, y: 0},
       spriteIndex: 0,
@@ -38,7 +37,6 @@ export const GAME_EFFECTS = [
     name: 'slow',
     duration: 9000,
     durationCount: 0,
-    color: 'rgba(142, 194, 215, 0.54)',
     animation: {
       coordinates: {x: 0, y: 0},
       spriteIndex: 1,
@@ -79,7 +77,6 @@ export const GAME_EFFECTS = [
     name: 'stun',
     duration: 3000,
     durationCount: 0,
-    color: 'rgba(3, 2, 29, 0.62)',
     animation: {
       coordinates: {x: 0, y: 0},
       spriteIndex: 3,
@@ -100,14 +97,12 @@ export const GAME_EFFECTS = [
     name: 'invisible',
     duration: 8000,
     durationCount: 0,
-    color: 'rgba(151, 7, 7, 0.37)',
   },
   {
     id: 6,
     name: 'invulnerable',
     duration: 5000,
     durationCount: 0,
-    color: 'rgba(144, 7, 151, 0.37)',
     animation: {
       coordinates: {x: 0, y: 0},
       spriteIndex: 4,
@@ -128,7 +123,6 @@ export const GAME_EFFECTS = [
     name: 'heal',
     duration: 4000,
     durationCount: 0,
-    color: 'rgba(19, 20, 22, 0.45)',
     animation: {
       coordinates: {x: 0, y: 0},
       spriteIndex: 5,
@@ -149,7 +143,6 @@ export const GAME_EFFECTS = [
     name: 'armorBoost',
     duration: 15000,
     durationCount: 0,
-    color: 'rgba(7, 33, 151, 0.37)',
     animation: {
       coordinates: {x: 0, y: 0},
       spriteIndex: 6,

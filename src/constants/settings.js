@@ -86,6 +86,7 @@ export const stunSound = new Audio(stunAudio);
 const zap = new Audio(zapAudio);
 zap.volume = 0.2;
 export const zapSound = zap;
+export const EXPLODE_PLAYER_COLOR = 'rgba(151, 7, 7, 0.37)'
 
 export const GAME_ANIMATIONS = [
   {
