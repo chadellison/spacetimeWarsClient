@@ -207,7 +207,6 @@ class Layout extends React.Component {
   renderGame = () => {
     const updatedGameState = updateGameState(
       this.state,
-      this.updateState,
       this.handleGameEvent,
       this.syncClocks
     );
@@ -246,7 +245,7 @@ class Layout extends React.Component {
           <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`} />
         }
 
-        <div className='game row'>
+        <div className='row'>
           {modal && <Modal
             page={page}
             modal={modal}

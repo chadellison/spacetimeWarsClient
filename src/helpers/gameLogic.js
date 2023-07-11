@@ -18,20 +18,22 @@ import { playSound } from '../helpers/audioHelpers.js';
 import { explodePlayer } from '../helpers/receiveEventHelpers.js';
 import { upgradeSound, GAME_ANIMATIONS } from '../constants/settings.js';
 
-export const updateGameState = (gameState, updateState, handleGameEvent, syncClocks) => {
+export const updateGameState = (gameState, handleGameEvent, syncClocks) => {
   const { clockDifference, gameBuff, userId, aiShips, space, lastFired, motherships } = gameState;
   let updatedPlayers = updatePlayers(gameState, handleGameEvent, syncClocks);
   const mothershipHpData = { red: motherships[0]?.hitpoints, blue: motherships[1]?.hitpoints }
   const currentPlayer = updatedPlayers.find((player) => player.userId === userId);
-  let deployedWeapons = handleRepeatedFire(currentPlayer, space, lastFired, [...gameState.deployedWeapons], updateState, handleGameEvent);
-  deployedWeapons = handleAiWeapons(deployedWeapons, aiShips);
+
+  let { newLastFired, updatedWeapons } = handleRepeatedFire(currentPlayer, space, lastFired, [...gameState.deployedWeapons], handleGameEvent);
+
+  let deployedWeapons = handleAiWeapons(updatedWeapons, aiShips);
   let gameData = {
     userId,
     players: updatedPlayers,
     weapons: removeOutOfBoundsShots(deployedWeapons),
     aiShips: updateAiShips(aiShips, userId, handleGameEvent, clockDifference, updatedPlayers, motherships),
     animations: [...gameState.animations],
-    motherships: [...motherships]
+    motherships: [...motherships],
   }
   gameData = handleWeapons(gameData, handleGameEvent);
   handleMothershipHitAnimations(gameData.animations, gameData.motherships, mothershipHpData)
@@ -43,7 +45,8 @@ export const updateGameState = (gameState, updateState, handleGameEvent, syncClo
     deployedWeapons: gameData.weapons,
     gameBuff: updateGameBuff(gameBuff),
     animations: handleAnimations(gameData.animations),
-    motherships: updatedMotherships
+    motherships: updatedMotherships,
+    lastFired: newLastFired
   };
 };
 
@@ -163,7 +166,7 @@ const updatePlayers = (gameState, handleGameEvent, syncClocks) => {
   });
 }
 
-const handleRepeatedFire = (player, space, lastFired, deployedWeapons, updateState, handleGameEvent) => {
+const handleRepeatedFire = (player, space, lastFired, deployedWeapons, handleGameEvent) => {
   if (player && player.active) {
     if (space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown, player.effects[10], player.effects[15])) {
       player.gameEvent = 'fire';
@@ -175,12 +178,12 @@ const handleRepeatedFire = (player, space, lastFired, deployedWeapons, updateSta
         handleFireWeapon(player, weapon, 0, damage)
       ];
 
-      updateState({ lastFired: Date.now() });
       playSound(WEAPONS[player.weaponIndex].sound);
-      return updatedWeapons;
+      return { newLastFired: Date.now(), updatedWeapons };
     }
   }
-  return deployedWeapons;
+
+  return { newLastFired: lastFired, updatedWeapons: deployedWeapons };
 }
 
 export const handlePlayerDamage = (player) => {
