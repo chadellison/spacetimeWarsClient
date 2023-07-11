@@ -128,9 +128,9 @@ class Layout extends React.Component {
         return player;
       }
     });
-    this.setState({ players });
     const received = (response) => this.handleReceivedEvent(response.playerData);
-    createGameSocket(this.state.userId, received, this.updateState);
+    const gameSocket = createGameSocket(this.state.userId, received);
+    this.setState({ players, gameSocket });
   }
 
   handleLeaderBoard = (scoreData) => {

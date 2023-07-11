@@ -9,9 +9,9 @@ export const getClockData = (sentTime, callback) => {
   getData(`${API_HOST}/api/v1/time?sent_time=${sentTime}`, callback)
 }
 
-export const createGameSocket = (userId, received, setState) => {
+export const createGameSocket = (userId, received) => {
   let cable = Cable.createConsumer(WEBSOCKET_HOST)
-  let gameSocket = cable.subscriptions.create({
+  return cable.subscriptions.create({
     channel: 'GameDataChannel',
     userId
   },
@@ -24,5 +24,4 @@ export const createGameSocket = (userId, received, setState) => {
       });
     }
   });
-  setState({gameSocket: gameSocket})
 };

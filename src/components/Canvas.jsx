@@ -243,7 +243,7 @@ class Canvas extends React.Component {
     if (canvas) {
       const context = canvas.getContext('2d');
       context.clearRect(0, 0, canvas.width, canvas.height);
-      const currentPlayerIsExploding = !currentPlayer.active && !currentPlayer.explodeAnimation.complete;
+      const currentPlayerIsExploding = currentPlayer && !currentPlayer.active && !currentPlayer.explodeAnimation.complete;
       if (currentPlayerIsExploding) {
         context.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
         context.fillStyle = EXPLODE_PLAYER_COLOR;
