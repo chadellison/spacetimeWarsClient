@@ -133,8 +133,8 @@ class Layout extends React.Component {
     this.setState({ players, gameSocket });
   }
 
-  handleLeaderBoard = (scoreData) => {
-    fetchScoreData(this.setState({ scores: scoreData, modal: 'leaderboard' }))
+  handleLeaderBoard = () => {
+    fetchScoreData((scoreData) => this.setState({ scores: scoreData, modal: 'leaderboard' }))
   }
 
   handleGameEvent = (eventPayload) => {
