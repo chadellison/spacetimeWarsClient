@@ -14,6 +14,8 @@ import { SHIPS } from '../constants/ships';
 import { round } from '../helpers/mathHelpers';
 import { startEventPayload } from '../helpers/sendEventHelpers';
 import { handleAbilityEvent } from '../helpers/sendEventHelpers';
+import { API_RESOURCE_URL } from '../api/apiHelpers.js';
+import { PILOTS } from '../constants/pilots';
 
 const renderWeapon = (weaponIndex) => {
   if (weaponIndex >= 0) {
@@ -101,7 +103,8 @@ const handlePlayerIcon = (activePlayer, countDown, modal, handleGameEvent) => {
     return (
       <img
         className="playerImage"
-        src={`https://robohash.org/${activePlayer.index}?color=${activePlayer.team}`}
+        src={`${API_RESOURCE_URL}/${PILOTS[activePlayer.shipIndex]}`}
+        // src={`https://robohash.org/${activePlayer.index}?color=${activePlayer.team}`}
         alt="player"
       />
     );
@@ -183,7 +186,7 @@ const PlayerData = ({
   }
   const { gold } = activePlayer;
   return (
-    <div className={`playerData column ${!activePlayer.active ? 'waiting' : ''}`} onMouseEnter={() => console.log('hellllloooooo')}>
+    <div className={`playerData column ${!activePlayer.active ? 'waiting' : ''}`}>
       <div>
         {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown, modal, handleGameEvent)}
         <div className="playerLevel">{'level: ' + activePlayer.level}</div>
