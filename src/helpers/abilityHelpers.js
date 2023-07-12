@@ -2,7 +2,7 @@ import { ABILITY_WEAPONS } from '../constants/weapons.js';
 import { ABILITIES } from '../constants/abilities.js';
 import { GAME_EFFECTS } from '../constants/effects.js';
 import { SHIPS } from '../constants/ships.js';
-import { handleFireWeapon , handleAngle, handleLocation, findCenterCoordinates} from '../helpers/gameLogic.js';
+import { handleFireWeapon, handleAngle, handleLocation, findCenterCoordinates } from '../helpers/gameLogic.js';
 import { playSound } from '../helpers/audioHelpers.js';
 import { GAME_ANIMATIONS } from '../constants/settings.js';
 
@@ -13,7 +13,7 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
   if (ability.animationIndex >= 0) {
     const currentPlayer = players.find((player) => player.userId === playerData.userId);
     const location = currentPlayer.location;
-    newAnimmations = [...animations, {...GAME_ANIMATIONS[ability.animationIndex], location, coordinates: {x: 0, y: 0}}];
+    newAnimmations = [...animations, { ...GAME_ANIMATIONS[ability.animationIndex], location, coordinates: { x: 0, y: 0 } }];
   }
   playSound(ability.sound);
   if (ability.type === 'weapon') {
@@ -26,16 +26,14 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
 }
 
 const applyOtherAbility = (players, playerData, newAnimmations) => {
-  // const player = players[playerData.index];
   const player = players.find((player) => player.userId === playerData.userId);
 
   const distance = 300 * playerData.abilityLevel;
   player.location = handleLocation(player.angle, player.location, distance);
   const shipCenter = SHIPS[player.shipIndex].shipCenter;
-  const teleportAnimation = {...GAME_ANIMATIONS[2], coordinates: {x: 0, y: 0}};
-  const coordinates = findCenterCoordinates(player.location, shipCenter, {width: teleportAnimation.renderWidth, height: teleportAnimation.renderHeight})
+  const teleportAnimation = { ...GAME_ANIMATIONS[2], coordinates: { x: 0, y: 0 } };
+  const coordinates = findCenterCoordinates(player.location, shipCenter, { width: teleportAnimation.renderWidth, height: teleportAnimation.renderHeight })
   teleportAnimation.location = coordinates;
-  // players[player.index] = player;
   const udpatedPlayers = players.map((p) => {
     if (p.userId === player.userId) {
       return player;
@@ -60,13 +58,12 @@ const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animati
   let updatedPlayers = [...players]
   let updatedAiShips = [...aiShips]
   let player = updatedPlayers.find((p) => p.userId === playerData.userId);
-  // let player = updatedPlayers[playerData.index]
 
   const duration = GAME_EFFECTS[effectIndex].duration + (playerData.abilityLevel * 1000) - 1000;
-  let effect = {...GAME_EFFECTS[effectIndex], duration, durationCount: elapsedTime }
+  let effect = { ...GAME_EFFECTS[effectIndex], duration, durationCount: elapsedTime }
 
   if (effect.id === 11 || (effect.id === 7 && player.shipIndex === 4)) {
-    effect = effect.id === 7 ? {...effect, duration: 800 + (playerData.abilityLevel * 1000)} : effect
+    effect = effect.id === 7 ? { ...effect, duration: 800 + (playerData.abilityLevel * 1000) } : effect
     updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect)
     updatedAiShips = applyEffectToTeam(updatedAiShips, player.team, effect)
   } else if ([1, 3, 4, 12, 15].includes(effect.id)) {
@@ -76,7 +73,7 @@ const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animati
     updatedAiShips = applyEffectToTeam(updatedAiShips, opponentTeam, effect);
   } else if ([5, 14].includes(effect.id)) {
     effect = { ...GAME_EFFECTS[effectIndex], duration: effect.duration * playerData.abilityLevel }
-    player.effects = {...player.effects, [effect.id]: effect};
+    player.effects = { ...player.effects, [effect.id]: effect };
 
     updatedPlayers = updatedPlayers.map((p) => {
       if (p.userId === player.userId) {
@@ -96,7 +93,7 @@ const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animati
       }
     })
   }
-  return  { players: updatedPlayers, aiShips: updatedAiShips, animations };
+  return { players: updatedPlayers, aiShips: updatedAiShips, animations };
 }
 
 const applyEffectToTeam = (players, team, effect) => {
@@ -130,7 +127,7 @@ const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime) => {
 
     return {
       ...weapon,
-      location: handleLocation(weaponAngle, {x, y}, 50),
+      location: handleLocation(weaponAngle, { x, y }, 50),
       trajectory: weaponAngle,
       playerIndex: player.userId,
       team: player.team,
@@ -138,5 +135,5 @@ const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime) => {
       from: player.type
     }
   });
-  return {deployedWeapons: deployedWeapons.concat(meteors)}
+  return { deployedWeapons: deployedWeapons.concat(meteors) }
 };

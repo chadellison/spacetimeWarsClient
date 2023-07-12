@@ -15,7 +15,7 @@ export const GAME_EFFECTS = [
   {
     id: 1,
     name: 'poison',
-    duration: 4000,
+    duration: 6000,
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -35,7 +35,7 @@ export const GAME_EFFECTS = [
   {
     id: 2,
     name: 'slow',
-    duration: 9000,
+    duration: 11000,
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -55,7 +55,7 @@ export const GAME_EFFECTS = [
   {
     id: 3,
     name: 'damageReduction',
-    duration: 8000,
+    duration: 12000,
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -75,7 +75,7 @@ export const GAME_EFFECTS = [
   {
     id: 4,
     name: 'stun',
-    duration: 3000,
+    duration: 6000,
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -95,13 +95,13 @@ export const GAME_EFFECTS = [
   {
     id: 5,
     name: 'invisible',
-    duration: 8000,
+    duration: 14000,
     durationCount: 0,
   },
   {
     id: 6,
     name: 'invulnerable',
-    duration: 5000,
+    duration: 8000,
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -141,7 +141,7 @@ export const GAME_EFFECTS = [
   {
     id: 8,
     name: 'armorBoost',
-    duration: 15000,
+    duration: 20000,
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -161,7 +161,7 @@ export const GAME_EFFECTS = [
   {
     id: 9,
     name: 'warpSpeed',
-    duration: 8000,
+    duration: 16000,
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -181,13 +181,13 @@ export const GAME_EFFECTS = [
   {
     id: 10,
     name: 'rapidFire',
-    duration: 10000,
+    duration: 12000,
     durationCount: 0,
   },
   {
     id: 11,
     name: 'damageBoost',
-    duration: 15000,
+    duration: 20000,
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
@@ -207,7 +207,7 @@ export const GAME_EFFECTS = [
   {
     id: 12,
     name: 'armorReduction',
-    duration: 8000,
+    duration: 12000,
     durationCount: 0,
     animation: {
       spriteIndex: 9,
@@ -254,7 +254,7 @@ export const GAME_EFFECTS = [
   {
     id: 15,
     name: 'cripple',
-    duration: 4000,
+    duration: 7000,
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
