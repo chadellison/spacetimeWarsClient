@@ -13,6 +13,7 @@ import { GameButton } from './GameButton';
 import { SHIPS } from '../constants/ships';
 import { round } from '../helpers/mathHelpers';
 import { startEventPayload } from '../helpers/sendEventHelpers';
+import { handleAbilityEvent } from '../helpers/sendEventHelpers';
 
 const renderWeapon = (weaponIndex) => {
   if (weaponIndex >= 0) {
@@ -128,7 +129,7 @@ const renderHitPoints = (activePlayer) => {
   }
 };
 
-const renderAbilityIcons = (activePlayer, playerAbilityData) => {
+const renderAbility = (activePlayer, playerAbilityData, handleGameEvent, updateState) => {
   if (activePlayer.shipIndex === 0 || activePlayer.shipIndex) {
     const shipAbilities = SHIPS[activePlayer.shipIndex].abilities;
     const levelSum = playerAbilityData.q.level + playerAbilityData.w.level + playerAbilityData.e.level;
@@ -139,10 +140,12 @@ const renderAbilityIcons = (activePlayer, playerAbilityData) => {
       { ability: ABILITIES[shipAbilities.w], key: 'w' },
       { ability: ABILITIES[shipAbilities.e], key: 'e' },
     ].map((abilityData, index) => {
+
       const abilityLevel = playerAbilityData[abilityData.key].level;
       if (hasLevelPoints && abilityLevel < 3) {
         return (
           <LevelUpIcon
+            onClick={() => activePlayer.active && handleAbilityEvent(activePlayer, { ...playerAbilityData }, handleGameEvent, updateState, abilityData.key)}
             ability={abilityData.ability}
             key={'abilityIcon' + index}
             abilityKey={abilityData.key}
@@ -152,6 +155,7 @@ const renderAbilityIcons = (activePlayer, playerAbilityData) => {
       } else {
         return (
           <AbilityIcon
+            onClick={() => activePlayer.active && handleAbilityEvent(activePlayer, { ...playerAbilityData }, handleGameEvent, updateState, abilityData.key)}
             ability={abilityData.ability}
             key={'abilityIcon' + index}
             abilityKey={abilityData.key}
@@ -170,6 +174,7 @@ const PlayerData = ({
   activePlayer,
   handleGameEvent,
   clockDifference,
+  updateState
 }) => {
   const elapsedSeconds = (Date.now() + clockDifference - activePlayer.explodedAt) / 1000;
   let countDown = 0;
@@ -178,14 +183,14 @@ const PlayerData = ({
   }
   const { gold } = activePlayer;
   return (
-    <div className={`playerData column ${!activePlayer.active ? 'waiting' : ''}`}>
-      <div className="row">
+    <div className={`playerData column ${!activePlayer.active ? 'waiting' : ''}`} onMouseEnter={() => console.log('hellllloooooo')}>
+      <div>
         {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown, modal, handleGameEvent)}
         <div className="playerLevel">{'level: ' + activePlayer.level}</div>
         <div className="nameInfo">{activePlayer.name}</div>
         {gold >= 0 && <PlayerStat image={goldIcon} alt={'gold'} value={gold} className="goldInfo" />}
         {renderHitPoints(activePlayer)}
-        {renderAbilityIcons(activePlayer, abilityData)}
+        {renderAbility(activePlayer, abilityData, handleGameEvent, updateState)}
         {renderWeapon(activePlayer.weaponIndex)}
         {renderDamage(activePlayer)}
         {renderArmor(activePlayer)}

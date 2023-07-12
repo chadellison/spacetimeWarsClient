@@ -3,12 +3,12 @@ import '../styles/abilityIcon.css';
 import { PieChart, Pie } from 'recharts';
 import { calculateAngle } from '../helpers/mathHelpers';
 
-export const AbilityIcon = ({ ability, abilityUsedAt, available, abilityKey }) => {
+export const AbilityIcon = ({ ability, abilityUsedAt, available, abilityKey, onClick }) => {
   const whole = ability.cooldown;
   const part = Date.now() - abilityUsedAt
   const disabled = (whole > part || !available) ? 'disabled' : ''
   return (
-    <div className={"abilityIcon"}>
+    <div className="abilityIcon" onClick={onClick}>
       {available && <PieChart width={46} height={46}>
           <Pie
             data={[{name: 'cooldown', value: 1}]}

@@ -4,6 +4,10 @@
   display: inline-block;
 }
 
+.abilityIcon:hover {
+  cursor: pointer;
+}
+
 .icon {
   width: 30px;
   height: 30px;

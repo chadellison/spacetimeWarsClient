@@ -11,6 +11,10 @@
   width: 45px;
 }
 
+.levelUpIcon:hover {
+  cursor: pointer;
+}
+
 .levelUpIcon:after {
   content: " ";
   display: block;

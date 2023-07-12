@@ -279,6 +279,7 @@ class Layout extends React.Component {
             clockDifference={clockDifference}
             handleGameEvent={this.handleGameEvent}
             abilityData={abilityData}
+            updateState={this.updateState}
           />}
           <Canvas
             userId={userId}

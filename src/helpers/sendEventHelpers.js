@@ -177,7 +177,7 @@ const rotateEventPayload = (player, pressedKey) => {
   return { ...player, gameEvent: pressedKey, rotate: pressedKey };
 }
 
-const handleAbilityEvent = (player, abilityData, handleGameEvent, updateState, pressedKey) => {
+export const handleAbilityEvent = (player, abilityData, handleGameEvent, updateState, pressedKey) => {
   const levelSum = abilityData.q.level + abilityData.w.level + abilityData.e.level;
   const ability = abilityData[pressedKey];
 
