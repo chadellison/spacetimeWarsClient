@@ -207,12 +207,14 @@ class Layout extends React.Component {
   }
 
   renderGame = () => {
-    const updatedGameState = updateGameState(
-      this.state,
-      this.handleGameEvent,
-      this.syncClocks
-    );
-    this.setState(updatedGameState);
+    if (this.state.started) {
+      const updatedGameState = updateGameState(
+        this.state,
+        this.handleGameEvent,
+        this.syncClocks
+      );
+      this.setState(updatedGameState);
+    }
   };
 
   render() {
