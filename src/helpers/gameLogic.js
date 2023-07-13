@@ -18,11 +18,10 @@ import { playSound } from '../helpers/audioHelpers.js';
 import { explodePlayer } from '../helpers/receiveEventHelpers.js';
 import { upgradeSound, GAME_ANIMATIONS } from '../constants/settings.js';
 
-export const updateGameState = (gameState, handleGameEvent, syncClocks) => {
+export const updateGameState = (gameState, handleGameEvent, syncClocks, currentPlayer) => {
   const { clockDifference, gameBuff, userId, aiShips, space, lastFired, motherships } = gameState;
   let updatedPlayers = updatePlayers(gameState, handleGameEvent, syncClocks);
   const mothershipHpData = { red: motherships[0]?.hitpoints, blue: motherships[1]?.hitpoints }
-  const currentPlayer = updatedPlayers.find((player) => player.userId === userId);
 
   let { newLastFired, updatedWeapons } = handleRepeatedFire(currentPlayer, space, lastFired, [...gameState.deployedWeapons], handleGameEvent);
 

@@ -1,21 +1,20 @@
 import React from 'react';
-import '../styles/playerData.css';
-import { WEAPONS } from '../constants/weapons.js';
-import { UPGRADES } from '../constants/upgrades.js';
+import { API_RESOURCE_URL } from '../api/apiHelpers.js';
 import { ABILITIES } from '../constants/abilities.js';
+import { PILOTS } from '../constants/pilots';
+import { SHIPS } from '../constants/ships';
+import { UPGRADES } from '../constants/upgrades.js';
+import { WEAPONS } from '../constants/weapons.js';
+import { round } from '../helpers/mathHelpers';
+import { playerCountDown } from '../helpers/playerHelpers';
+import { handleAbilityEvent } from '../helpers/sendEventHelpers';
 import goldIcon from '../images/gold.png';
+import '../styles/playerData.css';
+import { AbilityIcon } from './AbilityIcon';
 import { Hitpoints } from './Hitpoints';
+import { LevelUpIcon } from './LevelUpIcon';
 import { PlayerItems } from './PlayerItems';
 import { PlayerStat } from './PlayerStat';
-import { AbilityIcon } from './AbilityIcon';
-import { LevelUpIcon } from './LevelUpIcon';
-import { GameButton } from './GameButton';
-import { SHIPS } from '../constants/ships';
-import { round } from '../helpers/mathHelpers';
-import { startEventPayload } from '../helpers/sendEventHelpers';
-import { handleAbilityEvent } from '../helpers/sendEventHelpers';
-import { API_RESOURCE_URL } from '../api/apiHelpers.js';
-import { PILOTS } from '../constants/pilots';
 
 const renderWeapon = (weaponIndex) => {
   if (weaponIndex >= 0) {
@@ -98,27 +97,17 @@ const renderDamage = (player) => {
   }
 }
 
-const handlePlayerIcon = (activePlayer, countDown, modal, handleGameEvent) => {
-  if (activePlayer.active) {
+const handlePlayerIcon = (activePlayer, countDown) => {
     return (
-      <img
-        className="playerImage"
-        src={`${API_RESOURCE_URL}/${PILOTS[activePlayer.shipIndex]}`}
-        // src={`https://robohash.org/${activePlayer.index}?color=${activePlayer.team}`}
-        alt="player"
-      />
+      <>
+        <img
+          className={activePlayer.active ? 'playerImage' : 'playerImage inactive'}
+          src={`${API_RESOURCE_URL}/${PILOTS[activePlayer.shipIndex]}`}
+          alt="player"
+        />
+        {countDown > 0 && <span className="waitCountDown">{countDown}</span>}
+      </>
     );
-  } else if (countDown > 0) {
-    return <span className="waitCountDown">{countDown}</span>;
-  } else if (!modal) {
-    return (
-      <GameButton
-        className={'startButton'}
-        onClick={() => handleGameEvent(startEventPayload(activePlayer))}
-        buttonText={'start'}
-      />
-    );
-  }
 }
 
 const renderHitPoints = (activePlayer) => {
@@ -172,23 +161,19 @@ const renderAbility = (activePlayer, playerAbilityData, handleGameEvent, updateS
 };
 
 const PlayerData = ({
-  modal,
   abilityData,
   activePlayer,
   handleGameEvent,
   clockDifference,
   updateState
 }) => {
-  const elapsedSeconds = (Date.now() + clockDifference - activePlayer.explodedAt) / 1000;
-  let countDown = 0;
-  if (!activePlayer.active && elapsedSeconds < 10) {
-    countDown = round(10 - elapsedSeconds);
-  }
+  const countDown = playerCountDown(activePlayer, clockDifference);
+
   const { gold } = activePlayer;
   return (
     <div className={`playerData column ${!activePlayer.active ? 'waiting' : ''}`}>
       <div>
-        {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown, modal, handleGameEvent)}
+        {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown)}
         <div className="playerLevel">{'level: ' + activePlayer.level}</div>
         <div className="nameInfo">{activePlayer.name}</div>
         {gold >= 0 && <PlayerStat image={goldIcon} alt={'gold'} value={gold} className="goldInfo" />}

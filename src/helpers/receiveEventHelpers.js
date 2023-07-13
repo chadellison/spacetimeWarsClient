@@ -2,13 +2,13 @@ import { handleFireWeapon, updatePlayer, handlePlayerDamage } from '../helpers/g
 import { applyGameBuff } from '../helpers/effectHelpers.js';
 import { GAME_EFFECTS } from '../constants/effects.js';
 import { EXPLOSION_ANIMATIONS } from '../constants/weapons.js';
-import { playSound , stopSound} from '../helpers/audioHelpers.js';
+import { playSound, stopSound } from '../helpers/audioHelpers.js';
 import { handleAbility } from '../helpers/abilityHelpers.js';
 import {
   thruster,
   shipExplosionSound,
 } from '../constants/settings.js';
-import {WEAPONS} from '../constants/weapons.js';
+import { WEAPONS } from '../constants/weapons.js';
 
 export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   const {
@@ -28,9 +28,9 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     case 'explode':
       return handleExplodeEvent(players, aiShips, playerData, elapsedTime, gameSocket);
     case 'supplyShip':
-      return {aiShips: [...aiShips, playerData]}
+      return { aiShips: [...aiShips, playerData] }
     case 'bombers':
-      return {aiShips: aiShips.concat(playerData.bombers)}
+      return { aiShips: aiShips.concat(playerData.bombers) }
     case 'ability':
       return handleAbility(players, deployedWeapons, playerData, elapsedTime, animations, aiShips);
     default:
@@ -73,18 +73,18 @@ const handleExplodeEvent = (players, aiShips, playerData, elapsedTime, gameSocke
 }
 
 const handleBuff = (playerData, players, aiShips, elapsedTime) => {
-  const gameBuff = {...GAME_EFFECTS[playerData.buffIndex], durationCount: elapsedTime};
+  const gameBuff = { ...GAME_EFFECTS[playerData.buffIndex], durationCount: elapsedTime };
   const killedBy = players.find((p) => p.userId === playerData.killedBy);
   const team = killedBy.team;
   const updatedPlayers = applyGameBuff(team, [...players], gameBuff);
   const updatedAiShips = applyGameBuff(team, aiShips, gameBuff);
-  return {players: updatedPlayers, gameBuff: gameBuff, aiShips: updatedAiShips};
+  return { players: updatedPlayers, gameBuff: gameBuff, aiShips: updatedAiShips };
 }
 
 export const explodePlayer = (player, playerData) => {
   playSound(shipExplosionSound);
   player.hitpoints = 0;
-  player.explodeAnimation = {...EXPLOSION_ANIMATIONS[2], coordinates: {x: 0, y: 0}}
+  player.explodeAnimation = { ...EXPLOSION_ANIMATIONS[2], coordinates: { x: 0, y: 0 } }
   player.updatedAt = playerData.updatedAt;
   player.explodedAt = playerData.explodedAt;
   player.accelerate = false;
@@ -108,7 +108,7 @@ const handleGameOver = (players, playerData, gameSocket) => {
     startingPlayer: {},
     deployedWeapons: [],
     gameOverStats: { playerStats: players, winningTeam: playerData.team === 'red' ? 'Blue' : 'Red' },
-    waveData: {wave: 1, count: 5, active: false}
+    waveData: { wave: 1, count: 5, active: false }
   }
 }
 
@@ -127,7 +127,7 @@ const handleStartEvent = (players, playerData, userId, eventData, waveData) => {
     newPlayers = [...players, playerData]
   }
 
-  const updatedEventData = {...eventData, sendInterval: handleSendInterval(newPlayers)}
+  const updatedEventData = { ...eventData, sendInterval: handleSendInterval(newPlayers) }
 
   if (userId === playerData.userId) {
     return {
@@ -135,7 +135,7 @@ const handleStartEvent = (players, playerData, userId, eventData, waveData) => {
       left: false,
       right: false,
       space: false,
-      waveData: {...waveData, active: true},
+      waveData: { ...waveData, active: true },
       players: newPlayers,
       userId: playerData.userId,
       eventData: updatedEventData,
@@ -175,7 +175,7 @@ const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons
         ...updatedWeapons,
         handleFireWeapon(
           playerData,
-          {...WEAPONS[playerData.weaponIndex]},
+          { ...WEAPONS[playerData.weaponIndex] },
           elapsedTime,
           damage
         )

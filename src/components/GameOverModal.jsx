@@ -1,9 +1,9 @@
 import React from 'react';
 import '../styles/modal.css';
-import {GameOverStat} from './GameOverStat';
-import {GameButton} from './GameButton';
+import { GameOverStat } from './GameOverStat';
+import { GameButton } from './GameButton';
 
-export const GameOverModal = ({gameOverStats, resetGame}) => {
+export const GameOverModal = ({ gameOverStats, resetGame }) => {
   return (
     <div className='modal'>
       <div className={`gameOverText ${gameOverStats.winningTeam}`}>{`${gameOverStats.winningTeam} Team Wins!`}</div>
@@ -17,7 +17,7 @@ export const GameOverModal = ({gameOverStats, resetGame}) => {
         return 0;
       }).map((player, index) => {
         return (
-          <GameOverStat player={player} key={`gameOver${index}`} index={index}/>
+          <GameOverStat player={player} key={`gameOver${index}`} index={index} />
         );
       })}
       <GameButton

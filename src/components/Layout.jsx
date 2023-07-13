@@ -4,9 +4,9 @@ import { KEY_MAP } from '../constants/keyMap.js';
 import { ANAIMATION_FRAME_RATE, REQUEST_COUNT } from '../constants/settings.js';
 import { mothershipItems, motherships } from '../constants/ships.js';
 import { updateGameState, updatePlayer } from '../helpers/gameLogic.js';
-import { findCurrentPlayer } from '../helpers/playerHelpers';
+import { findCurrentPlayer, playerCountDown } from '../helpers/playerHelpers';
 import { handleEventPayload } from '../helpers/receiveEventHelpers.js';
-import { createBombers, keyDownEvent, keyUpEventPayload } from '../helpers/sendEventHelpers.js';
+import { createBombers, keyDownEvent, keyUpEventPayload, startEventPayload } from '../helpers/sendEventHelpers.js';
 import '../styles/styles.css';
 import Canvas from './Canvas';
 import { GameButton } from './GameButton';
@@ -207,15 +207,46 @@ class Layout extends React.Component {
   }
 
   renderGame = () => {
-    if (this.state.started) {
+    const currentPlayer = findCurrentPlayer(this.state.userId, this.state.players);
+    if (this.state.started && currentPlayer) {
+
       const updatedGameState = updateGameState(
         this.state,
         this.handleGameEvent,
-        this.syncClocks
+        this.syncClocks,
+        currentPlayer
       );
       this.setState(updatedGameState);
     }
   };
+
+  renderHeaderButtons = (activePlayer) => {
+    const showShop = activePlayer && !this.state.modal;
+    const countDown = playerCountDown(activePlayer, this.state.clockDifference)
+    const showStart = !activePlayer.active && countDown <= 0 && !this.state.modal;
+
+    return (
+      <>
+        {
+          showShop &&
+          <GameButton
+            className={'gameButton'}
+            onClick={() => this.updateState({ modal: 'selection' })}
+            buttonText={'shop'}
+          />
+        }
+
+        {
+          showStart &&
+          <GameButton
+            className={'reEnterButton'}
+            onClick={() => this.handleGameEvent(startEventPayload(activePlayer))}
+            buttonText={'start'}
+          />
+        }
+      </>
+    )
+  }
 
   render() {
     const {
@@ -266,17 +297,18 @@ class Layout extends React.Component {
             clockDifference={clockDifference}
             handleGameEvent={this.handleGameEvent}
           />}
-          {activePlayer && !modal && <GameButton
+          {/* {activePlayer && !modal && <GameButton
             className={'gameButton'}
             onClick={() => this.updateState({ modal: 'selection' })}
             buttonText={'shop'}
-          />}
+          />} */}
+          {this.renderHeaderButtons(activePlayer)}
+
           {!modal && <HeaderButtons
             updateState={this.updateState}
             handleLeaderBoard={this.handleLeaderBoard}
           />}
           {activePlayer.name && <PlayerData
-            modal={modal}
             activePlayer={activePlayer}
             clockDifference={clockDifference}
             handleGameEvent={this.handleGameEvent}
