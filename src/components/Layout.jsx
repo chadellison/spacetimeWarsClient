@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { createGameSocket, fetchGameData, fetchScoreData, getClockData } from '../api/gameData';
 import { KEY_MAP } from '../constants/keyMap.js';
 import { ANAIMATION_FRAME_RATE, REQUEST_COUNT } from '../constants/settings.js';
@@ -49,34 +49,38 @@ const DEFAULT_STATE = {
   started: false,
 };
 
-class Layout extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = DEFAULT_STATE
-  };
+const Layout = () => {
+  const [state, setState] = useState(DEFAULT_STATE);
 
-  componentDidMount() {
-    this.syncClocks(REQUEST_COUNT, () => fetchGameData(this.handleGameDataResponse));
-    window.addEventListener('keydown', this.handleKeyDown);
-    window.addEventListener('keyup', this.handleKeyUp);
-    this.interval = setInterval(this.renderGame, ANAIMATION_FRAME_RATE);
-    this.waveInterval = setInterval(this.updateWaveData, 1000);
-  };
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-    clearInterval(this.waveInterval);
+  const stateRef = useRef(state);
+  const updateState = (newState) => {
+    const updatedState = {...stateRef.current, ...newState};
+    setState(updatedState);
+    stateRef.current = updatedState;
   }
 
-  updateWaveData = () => {
-    const { waveData, players, userId, startingPlayer } = this.state;
+  useEffect(() => {
+    syncClocks(REQUEST_COUNT, () => fetchGameData(handleGameDataResponse));
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    const interval = setInterval(renderGame, ANAIMATION_FRAME_RATE);
+    const waveInterval = setInterval(updateWaveData, 1000);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(waveInterval);
+    }
+  }, [])
+
+  const updateWaveData = () => {
+    const { waveData, players, userId, startingPlayer } = stateRef.current;
     const { wave, count, active } = waveData;
     if (active) {
       if (Math.random() > 0.97) {
-        this.handleGameEvent({ gameEvent: 'supplyShip' });
+        handleGameEvent({ gameEvent: 'supplyShip' });
       }
       if (count > 0) {
-        this.setState({ waveData: { ...waveData, count: count - 1 } });
+        updateState({ waveData: { ...waveData, count: count - 1 } });
       } else {
         const existingPlayer = findCurrentPlayer(userId, players);
         const currentPlayer = existingPlayer || startingPlayer;
@@ -84,41 +88,41 @@ class Layout extends React.Component {
         const bombers = createBombers(wave, opponentTeam, players);
 
         if (bombers) {
-          this.handleGameEvent({
+          handleGameEvent({
             gameEvent: 'bombers',
             team: opponentTeam,
             bombers
           });
         }
-        this.setState({ waveData: { ...waveData, wave: wave + 1, count: 15 } });
+        updateState({ waveData: { ...waveData, wave: wave + 1, count: 15 } });
       }
     }
   }
 
-  syncClocks = (iteration, callback) => {
+  const syncClocks = (iteration, callback) => {
     const sentTime = Date.now();
-    getClockData(sentTime, (timeData) => this.handleTimeResponse(sentTime, timeData, iteration, callback))
+    getClockData(sentTime, (timeData) => handleTimeResponse(sentTime, timeData, iteration, callback))
   }
 
-  handleTimeResponse = (sentTime, timeData, iteration, callback) => {
+  const handleTimeResponse = (sentTime, timeData, iteration, callback) => {
     const responseTime = Date.now();
     const roundTripTime = responseTime - sentTime;
-    this.handleClockUpdate(roundTripTime, timeData.difference);
+    handleClockUpdate(roundTripTime, timeData.difference);
 
     if (iteration > 0) {
       iteration -= 1
-      this.syncClocks(iteration, callback);
+      syncClocks(iteration, callback);
     } else {
       callback();
     };
   };
 
-  updateState = (newState) => {
-    this.setState(newState);
-  }
+  // const updateState = (newState) => {
+  //   updateState(newState);
+  // }
 
-  handleGameDataResponse = (gameData) => {
-    const { clockDifference } = this.state;
+  const handleGameDataResponse = (gameData) => {
+    const { clockDifference } = stateRef.current;
     const players = gameData.players.map((player) => {
       const elapsedTime = Date.now() + clockDifference - player.updatedAt
       if (player.active) {
@@ -127,99 +131,98 @@ class Layout extends React.Component {
         return player;
       }
     });
-    const received = (response) => this.handleReceivedEvent(response.playerData);
-    const gameSocket = createGameSocket(this.state.userId, received);
-    this.setState({ players, gameSocket });
+    const received = (response) => handleReceivedEvent(response.playerData);
+    const gameSocket = createGameSocket(stateRef.current.userId, received);
+    updateState({ players, gameSocket });
   }
 
-  handleLeaderBoard = () => {
-    fetchScoreData((scoreData) => this.setState({ scores: scoreData, modal: 'leaderboard' }))
+  const handleLeaderBoard = () => {
+    fetchScoreData((scoreData) => updateState({ scores: scoreData, modal: 'leaderboard' }))
   }
 
-  handleGameEvent = (eventPayload) => {
-    this.state.gameSocket.create({
+  const handleGameEvent = (eventPayload) => {
+    stateRef.current.gameSocket.create({
       ...eventPayload,
-      serverTime: Date.now() + this.state.clockDifference,
+      serverTime: Date.now() + stateRef.current.clockDifference,
     });
   };
 
-  handleKeyDown = (event) => {
-    const { modal, userId, players, startingPlayer } = this.state;
+  const handleKeyDown = (event) => {
+    const { modal, userId, players, startingPlayer } = stateRef.current;
     if (!modal) {
       const pressedKey = KEY_MAP[event.keyCode];
       const existingPlayer = findCurrentPlayer(userId, players)
       const currentPlayer = existingPlayer || startingPlayer;
-      if (currentPlayer && currentPlayer.active && !this.state[pressedKey]) {
-        this.setState({ [pressedKey]: true })
-        keyDownEvent(pressedKey, this.state, this.handleGameEvent, this.updateState, currentPlayer);
+      if (currentPlayer && currentPlayer.active && !stateRef.current[pressedKey]) {
+        updateState({ [pressedKey]: true })
+        keyDownEvent(pressedKey, stateRef.current, handleGameEvent, updateState, currentPlayer);
       }
     }
   };
 
-  handleKeyUp = (event) => {
-    const { userId, players, startingPlayer } = this.state;
+  const handleKeyUp = (event) => {
+    const { userId, players, startingPlayer } = stateRef.current;
     const existingPlayer = findCurrentPlayer(userId, players)
     const currentPlayer = existingPlayer || startingPlayer;
     const pressedKey = KEY_MAP[event.keyCode];
-    if (currentPlayer && currentPlayer.active && !this.state.modal && this.state[pressedKey]) {
-      this.setState({ [pressedKey]: false });
-      keyUpEventPayload(pressedKey, this.state, this.handleGameEvent, this.updateState, currentPlayer)
+    if (currentPlayer && currentPlayer.active && !stateRef.current.modal && stateRef.current[pressedKey]) {
+      updateState({ [pressedKey]: false });
+      keyUpEventPayload(pressedKey, stateRef.current, handleGameEvent, updateState, currentPlayer)
     };
   };
 
-  handleReceivedEvent = (playerData) => {
-    const { clockDifference } = this.state;
+  const handleReceivedEvent = (playerData) => {
+    const { clockDifference } = stateRef.current;
     const elapsedTime = Date.now() + clockDifference - playerData.serverTime;
 
     if (elapsedTime > 2000) {
       console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime)
     }
-    const gameState = handleEventPayload(this.state, playerData, elapsedTime);
+    const gameState = handleEventPayload(stateRef.current, playerData, elapsedTime);
 
     if (gameState) {
-      this.setState(gameState);
+      updateState(gameState);
     }
   };
 
-  handleClockUpdate = (roundTripTime, difference) => {
-    if (roundTripTime < this.state.shortestRoundTripTime) {
+  const handleClockUpdate = (roundTripTime, difference) => {
+    if (roundTripTime < stateRef.current.shortestRoundTripTime) {
       const clockDifference = difference - (roundTripTime / 2)
       console.log('shorter time', roundTripTime)
       console.log('new clock difference', clockDifference)
-      this.setState({
+      updateState({
         clockDifference: clockDifference,
         shortestRoundTripTime: roundTripTime
       });
     };
   };
 
-  resetGame = () => {
+  const resetGame = () => {
     const newState = {
       ...DEFAULT_STATE,
       motherships: motherships.map((ship) => ({ ...ship, hitpoints: 5000, maxHitpoints: 5000, items: { ...mothershipItems }, effects: {} })),
-      userId: this.state.userId,
-      clockDifference: this.state.clockDifference,
-      shortestRoundTripTime: this.state.shortestRoundTripTime,
+      userId: stateRef.current.userId,
+      clockDifference: stateRef.current.clockDifference,
+      shortestRoundTripTime: stateRef.current.shortestRoundTripTime,
     }
-    this.updateState(newState);
-    this.syncClocks(3, () => fetchGameData(this.handleGameDataResponse));
+    updateState(newState);
+    syncClocks(3, () => fetchGameData(handleGameDataResponse));
   }
 
-  renderGame = () => {
-    const currentPlayer = findCurrentPlayer(this.state.userId, this.state.players);
-    if (this.state.started && currentPlayer) {
+  const renderGame = () => {
+    const currentPlayer = findCurrentPlayer(stateRef.current.userId, stateRef.current.players);
+    if (stateRef.current.started && currentPlayer) {
 
       const updatedGameState = updateGameState(
-        this.state,
-        this.handleGameEvent,
-        this.syncClocks,
+        stateRef.current,
+        handleGameEvent,
+        syncClocks,
         currentPlayer
       );
-      this.setState(updatedGameState);
+      updateState(updatedGameState);
     }
   };
 
-  render() {
     const {
       page,
       modal,
@@ -240,13 +243,13 @@ class Layout extends React.Component {
       deployedWeapons,
       clockDifference,
       showInstructions
-    } = this.state;
+    } = stateRef.current;
 
     const existingPlayer = findCurrentPlayer(userId, players);
     const activePlayer = existingPlayer || startingPlayer;
 
     return (
-      <div className="layout" onKeyDown={this.handleKeyDown}>
+      <div className="layout" onKeyDown={handleKeyDown}>
         {waveData.count < 16 && waveData.active &&
           <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`} />
         }
@@ -261,27 +264,27 @@ class Layout extends React.Component {
             upgrades={upgrades}
             activeTab={activeTab}
             showInstructions={showInstructions}
-            resetGame={this.resetGame}
+            resetGame={resetGame}
             activePlayer={{ ...activePlayer, inPlayers: existingPlayer }}
             gameOverStats={gameOverStats}
-            updateState={this.updateState}
+            updateState={updateState}
             clockDifference={clockDifference}
-            handleGameEvent={this.handleGameEvent}
+            handleGameEvent={handleGameEvent}
           />}
           <Header activePlayer={activePlayer} 
             modal={modal} 
             clockDifference={clockDifference} 
-            updateState={this.updateState} 
-            handleLeaderBoard={this.handleLeaderBoard}
-            handleGameEvent={this.handleGameEvent}
+            updateState={updateState} 
+            handleLeaderBoard={handleLeaderBoard}
+            handleGameEvent={handleGameEvent}
           />
 
           {activePlayer.name && <PlayerData
             activePlayer={activePlayer}
             clockDifference={clockDifference}
-            handleGameEvent={this.handleGameEvent}
+            handleGameEvent={handleGameEvent}
             abilityData={abilityData}
-            updateState={this.updateState}
+            updateState={updateState}
           />}
           <Canvas
             userId={userId}
@@ -298,7 +301,6 @@ class Layout extends React.Component {
       </div>
     );
   };
-}
 
 export default Layout;
 
