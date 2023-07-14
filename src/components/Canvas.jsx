@@ -1,10 +1,10 @@
-import React from 'react';
+import { createRef, useEffect, useState } from 'react';
 import { GAME_EFFECTS, SPRITE_IMAGES } from '../constants/effects.js';
 import {
   BOARD_HEIGHT,
   BOARD_WIDTH,
-  GAME_ANIMATIONS,
-  EXPLODE_PLAYER_COLOR
+  EXPLODE_PLAYER_COLOR,
+  GAME_ANIMATIONS
 } from '../constants/settings.js';
 import { SHIPS, SUPPLY_SHIP, motherships } from '../constants/ships.js';
 import { ABILITY_WEAPONS, EXPLOSION_ANIMATIONS, WEAPONS } from '../constants/weapons.js';
@@ -21,144 +21,36 @@ import { findCenterCoordinates, findStartCenter } from '../helpers/gameLogic';
 import { round } from '../helpers/mathHelpers.js';
 import '../styles/styles.css';
 
-class Canvas extends React.Component {
-  constructor(props) {
-    super(props);
-    this.canvasRef = React.createRef();
-    // ships
-    this.hunter = React.createRef();
-    this.hunterBlue = React.createRef();
-    this.destroyer = React.createRef();
-    this.destroyerBlue = React.createRef();
-    this.warrior = React.createRef();
-    this.warriorBlue = React.createRef();
-    this.cruiser = React.createRef();
-    this.cruiserBlue = React.createRef();
-    this.carrier = React.createRef();
-    this.carrierBlue = React.createRef();
-    this.stealth = React.createRef();
-    this.stealthBlue = React.createRef();
-    this.commander = React.createRef();
-    this.commanderBlue = React.createRef();
-    this.spider = React.createRef();
-    this.spiderBlue = React.createRef();
-    this.supplyShip = React.createRef();
+const REF_NAMES = SHIPS.map(ship => ship.name)
+    .concat(SHIPS.map(ship => `${ship.name}Blue`))
+    .concat(WEAPONS.map(item => item.name))
+    .concat(ABILITY_WEAPONS.map(item => item.name))
+    .concat(EXPLOSION_ANIMATIONS.map(item => item.name))
+    .concat(GAME_EFFECTS.map(item => item.name))
+    .concat(GAME_ANIMATIONS.map(item => item.name))
+    .concat(motherships.map(item => item.name))
+    .concat([SUPPLY_SHIP.name]);
 
-    // weapons
-    this.fireball = React.createRef();
-    this.missile = React.createRef();
-    this.trifecta = React.createRef();
-    this.poisonCannon = React.createRef();
-    this.bomb = React.createRef();
-    this.laser = React.createRef();
-    this.blueFire = React.createRef();
-    this.plasmaCannon = React.createRef();
+const GAME_REFS = {}
+REF_NAMES.forEach((refName) => GAME_REFS[refName] = createRef());
+const CANVAS_REF = createRef();
 
-    // ability animations
-    this.poison = React.createRef();
-    this.slow = React.createRef();
-    this.stun = React.createRef();
-    this.invulnerable = React.createRef();
-    this.heal = React.createRef();
-    this.armorBoost = React.createRef();
-    this.warpSpeed = React.createRef();
-    this.nuclearBlast = React.createRef();
-    this.stunGun = React.createRef();
-    this.spaceMine = React.createRef();
-    this.meteorShower = React.createRef();
-    this.piercer = React.createRef();
-    this.damageBoost = React.createRef();
-    this.damageReduction = React.createRef();
-    this.armorReduction = React.createRef();
-    this.meteorExplosion = React.createRef();
-    this.electricField = React.createRef();
-    this.redMeteor = React.createRef();
-    this.blink = React.createRef();
-    this.teleport = React.createRef();
-    this.zapped = React.createRef();
-    this.cripple = React.createRef();
-    this.poisonDart = React.createRef();
+const Canvas = ({ userId, started, currentPlayer, players, aiShips, motherships, animations, deployedWeapons }) => {
+  const [state, setState] = useState({});
 
-    // game animations
-    this.shipExplosion = React.createRef();
-    this.thruster = React.createRef();
-    this.spaceMineExplosion = React.createRef();
-    this.levelUp = React.createRef();
-    this.nuclearExplosion = React.createRef();
-    this.redMothership = React.createRef();
-    this.blueMothership = React.createRef();
-    this.mothershipHit = React.createRef();    
-  }
-
-  componentDidMount() {
-    const canvas = this.canvasRef.current;
-    const context = canvas.getContext('2d');
-
-    this.setState({
-      canvas,
-      context,
-      hunter: this.hunter.current,
-      hunterBlue: this.hunterBlue.current,
-      destroyer: this.destroyer.current,
-      destroyerBlue: this.destroyerBlue.current,
-      warrior: this.warrior.current,
-      warriorBlue: this.warriorBlue.current,
-      cruiser: this.cruiser.current,
-      cruiserBlue: this.cruiserBlue.current,
-      carrier: this.carrier.current,
-      carrierBlue: this.carrierBlue.current,
-      stealth: this.stealth.current,
-      stealthBlue: this.stealthBlue.current,
-      commander: this.commander.current,
-      commanderBlue: this.commanderBlue.current,
-      spider: this.spider.current,
-      spiderBlue: this.spiderBlue.current,
-      supplyShip: this.supplyShip.current,
-      fireball: this.fireball.current,
-      missile: this.missile.current,
-      trifecta: this.trifecta.current,
-      poisonCannon: this.poisonCannon.current,
-      bomb: this.bomb.current,
-      laser: this.laser.current,
-      blueFire: this.blueFire.current,
-      plasmaCannon: this.plasmaCannon.current,
-      poison: this.poison.current,
-      slow: this.slow.current,
-      stun: this.stun.current,
-      invulnerable: this.invulnerable.current,
-      heal: this.heal.current,
-      armorBoost: this.armorBoost.current,
-      warpSpeed: this.warpSpeed.current,
-      thruster: this.thruster.current,
-      nuclearBlast: this.nuclearBlast.current,
-      stunGun: this.stunGun.current,
-      spaceMine: this.spaceMine.current,
-      piercer: this.piercer.current,
-      meteorShower: this.meteorShower.current,
-      damageBoost: this.damageBoost.current,
-      damageReduction: this.damageReduction.current,
-      armorReduction: this.armorReduction.current,
-      electricField: this.electricField.current,
-      redMeteor: this.redMeteor.current,
-      spaceMineExplosion: this.spaceMineExplosion.current,
-      nuclearExplosion: this.nuclearExplosion.current,
-      redMothership: this.redMothership.current,
-      blueMothership: this.blueMothership.current,
-      mothershipHit: this.mothershipHit.current,
-      meteorExplosion: this.meteorExplosion.current,
-      shipExplosion: this.shipExplosion.current,
-      levelUp: this.levelUp.current,
-      blink: this.blink.current,
-      teleport: this.teleport.current,
-      zapped: this.zapped.current,
-      cripple: this.cripple.current,
-      poisonDart: this.poisonDart.current,
+  useEffect(() => {
+    const currentRefs = {}
+    Object.keys(GAME_REFS).forEach(refKey => {
+      currentRefs[refKey] = GAME_REFS[refKey].current
+    })
+    setState({
+      ...currentRefs,
       halfWindowWidth: round(window.innerWidth / 2),
       halfWindowHeight: round(window.innerHeight / 2),
     });
-  }
+  }, []);
 
-  handleImage = (player) => {
+  const handleImage = (player) => {
     let imageReference = '';
     if (player.type === 'supplyShip') {
       imageReference = 'supplyShip';
@@ -170,75 +62,73 @@ class Canvas extends React.Component {
         imageReference += 'Blue'
       }
     }
-    return this.state[imageReference];
+    return state[imageReference];
   };
 
-  handleScroll = (currentPlayer) => {
+  const handleScroll = (currentPlayer) => {
     if (currentPlayer?.location) {
       window.scrollTo(
-        currentPlayer.location.x - this.state.halfWindowWidth,
-        currentPlayer.location.y - this.state.halfWindowHeight
+        currentPlayer.location.x - state.halfWindowWidth,
+        currentPlayer.location.y - state.halfWindowHeight
       )
     }
   }
 
-  handleShips = (players, context, userId, currentPlayerIsExploding) => {
-    const { aiShips, motherships } = this.props
+  const handleShips = (players, context, userId, currentPlayerIsExploding) => {
     players.concat(aiShips).forEach((player) => {
       const showShip = shouldRenderShip(player, userId);
       if (player.active) {
         if (showShip) {
-
+          
           handleInvisibleFilter(context, player, userId);
-
-          const thruster = player.effects[9] ? this.state.warpSpeed : this.state.thruster;
-          drawShip(context, player, this.handleImage(player), thruster);
-          this.renderEffects(context, player)
+          
+          const thruster = player.effects[9] ? state.warpSpeed : state.thruster;
+          drawShip(context, player, handleImage(player), thruster);
+          renderEffects(context, player)
         }
       } else if (!player.explodeAnimation.complete) {
-        renderAnimation(context, this.state.shipExplosion, player.explodeAnimation, player.location);
+        renderAnimation(context, state.shipExplosion, player.explodeAnimation, player.location);
       };
       renderPlayerData(context, player, showShip, currentPlayerIsExploding);
     });
 
     motherships.forEach((ship) => {
-      const mothership = ship.team === 'red' ? this.state.redMothership : this.state.blueMothership;
+      const mothership = ship.team === 'red' ? state.redMothership : state.blueMothership;
       renderAnimation(context, mothership, ship.animation, ship.location);
-      this.renderEffects(context, ship)
+      renderEffects(context, ship)
       renderMotherShipData(context, ship, currentPlayerIsExploding);
     });
   }
 
-  renderEffects = (context, ship) => {
+  const renderEffects = (context, ship) => {
     const startCenter = findStartCenter(ship);
 
     Object.values(ship.effects).forEach((effect) => {
       if (effect.animation && effect.id !== 9) {
         const effectCoordinates = findCenterCoordinates(ship.location, startCenter, { width: effect.animation?.renderWidth || 0, height: effect.animation?.renderHeight || 0 });
-        renderAnimation(context, this.state[effect.name], effect.animation, effectCoordinates);
+        renderAnimation(context, state[effect.name], effect.animation, effectCoordinates);
       }
     });
   }
 
-  renderAnimations = (context) => {
-    this.props.animations.forEach((animation) => {
-      renderAnimation(context, this.state[animation.name], animation, animation.location);
+  const renderAnimations = (context) => {
+    animations.forEach((animation) => {
+      renderAnimation(context, state[animation.name], animation, animation.location);
     });
   }
 
-  renderWeapons = (currentPlayer, context) => {
-    this.props.deployedWeapons.forEach((weapon) => {
+  const renderWeapons = (currentPlayer, context) => {
+    deployedWeapons.forEach((weapon) => {
       if (!weapon.invisible || (currentPlayer && weapon.team === currentPlayer.team)) {
-        renderWeapon(context, weapon, this.state[weapon.name])
+        renderWeapon(context, weapon, state[weapon.name])
       }
     });
   }
 
-  renderCanvas = () => {
-    const { userId, players, currentPlayer } = this.props;
-    this.handleScroll(currentPlayer)
+  const renderCanvas = () => {
+    handleScroll(currentPlayer)
 
-    const canvas = this.canvasRef.current;
+    const canvas = CANVAS_REF.current
 
     if (canvas) {
       const context = canvas.getContext('2d');
@@ -249,104 +139,103 @@ class Canvas extends React.Component {
         context.fillStyle = EXPLODE_PLAYER_COLOR;
       }
 
-      this.handleShips(players, context, userId, currentPlayerIsExploding);
-      this.renderWeapons(currentPlayer, context);
-      this.renderAnimations(context);
+      handleShips(players, context, userId, currentPlayerIsExploding);
+      renderWeapons(currentPlayer, context);
+      renderAnimations(context);
     }
   }
 
-  render() {
-    this.props.started && this.renderCanvas();
-    return (
-      <div>
-        <canvas
-          className={'canvas column'}
-          ref={this.canvasRef}
-          width={BOARD_WIDTH}
-          height={BOARD_HEIGHT}
-        />
+  started && renderCanvas();
 
-        {SHIPS.map((ship, index) => {
-          return (
-            <img ref={this[ship.name]}
-              src={ship.image}
-              className="hidden"
-              alt={ship.name}
-              key={`ship${index}`}
-            />
-          );
-        })}
-        {SHIPS.map((ship, index) => {
-          return (
-            <img ref={this[`${ship.name}Blue`]}
-              src={ship.blueImage}
-              className="hidden"
-              alt={`blue-${ship.name}`}
-              key={`blueShip${index}`}
-            />
-          );
-        })}
-        {WEAPONS.map((weapon, index) => {
-          return (
-            <img ref={this[weapon.name]}
-              src={weapon.animation ? weapon.animation.spriteImage : weapon.image}
-              className="hidden"
-              alt={weapon.name}
-              key={`weapon${index}`}
-            />
-          );
-        })}
-        {ABILITY_WEAPONS.map((weapon, index) => {
-          return (
-            <img ref={this[weapon.name]}
-              src={weapon.animation ? weapon.animation.spriteImage : weapon.image}
-              className="hidden"
-              alt={weapon.name}
-              key={`abilityWeapon${index}`}
-            />
-          );
-        })}
-        {EXPLOSION_ANIMATIONS.map((weaponAnimation, index) => {
-          return (
-            <img ref={this[weaponAnimation.name]}
-              src={weaponAnimation.spriteImage}
-              className="hidden"
-              alt={weaponAnimation.name}
-              key={`weaponAnimation${index}`}
-            />
-          );
-        })}
-        {GAME_EFFECTS.filter((effect) => effect.animation)
-          .map((effect, index) => {
-            return (
-              <img ref={this[effect.name]}
-                src={SPRITE_IMAGES[effect.animation.spriteIndex]}
-                className="hidden"
-                alt={effect.name}
-                key={`shipEffect${index}`}
-              />
-            );
-          })}
+  return (
+    <div>
+      <canvas
+        className={'canvas column'}
+        ref={CANVAS_REF}
+        width={BOARD_WIDTH}
+        height={BOARD_HEIGHT}
+      />
 
-        {GAME_ANIMATIONS.map((animation, index) => {
+      {SHIPS.map((ship, index) => {
+        return (
+          <img ref={GAME_REFS[ship.name]}
+            src={ship.image}
+            className="hidden"
+            alt={ship.name}
+            key={`ship${index}`}
+          />
+        );
+      })}
+      {SHIPS.map((ship, index) => {
+        return (
+          <img ref={GAME_REFS[`${ship.name}Blue`]}
+            src={ship.blueImage}
+            className="hidden"
+            alt={`blue-${ship.name}`}
+            key={`blueShip${index}`}
+          />
+        );
+      })}
+      {WEAPONS.map((weapon, index) => {
+        return (
+          <img ref={GAME_REFS[weapon.name]}
+            src={weapon.animation ? weapon.animation.spriteImage : weapon.image}
+            className="hidden"
+            alt={weapon.name}
+            key={`weapon${index}`}
+          />
+        );
+      })}
+      {ABILITY_WEAPONS.map((weapon, index) => {
+        return (
+          <img ref={GAME_REFS[weapon.name]}
+            src={weapon.animation ? weapon.animation.spriteImage : weapon.image}
+            className="hidden"
+            alt={weapon.name}
+            key={`abilityWeapon${index}`}
+          />
+        );
+      })}
+      {EXPLOSION_ANIMATIONS.map((weaponAnimation, index) => {
+        return (
+          <img ref={GAME_REFS[weaponAnimation.name]}
+            src={weaponAnimation.spriteImage}
+            className="hidden"
+            alt={weaponAnimation.name}
+            key={`weaponAnimation${index}`}
+          />
+        );
+      })}
+      {GAME_EFFECTS.filter((effect) => effect.animation)
+        .map((effect, index) => {
           return (
-            <img ref={this[animation.name]}
-              src={animation.spriteImage}
+            <img ref={GAME_REFS[effect.name]}
+              src={SPRITE_IMAGES[effect.animation.spriteIndex]}
               className="hidden"
-              alt={animation.name}
-              key={`gameAnimation${index}`}
+              alt={effect.name}
+              key={`shipEffect${index}`}
             />
           );
         })}
 
-        {motherships.map((mothership, index) => {
-          return <img ref={this[mothership.name]} src={mothership.animation.spriteImage} className="hidden" alt={mothership.name} key={`mothership${index}`} />
-        })}
+      {GAME_ANIMATIONS.map((animation, index) => {
+        return (
+          <img ref={GAME_REFS[animation.name]}
+            src={animation.spriteImage}
+            className="hidden"
+            alt={animation.name}
+            key={`gameAnimation${index}`}
+          />
+        );
+      })}
 
-        <img ref={this[SUPPLY_SHIP.name]} src={SUPPLY_SHIP.image} className="hidden" alt={SUPPLY_SHIP.name} />
-      </div>
-    );
-  };
+      {motherships.map((mothership, index) => {
+        return <img ref={GAME_REFS[mothership.name]} src={mothership.animation.spriteImage} className="hidden" alt={mothership.name} key={`mothership${index}`} />
+      })}
+
+      <img ref={GAME_REFS[SUPPLY_SHIP.name]} src={SUPPLY_SHIP.image} className="hidden" alt={SUPPLY_SHIP.name} />
+    </div>
+  );
 }
 
 export default Canvas

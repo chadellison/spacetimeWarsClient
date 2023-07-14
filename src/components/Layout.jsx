@@ -227,7 +227,6 @@ const Layout = () => {
       started,
       aiShips,
       players,
-      gameBuff,
       upgrades,
       waveData,
       activeTab,
@@ -288,7 +287,6 @@ const Layout = () => {
             currentPlayer={existingPlayer}
             players={players}
             aiShips={aiShips}
-            gameBuff={gameBuff}
             animations={animations}
             motherships={motherships}
             deployedWeapons={deployedWeapons}
