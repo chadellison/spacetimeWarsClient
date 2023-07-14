@@ -156,44 +156,27 @@ const handleSendInterval = (players) => {
       blue += 1;
     }
   });
-  if ([red, blue].includes(0)) {
-    return 10000;
-  } else {
-    return 60000;
-  }
+
+  return [red, blue].includes(0) ? 10000 : 60000;
 }
 
 const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, elapsedTime) => {
-  let updatedWeapons = [...deployedWeapons];
+  let updatedWeapons = deployedWeapons;
   let updatedPlayers = [...players];
   let updatedPlayer = updatedPlayers.find((player) => player.userId === playerData.userId);
 
   switch (playerData.gameEvent) {
     case 'fire':
-      const damage = handlePlayerDamage(updatedPlayer);
-      updatedWeapons = [
-        ...updatedWeapons,
-        handleFireWeapon(
-          playerData,
-          { ...WEAPONS[playerData.weaponIndex] },
-          elapsedTime,
-          damage
-        )
-      ];
-
-      playSound(WEAPONS[updatedPlayer.weaponIndex].sound);
+      updatedWeapons = resolveFireEvent(updatedWeapons, playerData, updatedPlayer, elapsedTime)
       break;
     case 'fireStop':
       break;
-    case 'up':
-      updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
-      playSound(thruster);
-      break;
-    case 'upStop':
-      updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
-      stopSound(thruster);
-      break;
     default:
+      if (playerData.gameEvent === 'up') {
+        playSound(thruster);
+      } else if (playerData.gameEvent === 'upStop') {
+        stopSound(thruster);
+      }
       updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
       break;
   }
@@ -210,4 +193,18 @@ const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons
     players: updatedPlayers,
     deployedWeapons: updatedWeapons,
   };
+}
+
+const resolveFireEvent = (updatedWeapons, playerData, updatedPlayer, elapsedTime) => {
+  const damage = handlePlayerDamage(updatedPlayer);
+  playSound(WEAPONS[updatedPlayer.weaponIndex].sound);  
+  return [
+    ...updatedWeapons,
+    handleFireWeapon(
+      playerData,
+      { ...WEAPONS[playerData.weaponIndex] },
+      elapsedTime,
+      damage
+    )
+  ];
 }

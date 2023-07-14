@@ -117,10 +117,6 @@ const Layout = () => {
     };
   };
 
-  // const updateState = (newState) => {
-  //   updateState(newState);
-  // }
-
   const handleGameDataResponse = (gameData) => {
     const { clockDifference } = stateRef.current;
     const players = gameData.players.map((player) => {
