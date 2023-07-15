@@ -139,7 +139,6 @@ const handleStartEvent = (players, playerData, userId, eventData, waveData) => {
       players: newPlayers,
       userId: playerData.userId,
       eventData: updatedEventData,
-      started: true
     }
   } else {
     return { players: newPlayers, eventData, updatedEventData }

@@ -35,14 +35,15 @@ const GAME_REFS = {}
 REF_NAMES.forEach((refName) => GAME_REFS[refName] = createRef());
 const CANVAS_REF = createRef();
 
-const Canvas = ({ userId, started, currentPlayer, players, aiShips, motherships, animations, deployedWeapons }) => {
+const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animations, deployedWeapons }) => {
   const [state, setState] = useState({});
 
   useEffect(() => {
     const currentRefs = {}
     Object.keys(GAME_REFS).forEach(refKey => {
       currentRefs[refKey] = GAME_REFS[refKey].current
-    })
+    });
+
     setState({
       ...currentRefs,
       halfWindowWidth: round(window.innerWidth / 2),
@@ -145,7 +146,7 @@ const Canvas = ({ userId, started, currentPlayer, players, aiShips, motherships,
     }
   }
 
-  started && renderCanvas();
+  currentPlayer && renderCanvas();
 
   return (
     <div>

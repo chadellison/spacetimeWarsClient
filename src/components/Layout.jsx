@@ -46,7 +46,6 @@ const DEFAULT_STATE = {
   scores: [],
   waveData: { wave: 1, count: 5, active: false },
   motherships,
-  started: false,
 };
 
 const Layout = () => {
@@ -67,6 +66,8 @@ const Layout = () => {
     const waveInterval = setInterval(updateWaveData, 1000);
 
     return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
       clearInterval(interval);
       clearInterval(waveInterval);
     }
@@ -207,7 +208,7 @@ const Layout = () => {
 
   const renderGame = () => {
     const currentPlayer = findCurrentPlayer(stateRef.current.userId, stateRef.current.players);
-    if (stateRef.current.started && currentPlayer) {
+    if (currentPlayer) {
 
       const updatedGameState = updateGameState(
         stateRef.current,
@@ -224,7 +225,6 @@ const Layout = () => {
       modal,
       userId,
       scores,
-      started,
       aiShips,
       players,
       upgrades,
@@ -283,7 +283,6 @@ const Layout = () => {
           />}
           <Canvas
             userId={userId}
-            started={started}
             currentPlayer={existingPlayer}
             players={players}
             aiShips={aiShips}
