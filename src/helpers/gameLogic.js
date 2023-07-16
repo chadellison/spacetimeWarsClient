@@ -34,7 +34,7 @@ export const updateGameState = (gameState, handleGameEvent, syncClocks, currentP
     animations: [...gameState.animations],
     motherships: [...motherships],
   }
-  console.log(gameData.weapons.length, '*******')
+
   gameData = handleWeapons(gameData, handleGameEvent);
   handleMothershipHitAnimations(gameData.animations, gameData.motherships, mothershipHpData)
   const updatedMotherships = updateMotherships(gameData.motherships, userId, handleGameEvent);
@@ -80,7 +80,7 @@ const handleAiWeapons = (weapons, motherships, players, aiShips) => {
 const handleMotherShipWeapons = (weapons, motherships, players, aiShips) => {
   const minRange = 300
   motherships.forEach(mothership => {
-    const target = nearestTarget(mothership.location, mothership.team, players.concat(aiShips), minRange);
+    const target = nearestTarget(mothership.shipCenter, mothership.team, players.concat(aiShips), minRange);
     if (target) {
       const weapon = {...WEAPONS[3]};
       const trajectory = angleFromCoordinates(mothership.location, target.location);
@@ -88,6 +88,7 @@ const handleMotherShipWeapons = (weapons, motherships, players, aiShips) => {
       zapSound.play();
     }
   });
+
   return weapons;
 }
 
