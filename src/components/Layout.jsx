@@ -95,7 +95,7 @@ const Layout = () => {
             bombers
           });
         }
-        updateState({ waveData: { ...waveData, wave: wave + 1, count: 15 } });
+        updateState({ waveData: { ...waveData, wave: wave + 1, count: 10 } });
       }
     }
   }

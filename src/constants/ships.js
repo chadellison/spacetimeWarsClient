@@ -176,7 +176,6 @@ export const MOTHER_SHIP = {
 export const mothershipItems = {
   1: { index: 0, cooldown: 120000, durationCount: 5000 },
   2: { index: 1, durationCount: 1000, cooldown: 3000 },
-  4: { index: 3, durationCount: 10000, cooldown: 30000 },
   5: { index: 4, durationCount: 0, cooldown: 0 },
   10: { index: 9, durationCount: 0, cooldown: 0 }
 }
@@ -202,6 +201,7 @@ export const motherships = [
     ...MOTHER_SHIP, name:
       'redMothership',
     location: { x: 50, y: 50 },
+    shipCenter: { x: 115, y: 105 },
     team: 'red',
     effects: {},
     items: { ...mothershipItems },
@@ -211,6 +211,7 @@ export const motherships = [
     ...MOTHER_SHIP,
     name: 'blueMothership',
     location: { x: BOARD_WIDTH - 250, y: BOARD_HEIGHT - 159 },
+    shipCenter: { x: BOARD_WIDTH - 185, y: BOARD_HEIGHT - 100 },
     team: 'blue',
     effects: {},
     items: { ...mothershipItems },

@@ -234,6 +234,7 @@ const findShipCounts = (ships, opponentTeam) => {
 
 export const createBombers = (wave, team, players) => {
   const { allyCount, opponentCount } = findShipCounts(players, team);
+  // compare team levels and offset number of bombers by team diff
   const shipIndex = Math.floor(Math.random() * BOMBERS.length);
 
   const hitpoints = 100 + wave * 50;
