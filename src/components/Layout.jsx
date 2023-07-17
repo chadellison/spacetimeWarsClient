@@ -141,6 +141,7 @@ const Layout = () => {
     stateRef.current.gameSocket.create({
       ...eventPayload,
       serverTime: Date.now() + stateRef.current.clockDifference,
+      sentData: { userId, sentAt: Date.now() }
     });
   };
 
@@ -174,6 +175,9 @@ const Layout = () => {
 
     if (elapsedTime > 2000) {
       console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime)
+    }
+    if (playerData?.sentData?.userId === userId) {
+      console.log(Date.now() - playerData.sentData.sentAt, 'trip time')
     }
     const gameState = handleEventPayload(stateRef.current, playerData, elapsedTime);
 
