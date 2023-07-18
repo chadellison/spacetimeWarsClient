@@ -18,9 +18,9 @@ import { playSound } from '../helpers/audioHelpers.js';
 import { explodePlayer } from '../helpers/receiveEventHelpers.js';
 import { upgradeSound, GAME_ANIMATIONS } from '../constants/settings.js';
 
-export const updateGameState = (gameState, handleGameEvent, syncClocks, currentPlayer) => {
-  const { clockDifference, gameBuff, userId, aiShips, space, lastFired, motherships } = gameState;
-  let updatedPlayers = updatePlayers(gameState, handleGameEvent, syncClocks);
+export const updateGameState = (gameState, handleGameEvent, currentPlayer) => {
+  const { clockDifference, gameBuff, userId, aiShips, space, lastFired, motherships, connected } = gameState;
+  let updatedPlayers = updatePlayers(gameState, handleGameEvent, connected);
   const mothershipHpData = { red: motherships[0]?.hitpoints, blue: motherships[1]?.hitpoints }
 
   let { newLastFired, updatedWeapons } = handleRepeatedFire(currentPlayer, space, lastFired, [...gameState.deployedWeapons], handleGameEvent);
@@ -30,14 +30,14 @@ export const updateGameState = (gameState, handleGameEvent, syncClocks, currentP
     userId,
     players: updatedPlayers,
     weapons: removeOutOfBoundsShots(deployedWeapons),
-    aiShips: updateAiShips(aiShips, userId, handleGameEvent, clockDifference, updatedPlayers, motherships),
+    aiShips: updateAiShips(aiShips, userId, handleGameEvent, clockDifference, updatedPlayers, motherships, connected),
     animations: [...gameState.animations],
     motherships: [...motherships],
   }
 
   gameData = handleWeapons(gameData, handleGameEvent);
   handleMothershipHitAnimations(gameData.animations, gameData.motherships, mothershipHpData)
-  const updatedMotherships = updateMotherships(gameData.motherships, userId, handleGameEvent);
+  const updatedMotherships = updateMotherships(gameData.motherships, userId, handleGameEvent, connected);
 
   return {
     players: gameData.players,
@@ -55,10 +55,10 @@ const handleMothershipHitAnimations = (gameAnimations, motherships, mothershipHp
   mothershipHpData.blue !== motherships[1]?.hitpoints && gameAnimations.push({...GAME_ANIMATIONS[4], location: motherships[1]?.location, coordinates: {x: 0, y: 0}});
 }
 
-const updateMotherships = (motherships, userId, handleGameEvent) => {
+const updateMotherships = (motherships, userId, handleGameEvent, connected) => {
   return motherships.map((ship) => {
     updateFrame(ship.animation);
-    handleHitpoints(ship, userId, handleGameEvent);
+    handleHitpoints(ship, userId, handleGameEvent, connected);
     handleEffects(ship);
     handleItems(ship);
     return ship;
@@ -103,12 +103,12 @@ const handleAnimations = (animations) => {
   return updatedAnimations;
 }
 
-const updateAiShips = (aiShips, userId, handleGameEvent, clockDifference, players, motherships) => {
+const updateAiShips = (aiShips, userId, handleGameEvent, clockDifference, players, motherships, connected) => {
   const updatedAiShips = [];
   aiShips.forEach((ship) => {
     if (!ship.explodeAnimation.complete) {
       if (ship.active) {
-        ship = handleHitpoints(ship, userId, handleGameEvent)
+        ship = handleHitpoints(ship, userId, handleGameEvent, connected)
         handleWall(ship);
         handleEffects(ship)
       } else {
@@ -167,12 +167,12 @@ const handleAiDirection = (location, angle, target) => {
   }
 }
 
-const updatePlayers = (gameState, handleGameEvent, syncClocks) => {
+const updatePlayers = (gameState, handleGameEvent, connected) => {
   const { players, clockDifference, userId } = gameState;
 
   return players.map((player) => {
     if (player.active) {
-      player = handleHitpoints(player, userId, handleGameEvent, syncClocks);
+      player = handleHitpoints(player, userId, handleGameEvent, connected);
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
 
       handleWall(player);
@@ -220,24 +220,28 @@ export const handlePlayerDamage = (player) => {
   return damage;
 }
 
-const handleHitpoints = (player, userId, handleGameEvent, syncClocks) => {
+const hasNoKilledBy = (killedBy) => [undefined, null].includes(killedBy)
+
+const handleHitpoints = (player, userId, handleGameEvent, connected) => {
   if (player.hitpoints <= 0 && player.active && player.gameEvent !== 'explode') {
-    const noKilledBy = [undefined, null].includes(player.killedBy);
-    if (noKilledBy) {
-      if (player.type === 'supplyShip') {
-        player = explodePlayer(player, player);
-      } else if (player.gameEvent !== 'waiting') {
+    if (connected) {
+      if (hasNoKilledBy(player.killedBy)) {
+        // killed by ai player
+        if (player.type === 'supplyShip') {
+          player = explodePlayer(player, player);
+        } else if (player.gameEvent !== 'waiting') {
+          player.gameEvent = 'explode';
+          handleGameEvent(player);
+        }
+      } else if (player.killedBy === userId) {
         player.gameEvent = 'explode';
         handleGameEvent(player);
+      } else if (Date.now() - player.updatedAt > 1000) {
+        player = explodePlayer(player, player);
       }
-    } else if (player.killedBy === userId) {
-      player.gameEvent = 'explode';
-      handleGameEvent(player);
-    } else if ((new Date()).getTime() - player.updatedAt > 1000) {
+    } else if (player.userId === userId) {
+      // if user lost connection to server... blow away everything and show modal with reconnect attempt (start attempt)
       player = explodePlayer(player, player);
-    }
-    if (userId === player.userId && syncClocks) {
-      setTimeout(() => syncClocks(5, () => {}), 1000);
     }
   }
   return player;

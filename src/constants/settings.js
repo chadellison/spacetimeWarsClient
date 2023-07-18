@@ -45,7 +45,10 @@ import mothershipHitAnimation from '../images/mothershipHitAnimation.png'
 export const BOARD_WIDTH = 1800;
 export const BOARD_HEIGHT = 1125;
 export const ANAIMATION_FRAME_RATE = 40;
-export const REQUEST_COUNT = 10;
+export const WAVE_UPDATE_INTERVAL = 1000;
+export const LATENCY_THRESHOLD = 2000;
+export const WINDOW_WIDTH_THRESHOLD = 800;
+export const REQUEST_COUNT = 5;
 export const DRIFT = 2;
 
 export const thruster = new Audio(thrusterAudio);

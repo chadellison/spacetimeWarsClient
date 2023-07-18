@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { createGameSocket, fetchGameData, fetchScoreData, getClockData } from '../api/gameData';
 import { KEY_MAP } from '../constants/keyMap.js';
-import { ANAIMATION_FRAME_RATE, REQUEST_COUNT } from '../constants/settings.js';
+import { ANAIMATION_FRAME_RATE, REQUEST_COUNT, WAVE_UPDATE_INTERVAL, LATENCY_THRESHOLD, WINDOW_WIDTH_THRESHOLD } from '../constants/settings.js';
 import { mothershipItems, motherships } from '../constants/ships.js';
 import { updateGameState, updatePlayer } from '../helpers/gameLogic.js';
 import { findCurrentPlayer } from '../helpers/playerHelpers';
@@ -14,7 +14,7 @@ import { Modal } from './Modal';
 import PlayerData from './PlayerData';
 import { WaveData } from './WaveData';
 
-const INITIAL_MODAL = window.innerWidth < 800 ? 'deviceChageNotification' : 'instructions';
+const INITIAL_MODAL = window.innerWidth < WINDOW_WIDTH_THRESHOLD ? 'deviceChageNotification' : 'instructions';
 
 const DEFAULT_STATE = {
   userId: Date.now(),
@@ -22,7 +22,7 @@ const DEFAULT_STATE = {
   gameSocket: {},
   players: [],
   clockDifference: 0,
-  shortestRoundTripTime: 3000,
+  shortestRoundTripTime: LATENCY_THRESHOLD,
   deployedWeapons: [],
   lastFired: 0,
   up: false,
@@ -46,6 +46,7 @@ const DEFAULT_STATE = {
   scores: [],
   waveData: { wave: 1, count: 5, active: false },
   motherships,
+  connected: false,
 };
 
 const Layout = () => {
@@ -63,7 +64,7 @@ const Layout = () => {
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
     const interval = setInterval(renderGame, ANAIMATION_FRAME_RATE);
-    const waveInterval = setInterval(updateWaveData, 1000);
+    const waveInterval = setInterval(updateWaveData, WAVE_UPDATE_INTERVAL);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
@@ -71,7 +72,7 @@ const Layout = () => {
       clearInterval(interval);
       clearInterval(waveInterval);
     }
-  }, [])
+  }, []);
 
   const updateWaveData = () => {
     const { waveData, players, userId, startingPlayer } = stateRef.current;
@@ -129,7 +130,9 @@ const Layout = () => {
       }
     });
     const received = (response) => handleReceivedEvent(response.playerData);
-    const gameSocket = createGameSocket(stateRef.current.userId, received);
+    const connected = () => updateState({ connected: true })
+    const disconnected = () => updateState({ connected: false })
+    const gameSocket = createGameSocket(stateRef.current.userId, connected, disconnected, received);
     updateState({ players, gameSocket });
   }
 
@@ -141,7 +144,7 @@ const Layout = () => {
     stateRef.current.gameSocket.create({
       ...eventPayload,
       serverTime: Date.now() + stateRef.current.clockDifference,
-      sentData: { userId, sentAt: Date.now() }
+      sentAt: Date.now()
     });
   };
 
@@ -171,18 +174,20 @@ const Layout = () => {
 
   const handleReceivedEvent = (playerData) => {
     const { clockDifference } = stateRef.current;
-    const elapsedTime = Date.now() + clockDifference - playerData.serverTime;
+    // consider basing this off of updateAt time (the time the event reached the server instead of the estimated time it was sent from the client)
+    const now = Date.now();
+    const elapsedTime = now + clockDifference - playerData.serverTime;
 
-    if (elapsedTime > 2000) {
+    if (elapsedTime > LATENCY_THRESHOLD) {
       console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime)
-    }
-    if (playerData?.sentData?.userId === userId) {
-      console.log(Date.now() - playerData.sentData.sentAt, 'trip time')
     }
     const gameState = handleEventPayload(stateRef.current, playerData, elapsedTime);
 
     if (gameState) {
       updateState(gameState);
+    } else if (playerData?.userId === userId) {
+      const roundTripTime = now - playerData.sentAt;
+      handleClockUpdate(roundTripTime, playerData.updatedAt - playerData.sentAt);
     }
   };
 
@@ -217,7 +222,6 @@ const Layout = () => {
       const updatedGameState = updateGameState(
         stateRef.current,
         handleGameEvent,
-        syncClocks,
         currentPlayer
       );
       updateState(updatedGameState);
