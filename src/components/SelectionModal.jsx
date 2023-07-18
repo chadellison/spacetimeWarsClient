@@ -94,14 +94,24 @@ const renderOptions = (activeTab, page, activePlayer, updateState, players, upgr
 
 const renderStart = (updateState, handleGameEvent, activePlayer, clockDifference) => {
   const elapsedSeconds = (Date.now() + clockDifference - activePlayer.explodedAt) / 1000;
-  if (activePlayer.shipIndex !== undefined && activePlayer.weaponIndex !== undefined && elapsedSeconds > 10) {
-    return (
-      <GameButton
-        className={'selectionButton'}
-        onClick={() => handleClick(updateState, handleGameEvent, activePlayer)}
-        buttonText={'start'}
-      />
-    );
+  if (activePlayer.shipIndex !== undefined && activePlayer.weaponIndex !== undefined) {
+    if (elapsedSeconds > 10) {
+      return (
+        <GameButton
+          className={'selectionButton'}
+          onClick={() => handleClick(updateState, handleGameEvent, activePlayer)}
+          buttonText={'start'}
+        />
+      );
+    } else {
+      return (
+        <GameButton
+          className={'selectionButton'}
+          onClick={() => updateState({ modal: null })}
+          buttonText={'exit'}
+        />
+      );
+    }
   } else if (activePlayer.shipIndex === undefined) {
     return <div className="informationText">select a ship</div>;
   } else if (activePlayer.weaponIndex === undefined) {

@@ -75,24 +75,22 @@ const Layout = () => {
   }, []);
 
   const updateWaveData = () => {
-    const { waveData, players, userId, startingPlayer } = stateRef.current;
-    const { wave, count, active } = waveData;
-    if (active) {
+    const { waveData, players, userId } = stateRef.current;
+    const { wave, count } = waveData;
+    const currentPlayer = findCurrentPlayer(userId, players);
+
+    if (currentPlayer) {
       if (Math.random() > 0.97) {
         handleGameEvent({ gameEvent: 'supplyShip' });
       }
       if (count > 0) {
         updateState({ waveData: { ...waveData, count: count - 1 } });
       } else {
-        const existingPlayer = findCurrentPlayer(userId, players);
-        const currentPlayer = existingPlayer || startingPlayer;
-        const opponentTeam = currentPlayer.team === 'red' ? 'blue' : 'red';
-        const bombers = createBombers(wave, opponentTeam, players);
+        const bombers = createBombers(wave, players);
 
         if (bombers) {
           handleGameEvent({
             gameEvent: 'bombers',
-            team: opponentTeam,
             bombers
           });
         }

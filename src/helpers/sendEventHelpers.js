@@ -5,6 +5,7 @@ import { canFire, updatePlayer, handleFireWeapon, handlePlayerDamage } from '../
 import { playSound, stopSound } from '../helpers/audioHelpers.js';
 import { thruster, mineDropSound, backupSound } from '../constants/settings.js';
 import faker from 'faker';
+import { round } from './mathHelpers.js';
 
 import {
   BOARD_WIDTH,
@@ -215,49 +216,18 @@ const createBackupShips = (abilityLevel, team) => {
   return backupShips;
 }
 
-const findShipCounts = (ships, opponentTeam) => {
-  let allyCount = 0;
-  let opponentCount = 0
-
-  ships.forEach((ship) => {
-    if (ship.type !== 'supplyShip') {
-      if (ship.team === opponentTeam) {
-        opponentCount += 1;
-      } else {
-        allyCount += 1;
-      }
-    }
+export const createBombers = (wave, players) => {
+  const bombers = [];
+  const initialHitpoints = 100;
+  players.forEach(player => {
+    const shipIndex = Math.floor(Math.random() * BOMBERS.length);
+    const weaponIndex = findWeaponIndex(wave);
+    const hitpoints = wave * 40 + (player.level * initialHitpoints);
+    const team = player.team  === 'red' ? 'blue' : 'red';
+    bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team));
+    bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team));
   });
 
-  return { allyCount, opponentCount }
-}
-
-export const createBombers = (wave, team, players) => {
-  const { allyCount, opponentCount } = findShipCounts(players, team);
-  // compare team levels and offset number of bombers by team diff
-  const shipIndex = Math.floor(Math.random() * BOMBERS.length);
-
-  const hitpoints = 100 + wave * 50;
-
-  const weaponIndex = findWeaponIndex(wave);
-
-  if (allyCount < opponentCount) {
-    const bomberTeam = team === 'red' ? 'blue' : 'red';
-    const count = opponentCount - allyCount
-    return bombersByCount(bomberTeam, count, shipIndex, weaponIndex, hitpoints);
-  } else if (opponentCount < allyCount) {
-    const count = allyCount - opponentCount
-    return bombersByCount(team, count, shipIndex, weaponIndex, hitpoints);
-  }
-}
-
-const bombersByCount = (team, count, shipIndex, weaponIndex, hitpoints) => {
-  const bombers = [];
-  while (count > 0) {
-    bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team));
-    bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team));
-    count -= 1
-  }
   return bombers;
 }
 
@@ -275,6 +245,10 @@ const findWeaponIndex = (wave) => {
 }
 
 export const createBomber = (index, weaponIndex, hitpoints, team) => {
+  const x = team === 'red' ? 100 : BOARD_WIDTH - 100;
+  const y = round(Math.random() * (BOARD_HEIGHT - 100) + 100)
+  const location = { x, y }
+
   return {
     ...BOMBERS[index],
     team,
@@ -287,5 +261,6 @@ export const createBomber = (index, weaponIndex, hitpoints, team) => {
     angle: team === 'red' ? 0 : 180,
     weaponIndex,
     trajectory: team === 'red' ? 0 : 180,
+    location
   }
 }
