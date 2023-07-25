@@ -21,6 +21,14 @@ import { GAME_ANIMATIONS, BOARD_WIDTH, BOARD_HEIGHT } from './settings.js';
 // const supplyShip = `${API_RESOURCE_URL}/supplyShip`;
 // const redMothershipAnimation = `${API_RESOURCE_URL}/mothershipAnimationRed`;
 // const blueMothershipAnimation = `${API_RESOURCE_URL}/mothershipAnimationBlue`;
+import bomber from '../images/redBomber.png'
+import blueBomber from '../images/blueBomber.png'
+import bomberTwo from '../images/redBomber2.png'
+import blueBomberTwo from '../images/blueBomber2.png'
+import bomberThree from '../images/redBomber3.png'
+import blueBomberThree from '../images/blueBomber3.png'
+import bomberFour from '../images/redBomber4.png'
+import blueBomberFour from '../images/blueBomber4.png'
 import hunterShip from '../images/redHunterShip.png';
 import blueHunterShip from '../images/blueHunterShip.png';
 import destroyerShip from '../images/redDestroyer.png';
@@ -57,7 +65,7 @@ export const SHIPS = [
     image: destroyerShip,
     blueImage: blueDestroyerShip,
     abilities: { q: 0, w: 12, e: 15 },
-    thrusterOffset: { x: 10, y: 2 }
+    thrusterOffset: { x: 12, y: 4 }
   },
   {
     index: 1,
@@ -83,7 +91,7 @@ export const SHIPS = [
     image: redWarShip,
     blueImage: blueWarShip,
     abilities: { q: 2, w: 8, e: 14 },
-    thrusterOffset: { x: 10, y: 3 }
+    thrusterOffset: { x: 12, y: 4 }
   },
   {
     index: 3,
@@ -224,7 +232,7 @@ export const BOMBERS = [
     index: 0,
     active: true,
     type: 'bomber',
-    shipName: 'destroyer',
+    name: 'bomber',
     armor: 0,
     hitpoints: 200,
     maxHitpoints: 200,
@@ -236,16 +244,16 @@ export const BOMBERS = [
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
-    shipCenter: { x: 60.5, y: 37.5 },
-    image: destroyerShip,
-    blueImage: blueDestroyerShip,
-    thrusterAnimation: generateThrusterAnimation(10, 3)
+    shipCenter: { x: 60.5, y: 38 },
+    image: bomber,
+    blueImage: blueBomber,
+    thrusterAnimation: generateThrusterAnimation(16, 4)
   },
   {
     index: 1,
     active: true,
     type: 'bomber',
-    shipName: 'hunter',
+    name: 'bomber2',
     armor: 1,
     hitpoints: 600,
     maxHitpoints: 600,
@@ -257,16 +265,16 @@ export const BOMBERS = [
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
-    shipCenter: { x: 60.5, y: 51 },
-    image: hunterShip,
-    blueImage: blueHunterShip,
-    thrusterAnimation: generateThrusterAnimation(20, 3)
+    shipCenter: { x: 60.5, y: 36 },
+    image: bomberTwo,
+    blueImage: blueBomberTwo,
+    thrusterAnimation: generateThrusterAnimation(20, 4)
   },
   {
     index: 2,
     active: true,
     type: 'bomber',
-    shipName: 'warrior',
+    name: 'bomber3',
     armor: 3,
     hitpoints: 1200,
     maxHitpoints: 1200,
@@ -278,16 +286,16 @@ export const BOMBERS = [
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
-    shipCenter: { x: 60.5, y: 18.5 },
-    image: redWarShip,
-    blueImage: blueWarShip,
-    thrusterAnimation: generateThrusterAnimation(10, 3)
+    shipCenter: { x: 60.5, y: 27 },
+    image: bomberThree,
+    blueImage: blueBomberThree,
+    thrusterAnimation: generateThrusterAnimation(22, 4)
   },
   {
     index: 3,
     active: true,
     type: 'bomber',
-    shipName: 'cruiser',
+    name: 'bomber4',
     armor: 1,
     hitpoints: 1800,
     maxHitpoints: 1800,
@@ -299,30 +307,9 @@ export const BOMBERS = [
     score: 0,
     rotate: 'none',
     explodeAnimation: {},
-    shipCenter: { x: 60.5, y: 50.5 },
-    image: cruiserShip,
-    blueImage: blueCruiserShip,
-    thrusterAnimation: generateThrusterAnimation(24, 3)
-  },
-  {
-    index: 4,
-    active: true,
-    type: 'bomber',
-    shipName: 'stealth',
-    armor: 4,
-    hitpoints: 2400,
-    maxHitpoints: 2400,
-    velocity: 2,
-    weaponIndex: 7,
-    accelerate: true,
-    effects: {},
-    items: {},
-    score: 0,
-    rotate: 'none',
-    explodeAnimation: {},
-    shipCenter: { x: 60.5, y: 57 },
-    image: redStealthShip,
-    blueImage: blueStealthShip,
-    thrusterAnimation: generateThrusterAnimation(16, 3)
+    shipCenter: { x: 60.5, y: 22.5 },
+    image: bomberFour,
+    blueImage: blueBomberFour,
+    thrusterAnimation: generateThrusterAnimation(28, 4)
   },
 ];

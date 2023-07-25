@@ -6,7 +6,7 @@ import {
   EXPLODE_PLAYER_COLOR,
   GAME_ANIMATIONS
 } from '../constants/settings.js';
-import { SHIPS, SUPPLY_SHIP, motherships } from '../constants/ships.js';
+import { BOMBERS, SHIPS, SUPPLY_SHIP, motherships } from '../constants/ships.js';
 import { ABILITY_WEAPONS, EXPLOSION_ANIMATIONS, WEAPONS } from '../constants/weapons.js';
 import {
   drawShip,
@@ -22,14 +22,16 @@ import { round } from '../helpers/mathHelpers.js';
 import '../styles/styles.css';
 
 const REF_NAMES = SHIPS.map(ship => ship.name)
-    .concat(SHIPS.map(ship => `${ship.name}Blue`))
-    .concat(WEAPONS.map(item => item.name))
-    .concat(ABILITY_WEAPONS.map(item => item.name))
-    .concat(EXPLOSION_ANIMATIONS.map(item => item.name))
-    .concat(GAME_EFFECTS.map(item => item.name))
-    .concat(GAME_ANIMATIONS.map(item => item.name))
-    .concat(motherships.map(item => item.name))
-    .concat([SUPPLY_SHIP.name]);
+  .concat(SHIPS.map(ship => `${ship.name}Blue`))
+  .concat(BOMBERS.map(bomber => bomber.name))
+  .concat(BOMBERS.map(bomber => `${bomber.name}Blue`))
+  .concat(WEAPONS.map(item => item.name))
+  .concat(ABILITY_WEAPONS.map(item => item.name))
+  .concat(EXPLOSION_ANIMATIONS.map(item => item.name))
+  .concat(GAME_EFFECTS.map(item => item.name))
+  .concat(GAME_ANIMATIONS.map(item => item.name))
+  .concat(motherships.map(item => item.name))
+  .concat([SUPPLY_SHIP.name]);
 
 const GAME_REFS = {}
 REF_NAMES.forEach((refName) => GAME_REFS[refName] = createRef());
@@ -56,12 +58,10 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     if (player.type === 'supplyShip') {
       imageReference = 'supplyShip';
     } else if (player.type === 'bomber') {
-      imageReference = player.team === 'blue' ? player.shipName + 'Blue' : player.shipName;
+      imageReference = player.team === 'blue' ? BOMBERS[player.index].name + 'Blue' : BOMBERS[player.index].name;
+      console.log(BOMBERS[player.index].name, 'name')
     } else {
-      imageReference = SHIPS[player.shipIndex].name
-      if (player.team === 'blue') {
-        imageReference += 'Blue'
-      }
+      imageReference = player.team === 'blue' ? SHIPS[player.shipIndex].name + 'Blue' : SHIPS[player.shipIndex].name
     }
     return state[imageReference];
   };
@@ -80,9 +80,9 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
       const showShip = shouldRenderShip(player, userId);
       if (player.active) {
         if (showShip) {
-          
+
           handleInvisibleFilter(context, player, userId);
-          
+
           const thruster = player.effects[9] ? state.warpSpeed : state.thruster;
           drawShip(context, player, handleImage(player), thruster);
           renderEffects(context, player)
@@ -168,6 +168,26 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
         );
       })}
       {SHIPS.map((ship, index) => {
+        return (
+          <img ref={GAME_REFS[`${ship.name}Blue`]}
+            src={ship.blueImage}
+            className="hidden"
+            alt={`blue-${ship.name}`}
+            key={`blueShip${index}`}
+          />
+        );
+      })}
+      {BOMBERS.map((ship, index) => {
+        return (
+          <img ref={GAME_REFS[ship.name]}
+            src={ship.image}
+            className="hidden"
+            alt={ship.name}
+            key={`ship${index}`}
+          />
+        );
+      })}
+      {BOMBERS.map((ship, index) => {
         return (
           <img ref={GAME_REFS[`${ship.name}Blue`]}
             src={ship.blueImage}

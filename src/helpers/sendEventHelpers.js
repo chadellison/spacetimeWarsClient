@@ -217,31 +217,45 @@ const createBackupShips = (abilityLevel, team) => {
 }
 
 export const createBombers = (wave, players) => {
-  const bombers = [];
+  let bombers = [];
   const initialHitpoints = 100;
+  
   players.forEach(player => {
-    const shipIndex = Math.floor(Math.random() * BOMBERS.length);
-    const weaponIndex = findWeaponIndex(wave);
     const hitpoints = wave * 40 + (player.level * initialHitpoints);
     const team = player.team  === 'red' ? 'blue' : 'red';
-    bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team));
-    bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team));
+    bombers = bombers.concat(bombersByWave(wave, hitpoints, team));
   });
 
   return bombers;
 }
 
-const findWeaponIndex = (wave) => {
-  let index = Math.floor(Math.random() * WEAPONS.slice(0, 3).length);
-  if (wave > 25) {
-    index += 5
-  } else if (wave > 20) {
-    index += 3
-  } else if (wave > 15) {
-    index += 1
+const bombersByWave = (wave, hitpoints, team) => {
+  const bombers = [];
+  let i = 0
+  while (i < wave) {
+    let maxShipIndex;
+    let maxWeaponIndex;
+    if (i + 4 < wave) {
+      maxShipIndex = 3;
+      maxWeaponIndex = 7;
+    } else if (i + 3 < wave) {
+      maxShipIndex = 2;
+      maxWeaponIndex = 3;
+    } else if (i + 2 < wave) {
+      maxShipIndex = 1;
+      maxWeaponIndex = 2;
+    } else {
+      maxShipIndex = 0;
+      maxWeaponIndex = 1;
+    }
+
+    const shipIndex = Math.floor(Math.random() * maxShipIndex);
+    const weaponIndex = Math.floor(Math.random() * maxWeaponIndex);
+    bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team))
+    i += (shipIndex + weaponIndex + 1);
   }
 
-  return index;
+  return bombers;
 }
 
 export const createBomber = (index, weaponIndex, hitpoints, team) => {
@@ -256,10 +270,10 @@ export const createBomber = (index, weaponIndex, hitpoints, team) => {
     image: null,
     blueImage: null,
     hitpoints,
+    weaponIndex,
     maxHitpoints: hitpoints,
     lastFired: Date.now(),
     angle: team === 'red' ? 0 : 180,
-    weaponIndex,
     trajectory: team === 'red' ? 0 : 180,
     location
   }
