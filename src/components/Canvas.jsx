@@ -59,7 +59,6 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
       imageReference = 'supplyShip';
     } else if (player.type === 'bomber') {
       imageReference = player.team === 'blue' ? BOMBERS[player.index].name + 'Blue' : BOMBERS[player.index].name;
-      console.log(BOMBERS[player.index].name, 'name')
     } else {
       imageReference = player.team === 'blue' ? SHIPS[player.shipIndex].name + 'Blue' : SHIPS[player.shipIndex].name
     }
