@@ -221,7 +221,7 @@ export const createBombers = (wave, players) => {
   const initialHitpoints = 100;
   
   players.forEach(player => {
-    const hitpoints = wave * 40 + (player.level * initialHitpoints);
+    const hitpoints = wave * 20 + (player.level * initialHitpoints);
     const team = player.team  === 'red' ? 'blue' : 'red';
     bombers = bombers.concat(bombersByWave(wave, hitpoints, team));
   });
