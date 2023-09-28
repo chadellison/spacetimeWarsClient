@@ -83,7 +83,11 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
           handleInvisibleFilter(context, player, userId);
 
           const thruster = player.effects[9] ? state.warpSpeed : state.thruster;
-          drawShip(context, player, handleImage(player), thruster);
+          try {
+            drawShip(context, player, handleImage(player), thruster);
+          } catch(e) {
+            console.log(e)
+          }
           renderEffects(context, player)
         }
       } else if (!player.explodeAnimation.complete) {
