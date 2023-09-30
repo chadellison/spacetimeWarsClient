@@ -12,6 +12,7 @@ export const Modal = ({
   modal,
   userId,
   scores,
+  loading,
   players,
   upgrades,
   activeTab,
@@ -44,6 +45,7 @@ export const Modal = ({
           showInstructions={showInstructions}
           userId={userId}
           players={players}
+          loading={loading}
       />
       );
     case 'credits':

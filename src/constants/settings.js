@@ -1,45 +1,46 @@
 // assets downloaded from: https://member.productioncrate.com/index.php?cratestate=upgraded
 
 // audio
-import thrusterAudio from '../audio/thruster.wav';
-import windAudio from '../audio/windSound.mov';
-import gongAudio from '../audio/gong.wav';
-import goldSound from '../audio/goldSound.mp3';
-import loadWeaponAudio from '../audio/loadWeapon.wav';
-import notEnoughResourcesAudio from '../audio/notEnoughResources.wav';
-import upgradeAudio from '../audio/upgradeSound.mov';
-import warpSpeedAudio from '../audio/warpSpeedSound.mov';
-import toneAudio from '../audio/toneSound.mov';
-import invulnerableAudio from '../audio/invulnerableSound.mp3';
-import explosionAudio from '../audio/explosionSound.mov';
-import mineTriggerAudio from '../audio/mineTriggerSound.mov';
-import mineDropAudio from '../audio/mineDropSound.mp3';
-import stunGunAudio from '../audio/stunGunSound.mp3';
+import armorReductionAudio from '../audio/armorReductionSound.mp3';
+import backupAudio from '../audio/backupSound.wav';
+import crippleAudio from '../audio/crippleSound.wav';
 import damageBoostAudio from '../audio/damageBoostSound.mov';
-import meteorConeAudio from '../audio/meteorConeSound.mov';
-import piercerAudio from '../audio/piercerSound.mov';
-import metalClankAudio from '../audio/metalClank.mp3';
-import healAudio from '../audio/healSound.mp3';
-import rapidFireAudio from '../audio/rapidFireSound.mp3';
 import damageReductionAudio from '../audio/damageReductionSound.mp3';
 import electricFieldAudio from '../audio/electricFieldSound.mov';
-import armorReductionAudio from '../audio/armorReductionSound.mp3';
-import missileAudio from '../audio/missile.wav';
-import teleportAudio from '../audio/teleportSound.mp3';
-import shipExplosionAudio from '../audio/shipExplosionSound.mov';
-import zapAudio from '../audio/zapSound.wav';
-import backupAudio from '../audio/backupSound.wav';
+import explosionAudio from '../audio/explosionSound.mov';
+import goldSound from '../audio/goldSound.mp3';
+import gongAudio from '../audio/gong.wav';
+import healAudio from '../audio/healSound.mp3';
 import homingAudio from '../audio/homingSound.wav';
-import crippleAudio from '../audio/crippleSound.wav';
+import invulnerableAudio from '../audio/invulnerableSound.mp3';
+import loadWeaponAudio from '../audio/loadWeapon.wav';
+import metalClankAudio from '../audio/metalClank.mp3';
+import meteorConeAudio from '../audio/meteorConeSound.mov';
+import mineDropAudio from '../audio/mineDropSound.mp3';
+import mineTriggerAudio from '../audio/mineTriggerSound.mov';
+import missileAudio from '../audio/missile.wav';
+import notEnoughResourcesAudio from '../audio/notEnoughResources.wav';
+import piercerAudio from '../audio/piercerSound.mov';
 import poisonDartAudio from '../audio/poisonDartSound.wav';
+import rapidFireAudio from '../audio/rapidFireSound.mp3';
+import shipExplosionAudio from '../audio/shipExplosionSound.mov';
+import stunGunAudio from '../audio/stunGunSound.mp3';
 import stunAudio from '../audio/stunSound.wav';
+import teleportAudio from '../audio/teleportSound.mp3';
+import thrusterAudio from '../audio/thruster.wav';
+import toneAudio from '../audio/toneSound.mov';
+import upgradeAudio from '../audio/upgradeSound.mov';
+import warpSpeedAudio from '../audio/warpSpeedSound.mov';
+import windAudio from '../audio/windSound.mov';
+import zapAudio from '../audio/zapSound.wav';
 
 // images
-import levelUpAnimation from '../images/levelUpAnimation.png';
 import blinkAnimation from '../images/invisibleAnimation.png';
+import levelUpAnimation from '../images/levelUpAnimation.png';
+import mothershipHitAnimation from '../images/mothershipHitAnimation.png';
 import teleportAnimation from '../images/teleportAnimation.png';
-import thrusterAnimation from '../images/thrusterAnimation.png'
-import mothershipHitAnimation from '../images/mothershipHitAnimation.png'
+import thrusterAnimation from '../images/thrusterAnimation.png';
+
 
 // constants
 export const BOARD_WIDTH = 1800;

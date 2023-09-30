@@ -8,7 +8,7 @@ import { findCurrentPlayer } from '../helpers/playerHelpers';
 import { handleEventPayload } from '../helpers/receiveEventHelpers.js';
 import { createBombers, keyDownEvent, keyUpEventPayload } from '../helpers/sendEventHelpers.js';
 import '../styles/styles.css';
-import Canvas from './Canvas';
+import Canvas, { ASSET_COUNT } from './Canvas';
 import Header from './Header';
 import { Modal } from './Modal';
 import PlayerData from './PlayerData';
@@ -51,10 +51,12 @@ const DEFAULT_STATE = {
 
 const Layout = () => {
   const [state, setState] = useState(DEFAULT_STATE);
+  const [imageLoadCount, setImageLoadCount] = useState(0);
 
+  const loading = imageLoadCount < ASSET_COUNT;
   const stateRef = useRef(state);
   const updateState = (newState) => {
-    const updatedState = {...stateRef.current, ...newState};
+    const updatedState = { ...stateRef.current, ...newState };
     setState(updatedState);
     stateRef.current = updatedState;
   }
@@ -225,80 +227,83 @@ const Layout = () => {
     }
   };
 
-    const {
-      page,
-      modal,
-      userId,
-      scores,
-      aiShips,
-      players,
-      upgrades,
-      waveData,
-      activeTab,
-      animations,
-      abilityData,
-      motherships,
-      gameOverStats,
-      startingPlayer,
-      deployedWeapons,
-      clockDifference,
-      showInstructions
-    } = stateRef.current;
+  const {
+    page,
+    modal,
+    userId,
+    scores,
+    aiShips,
+    players,
+    upgrades,
+    waveData,
+    activeTab,
+    animations,
+    abilityData,
+    motherships,
+    gameOverStats,
+    startingPlayer,
+    deployedWeapons,
+    clockDifference,
+    showInstructions
+  } = stateRef.current;
 
-    const existingPlayer = findCurrentPlayer(userId, players);
-    const activePlayer = existingPlayer || startingPlayer;
+  const existingPlayer = findCurrentPlayer(userId, players);
+  const activePlayer = existingPlayer || startingPlayer;
 
-    return (
-      <div className="layout" onKeyDown={handleKeyDown}>
-        {waveData.count < 16 && waveData.active &&
-          <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`} />
-        }
+  return (
+    <div className="layout" onKeyDown={handleKeyDown}>
+      {waveData.count < 16 && waveData.active &&
+        <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`} />
+      }
 
-        <div>
-          {modal && <Modal
-            page={page}
-            modal={modal}
-            userId={userId}
-            scores={scores}
-            players={players}
-            upgrades={upgrades}
-            activeTab={activeTab}
-            showInstructions={showInstructions}
-            resetGame={resetGame}
-            activePlayer={{ ...activePlayer, inPlayers: existingPlayer }}
-            gameOverStats={gameOverStats}
-            updateState={updateState}
-            clockDifference={clockDifference}
-            handleGameEvent={handleGameEvent}
-          />}
-          <Header activePlayer={activePlayer} 
-            modal={modal} 
-            clockDifference={clockDifference} 
-            updateState={updateState} 
-            handleLeaderBoard={handleLeaderBoard}
-            handleGameEvent={handleGameEvent}
-          />
+      <div>
+        {modal && <Modal
+          page={page}
+          modal={modal}
+          userId={userId}
+          scores={scores}
+          players={players}
+          loading={loading}
+          upgrades={upgrades}
+          activeTab={activeTab}
+          showInstructions={showInstructions}
+          resetGame={resetGame}
+          activePlayer={{ ...activePlayer, inPlayers: existingPlayer }}
+          gameOverStats={gameOverStats}
+          updateState={updateState}
+          clockDifference={clockDifference}
+          handleGameEvent={handleGameEvent}
+        />}
+        <Header activePlayer={activePlayer}
+          modal={modal}
+          clockDifference={clockDifference}
+          updateState={updateState}
+          handleLeaderBoard={handleLeaderBoard}
+          handleGameEvent={handleGameEvent}
+        />
 
-          {activePlayer.name && <PlayerData
-            activePlayer={activePlayer}
-            clockDifference={clockDifference}
-            handleGameEvent={handleGameEvent}
-            abilityData={abilityData}
-            updateState={updateState}
-          />}
-          <Canvas
-            userId={userId}
-            currentPlayer={existingPlayer}
-            players={players}
-            aiShips={aiShips}
-            animations={animations}
-            motherships={motherships}
-            deployedWeapons={deployedWeapons}
-          />
-        </div>
+        {activePlayer.name && <PlayerData
+          activePlayer={activePlayer}
+          clockDifference={clockDifference}
+          handleGameEvent={handleGameEvent}
+          abilityData={abilityData}
+          updateState={updateState}
+        />}
+        <Canvas
+          userId={userId}
+          loading={loading}
+          players={players}
+          aiShips={aiShips}
+          animations={animations}
+          motherships={motherships}
+          currentPlayer={existingPlayer}
+          deployedWeapons={deployedWeapons}
+          setImageLoadCount={setImageLoadCount}
+        />
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 export default Layout;
 

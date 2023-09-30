@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/modal.css';
-import {addPlayer} from '../helpers/playerHelpers.js';
-import {GameButton} from './GameButton';
+import { addPlayer } from '../helpers/playerHelpers.js';
+import { GameButton } from './GameButton';
 
 const renderHowToPlay = () => {
   return (
@@ -66,7 +66,7 @@ const renderHowToPlay = () => {
     </div>
   )
 }
-export const InformationModal = ({updateState, userId, players, showInstructions}) => {
+export const InformationModal = ({ updateState, userId, players, showInstructions, loading }) => {
   return (
     <div className="modal">
       <h2 className="informationTitle">Space Wars</h2>
@@ -74,15 +74,15 @@ export const InformationModal = ({updateState, userId, players, showInstructions
         Destroy your opponent's mothership while protecting your own.
       </div>
       <GameButton
-        onClick={() => updateState({showInstructions: !showInstructions})}
+        onClick={() => updateState({ showInstructions: !showInstructions })}
         buttonText={showInstructions ? 'close' : 'Instructions'}
         className={'howToPlayButton'}
       />
-      <GameButton
-        className={'startGameButton'}
+      {!loading && <GameButton
+        className="startGameButton"
         onClick={() => updateState(addPlayer(userId, players))}
         buttonText={'start'}
-      />
+      />}
       <div className="informationTitle">
         The Object of the game:
       </div>
@@ -93,6 +93,7 @@ export const InformationModal = ({updateState, userId, players, showInstructions
         The Red mothership is located at the top left of the map and the blue mothership is located at the bottom right of the map.
       </div>
       {showInstructions && renderHowToPlay()}
+      {loading && <>Loading...</>}
     </div>
   );
 };

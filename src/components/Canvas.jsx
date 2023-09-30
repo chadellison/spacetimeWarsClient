@@ -32,7 +32,7 @@ const resolveImage = (item) => {
   }
 }
 
-const IMAGES = SHIPS
+const IMAGES_ASSETS = SHIPS
   .concat(SHIPS.map(ship => ({...ship, name: `${ship.name}Blue`, image: ship.blueImage})))
   .concat(BOMBERS)
   .concat(BOMBERS.map(ship => ({...ship, name: `${ship.name}Blue`, image: ship.blueImage})))
@@ -45,18 +45,18 @@ const IMAGES = SHIPS
   .concat(SUPPLY_SHIP)
   .concat([{ name: 'backgroundImage', image: spaceBackground }]);
 
-const CANVAS_REF = createRef();
-const ASSET_COUNT = IMAGES.length;
+export const ASSET_COUNT = IMAGES_ASSETS.length;
 
-const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animations, deployedWeapons }) => {
+const CANVAS_REF = createRef();
+
+const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animations, deployedWeapons, loading, setImageLoadCount }) => {
   const [state, setState] = useState({});
   const [images, setImages] = useState({});
-  const [imageLoadCount, setImageLoadCount] = useState(0);
 
   useEffect(() => {
     const newImages = {};
 
-    IMAGES.forEach((imageData) => {
+    IMAGES_ASSETS.forEach((imageData) => {
       const img = new Image();
       img.src = imageData.image;
       img.onload = handleImageLoad;
@@ -77,9 +77,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
 
   function handleImageError(e, img, imgSrc) {
     console.error('Image loading error:', e);
-    setTimeout(() => {
-      img.src = imgSrc;
-    }, 3000);
+    setTimeout(() => { img.src = imgSrc }, 3000);
   }
 
   const handleImage = (player) => {
@@ -177,11 +175,10 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     }
   }
 
-  currentPlayer && imageLoadCount === ASSET_COUNT && renderCanvas();
+  currentPlayer && !loading && renderCanvas();
 
   return (
     <div>
-      {imageLoadCount < ASSET_COUNT && <>loading...</>}
       <canvas
         className={'canvas column'}
         ref={CANVAS_REF}
