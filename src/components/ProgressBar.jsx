@@ -9,8 +9,8 @@ const Container = styled.div`
 `;
 
 const StyledProgressBar = styled.div`
-  width: 450px;
-  height: 75px;
+  width: 250px;
+  height: 25px;
   display: flex;
   flex-direction: row;
   justify-content: start;
@@ -24,10 +24,7 @@ const StyledProgressBar = styled.div`
 const StyledBar = styled.div`
   width: ${({ percent }) => percent};
   background: linear-gradient(
-    180deg,
-    rgba(255, 174, 105, 1) 0%,
-    rgba(255, 173, 102, 1) 32%,
-    rgba(255, 132, 25, 1) 100%
+    180deg, rgba(44, 102, 178, 1) 0%, rgba(0, 64, 128, 1) 32%, rgba(0, 25, 51, 1) 100%
   );
 `;
 

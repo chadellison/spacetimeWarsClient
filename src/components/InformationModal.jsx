@@ -94,7 +94,7 @@ export const InformationModal = ({ updateState, userId, players, showInstruction
         The Red mothership is located at the top left of the map and the blue mothership is located at the bottom right of the map.
       </div>
       {showInstructions && renderHowToPlay()}
-      <ProgressBar percent={loadPercent} />
+      {loading && <ProgressBar percent={loadPercent} />}
     </div>
   );
 };
