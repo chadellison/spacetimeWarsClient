@@ -18,6 +18,7 @@ export const Modal = ({
   activeTab,
   resetGame,
   updateState,
+  loadPercent,
   activePlayer,
   gameOverStats,
   clockDifference,
@@ -46,6 +47,7 @@ export const Modal = ({
           userId={userId}
           players={players}
           loading={loading}
+          loadPercent={loadPercent}
       />
       );
     case 'credits':

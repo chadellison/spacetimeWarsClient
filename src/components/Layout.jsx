@@ -13,6 +13,7 @@ import Header from './Header';
 import { Modal } from './Modal';
 import PlayerData from './PlayerData';
 import { WaveData } from './WaveData';
+import { calculatePercent } from '../helpers/mathHelpers';
 
 const INITIAL_MODAL = window.innerWidth < WINDOW_WIDTH_THRESHOLD ? 'deviceChageNotification' : 'instructions';
 
@@ -263,6 +264,7 @@ const Layout = () => {
           userId={userId}
           scores={scores}
           players={players}
+          loadPercent={calculatePercent(imageLoadCount, ASSET_COUNT)}
           loading={loading}
           upgrades={upgrades}
           activeTab={activeTab}

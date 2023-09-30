@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/modal.css';
 import { addPlayer } from '../helpers/playerHelpers.js';
 import { GameButton } from './GameButton';
+import { ProgressBar } from './ProgressBar';
 
 const renderHowToPlay = () => {
   return (
@@ -66,7 +67,7 @@ const renderHowToPlay = () => {
     </div>
   )
 }
-export const InformationModal = ({ updateState, userId, players, showInstructions, loading }) => {
+export const InformationModal = ({ updateState, userId, players, showInstructions, loading, loadPercent }) => {
   return (
     <div className="modal">
       <h2 className="informationTitle">Space Wars</h2>
@@ -93,7 +94,7 @@ export const InformationModal = ({ updateState, userId, players, showInstruction
         The Red mothership is located at the top left of the map and the blue mothership is located at the bottom right of the map.
       </div>
       {showInstructions && renderHowToPlay()}
-      {loading && <>Loading...</>}
+      <ProgressBar percent={loadPercent} />
     </div>
   );
 };
