@@ -168,6 +168,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
 
   currentPlayer && imageLoadCount === ASSET_COUNT && renderCanvas();
 
+  console.log(imageLoadCount, '***************')
   if (imageLoadCount === ASSET_COUNT) {
     return (
       <div>
