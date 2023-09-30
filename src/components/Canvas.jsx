@@ -41,7 +41,8 @@ const IMAGES = SHIPS
   .concat(GAME_EFFECTS.filter((effect) => effect.animation).map(item => ({...item, image: SPRITE_IMAGES[item.animation.spriteIndex]})))
   .concat(GAME_ANIMATIONS.map(item => ({...item, image: resolveImage(item)})))
   .concat(motherships.map(item => ({...item, image: resolveImage(item)})))
-  .concat(SUPPLY_SHIP);
+  .concat(SUPPLY_SHIP)
+  .concat([{ name: 'backgroundImage', image: '../images/spaceBackground.png' }]);
 
 const CANVAS_REF = createRef();
 const ASSET_COUNT = IMAGES.length;
@@ -168,7 +169,6 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
 
   currentPlayer && imageLoadCount === ASSET_COUNT && renderCanvas();
 
-  console.log(imageLoadCount, '***************')
   if (imageLoadCount === ASSET_COUNT) {
     return (
       <div>
