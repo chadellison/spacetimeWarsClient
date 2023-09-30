@@ -19,6 +19,7 @@ import {
 } from '../helpers/canvasHelper.js';
 import { findCenterCoordinates, findStartCenter } from '../helpers/gameLogic';
 import { round } from '../helpers/mathHelpers.js';
+import spaceBackground from '../images/spaceBackground.png';
 import '../styles/styles.css';
 
 const resolveImage = (item) => {
@@ -42,7 +43,7 @@ const IMAGES = SHIPS
   .concat(GAME_ANIMATIONS.map(item => ({...item, image: resolveImage(item)})))
   .concat(motherships.map(item => ({...item, image: resolveImage(item)})))
   .concat(SUPPLY_SHIP)
-  .concat([{ name: 'backgroundImage', image: '../images/spaceBackground.png' }]);
+  .concat([{ name: 'backgroundImage', image: spaceBackground }]);
 
 const CANVAS_REF = createRef();
 const ASSET_COUNT = IMAGES.length;
