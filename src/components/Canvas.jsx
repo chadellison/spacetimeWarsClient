@@ -60,6 +60,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
       const img = new Image();
       img.src = imageData.image;
       img.onload = handleImageLoad;
+      img.onerror = (e) => handleImageError(e, img, imageData.image)
       newImages[imageData.name] = img;
     })
 
@@ -72,6 +73,13 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
 
   function handleImageLoad() {
     setImageLoadCount((prevState) => (prevState + 1));
+  }
+
+  function handleImageError(e, img, imgSrc) {
+    console.error('Image loading error:', e);
+    setTimeout(() => {
+      img.src = imgSrc;
+    }, 3000);
   }
 
   const handleImage = (player) => {
