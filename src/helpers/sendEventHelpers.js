@@ -231,17 +231,18 @@ export const createBombers = (wave, players) => {
 
 const bombersByWave = (wave, hitpoints, team) => {
   const bombers = [];
+  const divider = wave / 2
   let i = 0
-  while (i < wave) {
+  while (i < divider) {
     let maxShipIndex;
     let maxWeaponIndex;
-    if (i + 4 < wave) {
+    if (i + 4 < divider) {
       maxShipIndex = 3;
       maxWeaponIndex = 7;
-    } else if (i + 3 < wave) {
+    } else if (i + 3 < divider) {
       maxShipIndex = 2;
       maxWeaponIndex = 3;
-    } else if (i + 2 < wave) {
+    } else if (i + 2 < divider) {
       maxShipIndex = 1;
       maxWeaponIndex = 2;
     } else {
