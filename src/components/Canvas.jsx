@@ -59,7 +59,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     IMAGES.forEach((imageData) => {
       const img = new Image();
       img.src = imageData.image;
-      img.onload = handleImageLoad();
+      img.onload = handleImageLoad;
       newImages[imageData.name] = img;
     })
 
