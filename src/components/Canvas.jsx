@@ -32,9 +32,9 @@ const resolveImage = (item) => {
 }
 
 const IMAGES = SHIPS
-  .concat(SHIPS.map(ship => ({...ship, name: `${ship.name}Blue`})))
+  .concat(SHIPS.map(ship => ({...ship, name: `${ship.name}Blue`, image: ship.blueImage})))
   .concat(BOMBERS)
-  .concat(BOMBERS.map(ship => ({...ship, name: `${ship.name}Blue`})))
+  .concat(BOMBERS.map(ship => ({...ship, name: `${ship.name}Blue`, image: ship.blueImage})))
   .concat(WEAPONS.map(item => ({...item, image: resolveImage(item)})))
   .concat(ABILITY_WEAPONS.map(item => ({...item, image: resolveImage(item)})))
   .concat(EXPLOSION_ANIMATIONS.map(item => ({...item, image: resolveImage(item)})))
@@ -82,6 +82,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     } else {
       imageReference = player.team === 'blue' ? SHIPS[player.shipIndex].name + 'Blue' : SHIPS[player.shipIndex].name
     }
+    
     return images[imageReference];
   };
 
