@@ -171,20 +171,17 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
 
   currentPlayer && imageLoadCount === ASSET_COUNT && renderCanvas();
 
-  if (imageLoadCount === ASSET_COUNT) {
-    return (
-      <div>
-        <canvas
-          className={'canvas column'}
-          ref={CANVAS_REF}
-          width={BOARD_WIDTH}
-          height={BOARD_HEIGHT}
-        />
-      </div>
-    );
-  } else {
-    return <div>...loading</div>
-  }
+  return (
+    <div>
+      {imageLoadCount < ASSET_COUNT && <>loading...</>}
+      <canvas
+        className={'canvas column'}
+        ref={CANVAS_REF}
+        width={BOARD_WIDTH}
+        height={BOARD_HEIGHT}
+      />
+    </div>
+  );
 }
 
 export default Canvas

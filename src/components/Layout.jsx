@@ -172,7 +172,6 @@ const Layout = () => {
 
   const handleReceivedEvent = (playerData) => {
     const { clockDifference } = stateRef.current;
-    // consider basing this off of updateAt time (the time the event reached the server instead of the estimated time it was sent from the client)
     const now = Date.now();
     const elapsedTime = now + clockDifference - playerData.serverTime;
 

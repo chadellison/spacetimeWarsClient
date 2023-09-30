@@ -48,7 +48,7 @@ export const ANAIMATION_FRAME_RATE = 40;
 export const WAVE_UPDATE_INTERVAL = 1000;
 export const LATENCY_THRESHOLD = 2000;
 export const WINDOW_WIDTH_THRESHOLD = 800;
-export const REQUEST_COUNT = 5;
+export const REQUEST_COUNT = 3;
 export const DRIFT = 2;
 
 export const thruster = new Audio(thrusterAudio);
