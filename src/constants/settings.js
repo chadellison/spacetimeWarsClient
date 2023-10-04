@@ -43,8 +43,8 @@ import thrusterAnimation from '../images/thrusterAnimation.png';
 
 
 // constants
-export const BOARD_WIDTH = 1800;
-export const BOARD_HEIGHT = 1125;
+export const BOARD_WIDTH = 2700;
+export const BOARD_HEIGHT = 1688;
 export const ANAIMATION_FRAME_RATE = 40;
 export const WAVE_UPDATE_INTERVAL = 1000;
 export const LATENCY_THRESHOLD = 2000;

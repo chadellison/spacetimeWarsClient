@@ -67,7 +67,8 @@ const updateMotherships = (motherships, userId, handleGameEvent, connected) => {
 
 const handleAiWeapons = (weapons, motherships, players, aiShips) => {
   aiShips.forEach((ship) => {
-    if (ship.active && ship.type === 'bomber' && canFire(ship.lastFired, WEAPONS[ship.weaponIndex].cooldown * 2, false, ship.effects[15])) {
+    const { active, type, shouldFire, lastFired, weaponIndex, effects } = ship;
+    if (active && type === 'bomber' && shouldFire && canFire(lastFired, WEAPONS[weaponIndex].cooldown * 2, false, effects[15])) {
       const weapon = { ...WEAPONS[ship.weaponIndex] }
       weapons.push(handleFireWeapon(ship, weapon, 0, weapon.damage));
       ship.lastFired = Date.now();
@@ -118,13 +119,15 @@ const updateAiShips = (aiShips, userId, handleGameEvent, clockDifference, player
       if (ship.type === 'supplyShip') {
         ship.rotate = 'left';
       }  else {
-        const minRange = 3000
+        const minRange = 1500
         const target = nearestTarget(ship.location, ship.team, players.concat(aiShips, motherships), minRange);
         
         if (target) {
           ship.rotate = handleAiDirection(ship.location, ship.angle, target);
+          ship.shouldFire = true;
         } else {
           ship.rotate = 'none';
+          ship.shouldFire = false;
         }
       }
       updatePlayer(ship, ANAIMATION_FRAME_RATE, clockDifference);

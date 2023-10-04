@@ -222,14 +222,13 @@ export const createBombers = (wave, players) => {
   
   players.forEach(player => {
     const hitpoints = wave * 20 + (player.level * initialHitpoints);
-    const team = player.team  === 'red' ? 'blue' : 'red';
-    bombers = bombers.concat(bombersByWave(wave, hitpoints, team));
+    bombers = bombers.concat(bombersByWave(wave, hitpoints));
   });
 
   return bombers;
 }
 
-const bombersByWave = (wave, hitpoints, team) => {
+const bombersByWave = (wave, hitpoints) => {
   const bombers = [];
   const divider = wave / 2
   let i = 0
@@ -252,7 +251,8 @@ const bombersByWave = (wave, hitpoints, team) => {
 
     const shipIndex = Math.floor(Math.random() * maxShipIndex);
     const weaponIndex = Math.floor(Math.random() * maxWeaponIndex);
-    bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, team))
+    bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, 'red'))
+    bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, 'blue'))
     i += (shipIndex + weaponIndex + 1);
   }
 
@@ -276,6 +276,7 @@ export const createBomber = (index, weaponIndex, hitpoints, team) => {
     lastFired: Date.now(),
     angle: team === 'red' ? 0 : 180,
     trajectory: team === 'red' ? 0 : 180,
-    location
+    location,
+    shouldFire: false
   }
 }

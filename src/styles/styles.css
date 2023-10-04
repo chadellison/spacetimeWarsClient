@@ -13,6 +13,7 @@ body {
 
 .canvas {
   background: url("../images/spaceBackground.png");
+  background-size: cover;
 }
 
 .hidden {
