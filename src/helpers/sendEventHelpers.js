@@ -218,10 +218,8 @@ const createBackupShips = (abilityLevel, team) => {
 
 export const createBombers = (wave, players) => {
   let bombers = [];
-  // const initialHitpoints = 100;
   
-  players.forEach(player => {
-    // const hitpoints = wave * 20 + (player.level * initialHitpoints);
+  players.forEach(() => {
     bombers = bombers.concat(bombersByWave(wave));
   });
 
@@ -231,49 +229,25 @@ export const createBombers = (wave, players) => {
 const bombersByWave = (wave) => {
   const bombers = [];
   let i = wave / 2
-  // let weaponIndex = 0;
   let bomberIndex = 0;
-  // let hitpoints = 400;
   
   while (i > 0) {
     if (i > 8) {
       bomberIndex = 3;
-      // weaponIndex = 4;
-      // hitpoints = 3000;
-      // bombers.push(createBomber(3, 4, 3000, 'red'))
-      // bombers.push(createBomber(3, 4, 3000, 'blue'))  
       i -= 8
     } else if (i > 5) {
       bomberIndex = 2;
-      // weaponIndex = 5;
-      // hitpoints = 1600;
-      // bombers.push(createBomber(2, 5, 1600, 'red'))
-      // bombers.push(createBomber(2, 5, 1600, 'blue'))  
       i -= 5
     } else if (i > 4) {
       bomberIndex = 1;
-      // weaponIndex = 3;
-      // hitpoints = 900;
-      // bombers.push(createBomber(1, 3, 900, 'red'))
-      // bombers.push(createBomber(1, 3, 900, 'blue'))  
       i -= 4
     } else {
       bomberIndex = 0;
-      // bombers.push(createBomber(0, 0, 400, 'red'))
-      // bombers.push(createBomber(0, 0, 400, 'blue'))  
       i -= 1
     }
 
     bombers.push(createBomber(bomberIndex, 'red'))
     bombers.push(createBomber(bomberIndex, 'blue'))  
-
-
-
-    // const shipIndex = Math.floor(Math.random() * maxShipIndex);
-    // const weaponIndex = Math.floor(Math.random() * maxWeaponIndex);
-    // bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, 'red'))
-    // bombers.push(createBomber(shipIndex, weaponIndex, hitpoints, 'blue'))
-    // i += (shipIndex + weaponIndex + 1);
   }
 
   return bombers;
@@ -290,9 +264,6 @@ export const createBomber = (index, team) => {
     name: faker.name.findName(),
     image: null,
     blueImage: null,
-    // hitpoints,
-    // weaponIndex,
-    // maxHitpoints: hitpoints,
     lastFired: Date.now(),
     angle: team === 'red' ? 0 : 180,
     trajectory: team === 'red' ? 0 : 180,
