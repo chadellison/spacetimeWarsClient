@@ -24,28 +24,29 @@ import {
 } from '../constants/settings.js';
 
 import nuclearExplosionIcon from '../images/nuclearExplosionIcon.png';
-import warpSpeedIcon from '../images/warpSpeedIcon.png';
-import mineIcon from '../images/mineIcon.png';
-import stunGunIcon from '../images/stunGunIcon.png';
-import invulnerabilityIcon from '../images/invulnerableIcon.png';
+import warpSpeedIcon from '../images/warpSpeedIcon2.png';
+import mineIcon from '../images/mineIcon2.png';
+import stunGunIcon from '../images/stunGunIcon2.png';
+import invulnerabilityIcon from '../images/invulnerableIcon2.png';
 import stealthModeIcon from '../images/stealthMode.png';
-import meteorShowerIcon from '../images/meteorShowerIcon.png';
-import healingIcon from '../images/healthBoost.png';
-import piercerIcon from '../images/piercerIcon.png';
-import rapidFireIcon from '../images/rapidFireIcon.png';
+import meteorShowerIcon from '../images/meteorShowerIcon2.png';
+import healingIcon from '../images/healthBoost2.png';
+import piercerIcon from '../images/piercerIcon2.png';
+import rapidFireIcon from '../images/rapidFireIcon2.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import damageReductionIcon from '../images/damageReductionIcon.png';
-import energyFieldIcon from '../images/energyFieldIcon.png';
-import armorReductionIcon from '../images/armorReductionIcon.png';
-import redMeteorIcon from '../images/redMeteorIcon.png';
-import teleportIcon from '../images/teleportIcon.png';
-import armorBoost from '../images/shieldIcon.png';
+// import energyFieldIcon from '../images/energyFieldIcon.png';
+import immolation from '../images/immolation.png';
+import armorReductionIcon from '../images/armorReductionIcon2.png';
+import redMeteorIcon from '../images/redMeteorIcon2.png';
+import teleportIcon from '../images/teleportIcon2.png';
+import armorBoost from '../images/armorBoost2.png';
 import homingAttackIcon from '../images/homingAttackIcon.png';
 import backupIcon from '../images/backupIcon.png';
 import crippleIcon from '../images/crippleIcon.png';
-import poisonDartIcon from '../images/poisonDartIcon.png';
-import massStunIcon from '../images/massStunIcon.png';
-import poisonIcon from '../images/poisonIcon.png';
+import poisonDartIcon from '../images/poisonDartIcon2.png';
+import massStunIcon from '../images/massStunIcon2.png';
+import poisonIcon from '../images/poisonIcon2.png';
   
 
 // const nuclearExplosionIcon = `${API_RESOURCE_URL}/nuclearExplosionIcon`;
@@ -188,7 +189,7 @@ export const ABILITIES = [
     description: 'Surrounds the ship with hot energy inflicting grevious damage on nearby ships (25, 50, 75) damage per second and slowing enemy units ("W" key to use; 45s cooldown)',
     cooldown: 45000,
     weaponIndex: 5,
-    image: energyFieldIcon,
+    image: immolation,
     sound: electricFieldSound,
   },
   {

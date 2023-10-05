@@ -38,21 +38,22 @@ import redPlasmaCannonAudio from '../audio/plasmaCannonSound.wav';
 // const coldShotAnimation = `${API_RESOURCE_URL}/coldShotAnimation`;
 // const poisonDartAnimation = `${API_RESOURCE_URL}/poisonDartAnimation`;
 import fireballAnimation from '../images/fireballAnimation.png';
-import displayFireball from '../images/displayFireball.png';
+import displayFireball from '../images/displayFireball2.png';
 import missile from '../images/missile.png';
-import displayMissile from '../images/displayMissile.png';
+import displayMissile from '../images/displayMissile3.png';
 import trifecta from '../images/trifecta.png';
-import displayTrifecta from '../images/displayTrifecta.png';
+import displayTrifecta from '../images/displayTrifecta2.png';
 import poisonCannonAnimation from '../images/poisonCannonAnimation.png';
-import displayPoisonCannon from '../images/displayPoisonCannon.png';
+import displayPoisonCannon from '../images/displayPoisonCannon2.png';
+// import displayPoisonCannon from '../images/displayPoisonCannon.png';
 import bomb from '../images/bomb.png';
-import displayBomb from '../images/displayBomb.png';
+import displayBomb from '../images/displayBomb2.png';
 import laserAnimation from '../images/laserAnimation.png';
-import displayLaser from '../images/displayLaser.png';
-import displayBlueFire from '../images/displayBlueFire.png';
+import displayLaser from '../images/displayLaser2.png';
+import displayBlueFire from '../images/displayBlueFire2.png';
 import plasmaCannonAnimation from '../images/redPlasmaCannonAnimation.png';
-import displayPlasmaCannon from '../images/displayRedPlasma.png';
-import spaceMine from '../images/spaceMine.png';
+import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
+import spaceMine from '../images/spaceMine3.png';
 import nuclearExplosionAnimation from '../images/nuclearExplosionAnimation.png';
 import mineExplosionAnimation from '../images/mineExplosionAnimation.png';
 import nuclearBlastAnimation from '../images/nuclearBlastAnimation.png';
@@ -344,7 +345,7 @@ export const ABILITY_WEAPONS = [
     width: 100,
     height: 100,
     damageRadius: 30,
-    damage: 400,
+    damage: 800,
     image: spaceMine
   },
   {

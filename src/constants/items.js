@@ -1,13 +1,18 @@
 import { API_RESOURCE_URL } from '../api/apiHelpers.js';
 // items
+import armorBoost from '../images/armorBoost2.png';
+import healthBoost from '../images/healthBoost2.png';
+import stun from '../images/stun2.png';
+import absorbDamage from '../images/absorbDamage2.png'
+
 const repairBots = `${API_RESOURCE_URL}/repairGears`;
-const healthBoost = `${API_RESOURCE_URL}/healthBoost`;
+// const healthBoost = `${API_RESOURCE_URL}/healthBoost`;
 const stealthMode = `${API_RESOURCE_URL}/stealthMode`;
-const absorbDamage = `${API_RESOURCE_URL}/absorbDamage`;
-const armorBoost = `${API_RESOURCE_URL}/armorBoost`;
+// const absorbDamage = `${API_RESOURCE_URL}/absorbDamage`;
+// const armorBoost = `${API_RESOURCE_URL}/armorBoost`;
 const damageIncrease = `${API_RESOURCE_URL}/damageIncrease`;
 const healthIncrease = `${API_RESOURCE_URL}/healthIncrease`;
-const stun = `${API_RESOURCE_URL}/stun`;
+// const stun = `${API_RESOURCE_URL}/stun`;
 const evasion = `${API_RESOURCE_URL}/evasion`;
 const returnDamage = `${API_RESOURCE_URL}/returnDamage`;
 
