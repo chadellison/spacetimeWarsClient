@@ -12,7 +12,6 @@ import Canvas, { ASSET_COUNT } from './Canvas';
 import Header from './Header';
 import { Modal } from './Modal';
 import PlayerData from './PlayerData';
-import { WaveData } from './WaveData';
 import { calculatePercent } from '../helpers/mathHelpers';
 
 const INITIAL_MODAL = window.innerWidth < WINDOW_WIDTH_THRESHOLD ? 'deviceChageNotification' : 'instructions';
@@ -91,10 +90,11 @@ const Layout = () => {
       } else {
         const bombers = createBombers(wave, players);
 
-        if (bombers) {
+        if (bombers.length > 0) {
           handleGameEvent({
             gameEvent: 'bombers',
-            bombers
+            bombers,
+            wave
           });
         }
         updateState({ waveData: { ...waveData, wave: wave + 1, count: 17 } });
@@ -236,7 +236,6 @@ const Layout = () => {
     aiShips,
     players,
     upgrades,
-    waveData,
     activeTab,
     animations,
     abilityData,
@@ -253,10 +252,6 @@ const Layout = () => {
 
   return (
     <div className="layout" onKeyDown={handleKeyDown}>
-      {waveData.count < 16 && waveData.active &&
-        <WaveData content={`Wave ${waveData.wave} starts in ${waveData.count} seconds`} />
-      }
-
       <div>
         {modal && <Modal
           page={page}
