@@ -37,7 +37,7 @@ import damageBoostIcon from '../images/damageBoostIcon.png';
 import damageReductionIcon from '../images/damageReductionIcon.png';
 // import energyFieldIcon from '../images/energyFieldIcon.png';
 import immolation from '../images/immolation.png';
-import armorReductionIcon from '../images/armorReductionIcon2.png';
+import armorReductionIcon from '../images/armorReductionIcon3.png';
 import redMeteorIcon from '../images/redMeteorIcon2.png';
 import teleportIcon from '../images/teleportIcon2.png';
 import armorBoost from '../images/armorBoost2.png';
@@ -113,7 +113,7 @@ export const ABILITIES = [
   {
     index: 4,
     type: 'weapon',
-    description: 'Deploys a nuclear blast dealing (300, 600, 900) damage to every opponent ship ("Q" key to use; 60s cooldown).',
+    description: 'Deploys a nuclear blast dealing (400, 800, 1200) damage to every opponent ship ("Q" key to use; 60s cooldown).',
     cooldown: 50000,
     weaponIndex: 0,
     image: nuclearExplosionIcon,

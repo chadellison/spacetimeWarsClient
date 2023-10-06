@@ -38,21 +38,21 @@ import redPlasmaCannonAudio from '../audio/plasmaCannonSound.wav';
 // const coldShotAnimation = `${API_RESOURCE_URL}/coldShotAnimation`;
 // const poisonDartAnimation = `${API_RESOURCE_URL}/poisonDartAnimation`;
 import fireballAnimation from '../images/fireballAnimation.png';
-import displayFireball from '../images/displayFireball2.png';
+import displayFireball from '../images/displayFireball3.png';
 import missile from '../images/missile.png';
-import displayMissile from '../images/displayMissile3.png';
+import displayMissile from '../images/displayMissile4.png';
 import trifecta from '../images/trifecta.png';
-import displayTrifecta from '../images/displayTrifecta2.png';
+import displayTrifecta from '../images/displayTrifecta3.png';
 import poisonCannonAnimation from '../images/poisonCannonAnimation.png';
-import displayPoisonCannon from '../images/displayPoisonCannon2.png';
+import displayPoisonCannon from '../images/displayPoisonCannon3.png';
 // import displayPoisonCannon from '../images/displayPoisonCannon.png';
 import bomb from '../images/bomb.png';
-import displayBomb from '../images/displayBomb2.png';
+import displayBomb from '../images/displayBomb3.png';
 import laserAnimation from '../images/laserAnimation.png';
-import displayLaser from '../images/displayLaser2.png';
-import displayBlueFire from '../images/displayBlueFire2.png';
+import displayLaser from '../images/displayLaser3.png';
+import displayBlueFire from '../images/displayBlueFire3.png';
 import plasmaCannonAnimation from '../images/redPlasmaCannonAnimation.png';
-import displayPlasmaCannon from '../images/displayPlasmaCannon.png';
+import displayPlasmaCannon from '../images/displayPlasmaCannon2.png';
 import spaceMine from '../images/spaceMine3.png';
 import nuclearExplosionAnimation from '../images/nuclearExplosionAnimation.png';
 import mineExplosionAnimation from '../images/mineExplosionAnimation.png';
@@ -132,24 +132,37 @@ export const WEAPONS = [
   },
   {
     index: 2,
-    name: 'bomb',
+    name: 'plasma cannon',
     location: { x: 0, y: 0 },
     trajectory: 0,
     cooldown: 800,
     speed: 14,
-    damage: 300,
+    damage: 400,
     price: 500,
     width: 50,
     height: 29,
     damageRadius: 3,
-    image: bomb,
     ability: 'none',
     sound: AUDIO[2],
-    selectionImage: displayBomb
+    selectionImage: displayBomb,
+    animation: {
+      coordinates: { x: 0, y: 0 },
+      spriteImage: nuclearBlastAnimation,
+      width: 128,
+      height: 64,
+      rowCount: 4,
+      columnCount: 2,
+      rate: 1,
+      startRate: 1,
+      renderWidth: 80,
+      renderHeight: 40,
+      xOffset: 0,
+      yOffset: 0,
+    }
   },
   {
     index: 3,
-    name: 'laser',
+    name: 'laser cannon',
     location: { x: 0, y: 0 },
     trajectory: 0,
     cooldown: 300,
@@ -196,13 +209,13 @@ export const WEAPONS = [
   },
   {
     index: 5,
-    name: 'poisonCannon',
+    name: 'poison cannon',
     location: { x: 0, y: 0 },
     trajectory: 0,
     cooldown: 400,
     speed: 22,
     damage: 50,
-    price: 800,
+    price: 750,
     width: 100,
     height: 50,
     damageRadius: 6,
@@ -226,7 +239,7 @@ export const WEAPONS = [
   },
   {
     index: 6,
-    name: 'blueFire',
+    name: 'blue fire',
     location: { x: 0, y: 0 },
     trajectory: 0,
     cooldown: 350,
@@ -256,7 +269,7 @@ export const WEAPONS = [
   },
   {
     index: 7,
-    name: 'plasmaCannon',
+    name: 'piercing cannon',
     location: { x: 0, y: 0 },
     trajectory: 0,
     cooldown: 450,
@@ -293,23 +306,10 @@ export const ABILITY_WEAPONS = [
     location: { x: 0, y: 0 },
     trajectory: 0,
     speed: 7,
-    width: 96,
-    height: 48,
-    damage: 900,
-    animation: {
-      coordinates: { x: 0, y: 0 },
-      spriteImage: nuclearBlastAnimation,
-      width: 128,
-      height: 64,
-      rowCount: 4,
-      columnCount: 2,
-      rate: 1,
-      startRate: 1,
-      renderWidth: 80,
-      renderHeight: 40,
-      xOffset: 0,
-      yOffset: 0,
-    }
+    width: 50,
+    height: 29,
+    damage: 400,
+    image: bomb
   },
   {
     id: 2,
