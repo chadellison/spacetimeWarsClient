@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { createGameSocket, fetchGameData, fetchScoreData, getClockData } from '../api/gameData';
 import { KEY_MAP } from '../constants/keyMap.js';
 import { ANAIMATION_FRAME_RATE, REQUEST_COUNT, WAVE_UPDATE_INTERVAL, LATENCY_THRESHOLD, WINDOW_WIDTH_THRESHOLD } from '../constants/settings.js';
-import { mothershipItems, motherships } from '../constants/ships.js';
+import { motherships } from '../constants/ships.js';
 import { updateGameState, updatePlayer } from '../helpers/gameLogic.js';
 import { findCurrentPlayer } from '../helpers/playerHelpers';
 import { handleEventPayload } from '../helpers/receiveEventHelpers.js';
@@ -203,18 +203,6 @@ const Layout = () => {
     };
   };
 
-  const resetGame = () => {
-    const newState = {
-      ...DEFAULT_STATE,
-      motherships: motherships.map((ship) => ({ ...ship, hitpoints: 5000, maxHitpoints: 5000, items: { ...mothershipItems }, effects: {} })),
-      userId: stateRef.current.userId,
-      clockDifference: stateRef.current.clockDifference,
-      shortestRoundTripTime: stateRef.current.shortestRoundTripTime,
-    }
-    updateState(newState);
-    syncClocks(3, () => fetchGameData(handleGameDataResponse));
-  }
-
   const renderGame = () => {
     const currentPlayer = findCurrentPlayer(stateRef.current.userId, stateRef.current.players);
     if (currentPlayer) {
@@ -264,7 +252,6 @@ const Layout = () => {
           upgrades={upgrades}
           activeTab={activeTab}
           showInstructions={showInstructions}
-          resetGame={resetGame}
           activePlayer={{ ...activePlayer, inPlayers: existingPlayer }}
           gameOverStats={gameOverStats}
           updateState={updateState}

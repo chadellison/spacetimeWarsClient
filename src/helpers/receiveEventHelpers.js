@@ -28,9 +28,9 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     case 'explode':
       return handleExplodeEvent(players, aiShips, playerData, elapsedTime, gameSocket);
     case 'supplyShip':
-      return { aiShips: [...aiShips, playerData] }
+      return { aiShips: [...aiShips, playerData] };
     case 'bombers':
-      return { aiShips: aiShips.concat(playerData.bombers) }
+      return { aiShips: aiShips.concat(playerData.bombers) };
     case 'ability':
       return handleAbility(players, deployedWeapons, playerData, elapsedTime, animations, aiShips);
     default:
@@ -53,7 +53,6 @@ const handleExplodeEvent = (players, aiShips, playerData, elapsedTime, gameSocke
     return { players: updatedPlayers }
   } else {
     if (['redMothership', 'blueMothership'].includes(playerData.name)) {
-      // animation...
       return handleGameOver(players, playerData, gameSocket);
     } else {
       const updatedAiShips = [...aiShips].map((ship) => {
@@ -97,8 +96,7 @@ export const explodePlayer = (player, playerData) => {
   return player;
 }
 
-const handleGameOver = (players, playerData, gameSocket) => {
-  gameSocket.unsubscribe();
+const handleGameOver = (players, playerData) => {
   return {
     players: [],
     aiShips: [],

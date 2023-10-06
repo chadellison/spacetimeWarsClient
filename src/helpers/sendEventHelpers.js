@@ -193,7 +193,7 @@ export const handleAbilityEvent = (player, abilityData, handleGameEvent, updateS
       payload = { gameEvent: 'bombers', team: player.team, bombers: backupShips }
     }
     handleGameEvent(payload)
-    abilityData[pressedKey].lastUsed = Date.now()
+    abilityData[pressedKey].lastUsed = Date.now();
     updateState({ abilityData });
   }
 }

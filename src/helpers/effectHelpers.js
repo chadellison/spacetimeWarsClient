@@ -49,28 +49,28 @@ const updateEffects = (effects, effect) => {
         ...effect,
         animation: {
           ...effect.animation,
-          coordinates: {x: 0, y: 0}
+          coordinates: { x: 0, y: 0 }
         }
       }
     };
   } else {
-    return {...effects, [effect.id]: effect};
+    return { ...effects, [effect.id]: effect };
   }
 }
 
 export const createEffect = (index, duration, existingEffect) => {
-  const effect = {...GAME_EFFECTS[index]};
+  const effect = { ...GAME_EFFECTS[index] };
   return {
     ...effect,
     duration,
-    animation: existingEffect ? existingEffect.animation : {...effect.animation, coordinates: {x: 0, y: 0} }
-  }
+    animation: existingEffect ? existingEffect.animation : { ...effect.animation, coordinates: { x: 0, y: 0 } }
+  };
 }
 
 export const updateGameBuff = (gameBuff) => {
   if (gameBuff.durationCount > gameBuff.duration) {
     return {};
   } else {
-    return {...gameBuff, durationCount: gameBuff.durationCount + ANAIMATION_FRAME_RATE}
+    return { ...gameBuff, durationCount: gameBuff.durationCount + ANAIMATION_FRAME_RATE };
   }
 };

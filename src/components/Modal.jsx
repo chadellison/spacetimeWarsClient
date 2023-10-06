@@ -16,7 +16,6 @@ export const Modal = ({
   players,
   upgrades,
   activeTab,
-  resetGame,
   updateState,
   loadPercent,
   activePlayer,
@@ -55,7 +54,7 @@ export const Modal = ({
     case 'nameForm':
       return <NameFormModal updateState={updateState} activePlayer={activePlayer} />
     case 'gameOver':
-      return <GameOverModal gameOverStats={gameOverStats} resetGame={resetGame} />
+      return <GameOverModal gameOverStats={gameOverStats} />
     case 'leaderboard':
       return <LeaderboardModal scores={scores} updateState={updateState} />
     case 'deviceChageNotification':

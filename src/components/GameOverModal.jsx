@@ -3,7 +3,7 @@ import '../styles/modal.css';
 import { GameOverStat } from './GameOverStat';
 import { GameButton } from './GameButton';
 
-export const GameOverModal = ({ gameOverStats, resetGame }) => {
+export const GameOverModal = ({ gameOverStats }) => {
   return (
     <div className='modal'>
       <div className={`gameOverText ${gameOverStats.winningTeam}`}>{`${gameOverStats.winningTeam} Team Wins!`}</div>
@@ -15,14 +15,10 @@ export const GameOverModal = ({ gameOverStats, resetGame }) => {
           return 1
         }
         return 0;
-      }).map((player, index) => {
-        return (
-          <GameOverStat player={player} key={`gameOver${index}`} index={index} />
-        );
-      })}
+      }).map((player, index) => <GameOverStat player={player} key={`gameOver${index}`} index={index} />)}
       <GameButton
         className={'exitButton'}
-        onClick={resetGame}
+        onClick={() => window.location.reload()}
         buttonText={'Exit'}
       />
     </div>
