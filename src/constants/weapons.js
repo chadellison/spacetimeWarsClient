@@ -308,7 +308,7 @@ export const ABILITY_WEAPONS = [
     speed: 7,
     width: 50,
     height: 29,
-    damage: 400,
+    damage: 700,
     image: bomb
   },
   {

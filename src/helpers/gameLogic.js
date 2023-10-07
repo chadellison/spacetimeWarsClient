@@ -308,10 +308,13 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
 
 const handleNuclearWeapon = (gameData, weapon, attacker) => {
   const { players, aiShips, motherships } = gameData;
-
+  const nuclearRange = 700;
   players.concat(aiShips, motherships).forEach((player) => {
     if (player.team !== weapon.team) {
-      applyHit(player, weapon, attacker)
+      const distance = Math.abs(weapon.location.x - player.location.x) + Math.abs(weapon.location.y - player.location.y);
+      if (distance < nuclearRange) {
+        applyHit(player, weapon, attacker)
+      }
     }
   });
 
