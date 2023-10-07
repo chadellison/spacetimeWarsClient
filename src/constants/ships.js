@@ -46,12 +46,12 @@ import blueCommanderShip from '../images/blueCommanderShip.png';
 import spiderShip from '../images/spiderShip.png';
 import blueSpiderShip from '../images/blueSpiderShip.png';
 import supplyShip from '../images/supplyShip.png';
-import redMothershipAnimation from '../images/mothershipAnimationRed.png'
-import blueMothershipAnimation from '../images/mothershipAnimationBlue.png'
+import redMothershipAnimation from '../images/mothershipAnimationRed.png';
+import blueMothershipAnimation from '../images/mothershipAnimationBlue.png';
 
 export const generateThrusterAnimation = (x, y) => {
   return { ...GAME_ANIMATIONS[3], location: { x: 0, y: 0 }, coordinates: { x: 0, y: 0 }, xOffset: x, yOffset: y }
-}
+};
 
 export const SHIPS = [
   {
@@ -164,7 +164,7 @@ export const SUPPLY_SHIP = {
   name: 'supplyShip',
   shipCenter: { x: 60, y: 34 },
   image: supplyShip,
-}
+};
 
 export const MOTHER_SHIP = {
   name: 'redMothership',
@@ -178,15 +178,16 @@ export const MOTHER_SHIP = {
   angle: 0,
   width: 200,
   height: 108,
-  active: true
-}
+  active: true,
+  explodeAnimation: {}
+};
 
 export const mothershipItems = {
   1: { index: 0, cooldown: 120000, durationCount: 5000 },
   2: { index: 1, durationCount: 1000, cooldown: 3000 },
   5: { index: 4, durationCount: 0, cooldown: 0 },
   10: { index: 9, durationCount: 0, cooldown: 0 }
-}
+};
 
 const mothershipAnimation = {
   spriteImage: redMothershipAnimation,
@@ -202,9 +203,9 @@ const mothershipAnimation = {
   startRate: 0,
   xOffset: 0,
   yOffset: 0
-}
+};
 
-export const motherships = [
+export const MOTHER_SHIPS = [
   {
     ...MOTHER_SHIP, name:
       'redMothership',
@@ -225,7 +226,7 @@ export const motherships = [
     items: { ...mothershipItems },
     animation: { ...mothershipAnimation, spriteImage: blueMothershipAnimation }
   }
-]
+];
 
 export const BOMBERS = [
   {

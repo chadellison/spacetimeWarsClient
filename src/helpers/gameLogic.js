@@ -57,11 +57,16 @@ const handleMothershipHitAnimations = (gameAnimations, motherships, mothershipHp
 
 const updateMotherships = (motherships, userId, handleGameEvent, connected) => {
   return motherships.map((ship) => {
-    updateFrame(ship.animation);
-    handleHitpoints(ship, userId, handleGameEvent, connected);
-    handleEffects(ship);
-    handleItems(ship);
-    return ship;
+    if (ship.active) {
+      updateFrame(ship.animation);
+      handleHitpoints(ship, userId, handleGameEvent, connected);
+      handleEffects(ship);
+      handleItems(ship);
+      return ship;
+    } else {
+      ship.explodeAnimation = updateAnimation(ship.explodeAnimation);
+      return ship;
+    }
   });
 }
 

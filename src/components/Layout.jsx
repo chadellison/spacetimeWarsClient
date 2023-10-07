@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { createGameSocket, fetchGameData, fetchScoreData, getClockData } from '../api/gameData';
 import { KEY_MAP } from '../constants/keyMap.js';
 import { ANAIMATION_FRAME_RATE, REQUEST_COUNT, WAVE_UPDATE_INTERVAL, LATENCY_THRESHOLD, WINDOW_WIDTH_THRESHOLD } from '../constants/settings.js';
-import { motherships } from '../constants/ships.js';
+import { MOTHER_SHIPS } from '../constants/ships.js';
 import { updateGameState, updatePlayer } from '../helpers/gameLogic.js';
 import { findCurrentPlayer } from '../helpers/playerHelpers';
 import { handleEventPayload } from '../helpers/receiveEventHelpers.js';
@@ -45,7 +45,7 @@ const DEFAULT_STATE = {
   showInstructions: false,
   scores: [],
   waveData: { wave: 1, count: 5, active: false },
-  motherships,
+  motherships: MOTHER_SHIPS,
   connected: false,
 };
 

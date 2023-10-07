@@ -6,7 +6,7 @@ import {
   EXPLODE_PLAYER_COLOR,
   GAME_ANIMATIONS
 } from '../constants/settings.js';
-import { BOMBERS, SHIPS, SUPPLY_SHIP, motherships } from '../constants/ships.js';
+import { BOMBERS, SHIPS, SUPPLY_SHIP, MOTHER_SHIPS } from '../constants/ships.js';
 import { ABILITY_WEAPONS, EXPLOSION_ANIMATIONS, WEAPONS } from '../constants/weapons.js';
 import {
   drawShip,
@@ -41,7 +41,7 @@ const IMAGES_ASSETS = SHIPS
   .concat(EXPLOSION_ANIMATIONS.map(item => ({...item, image: resolveImage(item)})))
   .concat(GAME_EFFECTS.filter((effect) => effect.animation).map(item => ({...item, image: SPRITE_IMAGES[item.animation.spriteIndex]})))
   .concat(GAME_ANIMATIONS.map(item => ({...item, image: resolveImage(item)})))
-  .concat(motherships.map(item => ({...item, image: resolveImage(item)})))
+  .concat(MOTHER_SHIPS.map(item => ({...item, image: resolveImage(item)})))
   .concat(SUPPLY_SHIP)
   .concat([{ name: 'backgroundImage', image: spaceBackground }]);
 
@@ -123,10 +123,14 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     });
 
     motherships.forEach((ship) => {
-      const mothership = ship.team === 'red' ? images.redMothership : images.blueMothership;
-      renderAnimation(context, mothership, ship.animation, ship.location);
-      renderEffects(context, ship)
-      renderMotherShipData(context, ship, currentPlayerIsExploding);
+      if (ship.active) {
+        const mothership = ship.team === 'red' ? images.redMothership : images.blueMothership;
+        renderAnimation(context, mothership, ship.animation, ship.location);
+        renderEffects(context, ship)
+        renderMotherShipData(context, ship, currentPlayerIsExploding);
+      } else if (!ship.explodeAnimation.complete) {
+        renderAnimation(context, images.shipExplosion, ship.explodeAnimation, ship.location);
+      }
     });
   }
 

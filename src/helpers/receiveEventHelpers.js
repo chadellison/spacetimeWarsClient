@@ -18,7 +18,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     waveData,
     eventData,
     animations,
-    gameSocket,
+    motherships,
     deployedWeapons,
     clockDifference,
   } = gameState;
@@ -26,7 +26,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     case 'start':
       return handleStartEvent(players, playerData, userId, eventData, waveData);
     case 'explode':
-      return handleExplodeEvent(players, aiShips, playerData, elapsedTime, gameSocket);
+      return handleExplodeEvent(players, aiShips, playerData, elapsedTime, motherships);
     case 'supplyShip':
       return { aiShips: [...aiShips, playerData] };
     case 'bombers':
@@ -40,9 +40,9 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   };
 }
 
-const handleExplodeEvent = (players, aiShips, playerData, elapsedTime, gameSocket) => {
+const handleExplodeEvent = (players, aiShips, playerData, elapsedTime, motherships) => {
   if (playerData.type === 'human') {
-    const updatedPlayers = [...players].map((player) => {
+    const updatedPlayers = players.map((player) => {
       if (player.userId === playerData.userId) {
         return explodePlayer(player, playerData);
       } else {
@@ -53,13 +53,14 @@ const handleExplodeEvent = (players, aiShips, playerData, elapsedTime, gameSocke
     return { players: updatedPlayers }
   } else {
     if (['redMothership', 'blueMothership'].includes(playerData.name)) {
-      return handleGameOver(players, playerData, gameSocket);
+      return handleGameOver(players, playerData, motherships);
     } else {
-      const updatedAiShips = [...aiShips].map((ship) => {
+      const updatedAiShips = aiShips.map((ship) => {
         if (playerData.id === ship.id && ship.active) {
-          ship = explodePlayer(ship, ship)
-        };
-        return ship;
+          return explodePlayer(ship, playerData)
+        } else {
+          return ship;
+        }
       });
 
       if (playerData.type === 'supplyShip') {
@@ -82,29 +83,41 @@ const handleBuff = (playerData, players, aiShips, elapsedTime) => {
 
 export const explodePlayer = (player, playerData) => {
   playSound(shipExplosionSound);
-  player.hitpoints = 0;
-  player.explodeAnimation = { ...EXPLOSION_ANIMATIONS[2], coordinates: { x: 0, y: 0 } }
-  player.updatedAt = playerData.updatedAt;
-  player.explodedAt = playerData.explodedAt;
-  player.accelerate = false;
-  player.angle = 0;
-  player.trajectory = 0;
-  player.rotate = 'none';
-  player.effects = {};
-  player.active = false;
-  player.gameEvent = 'waiting';
-  return player;
+  
+  return {
+    ...player,
+    hitpoints: 0,
+    explodeAnimation: { ...EXPLOSION_ANIMATIONS[2], coordinates: { x: 0, y: 0 } },
+    updatedAt: playerData.updatedAt,
+    exploadedAt: playerData.exploadedAt,
+    accelerate: false,
+    angle: 0,
+    trajectory: 0,
+    rotate: 'none',
+    effects: {},
+    active: false,
+    gameEvent: 'waiting'
+  }
+};
+
+const exploadMothership = (ship) => {
+  playSound(shipExplosionSound);
+  
+  return {
+    ...ship,
+    hitpoints: 0,
+    explodeAnimation: { ...EXPLOSION_ANIMATIONS[1], coordinates: { x: 0, y: 0 } },
+    effects: {},
+    active: false
+  }
 }
 
-const handleGameOver = (players, playerData) => {
+const handleGameOver = (players, playerData, motherships) => {
   return {
-    players: [],
-    aiShips: [],
-    motherships: [],
-    animations: [],
+    players: players.map(ship => explodePlayer(ship, playerData)),
+    aiShips: players.map(ship => explodePlayer(ship, playerData)),
+    motherships: motherships.map(ship => exploadMothership(ship)),
     modal: 'gameOver',
-    startingPlayer: {},
-    deployedWeapons: [],
     gameOverStats: { playerStats: players, winningTeam: playerData.team === 'red' ? 'Blue' : 'Red' },
     waveData: { wave: 1, count: 5, active: false }
   }
@@ -114,7 +127,7 @@ const handleStartEvent = (players, playerData, userId, eventData, waveData) => {
   let eventPlayer = players.find((player) => player.userId === playerData.userId);
   let newPlayers;
   if (eventPlayer) {
-    newPlayers = [...players].map((player) => {
+    newPlayers = players.map((player) => {
       if (player.userId === eventPlayer.userId) {
         return playerData;
       } else {
