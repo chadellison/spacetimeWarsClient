@@ -351,6 +351,7 @@ const weaponFromPlayer = (gameData, weapon, newWeapons, allShips) => {
   if (attacker.levelUp) {
     delete attacker.levelUp
     attacker.level += 1;
+    attacker.gold += 50;
     playSound(upgradeSound);
     gameData.animations.push({ ...GAME_ANIMATIONS[0], location: attacker.location, coordinates: { x: 0, y: 0 } });
   }
@@ -494,7 +495,7 @@ const updateCollisionData = (player, weapon, attacker) => {
       attacker.score += round(damage * 0.1)
 
       if (player.hitpoints <= 0) {
-        const bounty = round(player.score * 0.01 + 50);
+        const bounty = round(player.maxHitpoints * 0.1);
         player.killedBy = weapon.playerIndex
         attacker.kills += 1
         attacker.gold += bounty;
