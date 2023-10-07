@@ -266,8 +266,12 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
 
   if (player.accelerate) {
     currentVelocity += player.velocity;
+    
     if (player.effects[9]) {
-      currentVelocity += 4
+      currentVelocity += 4;
+    }
+    if (player.items[11]) {
+      currentVelocity += 3;
     }
   } else {
     const timeSinceLastAcceleration = Date.now() + clockDifference - player.lastAccelerationTime;
@@ -275,7 +279,7 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
     if (momentum > 0) {
       currentVelocity += (momentum / 1000);
     }
-  }
+  };
   if (player.effects[2] || player.effects[15]) {
     currentVelocity /= 2;
   }

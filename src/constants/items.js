@@ -4,6 +4,7 @@ import armorBoost from '../images/armorBoost2.png';
 import healthBoost from '../images/healthBoost2.png';
 import stun from '../images/stun2.png';
 import absorbDamage from '../images/absorbDamage2.png'
+import improvedThrusters from '../images/improvedThrusters.png'
 
 const repairBots = `${API_RESOURCE_URL}/repairGears`;
 // const healthBoost = `${API_RESOURCE_URL}/healthBoost`;
@@ -115,6 +116,16 @@ export const ITEMS = [
     image: returnDamage,
     cooldown: 0,
     durationCount: 0,
-    description: 'Your Ship will return 30% of damage dealt to it',
+    description: 'Your ship will return 30% of damage dealt to it',
+  },
+  {
+    id: 11,
+    index: 10,
+    price: 800,
+    name: 'Improved Thrusters',
+    image: improvedThrusters,
+    cooldown: 0,
+    durationCount: 0,
+    description: 'Increases ship\'s speed by 3',
   }
 ];

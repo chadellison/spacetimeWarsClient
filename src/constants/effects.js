@@ -7,7 +7,6 @@ import stunAnimation from '../images/stunAnimation.png';
 import warpSpeedAnimation from '../images/warpSpeedAnimation2.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import damageReductionAnimation from '../images/damageReductionAnimation.png';
-import electricFieldAnimation from '../images/electricFieldAnimation.png';
 import armorReductionAnimation from '../images/armorReductionAnimation.png';
 import crippleAnimation from '../images/crippleAnimation.png';
 
@@ -226,24 +225,11 @@ export const GAME_EFFECTS = [
     }
   },
   {
+    // not being used
     id: 13,
     name: 'zapped',
     duration: 0,
     durationCount: 0,
-    animation: {
-      coordinates: {x: 0, y: 0},
-      spriteIndex: 10,
-      width: 256,
-      height: 256,
-      renderWidth: 192,
-      renderHeight: 192,
-      rowCount: 4,
-      columnCount: 7,
-      rate: 0,
-      startRate: 0,
-      xOffset: 0,
-      yOffset: 0
-    }
   },
   {
     id: 14,
@@ -258,7 +244,7 @@ export const GAME_EFFECTS = [
     durationCount: 0,
     animation: {
       coordinates: {x: 0, y: 0},
-      spriteIndex: 11,
+      spriteIndex: 10,
       width: 300,
       height: 169,
       renderWidth: 300,
@@ -283,6 +269,5 @@ export const SPRITE_IMAGES = [
   warpSpeedAnimation,
   damageBoostIcon,
   armorReductionAnimation,
-  electricFieldAnimation,
   crippleAnimation
 ]

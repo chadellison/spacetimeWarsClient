@@ -53,11 +53,15 @@ const renderArmor = (player) => {
 const renderSpeed = (player) => {
   if (player.velocity) {
     let modifier = 0;
-    if (player.effects[2]) {
-      modifier -= (player.velocity - 1);
-    }
+    
     if (player.effects[9]) {
       modifier += 4;
+    }
+    if (player.items[11]) {
+      modifier += 3;
+    }
+    if (player.effects[2]) {
+      modifier -= ((player.velocity + modifier) / 2);
     }
     return (
       <PlayerStat
