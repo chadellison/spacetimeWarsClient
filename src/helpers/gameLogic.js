@@ -21,7 +21,6 @@ import { upgradeSound, GAME_ANIMATIONS } from '../constants/settings.js';
 export const updateGameState = (gameState, handleGameEvent, currentPlayer) => {
   const { clockDifference, gameBuff, userId, aiShips, space, lastFired, motherships, connected } = gameState;
   let updatedPlayers = updatePlayers(gameState, handleGameEvent, connected);
-  const mothershipHpData = { red: motherships[0]?.hitpoints, blue: motherships[1]?.hitpoints }
 
   let { newLastFired, updatedWeapons } = handleRepeatedFire(currentPlayer, space, lastFired, [...gameState.deployedWeapons], handleGameEvent);
 
@@ -36,7 +35,6 @@ export const updateGameState = (gameState, handleGameEvent, currentPlayer) => {
   }
 
   gameData = handleWeapons(gameData, handleGameEvent);
-  handleMothershipHitAnimations(gameData.animations, gameData.motherships, mothershipHpData)
   const updatedMotherships = updateMotherships(gameData.motherships, userId, handleGameEvent, connected);
 
   return {
@@ -49,11 +47,6 @@ export const updateGameState = (gameState, handleGameEvent, currentPlayer) => {
     lastFired: newLastFired
   };
 };
-
-const handleMothershipHitAnimations = (gameAnimations, motherships, mothershipHpData) => {
-  mothershipHpData.red !== motherships[0]?.hitpoints && gameAnimations.push({ ...GAME_ANIMATIONS[4], location: motherships[0]?.location, coordinates: { x: 0, y: 0 } });
-  mothershipHpData.blue !== motherships[1]?.hitpoints && gameAnimations.push({ ...GAME_ANIMATIONS[4], location: motherships[1]?.location, coordinates: { x: 0, y: 0 } });
-}
 
 const updateMotherships = (motherships, userId, handleGameEvent, connected) => {
   return motherships.map((ship) => {
@@ -313,7 +306,7 @@ const handleNuclearWeapon = (gameData, weapon, attacker) => {
     if (player.team !== weapon.team) {
       const distance = Math.abs(weapon.location.x - player.location.x) + Math.abs(weapon.location.y - player.location.y);
       if (distance < nuclearRange) {
-        applyHit(player, weapon, attacker)
+        applyHit(player, weapon, attacker, gameData.animations)
       }
     }
   });
@@ -325,7 +318,7 @@ const handleNuclearWeapon = (gameData, weapon, attacker) => {
 }
 
 const weaponFromPlayer = (gameData, weapon, newWeapons, allShips) => {
-  const { players, userId } = gameData;
+  const { players, userId, animations } = gameData;
   const attacker = players.find((attacker) => attacker.userId === weapon.playerIndex);
   const player = players.find((player) => player.userId === userId);
 
@@ -337,7 +330,8 @@ const weaponFromPlayer = (gameData, weapon, newWeapons, allShips) => {
   }
 
   weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
-  handleCollision(allShips, weapon, attacker);
+  
+  handleCollision(allShips, weapon, attacker, animations);
 
   if (weapon.id) {
     handleAbilityWeapons(gameData, weapon, attacker);
@@ -358,6 +352,7 @@ const weaponFromPlayer = (gameData, weapon, newWeapons, allShips) => {
     playSound(upgradeSound);
     gameData.animations.push({ ...GAME_ANIMATIONS[0], location: attacker.location, coordinates: { x: 0, y: 0 } });
   }
+
   gameData.weapons = newWeapons;
   return gameData;
 }
@@ -410,7 +405,7 @@ const handleAbilityWeapons = (gameData, weapon, attacker) => {
 
 const weaponFromAi = (gameData, weapon, newWeapons, allShips) => {
   weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
-  handleCollision(allShips, weapon, {})
+  handleCollision(allShips, weapon, {}, gameData.animations)
 
   if (!weapon.removed) {
     newWeapons.push(weapon);
@@ -451,7 +446,7 @@ const findShipBoundingBoxes = (player) => {
   ];
 }
 
-const handleCollision = (players, weapon, attacker) => {
+const handleCollision = (players, weapon, attacker, animations) => {
   players.forEach((player) => {
     if (player.team !== weapon.team && player.active) {
       const shipBoundingBoxes = findShipBoundingBoxes(player);
@@ -461,14 +456,14 @@ const handleCollision = (players, weapon, attacker) => {
         const distance = findHypotenuse(center, weaponCenter);
 
         if ((index < 3 && distance < (18 + weapon.damageRadius)) || (index > 2 && distance < 23 + weapon.damageRadius)) {
-          applyHit(player, weapon, attacker);
+          applyHit(player, weapon, attacker, animations);
         }
       });
     };
   });
-}
+};
 
-const applyHit = (player, weapon, attacker) => {
+const applyHit = (player, weapon, attacker, animations) => {
   if (weapon.id === 3) {
     playSound(mineTriggerSound);
   }
@@ -479,7 +474,10 @@ const applyHit = (player, weapon, attacker) => {
     updateCollisionData(player, weapon, attacker);
   }
   if (![5, 6].includes(weapon.id)) {
-    weapon.removed = true
+    weapon.removed = true;
+  }
+  if (['redMothership', 'blueMothership'].includes(player.name)) {
+    animations.push({ ...GAME_ANIMATIONS[4], location: weapon.location, yOffset: -32, coordinates: { x: 0, y: 0 } });
   }
 };
 

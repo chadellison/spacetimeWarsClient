@@ -37,7 +37,7 @@ import zapAudio from '../audio/zapSound.wav';
 // images
 import blinkAnimation from '../images/invisibleAnimation.png';
 import levelUpAnimation from '../images/levelUpAnimation.png';
-import mothershipHitAnimation from '../images/mothershipHitAnimation.png';
+import mothershipHitAnimation from '../images/mothershipHitAnimation2.png';
 import teleportAnimation from '../images/teleportAnimation.png';
 import thrusterAnimation from '../images/thrusterAnimation.png';
 
@@ -95,8 +95,8 @@ export const EXPLODE_PLAYER_COLOR = 'rgba(151, 7, 7, 0.37)'
 export const GAME_ANIMATIONS = [
   {
     name: 'levelUp',
-    location: {x: 0, y: 0},
-    coordinates: {x: 0, y: 0},
+    location: { x: 0, y: 0 },
+    coordinates: { x: 0, y: 0 },
     spriteImage: levelUpAnimation,
     width: 196,
     height: 237,
@@ -111,8 +111,8 @@ export const GAME_ANIMATIONS = [
   },
   {
     name: 'blink',
-    location: {x: 0, y: 0},
-    coordinates: {x: 0, y: 0},
+    location: { x: 0, y: 0 },
+    coordinates: { x: 0, y: 0 },
     spriteImage: blinkAnimation,
     width: 115,
     height: 114,
@@ -127,8 +127,8 @@ export const GAME_ANIMATIONS = [
   },
   {
     name: 'teleport',
-    location: {x: 0, y: 0},
-    coordinates: {x: 0, y: 0},
+    location: { x: 0, y: 0 },
+    coordinates: { x: 0, y: 0 },
     spriteImage: teleportAnimation,
     width: 400,
     height: 225,
@@ -143,8 +143,8 @@ export const GAME_ANIMATIONS = [
   },
   {
     name: 'thruster',
-    location: {x: 0, y: 0},
-    coordinates: {x: 0, y: 0},
+    location: { x: 0, y: 0 },
+    coordinates: { x: 0, y: 0 },
     spriteImage: thrusterAnimation,
     width: 200,
     height: 113,
@@ -159,15 +159,15 @@ export const GAME_ANIMATIONS = [
   },
   {
     name: 'mothershipHit',
-    location: {x: 0, y: 0},
-    coordinates: {x: 0, y: 0},
+    location: { x: 0, y: 0 },
+    coordinates: { x: 0, y: 0 },
     spriteImage: mothershipHitAnimation,
-    width: 400,
-    height: 225,
-    renderWidth: 200,
-    renderHeight: 112,
-    rowCount: 20,
-    columnCount: 1,
+    width: 128,
+    height: 128,
+    renderWidth: 64,
+    renderHeight: 64,
+    rowCount: 5,
+    columnCount: 5,
     rate: 0,
     startRate: 0,
     xOffset: 0,

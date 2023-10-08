@@ -207,8 +207,8 @@ const mothershipAnimation = {
 
 export const MOTHER_SHIPS = [
   {
-    ...MOTHER_SHIP, name:
-      'redMothership',
+    ...MOTHER_SHIP, 
+    name: 'redMothership',
     location: { x: 50, y: 50 },
     shipCenter: { x: 115, y: 105 },
     team: 'red',
