@@ -471,13 +471,13 @@ const applyHit = (player, weapon, attacker, animations) => {
   if (canAbsorbDamage(player)) {
     handleAbsorbDamage(player);
   } else {
+    if (!weapon.id) {
+      animations.push({ ...GAME_ANIMATIONS[4], location: weapon.location, yOffset: -32, coordinates: { x: 0, y: 0 } });
+    }
     updateCollisionData(player, weapon, attacker);
   }
   if (![5, 6].includes(weapon.id)) {
     weapon.removed = true;
-  }
-  if (['redMothership', 'blueMothership'].includes(player.name)) {
-    animations.push({ ...GAME_ANIMATIONS[4], location: weapon.location, yOffset: -32, coordinates: { x: 0, y: 0 } });
   }
 };
 
