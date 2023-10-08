@@ -51,8 +51,8 @@ export const updateGameState = (gameState, handleGameEvent, currentPlayer) => {
 };
 
 const handleMothershipHitAnimations = (gameAnimations, motherships, mothershipHpData) => {
-  mothershipHpData.red !== motherships[0]?.hitpoints && gameAnimations.push({...GAME_ANIMATIONS[4], location: motherships[0]?.location, coordinates: {x: 0, y: 0}});
-  mothershipHpData.blue !== motherships[1]?.hitpoints && gameAnimations.push({...GAME_ANIMATIONS[4], location: motherships[1]?.location, coordinates: {x: 0, y: 0}});
+  mothershipHpData.red !== motherships[0]?.hitpoints && gameAnimations.push({ ...GAME_ANIMATIONS[4], location: motherships[0]?.location, coordinates: { x: 0, y: 0 } });
+  mothershipHpData.blue !== motherships[1]?.hitpoints && gameAnimations.push({ ...GAME_ANIMATIONS[4], location: motherships[1]?.location, coordinates: { x: 0, y: 0 } });
 }
 
 const updateMotherships = (motherships, userId, handleGameEvent, connected) => {
@@ -88,7 +88,7 @@ const handleMotherShipWeapons = (weapons, motherships, players, aiShips) => {
   motherships.forEach(mothership => {
     const target = nearestTarget(mothership.shipCenter, mothership.team, players.concat(aiShips), minRange);
     if (target) {
-      const weapon = {...WEAPONS[3]};
+      const weapon = { ...WEAPONS[3] };
       const trajectory = angleFromCoordinates(mothership.location, target.location);
       weapons.push(mothershipWeapon(mothership, trajectory, mothership.team, weapon));
       zapSound.play();
@@ -120,13 +120,13 @@ const updateAiShips = (aiShips, userId, handleGameEvent, clockDifference, player
       } else {
         ship.explodeAnimation = updateAnimation(ship.explodeAnimation);
       }
-      
+
       if (ship.type === 'supplyShip') {
         ship.rotate = 'left';
-      }  else {
+      } else {
         const minRange = 1500
         const target = nearestTarget(ship.location, ship.team, players.concat(aiShips, motherships), minRange);
-        
+
         if (target) {
           ship.rotate = handleAiDirection(ship.location, ship.angle, target);
           ship.shouldFire = true;
@@ -145,7 +145,7 @@ const updateAiShips = (aiShips, userId, handleGameEvent, clockDifference, player
 
 const nearestTarget = (location, team, players, minRange) => {
   const opponentColor = team === 'red' ? 'blue' : 'red';
-  let target =  null;
+  let target = null;
 
   players.forEach((player) => {
     const distance = Math.abs(location.x - player.location.x) + Math.abs(location.y - player.location.y);
@@ -155,7 +155,7 @@ const nearestTarget = (location, team, players, minRange) => {
       target = player;
     }
   });
-  
+
   return target;
 }
 
@@ -200,7 +200,7 @@ const handleRepeatedFire = (player, space, lastFired, deployedWeapons, handleGam
       player.gameEvent = 'fire';
       handleGameEvent(player)
       const damage = handlePlayerDamage(player);
-      const weapon = {...WEAPONS[player.weaponIndex]};
+      const weapon = { ...WEAPONS[player.weaponIndex] };
       const updatedWeapons = [
         ...deployedWeapons,
         handleFireWeapon(player, weapon, 0, damage)
@@ -266,7 +266,7 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
 
   if (player.accelerate) {
     currentVelocity += player.velocity;
-    
+
     if (player.effects[9]) {
       currentVelocity += 4;
     }
@@ -319,7 +319,7 @@ const handleNuclearWeapon = (gameData, weapon, attacker) => {
   });
 
   playSound(explosionSound);
-  const nuclearBlastAnimation = {...EXPLOSION_ANIMATIONS[1], location: weapon.location, coordinates: {x: 0, y: 0}}
+  const nuclearBlastAnimation = { ...EXPLOSION_ANIMATIONS[1], location: weapon.location, coordinates: { x: 0, y: 0 } }
   gameData.animations.push(nuclearBlastAnimation);
   return gameData;
 }
@@ -332,7 +332,7 @@ const weaponFromPlayer = (gameData, weapon, newWeapons, allShips) => {
   if (attacker?.effects[14] || weapon.id === 8) {
     const minRange = 3000;
     const target = nearestTarget(weapon.location, player.team, allShips, minRange);
-    const direction = handleAiDirection(weapon.location, weapon.trajectory, target);
+    const direction = target ? handleAiDirection(weapon.location, weapon.trajectory, target) : 0;
     weapon.trajectory = handleAngle(direction, weapon.trajectory, ANAIMATION_FRAME_RATE);
   }
 
@@ -398,10 +398,10 @@ const handleAbilityWeapons = (gameData, weapon, attacker) => {
       weapon.location = findCenterCoordinates(attacker.location, shipCenter, weapon);
     }
   } else if (weapon.id === 3 && weapon.removed) {
-    const mineExplosionAnimation = {...EXPLOSION_ANIMATIONS[0], location: weapon.location, coordinates: {x: 0, y: 0}}
+    const mineExplosionAnimation = { ...EXPLOSION_ANIMATIONS[0], location: weapon.location, coordinates: { x: 0, y: 0 } }
     gameData.animations.push(mineExplosionAnimation);
   } else if (weapon.id === 7 && weapon.removed) {
-    const meteorExplosion = {...EXPLOSION_ANIMATIONS[3], location: weapon.location, coordinates: {x: 0, y: 0}}
+    const meteorExplosion = { ...EXPLOSION_ANIMATIONS[3], location: weapon.location, coordinates: { x: 0, y: 0 } }
     gameData.animations.push(meteorExplosion);
   }
 
@@ -441,13 +441,13 @@ export const findStartCenter = (player) => {
 
 const findShipBoundingBoxes = (player) => {
   const startCenter = findStartCenter(player);
-  const shipCenter = {x: player.location.x + startCenter.x, y: player.location.y + startCenter.y}
+  const shipCenter = { x: player.location.x + startCenter.x, y: player.location.y + startCenter.y }
 
   return [
-    handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, 30),
-    handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, 10),
-    handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, -10),
-    handleLocation(player.angle, {x: shipCenter.x, y: shipCenter.y}, -35)
+    handleLocation(player.angle, { x: shipCenter.x, y: shipCenter.y }, 30),
+    handleLocation(player.angle, { x: shipCenter.x, y: shipCenter.y }, 10),
+    handleLocation(player.angle, { x: shipCenter.x, y: shipCenter.y }, -10),
+    handleLocation(player.angle, { x: shipCenter.x, y: shipCenter.y }, -35)
   ];
 }
 
@@ -455,7 +455,7 @@ const handleCollision = (players, weapon, attacker) => {
   players.forEach((player) => {
     if (player.team !== weapon.team && player.active) {
       const shipBoundingBoxes = findShipBoundingBoxes(player);
-      const weaponCenter = {x: weapon.location.x + (weapon.width / 2), y: weapon.location.y + (weapon.height / 2)}
+      const weaponCenter = { x: weapon.location.x + (weapon.width / 2), y: weapon.location.y + (weapon.height / 2) }
 
       shipBoundingBoxes.forEach((center, index) => {
         const distance = findHypotenuse(center, weaponCenter);
@@ -610,7 +610,7 @@ export const handleLocation = (trajectory, location, distance) => {
   const radians = trajectory * Math.PI / 180
   const x = round(location.x + Math.cos(radians) * distance)
   const y = round(location.y + Math.sin(radians) * distance)
-  return {x, y}
+  return { x, y }
 }
 
 export const handleAngle = (direction, angle, elapsedTime) => {
