@@ -37,7 +37,7 @@ export const GAME_EFFECTS = [
     duration: 11000,
     durationCount: 0,
     animation: {
-      coordinates: {x: 0, y: 0},
+      coordinates: { x: 0, y: 0 },
       spriteIndex: 1,
       width: 400,
       height: 225,
@@ -57,7 +57,7 @@ export const GAME_EFFECTS = [
     duration: 12000,
     durationCount: 0,
     animation: {
-      coordinates: {x: 0, y: 0},
+      coordinates: { x: 0, y: 0 },
       spriteIndex: 2,
       width: 128,
       height: 128,
@@ -77,7 +77,7 @@ export const GAME_EFFECTS = [
     duration: 6000,
     durationCount: 0,
     animation: {
-      coordinates: {x: 0, y: 0},
+      coordinates: { x: 0, y: 0 },
       spriteIndex: 3,
       width: 400,
       height: 225,
@@ -103,7 +103,7 @@ export const GAME_EFFECTS = [
     duration: 8000,
     durationCount: 0,
     animation: {
-      coordinates: {x: 0, y: 0},
+      coordinates: { x: 0, y: 0 },
       spriteIndex: 4,
       width: 400,
       height: 225,
@@ -123,7 +123,7 @@ export const GAME_EFFECTS = [
     duration: 4000,
     durationCount: 0,
     animation: {
-      coordinates: {x: 0, y: 0},
+      coordinates: { x: 0, y: 0 },
       spriteIndex: 5,
       width: 128,
       height: 128,
@@ -143,7 +143,7 @@ export const GAME_EFFECTS = [
     duration: 20000,
     durationCount: 0,
     animation: {
-      coordinates: {x: 0, y: 0},
+      coordinates: { x: 0, y: 0 },
       spriteIndex: 6,
       width: 400,
       height: 225,
@@ -163,7 +163,7 @@ export const GAME_EFFECTS = [
     duration: 16000,
     durationCount: 0,
     animation: {
-      coordinates: {x: 0, y: 0},
+      coordinates: { x: 0, y: 0 },
       spriteIndex: 7,
       width: 200,
       height: 113,
@@ -189,7 +189,7 @@ export const GAME_EFFECTS = [
     duration: 20000,
     durationCount: 0,
     animation: {
-      coordinates: {x: 0, y: 0},
+      coordinates: { x: 0, y: 0 },
       spriteIndex: 8,
       width: 70,
       height: 70,
@@ -210,8 +210,8 @@ export const GAME_EFFECTS = [
     durationCount: 0,
     animation: {
       spriteIndex: 9,
-      location: {x: 0, y: 0},
-      coordinates: {x: 0, y: 0},
+      location: { x: 0, y: 0 },
+      coordinates: { x: 0, y: 0 },
       width: 400,
       height: 225,
       renderWidth: 300,
@@ -243,7 +243,7 @@ export const GAME_EFFECTS = [
     duration: 7000,
     durationCount: 0,
     animation: {
-      coordinates: {x: 0, y: 0},
+      coordinates: { x: 0, y: 0 },
       spriteIndex: 10,
       width: 300,
       height: 169,
@@ -257,7 +257,8 @@ export const GAME_EFFECTS = [
       yOffset: 0,
     }
   }
-]
+];
+
 export const SPRITE_IMAGES = [
   poisonAnimation,
   coldAnimation,
@@ -270,4 +271,4 @@ export const SPRITE_IMAGES = [
   damageBoostIcon,
   armorReductionAnimation,
   crippleAnimation
-]
+];

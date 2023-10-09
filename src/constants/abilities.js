@@ -1,4 +1,3 @@
-import { API_RESOURCE_URL } from '../api/apiHelpers.js';
 import {
   windSound,
   warpSpeedSound,
@@ -35,7 +34,6 @@ import piercerIcon from '../images/piercerIcon2.png';
 import rapidFireIcon from '../images/rapidFireIcon2.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import damageReductionIcon from '../images/damageReductionIcon.png';
-// import energyFieldIcon from '../images/energyFieldIcon.png';
 import immolation from '../images/immolation.png';
 import armorReductionIcon from '../images/armorReductionIcon3.png';
 import redMeteorIcon from '../images/redMeteorIcon2.png';
@@ -47,31 +45,6 @@ import crippleIcon from '../images/crippleIcon.png';
 import poisonDartIcon from '../images/poisonDartIcon2.png';
 import massStunIcon from '../images/massStunIcon2.png';
 import poisonIcon from '../images/poisonIcon2.png';
-  
-
-// const nuclearExplosionIcon = `${API_RESOURCE_URL}/nuclearExplosionIcon`;
-// const warpSpeedIcon = `${API_RESOURCE_URL}/warpSpeedIcon`;
-// const mineIcon = `${API_RESOURCE_URL}/mineIcon`;
-// const stunGunIcon = `${API_RESOURCE_URL}/stunGunIcon`;
-// const invulnerabilityIcon = `${API_RESOURCE_URL}/invulnerableIcon`;
-// const stealthModeIcon = `${API_RESOURCE_URL}/stealthMode`;
-// const meteorShowerIcon = `${API_RESOURCE_URL}/meteorShowerIcon`;
-// const healingIcon = `${API_RESOURCE_URL}/healthBoost`;
-// const piercerIcon = `${API_RESOURCE_URL}/piercerIcon`;
-// const rapidFireIcon = `${API_RESOURCE_URL}/rapidFireIcon`;
-// const damageBoostIcon = `${API_RESOURCE_URL}/damageBoostIcon`;
-// const damageReductionIcon = `${API_RESOURCE_URL}/damageReductionIcon`;
-// const energyFieldIcon = `${API_RESOURCE_URL}/energyFieldIcon`;
-// const armorReductionIcon = `${API_RESOURCE_URL}/armorReductionIcon`;
-// const redMeteorIcon = `${API_RESOURCE_URL}/redMeteorIcon`;
-// const teleportIcon = `${API_RESOURCE_URL}/teleportIcon`;
-// const armorBoost = `${API_RESOURCE_URL}/shieldIcon`;
-// const homingAttackIcon = `${API_RESOURCE_URL}/homingAttackIcon`;
-// const backupIcon = `${API_RESOURCE_URL}/backupIcon`;
-// const crippleIcon = `${API_RESOURCE_URL}/crippleIcon`;
-// const poisonDartIcon = `${API_RESOURCE_URL}/poisonDartIcon`;
-// const massStunIcon = `${API_RESOURCE_URL}/massStunIcon`;
-// const poisonIcon = `${API_RESOURCE_URL}/poisonIcon`;
 
 export const ABILITIES = [
   {

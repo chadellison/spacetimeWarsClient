@@ -1,26 +1,5 @@
 // ships
-import { API_RESOURCE_URL } from '../api/apiHelpers.js';
 import { GAME_ANIMATIONS, BOARD_WIDTH, BOARD_HEIGHT } from './settings.js';
-
-// const hunterShip = `${API_RESOURCE_URL}/redHunterShip`;
-// const blueHunterShip = `${API_RESOURCE_URL}/blueHunterShip`;
-// const destroyerShip = `${API_RESOURCE_URL}/redDestroyer`;
-// const blueDestroyerShip = `${API_RESOURCE_URL}/blueDestroyer`;
-// const redWarShip = `${API_RESOURCE_URL}/redWar`;
-// const blueWarShip = `${API_RESOURCE_URL}/blueWar`;
-// const cruiserShip = `${API_RESOURCE_URL}/redCruiser`;
-// const blueCruiserShip = `${API_RESOURCE_URL}/blueCruiser`;
-// const carrierShip = `${API_RESOURCE_URL}/redCarrierShip`;
-// const blueCarrierShip = `${API_RESOURCE_URL}/blueCarrierShip`;
-// const redStealthShip = `${API_RESOURCE_URL}/redStealthShip`;
-// const blueStealthShip = `${API_RESOURCE_URL}/blueStealthShip`;
-// const commanderShip = `${API_RESOURCE_URL}/commanderShip`;
-// const blueCommanderShip = `${API_RESOURCE_URL}/blueCommanderShip`;
-// const spiderShip = `${API_RESOURCE_URL}/spiderShip`;
-// const blueSpiderShip = `${API_RESOURCE_URL}/blueSpiderShip`;
-// const supplyShip = `${API_RESOURCE_URL}/supplyShip`;
-// const redMothershipAnimation = `${API_RESOURCE_URL}/mothershipAnimationRed`;
-// const blueMothershipAnimation = `${API_RESOURCE_URL}/mothershipAnimationBlue`;
 import bomber from '../images/redBomber.png'
 import blueBomber from '../images/blueBomber.png'
 import bomberTwo from '../images/redBomber2.png'
