@@ -425,7 +425,7 @@ const handleAbilityWeapons = (gameData, weapon, attacker) => {
     const meteorExplosion = { ...EXPLOSION_ANIMATIONS[3], location: weapon.location, coordinates: { x: 0, y: 0 } }
     gameData.animations.push(meteorExplosion);
   } else if ([9, 10].includes(weapon.id)) {
-    if (Date.now() - weapon.deployedAt > 1000) {
+    if (Date.now() - weapon.deployedAt > 1500) {
       gameData = handleAreaOfEffect(gameData, weapon, attacker);
       weapon.removed = true
     }
