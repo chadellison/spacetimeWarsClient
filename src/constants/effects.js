@@ -1,7 +1,7 @@
 import poisonAnimation from '../images/poisonAnimation2.png';
 import healAnimation from '../images/healAnimation.png';
 import armorBoost from '../images/armorBoostAnimation.png';
-import invulnerableAnimation from '../images/invulnerableAnimation.png';
+import invulnerabilityAnimation from '../images/invulnerabilityAnimation2.png';
 import coldAnimation from '../images/coldAnimation.png';
 import stunAnimation from '../images/stunAnimation.png';
 import warpSpeedAnimation from '../images/warpSpeedAnimation2.png';
@@ -109,8 +109,8 @@ export const GAME_EFFECTS = [
       height: 225,
       renderWidth: 400,
       renderHeight: 225,
-      rowCount: 105,
-      columnCount: 1,
+      rowCount: 1,
+      columnCount: 105,
       rate: 0,
       startRate: 0,
       xOffset: 0,
@@ -264,7 +264,7 @@ export const SPRITE_IMAGES = [
   coldAnimation,
   damageReductionAnimation,
   stunAnimation,
-  invulnerableAnimation,
+  invulnerabilityAnimation,
   healAnimation,
   armorBoost,
   warpSpeedAnimation,

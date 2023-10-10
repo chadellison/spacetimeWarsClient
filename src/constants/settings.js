@@ -25,7 +25,6 @@ import poisonDartAudio from '../audio/poisonDartSound.wav';
 import rapidFireAudio from '../audio/rapidFireSound.mp3';
 import shipExplosionAudio from '../audio/shipExplosionSound.mov';
 import stunGunAudio from '../audio/stunGunSound.mp3';
-import stunAudio from '../audio/stunSound.wav';
 import teleportAudio from '../audio/teleportSound.mp3';
 import thrusterAudio from '../audio/thruster.wav';
 import toneAudio from '../audio/toneSound.mov';
@@ -33,6 +32,7 @@ import upgradeAudio from '../audio/upgradeSound.mov';
 import warpSpeedAudio from '../audio/warpSpeedSound.mov';
 import windAudio from '../audio/windSound.mov';
 import zapAudio from '../audio/zapSound.wav';
+import electricFieldProjectileAudio from '../audio/electricFieldProjectileSound.wav';
 
 // images
 import blinkAnimation from '../images/invisibleAnimation.png';
@@ -40,6 +40,8 @@ import levelUpAnimation from '../images/levelUpAnimation.png';
 import mothershipHitAnimation from '../images/mothershipHitAnimation2.png';
 import teleportAnimation from '../images/teleportAnimation.png';
 import thrusterAnimation from '../images/thrusterAnimation.png';
+import electricField from '../images/electricField.png';
+import gasBombAnimation from '../images/gasBombAnimation2.png';
 
 
 // constants
@@ -85,7 +87,7 @@ export const backupSound = new Audio(backupAudio);
 export const homingSound = new Audio(homingAudio);
 export const crippleSound = new Audio(crippleAudio);
 export const poisonDartSound = new Audio(poisonDartAudio);
-export const stunSound = new Audio(stunAudio);
+export const electricFieldProjectileSound = new Audio(electricFieldProjectileAudio);
 
 const zap = new Audio(zapAudio);
 zap.volume = 0.2;
@@ -172,5 +174,37 @@ export const GAME_ANIMATIONS = [
     startRate: 0,
     xOffset: 0,
     yOffset: 0
+  },
+  {
+    name: 'electricField',
+    location: { x: 0, y: 0 },
+    coordinates: { x: 0, y: 0 },
+    spriteImage: electricField,
+    width: 512,
+    height: 288,
+    renderWidth: 1024,
+    renderHeight: 576,
+    rowCount: 7,
+    columnCount: 13,
+    rate: 0,
+    startRate: 0,
+    xOffset: -512,
+    yOffset: -288
+  },
+  {
+    name: 'gasBomb',
+    location: { x: 0, y: 0 },
+    coordinates: { x: 0, y: 0 },
+    spriteImage: gasBombAnimation,
+    width: 512,
+    height: 288,
+    renderWidth: 1024,
+    renderHeight: 576,
+    rowCount: 1,
+    columnCount: 91,
+    rate: 0,
+    startRate: 0,
+    xOffset: -512,
+    yOffset: -288
   }
 ];

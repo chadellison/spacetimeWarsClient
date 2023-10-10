@@ -67,7 +67,7 @@ export const ITEMS = [
   {
     id: 6,
     index: 5,
-    price: 600,
+    price: 1100,
     name: 'Stun Attack',
     image: stun,
     cooldown: 0,

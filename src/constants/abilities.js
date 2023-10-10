@@ -19,7 +19,7 @@ import {
   homingSound,
   crippleSound,
   poisonDartSound,
-  stunSound
+  electricFieldProjectileSound,
 } from '../constants/settings.js';
 
 import nuclearExplosionIcon from '../images/nuclearExplosionIcon.png';
@@ -34,7 +34,7 @@ import piercerIcon from '../images/piercerIcon2.png';
 import rapidFireIcon from '../images/rapidFireIcon2.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import damageReductionIcon from '../images/damageReductionIcon.png';
-import immolation from '../images/immolation.png';
+import immolationIcon from '../images/immolationIcon.png';
 import armorReductionIcon from '../images/armorReductionIcon3.png';
 import redMeteorIcon from '../images/redMeteorIcon2.png';
 import teleportIcon from '../images/teleportIcon2.png';
@@ -162,7 +162,7 @@ export const ABILITIES = [
     description: 'Surrounds the ship with hot energy inflicting grevious damage on nearby ships (25, 50, 75) damage per second and slowing enemy units ("W" key to use; 45s cooldown)',
     cooldown: 45000,
     weaponIndex: 5,
-    image: immolation,
+    image: immolationIcon,
     sound: electricFieldSound,
   },
   {
@@ -248,18 +248,20 @@ export const ABILITIES = [
   },
   {
     index: 22,
-    type: 'effect',
-    description: 'Stuns all enemy ships for (3, 6, 9) seconds respectively',
-    cooldown: 35000,
+    type: 'weapon',
+    weaponIndex: 8,
+    description: 'Stuns all enemy ships within 400 radius for (3, 6, 9) seconds respectively',
+    cooldown: 25000,
     effectIndex: 3,
     image: massStunIcon,
-    sound: stunSound,
+    sound: electricFieldProjectileSound,
   },
   {
     index: 23,
-    type: 'effect',
-    description: 'poisons all enemy ships for (3, 6, 9) seconds respectively',
-    cooldown: 35000,
+    type: 'weapon',
+    weaponIndex: 9,
+    description: 'poisons all enemy ships within a 400 radius for (3, 6, 9) seconds respectively',
+    cooldown: 25000,
     effectIndex: 0,
     image: poisonIcon,
     sound: poisonDartSound,

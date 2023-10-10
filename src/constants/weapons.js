@@ -6,6 +6,8 @@ import plasmaCannonAudio from '../audio/plasmaSound.wav';
 import laserAudio from '../audio/laser.wav';
 import lightLazer from '../audio/lightLazer.mp3';
 import redPlasmaCannonAudio from '../audio/plasmaCannonSound.wav';
+import stunAudio from '../audio/stunSound.wav';
+import gasBombReleaseAudio from '../audio/gasBombReleaseSound2.wav';
 
 // weapons
 import fireballAnimation from '../images/fireballAnimation.png';
@@ -31,11 +33,13 @@ import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
 import stunGunAnimation from '../images/stunBoltAnimation.png';
 import meteorShowerAnimation from '../images/meteorShowerAnimation.png';
 import piercerAnimation from '../images/piercerAnimation.png';
-import redEnergyAnimation from '../images/redEnergyAnimation.png';
+import immolation from '../images/immolation3.png';
 import redMeteorAnimation from '../images/redMeteorAnimation.png';
 import meteorExplosionAnimation from '../images/meteorExplosionAnimation.png';
 import coldShotAnimation from '../images/coldShotAnimation.png';
 import poisonDartAnimation from '../images/poisonDartAnimation.png';
+import electricFieldProjectileAnimation from '../images/electricFieldProjectileAnimation2.png';
+import gasBombProjectileAnimation from '../images/gasBombProjectileAnimation.png';
 
 const AUDIO = [
   cannonAudio,
@@ -46,6 +50,8 @@ const AUDIO = [
   lightLazer,
   plasmaCannonAudio,
   redPlasmaCannonAudio,
+  stunAudio,
+  gasBombReleaseAudio
 ].map((audio) => {
   const audioObject = new Audio(audio);
   audioObject.volume = 0.2;
@@ -370,7 +376,7 @@ export const ABILITY_WEAPONS = [
   },
   {
     id: 6,
-    name: 'electricField',
+    name: 'immolation',
     location: { x: 0, y: 0 },
     trajectory: 0,
     speed: 0,
@@ -380,13 +386,13 @@ export const ABILITY_WEAPONS = [
     damage: 1,
     animation: {
       coordinates: { x: 0, y: 0 },
-      spriteImage: redEnergyAnimation,
+      spriteImage: immolation,
       width: 400,
       height: 225,
       renderWidth: 600,
       renderHeight: 338,
-      rowCount: 89,
-      columnCount: 1,
+      rowCount: 1,
+      columnCount: 89,
       rate: 0,
       startRate: 0,
       xOffset: 0,
@@ -437,6 +443,60 @@ export const ABILITY_WEAPONS = [
       renderHeight: 83,
       rowCount: 24,
       columnCount: 1,
+      rate: 0,
+      startRate: 0,
+      xOffset: 0,
+      yOffset: 0,
+    }
+  },
+  {
+    id: 9,
+    name: 'electricFieldProjectile',
+    location: { x: 0, y: 0 },
+    trajectory: 0,
+    speed: 12,
+    width: 64,
+    height: 32,
+    damage: 0,
+    effectIndex: 3,
+    animationIndex: 5,
+    sound: AUDIO[8],
+    animation: {
+      coordinates: { x: 0, y: 0 },
+      spriteImage: electricFieldProjectileAnimation,
+      width: 64,
+      height: 32,
+      renderWidth: 64,
+      renderHeight: 32,
+      rowCount: 1,
+      columnCount: 5,
+      rate: 0,
+      startRate: 0,
+      xOffset: 0,
+      yOffset: 0,
+    }
+  },
+  {
+    id: 10,
+    name: 'gasBombProjectile',
+    location: { x: 0, y: 0 },
+    trajectory: 0,
+    speed: 10,
+    width: 32,
+    height: 32,
+    damage: 0,
+    effectIndex: 0,
+    animationIndex: 6,
+    sound: AUDIO[9],
+    animation: {
+      coordinates: { x: 0, y: 0 },
+      spriteImage: gasBombProjectileAnimation,
+      width: 32,
+      height: 32,
+      renderWidth: 32,
+      renderHeight: 32,
+      rowCount: 4,
+      columnCount: 7,
       rate: 0,
       startRate: 0,
       xOffset: 0,
@@ -513,5 +573,5 @@ export const EXPLOSION_ANIMATIONS = [
     yOffset: -100,
     renderWidth: 200,
     renderHeight: 200,
-  },
-]
+  }
+];

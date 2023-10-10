@@ -97,7 +97,7 @@ const handleAccelerateEvent = (gameState, pressedKey, handleGameEvent, updateSta
 
 const handleSpaceBarEvent = (gameState, handleGameEvent, updateState, currentPlayer) => {
   const { lastFired, deployedWeapons } = gameState;
-  if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown, false, false)) {
+  if (canFire(lastFired, WEAPONS[currentPlayer.weaponIndex].cooldown, currentPlayer)) {
     let player = { ...currentPlayer, gameEvent: 'fire' }
     updateState({ lastFired: Date.now() });
     const damage = handlePlayerDamage(player);

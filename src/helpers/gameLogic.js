@@ -5,7 +5,7 @@ import {
   BOARD_HEIGHT,
   explosionSound,
   mineTriggerSound,
-  zapSound
+  zapSound,
 } from '../constants/settings.js';
 import { SHIPS, BOMBERS, MOTHER_SHIP } from '../constants/ships.js';
 import { WEAPONS, EXPLOSION_ANIMATIONS } from '../constants/weapons.js';
@@ -65,8 +65,8 @@ const updateMotherships = (motherships, userId, handleGameEvent, connected) => {
 
 const handleAiWeapons = (weapons, motherships, players, aiShips) => {
   aiShips.forEach((ship) => {
-    const { active, type, shouldFire, lastFired, weaponIndex, effects } = ship;
-    if (active && type === 'bomber' && shouldFire && canFire(lastFired, WEAPONS[weaponIndex].cooldown * 2, false, effects[15])) {
+    const { active, type, shouldFire, lastFired, weaponIndex } = ship;
+    if (active && type === 'bomber' && shouldFire && canFire(lastFired, WEAPONS[weaponIndex].cooldown * 2, ship)) {
       const weapon = { ...WEAPONS[ship.weaponIndex] }
       weapons.push(handleFireWeapon(ship, weapon, 0, weapon.damage));
       ship.lastFired = Date.now();
@@ -189,7 +189,7 @@ const updatePlayers = (gameState, handleGameEvent, connected) => {
 
 const handleRepeatedFire = (player, space, lastFired, deployedWeapons, handleGameEvent) => {
   if (player && player.active) {
-    if (space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown, player.effects[10], player.effects[15])) {
+    if (space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown, player)) {
       player.gameEvent = 'fire';
       handleGameEvent(player)
       const damage = handlePlayerDamage(player);
@@ -248,10 +248,16 @@ const handleHitpoints = (player, userId, handleGameEvent, connected) => {
   return player;
 };
 
-export const canFire = (lastFired, cooldown, rapidFireFirect, crippleEffect) => {
-  let updatedCooldown = rapidFireFirect ? (cooldown / 2) : cooldown
-  updatedCooldown = crippleEffect ? (updatedCooldown * 2) : updatedCooldown;
-  return Date.now() - lastFired > updatedCooldown;
+export const canFire = (lastFired, cooldown, player) => {
+  if (player.effects[4]) {
+    return false;
+  } else {
+    const rapidFireEffect = player.effects[10] ;
+    const crippleEffect = player.effects[15];
+    let updatedCooldown = rapidFireEffect ? (cooldown / 2) : cooldown
+    updatedCooldown = crippleEffect ? (updatedCooldown * 2) : updatedCooldown;
+    return Date.now() - lastFired > updatedCooldown;
+  }
 }
 
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
@@ -314,6 +320,26 @@ const handleNuclearWeapon = (gameData, weapon, attacker) => {
   playSound(explosionSound);
   const nuclearBlastAnimation = { ...EXPLOSION_ANIMATIONS[1], location: weapon.location, coordinates: { x: 0, y: 0 } }
   gameData.animations.push(nuclearBlastAnimation);
+  return gameData;
+};
+
+const handleAreaOfEffect = (gameData, weapon, attacker) => {
+  const { players, aiShips, motherships } = gameData;
+  const areaRange = 400;
+
+  players.concat(aiShips, motherships).forEach((player) => {
+    if (player.team !== weapon.team) {
+      const distance = Math.abs(weapon.location.x - player.location.x) + Math.abs(weapon.location.y - player.location.y);
+      if (distance < areaRange && !player.effects[6]) {
+        const effect = createEffect(weapon.effectIndex, attacker.level * 3000, player.effects[weapon.id]);
+        player.effects[effect.id] = effect;
+      }
+    }
+  });
+
+  playSound(weapon.sound);
+  const gameAnimation = { ...GAME_ANIMATIONS[weapon.animationIndex], location: weapon.location, coordinates: { x: 0, y: 0 } }
+  gameData.animations.push(gameAnimation);
   return gameData;
 }
 
@@ -398,10 +424,15 @@ const handleAbilityWeapons = (gameData, weapon, attacker) => {
   } else if (weapon.id === 7 && weapon.removed) {
     const meteorExplosion = { ...EXPLOSION_ANIMATIONS[3], location: weapon.location, coordinates: { x: 0, y: 0 } }
     gameData.animations.push(meteorExplosion);
+  } else if ([9, 10].includes(weapon.id)) {
+    if (Date.now() - weapon.deployedAt > 2000) {
+      gameData = handleAreaOfEffect(gameData, weapon, attacker);
+      weapon.removed = true
+    }
   }
 
   return gameData;
-}
+};
 
 const weaponFromAi = (gameData, weapon, newWeapons, allShips) => {
   weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);

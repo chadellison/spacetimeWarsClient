@@ -23,7 +23,7 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
   } else {
     return applyOtherAbility([...players], playerData, newAnimmations);
   }
-}
+};
 
 const applyOtherAbility = (players, playerData, newAnimmations) => {
   const player = players.find((player) => player.userId === playerData.userId);
@@ -42,7 +42,7 @@ const applyOtherAbility = (players, playerData, newAnimmations) => {
     }
   })
   return { players: udpatedPlayers, animations: newAnimmations.concat(teleportAnimation) }
-}
+};
 
 const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime) => {
   const weapon = { ...ABILITY_WEAPONS[weaponIndex], deployedAt: Date.now() - elapsedTime }
@@ -52,7 +52,7 @@ const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime)
     const updatedWeapons = [...deployedWeapons, handleFireWeapon(playerData, weapon, elapsedTime, weapon.damage * playerData.abilityLevel)];
     return { deployedWeapons: updatedWeapons }
   }
-}
+};
 
 const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animations, aiShips) => {
   let updatedPlayers = [...players]
@@ -94,7 +94,7 @@ const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animati
     })
   }
   return { players: updatedPlayers, aiShips: updatedAiShips, animations };
-}
+};
 
 const applyEffectToTeam = (players, team, effect) => {
   return players.map((player) => {
@@ -109,7 +109,7 @@ const applyEffectToTeam = (players, team, effect) => {
     }
     return player;
   });
-}
+};
 
 const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime) => {
   const angle = handleAngle(player.rotate, player.angle, elapsedTime);
