@@ -13,6 +13,7 @@ import Header from './Header';
 import { Modal } from './Modal';
 import PlayerData from './PlayerData';
 import { calculatePercent } from '../helpers/mathHelpers';
+import introMusic from '../audio/introJingle.wav'
 
 const INITIAL_MODAL = window.innerWidth < WINDOW_WIDTH_THRESHOLD ? 'deviceChageNotification' : 'instructions';
 
@@ -258,6 +259,11 @@ const Layout = () => {
           clockDifference={clockDifference}
           handleGameEvent={handleGameEvent}
         />}
+        {['selection', 'nameForm'].includes(modal) && (
+          <audio autoPlay loop>
+            <source src={introMusic} type="audio/wav" />
+          </audio>
+        )}
         <Header activePlayer={activePlayer}
           modal={modal}
           clockDifference={clockDifference}
