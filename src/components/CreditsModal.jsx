@@ -89,6 +89,14 @@ export const CreditsModal = ({updateState}) => {
             https://www.zapsplat.com
         </a>
       </div>
+      <div className="informationText">
+        <span>All other assets provided by: </span><a className="assetLink"
+          href="https://vfx.productioncrate.com/"
+          target="_blank"
+          rel="noopener noreferrer">
+            https://vfx.productioncrate.com/
+        </a>
+      </div>
       <div className="closeButton" onClick={() => updateState({modal: ''})}>Close</div>
     </div>
   );

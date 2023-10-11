@@ -23,13 +23,13 @@ import displayBomb from '../images/displayBomb3.png';
 import laserAnimation from '../images/laserAnimation.png';
 import displayLaser from '../images/displayLaser3.png';
 import displayBlueFire from '../images/displayBlueFire3.png';
-import plasmaCannonAnimation from '../images/redPlasmaCannonAnimation.png';
 import displayPlasmaCannon from '../images/displayPlasmaCannon2.png';
 import spaceMine from '../images/spaceMine3.png';
 import nuclearExplosionAnimation from '../images/nuclearExplosionAnimation.png';
 import mineExplosionAnimation from '../images/mineExplosionAnimation.png';
 import nuclearBlastAnimation from '../images/nuclearBlastAnimation.png';
 import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
+import purpleFireAnimation from '../images/purpleFireAnimation.png';
 import stunGunAnimation from '../images/stunBoltAnimation.png';
 import meteorShowerAnimation from '../images/meteorShowerAnimation.png';
 import piercerAnimation from '../images/piercerAnimation.png';
@@ -250,27 +250,27 @@ export const WEAPONS = [
     trajectory: 0,
     cooldown: 450,
     speed: 18,
-    damage: 180,
+    damage: 190,
     price: 1150,
-    width: 38,
-    height: 21,
+    width: 128,
+    height: 64,
     damageRadius: 6,
     ability: 'armor piercing damage: disregards all armor on enemy ship',
     sound: AUDIO[7],
     selectionImage: displayPlasmaCannon,
     animation: {
       coordinates: { x: 0, y: 0 },
-      spriteImage: plasmaCannonAnimation,
-      width: 50,
-      height: 28,
-      rowCount: 71,
-      columnCount: 1,
-      rate: 0,
-      startRate: 0,
-      renderWidth: 38,
-      renderHeight: 21,
+      spriteImage: piercerAnimation,
+      width: 128,
+      height: 64,
+      rowCount: 4,
+      columnCount: 2,
+      rate: 1,
+      renderWidth: 128,
+      renderHeight: 64,
+      startRate: 1,
       xOffset: 0,
-      yOffset: 0
+      yOffset: 0,
     }
   }
 ];
@@ -355,20 +355,20 @@ export const ABILITY_WEAPONS = [
     location: { x: 0, y: 0 },
     trajectory: 0,
     speed: 14,
-    width: 270,
-    height: 135,
-    damage: 80,
+    width: 256,
+    height: 72,
+    damage: 130,
     damageRadius: 6,
     animation: {
       coordinates: { x: 0, y: 0 },
-      spriteImage: piercerAnimation,
-      width: 128,
-      height: 64,
-      rowCount: 4,
-      columnCount: 2,
+      spriteImage: purpleFireAnimation,
+      width: 256,
+      height: 72,
+      rowCount: 1,
+      columnCount: 77,
       rate: 1,
-      renderWidth: 270,
-      renderHeight: 135,
+      renderWidth: 256,
+      renderHeight: 72,
       startRate: 1,
       xOffset: 0,
       yOffset: 0,

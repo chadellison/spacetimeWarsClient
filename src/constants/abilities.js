@@ -19,6 +19,7 @@ import {
   homingSound,
   crippleSound,
   poisonDartSound,
+  gasBombProjectileSound,
   electricFieldProjectileSound,
 } from '../constants/settings.js';
 
@@ -33,7 +34,7 @@ import healingIcon from '../images/healthBoost2.png';
 import piercerIcon from '../images/piercerIcon2.png';
 import rapidFireIcon from '../images/rapidFireIcon2.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
-import damageReductionIcon from '../images/damageReductionIcon.png';
+import disableIcon from '../images/disableIcon.png';
 import immolationIcon from '../images/immolationIcon.png';
 import armorReductionIcon from '../images/armorReductionIcon3.png';
 import redMeteorIcon from '../images/redMeteorIcon2.png';
@@ -168,10 +169,10 @@ export const ABILITIES = [
   {
     index: 13,
     type: 'effect',
-    description: 'Reduces the attack damage of all enemy ships by %50 for (8, 16, 24) seconds ("E" key to use; 50s cooldown)',
+    description: 'Disables your opponent\'s weapons systems for (3, 6, 9) seconds ("E" key to use; 50s cooldown)',
     cooldown: 50000,
     effectIndex: 2,
-    image: damageReductionIcon,
+    image: disableIcon,
     sound: damageReductionSound,
   },
   {
@@ -264,6 +265,6 @@ export const ABILITIES = [
     cooldown: 25000,
     effectIndex: 0,
     image: poisonIcon,
-    sound: poisonDartSound,
+    sound: gasBombProjectileSound,
   }
-]
+];

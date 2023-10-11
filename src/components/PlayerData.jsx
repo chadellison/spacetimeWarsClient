@@ -86,9 +86,6 @@ const renderDamage = (player) => {
       modifier += round(damage * 0.25);
     }
 
-    if (player.effects[3]) {
-      modifier -= round((damage + modifier) / 2)
-    }
     return (
       <PlayerStat
         image={UPGRADES[3].image}

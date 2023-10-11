@@ -21,7 +21,7 @@ import mineTriggerAudio from '../audio/mineTriggerSound.mov';
 import missileAudio from '../audio/missile.wav';
 import notEnoughResourcesAudio from '../audio/notEnoughResources.wav';
 import piercerAudio from '../audio/piercerSound.mov';
-import poisonDartAudio from '../audio/poisonDartSound.wav';
+import poisonDartAudio from '../audio/poisonDartSound2.wav';
 import rapidFireAudio from '../audio/rapidFireSound.mp3';
 import shipExplosionAudio from '../audio/shipExplosionSound.mov';
 import stunGunAudio from '../audio/stunGunSound.mp3';
@@ -32,6 +32,7 @@ import upgradeAudio from '../audio/upgradeSound.mov';
 import warpSpeedAudio from '../audio/warpSpeedSound.mov';
 import windAudio from '../audio/windSound.mov';
 import zapAudio from '../audio/zapSound.wav';
+import gasBombProjectileAudio from '../audio/gasBombProjectileSound2.wav';
 import electricFieldProjectileAudio from '../audio/electricFieldProjectileSound.wav';
 
 // images
@@ -87,6 +88,7 @@ export const backupSound = new Audio(backupAudio);
 export const homingSound = new Audio(homingAudio);
 export const crippleSound = new Audio(crippleAudio);
 export const poisonDartSound = new Audio(poisonDartAudio);
+export const gasBombProjectileSound = new Audio(gasBombProjectileAudio);
 export const electricFieldProjectileSound = new Audio(electricFieldProjectileAudio);
 
 const zap = new Audio(zapAudio);

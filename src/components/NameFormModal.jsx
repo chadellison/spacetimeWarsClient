@@ -30,7 +30,7 @@ export const NameFormModal = ({ updateState, activePlayer }) => {
   return (
     <div className='modal'>
       <label className="formLabel">
-        Create a username
+        Name your vessel
       </label>
       <input type="text"
         maxLength={16}

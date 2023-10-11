@@ -6,9 +6,11 @@ import coldAnimation from '../images/coldAnimation.png';
 import stunAnimation from '../images/stunAnimation.png';
 import warpSpeedAnimation from '../images/warpSpeedAnimation2.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
-import damageReductionAnimation from '../images/damageReductionAnimation.png';
+import disableAnimation from '../images/disableAnimation.png';
 import armorReductionAnimation from '../images/armorReductionAnimation.png';
 import crippleAnimation from '../images/crippleAnimation.png';
+
+export const NEGATIVE_EFFECT_IDS = [1, 2, 3, 4, 12, 15];
 
 export const GAME_EFFECTS = [
   {
@@ -53,18 +55,18 @@ export const GAME_EFFECTS = [
   },
   {
     id: 3,
-    name: 'damageReduction',
-    duration: 12000,
+    name: 'disable',
+    duration: 3000,
     durationCount: 0,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteIndex: 2,
       width: 128,
-      height: 128,
+      height: 72,
       renderWidth: 128,
-      renderHeight: 128,
-      rowCount: 4,
-      columnCount: 4,
+      renderHeight: 72,
+      rowCount: 1,
+      columnCount: 64,
       rate: 0,
       startRate: 0,
       xOffset: 0,
@@ -212,12 +214,12 @@ export const GAME_EFFECTS = [
       spriteIndex: 9,
       location: { x: 0, y: 0 },
       coordinates: { x: 0, y: 0 },
-      width: 400,
-      height: 225,
-      renderWidth: 300,
-      renderHeight: 168,
-      rowCount: 141,
-      columnCount: 1,
+      width: 256,
+      height: 256,
+      renderWidth: 256,
+      renderHeight: 256,
+      rowCount: 1,
+      columnCount: 89,
       rate: 0,
       startRate: 0,
       xOffset: 0,
@@ -262,7 +264,7 @@ export const GAME_EFFECTS = [
 export const SPRITE_IMAGES = [
   poisonAnimation,
   coldAnimation,
-  damageReductionAnimation,
+  disableAnimation,
   stunAnimation,
   invulnerabilityAnimation,
   healAnimation,

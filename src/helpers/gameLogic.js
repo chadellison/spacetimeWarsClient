@@ -212,8 +212,6 @@ export const handlePlayerDamage = (player) => {
 
   if (player.effects[11]) {
     damage += round(damage * 0.25);
-  } else if (player.effects[3]) {
-    damage = round(damage / 2);
   }
   if (player.items[7]) {
     damage += round(damage * 0.8);
@@ -249,7 +247,7 @@ const handleHitpoints = (player, userId, handleGameEvent, connected) => {
 };
 
 export const canFire = (lastFired, cooldown, player) => {
-  if (player.effects[4]) {
+  if (player.effects[3] || player.effects[4]) {
     return false;
   } else {
     const rapidFireEffect = player.effects[10] ;
@@ -331,8 +329,14 @@ const handleAreaOfEffect = (gameData, weapon, attacker) => {
     if (player.team !== weapon.team) {
       const distance = Math.abs(weapon.location.x - player.location.x) + Math.abs(weapon.location.y - player.location.y);
       if (distance < areaRange && !player.effects[6]) {
-        const effect = createEffect(weapon.effectIndex, attacker.level * 3000, player.effects[weapon.id]);
-        player.effects[effect.id] = effect;
+        const durationDivider = getItem(player.items, 12) ? 2 : 1;
+        const effect = createEffect(weapon.effectIndex, round(attacker.level * 3000 / durationDivider), player.effects[weapon.id]);
+        
+        if (effect.id === 1) {
+          handleApplyPoison(player, effect)
+        } else {
+          player.effects[effect.id] = effect;
+        }
       }
     }
   });
@@ -547,25 +551,33 @@ const didLevelUp = (level, score) => {
   }
 };
 
+const handleApplyPoison = (player, poison) => {
+  if (!getItem(player.items, 13)) {
+    player.effects[poison.id] = poison;
+  }
+}
+
 const handleNegativeBuff = (player, weapon) => {
+  const durationDivider = getItem(player.items, 12) ? 2 : 1;
+
   if (weapon.index === 5 || weapon.id === 8) {
-    const effect = createEffect(0, 3000, player.effects[1]);
-    player.effects[effect.id] = effect;
+    const effect = createEffect(0, round(3000 / durationDivider), player.effects[1]);
+    handleApplyPoison(player, effect);
   } else if (weapon.index === 6 || (weapon.id === 6 && !player.effects[2])) {
-    const effect = createEffect(1, 2000, player.effects[2]);
+    const effect = createEffect(1, round(2000 / durationDivider), player.effects[2]);
     player.effects[effect.id] = effect;
   } else if (weapon.id === 7) {
-    const slow = createEffect(1, 9000, player.effects[2]);
+    const slow = createEffect(1, round(9000 / durationDivider), player.effects[2]);
     player.effects[slow.id] = slow;
-
-    const poison = createEffect(0, 9000, player.effects[1]);
-    player.effects[poison.id] = poison;
+    const poison = createEffect(0, round(9000 / durationDivider), player.effects[1]);
+    handleApplyPoison(player, poison);
   }
 
   if ((weapon.canStun && Math.random() <= 0.1) || weapon.id === 2) {
-    const effect = createEffect(3, 3000, player.effects[4]);
+    const effect = createEffect(3, round(3000 / durationDivider), player.effects[4]);
     player.effects[effect.id] = effect;
   };
+  
   return player;
 }
 

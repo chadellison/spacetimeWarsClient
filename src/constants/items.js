@@ -3,8 +3,10 @@ import { API_RESOURCE_URL } from '../api/apiHelpers.js';
 import armorBoost from '../images/armorBoost2.png';
 import healthBoost from '../images/healthBoost2.png';
 import stun from '../images/stun2.png';
-import absorbDamage from '../images/absorbDamage2.png'
-import improvedThrusters from '../images/improvedThrusters.png'
+import absorbDamage from '../images/absorbDamage.png';
+import improvedThrusters from '../images/improvedThrusters.png';
+import resistance from '../images/resistance.png';
+import antidote from '../images/antidote.png';
 
 const repairBots = `${API_RESOURCE_URL}/repairGears`;
 const stealthMode = `${API_RESOURCE_URL}/stealthMode`;
@@ -123,5 +125,25 @@ export const ITEMS = [
     cooldown: 0,
     durationCount: 0,
     description: 'Increases ship\'s speed by 3',
+  },
+  {
+    id: 12,
+    index: 11,
+    price: 650,
+    name: 'Resistance',
+    image: resistance,
+    cooldown: 0,
+    durationCount: 0,
+    description: 'Reduces the duration of negative buffs by 50%',
+  },
+  {
+    id: 13,
+    index: 12,
+    price: 450,
+    name: 'antedote',
+    image: antidote,
+    cooldown: 0,
+    durationCount: 0,
+    description: 'Nullifies poison damage',
   }
 ];

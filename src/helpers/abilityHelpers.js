@@ -1,10 +1,12 @@
 import { ABILITY_WEAPONS } from '../constants/weapons.js';
 import { ABILITIES } from '../constants/abilities.js';
-import { GAME_EFFECTS } from '../constants/effects.js';
+import { GAME_EFFECTS, NEGATIVE_EFFECT_IDS } from '../constants/effects.js';
 import { SHIPS } from '../constants/ships.js';
 import { handleFireWeapon, handleAngle, handleLocation, findCenterCoordinates } from '../helpers/gameLogic.js';
 import { playSound } from '../helpers/audioHelpers.js';
 import { GAME_ANIMATIONS } from '../constants/settings.js';
+import { getItem } from './itemHelpers.js';
+import { round } from './mathHelpers.js';
 
 export const handleAbility = (players, deployedWeapons, playerData, elapsedTime, animations, aiShips) => {
   const ability = ABILITIES[SHIPS[playerData.shipIndex].abilities[playerData.usedAbility]]
@@ -99,10 +101,13 @@ const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animati
 const applyEffectToTeam = (players, team, effect) => {
   return players.map((player) => {
     if (player.team === team) {
+      const duration = getItem(player.items, 12) && NEGATIVE_EFFECT_IDS.includes(effect.id) ? round(effect.duration / 2) : effect.duration;
+
       player.effects = {
         ...player.effects,
         [effect.id]: {
           ...effect,
+          duration,
           animation: effect.animation && { ...effect.animation, coordinates: { x: 0, y: 0 } }
         }
       }
@@ -135,5 +140,6 @@ const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime) => {
       from: player.type
     }
   });
+  
   return { deployedWeapons: deployedWeapons.concat(meteors) }
 };
