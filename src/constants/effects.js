@@ -8,7 +8,6 @@ import warpSpeedAnimation from '../images/warpSpeedAnimation2.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import disableAnimation from '../images/disableAnimation.png';
 import armorReductionAnimation from '../images/armorReductionAnimation.png';
-import crippleAnimation from '../images/crippleAnimation.png';
 
 export const NEGATIVE_EFFECT_IDS = [1, 2, 3, 4, 12, 15];
 
@@ -241,18 +240,18 @@ export const GAME_EFFECTS = [
   },
   {
     id: 15,
-    name: 'cripple',
+    name: 'gravityPull',
     duration: 7000,
     durationCount: 0,
     animation: {
       coordinates: { x: 0, y: 0 },
-      spriteIndex: 10,
-      width: 300,
-      height: 169,
-      renderWidth: 300,
-      renderHeight: 169,
-      rowCount: 210,
-      columnCount: 1,
+      spriteIndex: 2,
+      width: 128,
+      height: 72,
+      renderWidth: 128,
+      renderHeight: 72,
+      rowCount: 1,
+      columnCount: 64,
       rate: 0,
       startRate: 0,
       xOffset: 0,
@@ -271,6 +270,5 @@ export const SPRITE_IMAGES = [
   armorBoost,
   warpSpeedAnimation,
   damageBoostIcon,
-  armorReductionAnimation,
-  crippleAnimation
+  armorReductionAnimation
 ];

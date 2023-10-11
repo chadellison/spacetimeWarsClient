@@ -3,7 +3,6 @@
 // audio
 import armorReductionAudio from '../audio/armorReductionSound.mp3';
 import backupAudio from '../audio/backupSound.wav';
-import crippleAudio from '../audio/crippleSound.wav';
 import damageBoostAudio from '../audio/damageBoostSound.mov';
 import damageReductionAudio from '../audio/damageReductionSound.mp3';
 import electricFieldAudio from '../audio/electricFieldSound.mov';
@@ -18,6 +17,7 @@ import metalClankAudio from '../audio/metalClank.mp3';
 import meteorConeAudio from '../audio/meteorConeSound.mov';
 import mineDropAudio from '../audio/mineDropSound.mp3';
 import mineTriggerAudio from '../audio/mineTriggerSound.mov';
+import cannonAudio from '../audio/cannon.wav';
 import missileAudio from '../audio/missile.wav';
 import notEnoughResourcesAudio from '../audio/notEnoughResources.wav';
 import piercerAudio from '../audio/piercerSound.mov';
@@ -34,6 +34,7 @@ import windAudio from '../audio/windSound.mov';
 import zapAudio from '../audio/zapSound.wav';
 import gasBombProjectileAudio from '../audio/gasBombProjectileSound2.wav';
 import electricFieldProjectileAudio from '../audio/electricFieldProjectileSound.wav';
+import crippleAudio from '../audio/crippleSound.wav';
 
 // images
 import blinkAnimation from '../images/invisibleAnimation.png';
@@ -43,6 +44,8 @@ import teleportAnimation from '../images/teleportAnimation.png';
 import thrusterAnimation from '../images/thrusterAnimation.png';
 import electricField from '../images/electricField.png';
 import gasBombAnimation from '../images/gasBombAnimation2.png';
+import blackHoleAnimation from '../images/blackHoleAnimation.png';
+import nuclearExplosionAnimation from '../images/nuclearExplosionAnimation.png';
 
 
 // constants
@@ -81,15 +84,16 @@ export const rapidFireSound = new Audio(rapidFireAudio);
 export const damageReductionSound = new Audio(damageReductionAudio);
 export const electricFieldSound = new Audio(electricFieldAudio);
 export const armorReductionSound = new Audio(armorReductionAudio);
+export const cannonSound = new Audio(cannonAudio);
 export const missileSound = new Audio(missileAudio);
 export const teleportSound = new Audio(teleportAudio);
 export const shipExplosionSound = new Audio(shipExplosionAudio);
 export const backupSound = new Audio(backupAudio);
 export const homingSound = new Audio(homingAudio);
-export const crippleSound = new Audio(crippleAudio);
 export const poisonDartSound = new Audio(poisonDartAudio);
 export const gasBombProjectileSound = new Audio(gasBombProjectileAudio);
 export const electricFieldProjectileSound = new Audio(electricFieldProjectileAudio);
+export const crippleSound = new Audio(crippleAudio);
 
 const zap = new Audio(zapAudio);
 zap.volume = 0.2;
@@ -208,5 +212,38 @@ export const GAME_ANIMATIONS = [
     startRate: 0,
     xOffset: -512,
     yOffset: -288
-  }
+  },
+  {
+    name: 'blackHole',
+    location: { x: 0, y: 0 },
+    coordinates: { x: 0, y: 0 },
+    spriteImage: blackHoleAnimation,
+    width: 512,
+    height: 288,
+    renderWidth: 512,
+    renderHeight: 288,
+    rowCount: 1,
+    columnCount: 170,
+    rate: 0,
+    startRate: 0,
+    xOffset: -256,
+    yOffset: -144,
+    isBackground: true
+  },
+  {
+    name: 'nuclearExplosion',
+    location: { x: 0, y: 0 },
+    coordinates: { x: 0, y: 0 },
+    spriteImage: nuclearExplosionAnimation,
+    width: 256,
+    height: 256,
+    rowCount: 36,
+    columnCount: 1,
+    rate: 0,
+    startRate: 0,
+    xOffset: -500,
+    yOffset: -500,
+    renderWidth: 1000,
+    renderHeight: 1000,
+  },
 ];

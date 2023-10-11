@@ -165,7 +165,9 @@ export const mothershipItems = {
   1: { index: 0, cooldown: 120000, durationCount: 5000 },
   2: { index: 1, durationCount: 1000, cooldown: 3000 },
   5: { index: 4, durationCount: 0, cooldown: 0 },
-  10: { index: 9, durationCount: 0, cooldown: 0 }
+  10: { index: 9, durationCount: 0, cooldown: 0 },
+  12: { index: 11, durationCount: 0, cooldown: 0 },
+  13: { index: 12, durationCount: 0, cooldown: 0 }
 };
 
 const mothershipAnimation = {

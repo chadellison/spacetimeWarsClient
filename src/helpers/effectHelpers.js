@@ -9,8 +9,7 @@ export const handleEffects = (player) => {
       delete player.effects[effect.id];
     } else {
       if (effect.id === 1) {
-        const multiplyer = player.type === 'bomber' && ['redMothership', 'blueMothership'].includes(player.name) ? 0.001 : 0.002;
-        const damage = (round(player.maxHitpoints * multiplyer)) || 1;
+        const damage = (round(player.maxHitpoints * 0.002)) || 1;
         const newHitpoints = player.hitpoints - damage;
         player.hitpoints = newHitpoints > 1 ? newHitpoints : 1;
       } else if (effect.id === 7) {
@@ -20,6 +19,10 @@ export const handleEffects = (player) => {
       } else if (effect.id === 13) {
         const newHitpoints = player.hitpoints - 25;
         player.hitpoints = newHitpoints > 1 ? newHitpoints : 0;
+      } else if (effect.id === 15) {
+        const multiplyer = player.type === 'bomber' && ['redMothership', 'blueMothership'].includes(player.name) ? 0.005 : 0.01;
+        const damage = (round(player.maxHitpoints * multiplyer)) || 1;
+        player.hitpoints = player.hitpoints - damage;
       }
       if (effect.animation) {
         updateFrame(effect.animation);

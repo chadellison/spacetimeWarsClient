@@ -8,7 +8,8 @@ import lightLazer from '../audio/lightLazer.mp3';
 import redPlasmaCannonAudio from '../audio/plasmaCannonSound.wav';
 import stunAudio from '../audio/stunSound.wav';
 import gasBombReleaseAudio from '../audio/gasBombReleaseSound2.wav';
-
+import crippleAudio from '../audio/crippleSound.wav';
+import { explosionSound } from './settings';
 // weapons
 import fireballAnimation from '../images/fireballAnimation.png';
 import displayFireball from '../images/displayFireball3.png';
@@ -40,21 +41,24 @@ import coldShotAnimation from '../images/coldShotAnimation.png';
 import poisonDartAnimation from '../images/poisonDartAnimation.png';
 import electricFieldProjectileAnimation from '../images/electricFieldProjectileAnimation2.png';
 import gasBombProjectileAnimation from '../images/gasBombProjectileAnimation.png';
+import blackHoleProjectileAnimation from '../images/blackHoleProjectileAnimation2.png';
+// import blackHoleAnimation from '../images/blackHoleAnimation.png';
 
 const AUDIO = [
-  cannonAudio,
-  missileAudio,
-  bombAudio,
-  laserAudio,
-  trifectaAudio,
-  lightLazer,
-  plasmaCannonAudio,
-  redPlasmaCannonAudio,
-  stunAudio,
-  gasBombReleaseAudio
-].map((audio) => {
-  const audioObject = new Audio(audio);
-  audioObject.volume = 0.2;
+  { audio: cannonAudio, volume: 0.2 },
+  { audio: missileAudio, volume: 0.2 },
+  { audio: bombAudio, volume: 0.2 },
+  { audio: laserAudio, volume: 0.2 },
+  { audio: trifectaAudio, volume: 0.2 },
+  { audio: lightLazer, volume: 0.2 },
+  { audio: plasmaCannonAudio, volume: 0.2 },
+  { audio: redPlasmaCannonAudio, volume: 0.2 },
+  { audio: stunAudio, volume: 0.8 },
+  { audio: gasBombReleaseAudio, volume: 0.6 },
+  { audio: crippleAudio, volume: 0.8 },
+].map((audioItem) => {
+  const audioObject = new Audio(audioItem.audio);
+  audioObject.volume = audioItem.volume;
   return audioObject;
 });
 
@@ -285,7 +289,11 @@ export const ABILITY_WEAPONS = [
     width: 50,
     height: 29,
     damage: 700,
-    image: bomb
+    range: 700,
+    countDown: 2000,
+    animationIndex: 8,
+    sound: explosionSound,
+    image: bomb,
   },
   {
     id: 2,
@@ -460,6 +468,8 @@ export const ABILITY_WEAPONS = [
     damage: 0,
     effectIndex: 3,
     animationIndex: 5,
+    range: 400,
+    countDown: 1500,
     sound: AUDIO[8],
     animation: {
       coordinates: { x: 0, y: 0 },
@@ -487,6 +497,8 @@ export const ABILITY_WEAPONS = [
     damage: 0,
     effectIndex: 0,
     animationIndex: 6,
+    range: 400,
+    countDown: 1500,
     sound: AUDIO[9],
     animation: {
       coordinates: { x: 0, y: 0 },
@@ -503,7 +515,36 @@ export const ABILITY_WEAPONS = [
       yOffset: 0,
     }
   },
-]
+  {
+    id: 11,
+    name: 'blackHoleProjectile',
+    location: { x: 0, y: 0 },
+    trajectory: 0,
+    speed: 9,
+    width: 96,
+    height: 48,
+    damage: 0,
+    effectIndex: 14,
+    animationIndex: 7,
+    range: 300,
+    countDown: 1500,
+    sound: AUDIO[10],
+    animation: {
+      coordinates: { x: 0, y: 0 },
+      spriteImage: blackHoleProjectileAnimation,
+      width: 96,
+      height: 48,
+      renderWidth: 96,
+      renderHeight: 48,
+      rowCount: 1,
+      columnCount: 6,
+      rate: 0,
+      startRate: 0,
+      xOffset: 0,
+      yOffset: 0,
+    }
+  },
+];
 
 export const EXPLOSION_ANIMATIONS = [
   {

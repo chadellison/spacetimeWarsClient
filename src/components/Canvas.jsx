@@ -145,11 +145,21 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     });
   }
 
+  const renderBackgroundAnimations = (context) => {
+    animations.forEach((animation) => {
+      if (animation.isBackground) {
+        renderAnimation(context, images[animation.name], animation, animation.location);
+      }
+    });
+  };
+
   const renderAnimations = (context) => {
     animations.forEach((animation) => {
-      renderAnimation(context, images[animation.name], animation, animation.location);
+      if (!animation.isBackground) {
+        renderAnimation(context, images[animation.name], animation, animation.location);
+      }
     });
-  }
+  };
 
   const renderWeapons = (currentPlayer, context) => {
     deployedWeapons.forEach((weapon) => {
@@ -157,7 +167,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
         renderWeapon(context, weapon, images[weapon.name])
       }
     });
-  }
+  };
 
   const renderCanvas = () => {
     handleScroll(currentPlayer)
@@ -172,7 +182,8 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
         context.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
         context.fillStyle = EXPLODE_PLAYER_COLOR;
       }
-
+      
+      renderBackgroundAnimations(context);
       handleShips(players, context, userId, currentPlayerIsExploding);
       renderWeapons(currentPlayer, context);
       renderAnimations(context);

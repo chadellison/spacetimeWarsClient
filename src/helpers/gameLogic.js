@@ -3,7 +3,6 @@ import {
   DRIFT,
   BOARD_WIDTH,
   BOARD_HEIGHT,
-  explosionSound,
   mineTriggerSound,
   zapSound,
 } from '../constants/settings.js';
@@ -166,7 +165,7 @@ const handleAiDirection = (location, angle, target) => {
       return angle - targetAngle < 180 ? 'left' : 'right'
     }
   }
-}
+};
 
 const updatePlayers = (gameState, handleGameEvent, connected) => {
   const { players, clockDifference, userId } = gameState;
@@ -251,9 +250,9 @@ export const canFire = (lastFired, cooldown, player) => {
     return false;
   } else {
     const rapidFireEffect = player.effects[10] ;
-    const crippleEffect = player.effects[15];
+    const gravityPullEffect = player.effects[15];
     let updatedCooldown = rapidFireEffect ? (cooldown / 2) : cooldown
-    updatedCooldown = crippleEffect ? (updatedCooldown * 2) : updatedCooldown;
+    updatedCooldown = gravityPullEffect ? (updatedCooldown * 2) : updatedCooldown;
     return Date.now() - lastFired > updatedCooldown;
   }
 }
@@ -261,35 +260,53 @@ export const canFire = (lastFired, cooldown, player) => {
 export const distanceTraveled = (player, elapsedTime, clockDifference) => {
   let currentVelocity = DRIFT;
 
-  if (player.accelerate) {
-    currentVelocity += player.velocity;
-
-    if (player.effects[9]) {
-      currentVelocity += 4;
-    }
-    if (player.items[11]) {
-      currentVelocity += 3;
-    }
+  if (player.effects[15]) {
+    currentVelocity += 1;
   } else {
-    const timeSinceLastAcceleration = Date.now() + clockDifference - player.lastAccelerationTime;
-    const momentum = ((player.velocity) * 1000) - timeSinceLastAcceleration;
-    if (momentum > 0) {
-      currentVelocity += (momentum / 1000);
+    if (player.accelerate) {
+      currentVelocity += player.velocity;
+  
+      if (player.effects[9]) {
+        currentVelocity += 4;
+      }
+      if (player.items[11]) {
+        currentVelocity += 3;
+      }
+    } else {
+      const timeSinceLastAcceleration = Date.now() + clockDifference - player.lastAccelerationTime;
+      const momentum = ((player.velocity) * 1000) - timeSinceLastAcceleration;
+      if (momentum > 0) {
+        currentVelocity += (momentum / 1000);
+      }
+    };
+    if (player.effects[2] || player.effects[15]) {
+      currentVelocity /= 2;
     }
-  };
-  if (player.effects[2] || player.effects[15]) {
-    currentVelocity /= 2;
   }
 
   const gameTime = elapsedTime / ANAIMATION_FRAME_RATE;
   return round(currentVelocity * gameTime);
+};
+
+const handleTrajectory = (player) => {
+  if (player.effects[15]) {
+    const { coordinate } = player.effects[15];
+    const deltaY = coordinate.y - player.location.y;
+    const deltaX = coordinate.x - player.location.x;
+    const angleInRadians = Math.atan2(deltaY, deltaX);
+
+    return (angleInRadians * 180) / Math.PI;
+  } else {
+    return player.accelerate ? player.angle : player.trajectory;
+  }
 }
 
 export const updatePlayer = (player, elapsedTime, clockDifference) => {
   if (!player.effects[4]) {
     player.angle = handleAngle(player.rotate, player.angle, elapsedTime);
     const distance = distanceTraveled(player, elapsedTime, clockDifference);
-    const trajectory = player.accelerate ? player.angle : player.trajectory;
+    const trajectory = handleTrajectory(player);
+
     player.location = handleLocation(trajectory, player.location, distance);
   }
 
@@ -301,48 +318,36 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
     updateFrame(player.thrusterAnimation);
   }
   return player
-}
-
-const handleNuclearWeapon = (gameData, weapon, attacker) => {
-  const { players, aiShips, motherships } = gameData;
-  const nuclearRange = 700;
-  players.concat(aiShips, motherships).forEach((player) => {
-    if (player.team !== weapon.team) {
-      const distance = Math.abs(weapon.location.x - player.location.x) + Math.abs(weapon.location.y - player.location.y);
-      if (distance < nuclearRange) {
-        applyHit(player, weapon, attacker, gameData.animations)
-      }
-    }
-  });
-
-  playSound(explosionSound);
-  const nuclearBlastAnimation = { ...EXPLOSION_ANIMATIONS[1], location: weapon.location, coordinates: { x: 0, y: 0 } }
-  gameData.animations.push(nuclearBlastAnimation);
-  return gameData;
 };
+
 
 const handleAreaOfEffect = (gameData, weapon, attacker) => {
   const { players, aiShips, motherships } = gameData;
-  const areaRange = 400;
 
   players.concat(aiShips, motherships).forEach((player) => {
     if (player.team !== weapon.team) {
       const distance = Math.abs(weapon.location.x - player.location.x) + Math.abs(weapon.location.y - player.location.y);
-      if (distance < areaRange && !player.effects[6]) {
-        const durationDivider = getItem(player.items, 12) ? 2 : 1;
-        const effect = createEffect(weapon.effectIndex, round(attacker.level * 3000 / durationDivider), player.effects[weapon.id]);
-        
-        if (effect.id === 1) {
-          handleApplyPoison(player, effect)
+      if (distance < weapon.range && !player.effects[6]) {
+        if (weapon.id === 1) {
+          applyHit(player, weapon, attacker, gameData.animations)
         } else {
-          player.effects[effect.id] = effect;
+          const durationDivider = getItem(player.items, 12) ? 2 : 1;
+          const effect = createEffect(weapon.effectIndex, round(attacker.level * 3000 / durationDivider), player.effects[weapon.id]);
+  
+          if (effect.id === 1) {
+            handleApplyPoison(player, effect)
+          } else if (effect.id === 15) {
+            player.effects[effect.id] = { ...effect, coordinate: {x: weapon.location.x - (weapon.width / 2), y: weapon.location.y - (weapon.height / 2) } };
+          } else {
+            player.effects[effect.id] = effect;
+          }
         }
       }
     }
   });
 
   playSound(weapon.sound);
-  const gameAnimation = { ...GAME_ANIMATIONS[weapon.animationIndex], location: weapon.location, coordinates: { x: 0, y: 0 } }
+  const gameAnimation = { ...GAME_ANIMATIONS[weapon.animationIndex], location: weapon.location, coordinates: { x: 0, y: 0 } };
   gameData.animations.push(gameAnimation);
   return gameData;
 }
@@ -410,12 +415,7 @@ export const findCenterCoordinates = (location, center, offset) => {
 }
 
 const handleAbilityWeapons = (gameData, weapon, attacker) => {
-  if (weapon.id === 1) {
-    if (Date.now() - weapon.deployedAt > 2000) {
-      gameData = handleNuclearWeapon(gameData, weapon, attacker);
-      weapon.removed = true
-    }
-  } else if (weapon.id === 6) {
+  if (weapon.id === 6) {
     if (Date.now() - weapon.deployedAt > 6000) {
       weapon.removed = true
     } else {
@@ -428,8 +428,8 @@ const handleAbilityWeapons = (gameData, weapon, attacker) => {
   } else if (weapon.id === 7 && weapon.removed) {
     const meteorExplosion = { ...EXPLOSION_ANIMATIONS[3], location: weapon.location, coordinates: { x: 0, y: 0 } }
     gameData.animations.push(meteorExplosion);
-  } else if ([9, 10].includes(weapon.id)) {
-    if (Date.now() - weapon.deployedAt > 1500) {
+  } else if ([1, 9, 10, 11].includes(weapon.id)) {
+    if (Date.now() - weapon.deployedAt > weapon.countDown) {
       gameData = handleAreaOfEffect(gameData, weapon, attacker);
       weapon.removed = true
     }
@@ -651,7 +651,7 @@ export const handleLocation = (trajectory, location, distance) => {
   const radians = trajectory * Math.PI / 180
   const x = round(location.x + Math.cos(radians) * distance)
   const y = round(location.y + Math.sin(radians) * distance)
-  return { x, y }
+  return { x, y };
 }
 
 export const handleAngle = (direction, angle, elapsedTime) => {

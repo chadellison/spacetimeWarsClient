@@ -1,51 +1,50 @@
 import {
-  windSound,
-  warpSpeedSound,
-  toneSound,
-  invulnerableSound,
-  mineDropSound,
-  stunGunSound,
-  damageBoostSound,
-  piercerSound,
-  metalClank,
-  healSound,
-  rapidFireSound,
-  meteorConeSound,
-  damageReductionSound,
-  electricFieldSound,
   armorReductionSound,
-  teleportSound,
   backupSound,
-  homingSound,
-  crippleSound,
-  poisonDartSound,
-  gasBombProjectileSound,
+  damageBoostSound,
+  damageReductionSound,
   electricFieldProjectileSound,
+  electricFieldSound,
+  gasBombProjectileSound,
+  healSound,
+  homingSound,
+  invulnerableSound,
+  metalClank,
+  meteorConeSound,
+  mineDropSound,
+  piercerSound,
+  poisonDartSound,
+  rapidFireSound,
+  stunGunSound,
+  teleportSound,
+  toneSound,
+  warpSpeedSound,
+  windSound
 } from '../constants/settings.js';
 
-import nuclearExplosionIcon from '../images/nuclearExplosionIcon.png';
-import warpSpeedIcon from '../images/warpSpeedIcon2.png';
-import mineIcon from '../images/mineIcon2.png';
-import stunGunIcon from '../images/stunGunIcon2.png';
-import invulnerabilityIcon from '../images/invulnerableIcon2.png';
-import stealthModeIcon from '../images/stealthMode.png';
-import meteorShowerIcon from '../images/meteorShowerIcon2.png';
-import healingIcon from '../images/healthBoost2.png';
-import piercerIcon from '../images/piercerIcon2.png';
-import rapidFireIcon from '../images/rapidFireIcon2.png';
-import damageBoostIcon from '../images/damageBoostIcon.png';
-import disableIcon from '../images/disableIcon.png';
-import immolationIcon from '../images/immolationIcon.png';
-import armorReductionIcon from '../images/armorReductionIcon3.png';
-import redMeteorIcon from '../images/redMeteorIcon2.png';
-import teleportIcon from '../images/teleportIcon2.png';
 import armorBoost from '../images/armorBoost2.png';
-import homingAttackIcon from '../images/homingAttackIcon.png';
+import armorReductionIcon from '../images/armorReductionIcon3.png';
 import backupIcon from '../images/backupIcon.png';
 import crippleIcon from '../images/crippleIcon.png';
-import poisonDartIcon from '../images/poisonDartIcon2.png';
+import damageBoostIcon from '../images/damageBoostIcon.png';
+import disableIcon from '../images/disableIcon.png';
+import healingIcon from '../images/healthBoost2.png';
+import homingAttackIcon from '../images/homingAttackIcon.png';
+import immolationIcon from '../images/immolationIcon.png';
+import invulnerabilityIcon from '../images/invulnerableIcon2.png';
 import massStunIcon from '../images/massStunIcon2.png';
+import meteorShowerIcon from '../images/meteorShowerIcon2.png';
+import mineIcon from '../images/mineIcon2.png';
+import nuclearExplosionIcon from '../images/nuclearExplosionIcon.png';
+import piercerIcon from '../images/piercerIcon2.png';
+import poisonDartIcon from '../images/poisonDartIcon2.png';
 import poisonIcon from '../images/poisonIcon2.png';
+import rapidFireIcon from '../images/rapidFireIcon2.png';
+import redMeteorIcon from '../images/redMeteorIcon2.png';
+import stealthModeIcon from '../images/stealthMode.png';
+import stunGunIcon from '../images/stunGunIcon2.png';
+import teleportIcon from '../images/teleportIcon2.png';
+import warpSpeedIcon from '../images/warpSpeedIcon2.png';
 
 export const ABILITIES = [
   {
@@ -231,12 +230,11 @@ export const ABILITIES = [
   },
   {
     index: 20,
-    type: 'effect',
-    description: 'Criples opponents for (4, 8, 12) seconds reducing their movement speed, and attack speed',
+    type: 'weapon',
+    description: 'Creates a powerful gravity field pulling opponent ships in dealing massive damage',
     cooldown: 50000,
-    effectIndex: 14,
+    weaponIndex: 10,
     image: crippleIcon,
-    sound: crippleSound,
   },
   {
     index: 21,

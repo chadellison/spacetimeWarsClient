@@ -17,7 +17,7 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
     const location = currentPlayer.location;
     newAnimmations = [...animations, { ...GAME_ANIMATIONS[ability.animationIndex], location, coordinates: { x: 0, y: 0 } }];
   }
-  playSound(ability.sound);
+  ability.sound && playSound(ability.sound);
   if (ability.type === 'weapon') {
     return addAbilityWeapon(ability.weaponIndex, deployedWeapons, playerData, elapsedTime);
   } else if (ability.type === 'effect') {
@@ -52,7 +52,7 @@ const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime)
     return handleMeteorShower(deployedWeapons, playerData, weapon, elapsedTime);
   } else {
     const updatedWeapons = [...deployedWeapons, handleFireWeapon(playerData, weapon, elapsedTime, weapon.damage * playerData.abilityLevel)];
-    return { deployedWeapons: updatedWeapons }
+    return { deployedWeapons: updatedWeapons };
   }
 };
 
@@ -140,6 +140,6 @@ const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime) => {
       from: player.type
     }
   });
-  
+
   return { deployedWeapons: deployedWeapons.concat(meteors) }
 };
