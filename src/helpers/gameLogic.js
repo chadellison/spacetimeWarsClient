@@ -1,21 +1,22 @@
 import {
   ANAIMATION_FRAME_RATE,
-  DRIFT,
-  BOARD_WIDTH,
   BOARD_HEIGHT,
+  BOARD_WIDTH,
+  DRIFT,
+  GAME_ANIMATIONS,
   mineTriggerSound,
+  upgradeSound,
   zapSound,
 } from '../constants/settings.js';
-import { SHIPS, BOMBERS, MOTHER_SHIP } from '../constants/ships.js';
-import { WEAPONS, EXPLOSION_ANIMATIONS } from '../constants/weapons.js';
-import { handleItems, handleAbsorbDamage, canAbsorbDamage, getItem } from '../helpers/itemHelpers';
-import { handleEffects, updateGameBuff, createEffect } from '../helpers/effectHelpers';
+import { BOMBERS, MOTHER_SHIP, SHIPS } from '../constants/ships.js';
+import { WEAPONS } from '../constants/weapons.js';
 import { updateAnimation } from '../helpers/animationHelpers';
-import { round, angleFromCoordinates } from '../helpers/mathHelpers.js';
 import { updateFrame } from '../helpers/animationHelpers.js';
 import { playSound } from '../helpers/audioHelpers.js';
+import { createEffect, handleEffects, updateGameBuff } from '../helpers/effectHelpers';
+import { canAbsorbDamage, getItem, handleAbsorbDamage, handleItems } from '../helpers/itemHelpers';
+import { angleFromCoordinates, round } from '../helpers/mathHelpers.js';
 import { explodePlayer } from '../helpers/receiveEventHelpers.js';
-import { upgradeSound, GAME_ANIMATIONS } from '../constants/settings.js';
 
 export const updateGameState = (gameState, handleGameEvent, currentPlayer) => {
   const { clockDifference, gameBuff, userId, aiShips, space, lastFired, motherships, connected } = gameState;
@@ -320,7 +321,6 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
   return player
 };
 
-
 const handleAreaOfEffect = (gameData, weapon, attacker) => {
   const { players, aiShips, motherships } = gameData;
 
@@ -350,7 +350,7 @@ const handleAreaOfEffect = (gameData, weapon, attacker) => {
   const gameAnimation = { ...GAME_ANIMATIONS[weapon.animationIndex], location: weapon.location, coordinates: { x: 0, y: 0 } };
   gameData.animations.push(gameAnimation);
   return gameData;
-}
+};
 
 const weaponFromPlayer = (gameData, weapon, newWeapons, allShips) => {
   const { players, userId, animations } = gameData;
@@ -390,7 +390,7 @@ const weaponFromPlayer = (gameData, weapon, newWeapons, allShips) => {
 
   gameData.weapons = newWeapons;
   return gameData;
-}
+};
 
 export const handleWeapons = (gameData) => {
   let newWeapons = [];
@@ -423,10 +423,10 @@ const handleAbilityWeapons = (gameData, weapon, attacker) => {
       weapon.location = findCenterCoordinates(attacker.location, shipCenter, weapon);
     }
   } else if (weapon.id === 3 && weapon.removed) {
-    const mineExplosionAnimation = { ...EXPLOSION_ANIMATIONS[0], location: weapon.location, coordinates: { x: 0, y: 0 } }
+    const mineExplosionAnimation = { ...GAME_ANIMATIONS[9], location: weapon.location, coordinates: { x: 0, y: 0 } }
     gameData.animations.push(mineExplosionAnimation);
   } else if (weapon.id === 7 && weapon.removed) {
-    const meteorExplosion = { ...EXPLOSION_ANIMATIONS[3], location: weapon.location, coordinates: { x: 0, y: 0 } }
+    const meteorExplosion = { ...GAME_ANIMATIONS[11], location: weapon.location, coordinates: { x: 0, y: 0 } }
     gameData.animations.push(meteorExplosion);
   } else if ([1, 9, 10, 11].includes(weapon.id)) {
     if (Date.now() - weapon.deployedAt > weapon.countDown) {
@@ -479,7 +479,7 @@ const findShipBoundingBoxes = (player) => {
     handleLocation(player.angle, { x: shipCenter.x, y: shipCenter.y }, -10),
     handleLocation(player.angle, { x: shipCenter.x, y: shipCenter.y }, -35)
   ];
-}
+};
 
 const handleCollision = (players, weapon, attacker, animations) => {
   players.forEach((player) => {

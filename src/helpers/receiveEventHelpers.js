@@ -1,12 +1,12 @@
 import { handleFireWeapon, updatePlayer, handlePlayerDamage } from '../helpers/gameLogic.js';
 import { applyGameBuff } from '../helpers/effectHelpers.js';
 import { GAME_EFFECTS } from '../constants/effects.js';
-import { EXPLOSION_ANIMATIONS } from '../constants/weapons.js';
 import { playSound, stopSound } from '../helpers/audioHelpers.js';
 import { handleAbility } from '../helpers/abilityHelpers.js';
 import {
   thruster,
   shipExplosionSound,
+  GAME_ANIMATIONS
 } from '../constants/settings.js';
 import { WEAPONS } from '../constants/weapons.js';
 
@@ -87,9 +87,9 @@ export const explodePlayer = (player, playerData) => {
   return {
     ...player,
     hitpoints: 0,
-    explodeAnimation: { ...EXPLOSION_ANIMATIONS[2], coordinates: { x: 0, y: 0 } },
+    explodeAnimation: { ...GAME_ANIMATIONS[10], coordinates: { x: 0, y: 0 } },
     updatedAt: playerData.updatedAt,
-    exploadedAt: playerData.exploadedAt,
+    explodedAt: playerData.explodedAt,
     accelerate: false,
     angle: 0,
     trajectory: 0,
@@ -106,7 +106,7 @@ const exploadMothership = (ship) => {
   return {
     ...ship,
     hitpoints: 0,
-    explodeAnimation: { ...EXPLOSION_ANIMATIONS[1], coordinates: { x: 0, y: 0 } },
+    explodeAnimation: { ...GAME_ANIMATIONS[8], coordinates: { x: 0, y: 0 } },
     effects: {},
     active: false
   }

@@ -1,47 +1,43 @@
-import cannonAudio from '../audio/cannon.wav';
-import missileAudio from '../audio/missile2.wav';
-import trifectaAudio from '../audio/trifecta.wav';
 import bombAudio from '../audio/bomb.wav';
-import plasmaCannonAudio from '../audio/plasmaSound.wav';
+import cannonAudio from '../audio/cannon.wav';
+import crippleAudio from '../audio/crippleSound.wav';
+import gasBombReleaseAudio from '../audio/gasBombReleaseSound2.wav';
 import laserAudio from '../audio/laser.wav';
 import lightLazer from '../audio/lightLazer.mp3';
+import missileAudio from '../audio/missile2.wav';
 import redPlasmaCannonAudio from '../audio/plasmaCannonSound.wav';
+import plasmaCannonAudio from '../audio/plasmaSound.wav';
 import stunAudio from '../audio/stunSound.wav';
-import gasBombReleaseAudio from '../audio/gasBombReleaseSound2.wav';
-import crippleAudio from '../audio/crippleSound.wav';
+import trifectaAudio from '../audio/trifecta.wav';
 import { explosionSound } from './settings';
 // weapons
-import fireballAnimation from '../images/fireballAnimation.png';
-import displayFireball from '../images/displayFireball3.png';
-import missile from '../images/missile.png';
-import displayMissile from '../images/displayMissile4.png';
-import trifecta from '../images/trifecta.png';
-import displayTrifecta from '../images/displayTrifecta3.png';
-import poisonCannonAnimation from '../images/poisonCannonAnimation.png';
-import displayPoisonCannon from '../images/displayPoisonCannon3.png';
-import bomb from '../images/bomb.png';
-import displayBomb from '../images/displayBomb3.png';
-import laserAnimation from '../images/laserAnimation.png';
-import displayLaser from '../images/displayLaser3.png';
-import displayBlueFire from '../images/displayBlueFire3.png';
-import displayPlasmaCannon from '../images/displayPlasmaCannon2.png';
-import spaceMine from '../images/spaceMine3.png';
-import nuclearExplosionAnimation from '../images/nuclearExplosionAnimation.png';
-import mineExplosionAnimation from '../images/mineExplosionAnimation.png';
-import nuclearBlastAnimation from '../images/nuclearBlastAnimation.png';
-import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
-import purpleFireAnimation from '../images/purpleFireAnimation.png';
-import stunGunAnimation from '../images/stunBoltAnimation.png';
-import meteorShowerAnimation from '../images/meteorShowerAnimation.png';
-import piercerAnimation from '../images/piercerAnimation.png';
-import immolation from '../images/immolation3.png';
-import redMeteorAnimation from '../images/redMeteorAnimation.png';
-import meteorExplosionAnimation from '../images/meteorExplosionAnimation.png';
-import coldShotAnimation from '../images/coldShotAnimation.png';
-import poisonDartAnimation from '../images/poisonDartAnimation.png';
-import electricFieldProjectileAnimation from '../images/electricFieldProjectileAnimation2.png';
-import gasBombProjectileAnimation from '../images/gasBombProjectileAnimation.png';
 import blackHoleProjectileAnimation from '../images/blackHoleProjectileAnimation2.png';
+import bomb from '../images/bomb.png';
+import coldShotAnimation from '../images/coldShotAnimation.png';
+import displayBlueFire from '../images/displayBlueFire3.png';
+import displayBomb from '../images/displayBomb3.png';
+import displayFireball from '../images/displayFireball3.png';
+import displayLaser from '../images/displayLaser3.png';
+import displayMissile from '../images/displayMissile4.png';
+import displayPlasmaCannon from '../images/displayPlasmaCannon2.png';
+import displayPoisonCannon from '../images/displayPoisonCannon3.png';
+import displayTrifecta from '../images/displayTrifecta3.png';
+import electricFieldProjectileAnimation from '../images/electricFieldProjectileAnimation2.png';
+import fireballAnimation from '../images/fireballAnimation.png';
+import gasBombProjectileAnimation from '../images/gasBombProjectileAnimation.png';
+import immolation from '../images/immolation3.png';
+import laserAnimation from '../images/laserAnimation.png';
+import meteorShowerAnimation from '../images/meteorShowerAnimation.png';
+import missile from '../images/missile.png';
+import nuclearBlastAnimation from '../images/nuclearBlastAnimation.png';
+import piercerAnimation from '../images/piercerAnimation.png';
+import poisonCannonAnimation from '../images/poisonCannonAnimation.png';
+import poisonDartAnimation from '../images/poisonDartAnimation.png';
+import purpleFireAnimation from '../images/purpleFireAnimation.png';
+import redMeteorAnimation from '../images/redMeteorAnimation.png';
+import spaceMine from '../images/spaceMine3.png';
+import stunGunAnimation from '../images/stunBoltAnimation.png';
+import trifecta from '../images/trifecta.png';
 // import blackHoleAnimation from '../images/blackHoleAnimation.png';
 
 const AUDIO = [
@@ -544,75 +540,4 @@ export const ABILITY_WEAPONS = [
       yOffset: 0,
     }
   },
-];
-
-export const EXPLOSION_ANIMATIONS = [
-  {
-    id: 1,
-    name: 'spaceMineExplosion',
-    location: { x: 0, y: 0 },
-    coordinates: { x: 0, y: 0 },
-    spriteImage: mineExplosionAnimation,
-    width: 256,
-    height: 256,
-    rowCount: 36,
-    columnCount: 1,
-    rate: 0,
-    startRate: 0,
-    xOffset: -100,
-    yOffset: -100,
-    renderWidth: 200,
-    renderHeight: 200,
-  },
-  {
-    id: 2,
-    name: 'nuclearExplosion',
-    location: { x: 0, y: 0 },
-    coordinates: { x: 0, y: 0 },
-    spriteImage: nuclearExplosionAnimation,
-    width: 256,
-    height: 256,
-    rowCount: 36,
-    columnCount: 1,
-    rate: 0,
-    startRate: 0,
-    xOffset: -500,
-    yOffset: -500,
-    renderWidth: 1000,
-    renderHeight: 1000,
-  },
-  {
-    id: 3,
-    name: 'shipExplosion',
-    location: { x: 0, y: 0 },
-    coordinates: { x: 0, y: 0 },
-    spriteImage: shipExplosionAnimation,
-    width: 256,
-    height: 256,
-    rowCount: 36,
-    columnCount: 1,
-    rate: 0,
-    startRate: 0,
-    xOffset: -50,
-    yOffset: -50,
-    renderWidth: 200,
-    renderHeight: 200,
-  },
-  {
-    id: 4,
-    name: 'meteorExplosion',
-    location: { x: 0, y: 0 },
-    coordinates: { x: 0, y: 0 },
-    spriteImage: meteorExplosionAnimation,
-    width: 256,
-    height: 256,
-    rowCount: 4,
-    columnCount: 6,
-    rate: 0,
-    startRate: 0,
-    xOffset: -100,
-    yOffset: -100,
-    renderWidth: 200,
-    renderHeight: 200,
-  }
 ];

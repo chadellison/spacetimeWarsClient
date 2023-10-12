@@ -231,7 +231,7 @@ export const ABILITIES = [
   {
     index: 20,
     type: 'weapon',
-    description: 'Creates a powerful gravity field pulling opponent ships in dealing massive damage',
+    description: 'Creates a powerful gravity field pulling opponent ships into its center dealing massive damage for (3, 6, 9) seconds respectively',
     cooldown: 50000,
     weaponIndex: 10,
     image: crippleIcon,

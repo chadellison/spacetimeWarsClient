@@ -1,14 +1,12 @@
 import { createRef, useEffect, useState } from 'react';
-import { GAME_EFFECTS, SPRITE_IMAGES } from '../constants/effects.js';
 import {
   BOARD_HEIGHT,
   BOARD_WIDTH,
-  EXPLODE_PLAYER_COLOR,
-  GAME_ANIMATIONS
+  EXPLODE_PLAYER_COLOR
 } from '../constants/settings.js';
-import { BOMBERS, SHIPS, SUPPLY_SHIP, MOTHER_SHIPS } from '../constants/ships.js';
-import { ABILITY_WEAPONS, EXPLOSION_ANIMATIONS, WEAPONS } from '../constants/weapons.js';
+import { BOMBERS, SHIPS } from '../constants/ships.js';
 import {
+  IMAGES_ASSETS,
   drawShip,
   handleInvisibleFilter,
   renderAnimation,
@@ -19,33 +17,7 @@ import {
 } from '../helpers/canvasHelper.js';
 import { findCenterCoordinates, findStartCenter } from '../helpers/gameLogic';
 import { round } from '../helpers/mathHelpers.js';
-import spaceBackground from '../images/spaceBackground.png';
 import '../styles/styles.css';
-
-const resolveImage = (item) => {
-  if (item.image) {
-    return item.image;
-  } else if (item.spriteImage) {
-    return item.spriteImage;
-  } else if (item?.animation?.spriteImage) {
-    return item.animation.spriteImage;
-  }
-}
-
-const IMAGES_ASSETS = SHIPS
-  .concat(SHIPS.map(ship => ({...ship, name: `${ship.name}Blue`, image: ship.blueImage})))
-  .concat(BOMBERS)
-  .concat(BOMBERS.map(ship => ({...ship, name: `${ship.name}Blue`, image: ship.blueImage})))
-  .concat(WEAPONS.map(item => ({...item, image: resolveImage(item)})))
-  .concat(ABILITY_WEAPONS.map(item => ({...item, image: resolveImage(item)})))
-  .concat(EXPLOSION_ANIMATIONS.map(item => ({...item, image: resolveImage(item)})))
-  .concat(GAME_EFFECTS.filter((effect) => effect.animation).map(item => ({...item, image: SPRITE_IMAGES[item.animation.spriteIndex]})))
-  .concat(GAME_ANIMATIONS.map(item => ({...item, image: resolveImage(item)})))
-  .concat(MOTHER_SHIPS.map(item => ({...item, image: resolveImage(item)})))
-  .concat(SUPPLY_SHIP)
-  .concat([{ name: 'backgroundImage', image: spaceBackground }]);
-
-export const ASSET_COUNT = IMAGES_ASSETS.length;
 
 const CANVAS_REF = createRef();
 
@@ -89,7 +61,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     } else {
       imageReference = player.team === 'blue' ? SHIPS[player.shipIndex].name + 'Blue' : SHIPS[player.shipIndex].name
     }
-    
+
     return images[imageReference];
   };
 
@@ -100,7 +72,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
         currentPlayer.location.y - state.halfWindowHeight
       )
     }
-  }
+  };
 
   const handleShips = (players, context, userId, currentPlayerIsExploding) => {
     players.concat(aiShips).forEach((player) => {
@@ -109,11 +81,11 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
         if (showShip) {
 
           handleInvisibleFilter(context, player, userId);
-          
+
           const thruster = player.effects[9] ? images.warpSpeed : images.thruster;
-    
+
           drawShip(context, player, handleImage(player), thruster);
-          
+
           renderEffects(context, player)
         }
       } else if (!player.explodeAnimation.complete) {
@@ -132,7 +104,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
         renderAnimation(context, images.shipExplosion, ship.explodeAnimation, ship.location);
       }
     });
-  }
+  };
 
   const renderEffects = (context, ship) => {
     const startCenter = findStartCenter(ship);
@@ -182,13 +154,13 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
         context.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
         context.fillStyle = EXPLODE_PLAYER_COLOR;
       }
-      
+
       renderBackgroundAnimations(context);
       handleShips(players, context, userId, currentPlayerIsExploding);
       renderWeapons(currentPlayer, context);
       renderAnimations(context);
     }
-  }
+  };
 
   currentPlayer && !loading && renderCanvas();
 
@@ -202,6 +174,6 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
       />
     </div>
   );
-}
+};
 
-export default Canvas
+export default Canvas;

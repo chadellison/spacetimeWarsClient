@@ -1,7 +1,40 @@
-import { findColor } from '../helpers/colorHelpers.js';
-import { round } from '../helpers/mathHelpers.js';
-import { isInvisable } from '../helpers/gameLogic.js';
-import { BOMBERS, SHIPS } from '../constants/ships.js';
+import { GAME_EFFECTS, SPRITE_IMAGES } from '../constants/effects.js';
+import {
+  GAME_ANIMATIONS
+} from '../constants/settings.js';
+import { findColor } from './colorHelpers.js';
+import { isInvisable } from './gameLogic.js';
+import { round } from './mathHelpers.js';
+
+import { BOMBERS, MOTHER_SHIPS, SHIPS, SUPPLY_SHIP } from '../constants/ships.js';
+import { ABILITY_WEAPONS, WEAPONS } from '../constants/weapons.js';
+import spaceBackground from '../images/spaceBackground.png';
+
+const RENDER_FONT = '12px Arial';
+
+const resolveImage = (item) => {
+  if (item.image) {
+    return item.image;
+  } else if (item.spriteImage) {
+    return item.spriteImage;
+  } else if (item?.animation?.spriteImage) {
+    return item.animation.spriteImage;
+  }
+}
+
+export const IMAGES_ASSETS = SHIPS
+  .concat(SHIPS.map(ship => ({...ship, name: `${ship.name}Blue`, image: ship.blueImage})))
+  .concat(BOMBERS)
+  .concat(BOMBERS.map(ship => ({...ship, name: `${ship.name}Blue`, image: ship.blueImage})))
+  .concat(WEAPONS.map(item => ({...item, image: resolveImage(item)})))
+  .concat(ABILITY_WEAPONS.map(item => ({...item, image: resolveImage(item)})))
+  .concat(GAME_EFFECTS.filter((effect) => effect.animation).map(item => ({...item, image: SPRITE_IMAGES[item.animation.spriteIndex]})))
+  .concat(GAME_ANIMATIONS.map(item => ({...item, image: resolveImage(item)})))
+  .concat(MOTHER_SHIPS.map(item => ({...item, image: resolveImage(item)})))
+  .concat(SUPPLY_SHIP)
+  .concat([{ name: 'backgroundImage', image: spaceBackground }]);
+
+export const ASSET_COUNT = IMAGES_ASSETS.length;
 
 export const drawShip = (context, player, ship, thruster) => {
   handleDirection(context, ship, player.location, player.angle)
@@ -93,13 +126,13 @@ export const renderAnimation = (context, spriteImage, animation, location) => {
 export const renderPlayerData = (context, player, showShip, isExploading) => {
   if (!isExploading) {
     if (showShip) {
-      context.font = "12px Arial";
+      context.font = RENDER_FONT;
       context.fillStyle = findColor(player.hitpoints, player.maxHitpoints);
       renderHealthBar(context, player);
       context.fillText(player.name, player.location.x + 25, player.location.y + 110)
     } else if (!player.active && !player.explodeAnimation.complete) {
-      context.fillStyle = "#ab8432";
-      context.font = "12px Arial";
+      context.fillStyle = '#ab8432';
+      context.font = RENDER_FONT;
       context.fillText(`+ ${round(player.maxHitpoints * 0.1)}`, player.location.x + 75, player.location.y)
     }
   }
@@ -107,7 +140,7 @@ export const renderPlayerData = (context, player, showShip, isExploading) => {
 
 export const renderMotherShipData = (context, ship, isExploading) => {
   if (!isExploading) {
-    context.font = "12px Arial";
+    context.font = RENDER_FONT;
     context.fillStyle = findColor(ship.hitpoints, ship.maxHitpoints);
     context.beginPath();
     context.fillRect(ship.location.x + 15, ship.location.y + 90, round((ship.hitpoints * 190) / ship.maxHitpoints), 4);
@@ -117,4 +150,4 @@ export const renderMotherShipData = (context, ship, isExploading) => {
 const renderHealthBar = (context, player) => {
   context.beginPath();
   context.fillRect(player.location.x + 15, player.location.y + 90, round((player.hitpoints * 80) / player.maxHitpoints), 4);
-}
+};
