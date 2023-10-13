@@ -4,14 +4,13 @@ import { round } from '../helpers/mathHelpers.js';
 import { GAME_EFFECTS } from '../constants/effects.js';
 
 export const handleEffects = (player) => {
-  Object.values(player.effects).forEach((effect) => {
+  Object.values(player.effects).forEach(effect => {
     if (effect.durationCount > effect.duration) {
       delete player.effects[effect.id];
     } else {
       if (effect.id === 1) {
         const damage = (round(player.maxHitpoints * 0.002)) || 1;
-        const newHitpoints = player.hitpoints - damage;
-        player.hitpoints = newHitpoints > 1 ? newHitpoints : 1;
+        player.hitpoints -= damage;
       } else if (effect.id === 7) {
         const health = round((player.maxHitpoints * 0.5) / (effect.duration / ANAIMATION_FRAME_RATE))
         const newHitpoints = player.hitpoints + health;
@@ -22,8 +21,10 @@ export const handleEffects = (player) => {
       } else if (effect.id === 15) {
         const multiplyer = player.type === 'bomber' && ['redMothership', 'blueMothership'].includes(player.name) ? 0.005 : 0.01;
         const damage = (round(player.maxHitpoints * multiplyer)) || 1;
-        player.hitpoints = player.hitpoints - damage;
-      }
+        player.hitpoints -= damage;
+      };
+      player.killedBy = player.hitpoints <= 0 ? effect.attackerId : null;
+
       if (effect.animation) {
         updateFrame(effect.animation);
       }
@@ -59,16 +60,25 @@ const updateEffects = (effects, effect) => {
   } else {
     return { ...effects, [effect.id]: effect };
   }
-}
+};
 
-export const createEffect = (index, duration, existingEffect) => {
+const handleEffectAnimation = (effect, existingEffect) => {
+  if (effect.animation) {
+    return existingEffect ? existingEffect.animation : { ...effect.animation, coordinates: { x: 0, y: 0 } };
+  } else {
+    return null;
+  }
+};
+
+export const createEffect = (index, duration, existingEffect, attackerId) => {
   const effect = { ...GAME_EFFECTS[index] };
   return {
     ...effect,
     duration,
-    animation: existingEffect ? existingEffect.animation : { ...effect.animation, coordinates: { x: 0, y: 0 } }
+    attackerId,
+    animation: handleEffectAnimation(effect, existingEffect)
   };
-}
+};
 
 export const updateGameBuff = (gameBuff) => {
   if (gameBuff.durationCount > gameBuff.duration) {

@@ -11,9 +11,9 @@ export const updateFrame = (animation) => {
     } else {
       animation.coordinates.x += animation.width
     }
-    animation.rate = animation.startRate
+    animation.rate = animation.startRate;
   } else {
-    animation.rate -= 1
+    animation.rate -= 1;
   }
 };
 

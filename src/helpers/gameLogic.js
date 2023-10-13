@@ -250,7 +250,7 @@ export const canFire = (lastFired, cooldown, player) => {
   if (player.effects[3] || player.effects[4]) {
     return false;
   } else {
-    const rapidFireEffect = player.effects[10] ;
+    const rapidFireEffect = player.effects[10];
     const gravityPullEffect = player.effects[15];
     let updatedCooldown = rapidFireEffect ? (cooldown / 2) : cooldown
     updatedCooldown = gravityPullEffect ? (updatedCooldown * 2) : updatedCooldown;
@@ -266,7 +266,7 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
   } else {
     if (player.accelerate) {
       currentVelocity += player.velocity;
-  
+
       if (player.effects[9]) {
         currentVelocity += 4;
       }
@@ -332,12 +332,14 @@ const handleAreaOfEffect = (gameData, weapon, attacker) => {
           applyHit(player, weapon, attacker, gameData.animations)
         } else {
           const durationDivider = getItem(player.items, 12) ? 2 : 1;
-          const effect = createEffect(weapon.effectIndex, round(attacker.level * 3000 / durationDivider), player.effects[weapon.id]);
-  
+          const duration = round(attacker.level * 3000 / durationDivider);
+          
+          const effect = createEffect(weapon.effectIndex, duration, player.effects[weapon.effectIndex], weapon.playerIndex);
+
           if (effect.id === 1) {
             handleApplyPoison(player, effect)
           } else if (effect.id === 15) {
-            player.effects[effect.id] = { ...effect, coordinate: {x: weapon.location.x - (weapon.width / 2), y: weapon.location.y - (weapon.height / 2) } };
+            player.effects[effect.id] = { ...effect, coordinate: { x: weapon.location.x - (weapon.width / 2), y: weapon.location.y - (weapon.height / 2) } };
           } else {
             player.effects[effect.id] = effect;
           }
@@ -365,7 +367,7 @@ const weaponFromPlayer = (gameData, weapon, newWeapons, allShips) => {
   }
 
   weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
-  
+
   handleCollision(allShips, weapon, attacker, animations);
 
   if (weapon.id) {
@@ -531,11 +533,7 @@ const updateCollisionData = (player, weapon, attacker) => {
       attacker.score += round(damage * 0.1)
 
       if (player.hitpoints <= 0) {
-        const bounty = round(player.maxHitpoints * 0.1);
-        player.killedBy = weapon.playerIndex
-        attacker.kills += 1
-        attacker.gold += bounty;
-        attacker.score += bounty;
+        player.killedBy = weapon.playerIndex;
 
       };
       if (didLevelUp(attacker.level, attacker.score) && attacker.level < 10) {
@@ -561,23 +559,23 @@ const handleNegativeBuff = (player, weapon) => {
   const durationDivider = getItem(player.items, 12) ? 2 : 1;
 
   if (weapon.index === 5 || weapon.id === 8) {
-    const effect = createEffect(0, round(3000 / durationDivider), player.effects[1]);
+    const effect = createEffect(0, round(3000 / durationDivider), player.effects[1], weapon.playerIndex);
     handleApplyPoison(player, effect);
   } else if (weapon.index === 6 || (weapon.id === 6 && !player.effects[2])) {
-    const effect = createEffect(1, round(2000 / durationDivider), player.effects[2]);
+    const effect = createEffect(1, round(2000 / durationDivider), player.effects[2], weapon.playerIndex);
     player.effects[effect.id] = effect;
   } else if (weapon.id === 7) {
-    const slow = createEffect(1, round(9000 / durationDivider), player.effects[2]);
+    const slow = createEffect(1, round(9000 / durationDivider), player.effects[2], weapon.playerIndex);
     player.effects[slow.id] = slow;
-    const poison = createEffect(0, round(9000 / durationDivider), player.effects[1]);
+    const poison = createEffect(0, round(9000 / durationDivider), player.effects[1], weapon.playerIndex);
     handleApplyPoison(player, poison);
   }
 
   if ((weapon.canStun && Math.random() <= 0.1) || weapon.id === 2) {
-    const effect = createEffect(3, round(3000 / durationDivider), player.effects[4]);
+    const effect = createEffect(3, round(3000 / durationDivider), player.effects[4], weapon.playerIndex);
     player.effects[effect.id] = effect;
   };
-  
+
   return player;
 }
 

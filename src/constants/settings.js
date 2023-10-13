@@ -44,7 +44,7 @@ import teleportAnimation from '../images/teleportAnimation.png';
 import thrusterAnimation from '../images/thrusterAnimation.png';
 import electricField from '../images/electricField.png';
 import gasBombAnimation from '../images/gasBombAnimation2.png';
-import blackHoleAnimation from '../images/blackHoleAnimation.png';
+import blackHoleAnimation from '../images/blackHoleAnimation2.png';
 import nuclearExplosionAnimation from '../images/nuclearExplosionAnimation.png';
 import mineExplosionAnimation from '../images/mineExplosionAnimation.png';
 import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
@@ -221,16 +221,16 @@ export const GAME_ANIMATIONS = [
     location: { x: 0, y: 0 },
     coordinates: { x: 0, y: 0 },
     spriteImage: blackHoleAnimation,
-    width: 512,
-    height: 288,
-    renderWidth: 512,
-    renderHeight: 288,
+    width: 256,
+    height: 144,
+    renderWidth: 256,
+    renderHeight: 144,
     rowCount: 1,
     columnCount: 170,
     rate: 0,
     startRate: 0,
-    xOffset: -256,
-    yOffset: -144,
+    xOffset: -128,
+    yOffset: -72,
     isBackground: true
   },
   {

@@ -9,6 +9,7 @@ import {
   GAME_ANIMATIONS
 } from '../constants/settings.js';
 import { WEAPONS } from '../constants/weapons.js';
+import { round } from '../helpers/mathHelpers';
 
 export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   const {
@@ -26,7 +27,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     case 'start':
       return handleStartEvent(players, playerData, userId, eventData, waveData);
     case 'explode':
-      return handleExplodeEvent(players, aiShips, playerData, elapsedTime, motherships);
+      return handleExplodeEvent(players, aiShips, playerData, elapsedTime, motherships, userId);
     case 'supplyShip':
       return { aiShips: [...aiShips, playerData] };
     case 'bombers':
@@ -38,45 +39,42 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
         return handleUpdateEvent([...players], playerData, clockDifference, deployedWeapons, elapsedTime);
       }
   };
-}
+};
+
+const handleBounty = (attacker, explodedPlayer) => {
+  const bounty = round(explodedPlayer.maxHitpoints * 0.1);
+  attacker.kills += 1
+  attacker.gold += bounty;
+  attacker.score += bounty;
+  return attacker;
+};
 
 const handleExplodeEvent = (players, aiShips, playerData, elapsedTime, motherships) => {
+  let updatedPlayers = players.map(p => p.userId === playerData.killedBy ? handleBounty(p, playerData) : p);
+  
   if (playerData.type === 'human') {
-    const updatedPlayers = players.map((player) => {
-      if (player.userId === playerData.userId) {
-        return explodePlayer(player, playerData);
-      } else {
-        return player;
-      }
-    })
-
+    updatedPlayers = updatedPlayers.map(p => p.userId === playerData.userId ? explodePlayer(p, playerData) : p);
     return { players: updatedPlayers }
   } else {
     if (['redMothership', 'blueMothership'].includes(playerData.name)) {
       return handleGameOver(players, playerData, motherships);
     } else {
-      const updatedAiShips = aiShips.map((ship) => {
-        if (playerData.id === ship.id && ship.active) {
-          return explodePlayer(ship, playerData)
-        } else {
-          return ship;
-        }
-      });
+      const updatedAiShips = aiShips.map(ship => playerData.id === ship.id && ship.active ? explodePlayer(ship, playerData) : ship);
 
       if (playerData.type === 'supplyShip') {
-        return handleBuff(playerData, players, updatedAiShips, elapsedTime);
+        return handleBuff(playerData, updatedPlayers, updatedAiShips, elapsedTime);
       } else {
-        return { aiShips: updatedAiShips };
+        return { aiShips: updatedAiShips, players, updatedPlayers };
       }
     }
   }
-}
+};
 
 const handleBuff = (playerData, players, aiShips, elapsedTime) => {
   const gameBuff = { ...GAME_EFFECTS[playerData.buffIndex], durationCount: elapsedTime };
   const killedBy = players.find((p) => p.userId === playerData.killedBy);
   const team = killedBy.team;
-  const updatedPlayers = applyGameBuff(team, [...players], gameBuff);
+  const updatedPlayers = applyGameBuff(team, players, gameBuff);
   const updatedAiShips = applyGameBuff(team, aiShips, gameBuff);
   return { players: updatedPlayers, gameBuff: gameBuff, aiShips: updatedAiShips };
 }
@@ -138,8 +136,6 @@ const handleStartEvent = (players, playerData, userId, eventData, waveData) => {
     newPlayers = [...players, playerData]
   }
 
-  const updatedEventData = { ...eventData, sendInterval: handleSendInterval(newPlayers) }
-
   if (userId === playerData.userId) {
     return {
       up: false,
@@ -149,26 +145,11 @@ const handleStartEvent = (players, playerData, userId, eventData, waveData) => {
       waveData: { ...waveData, active: true },
       players: newPlayers,
       userId: playerData.userId,
-      eventData: updatedEventData,
     }
   } else {
-    return { players: newPlayers, eventData, updatedEventData }
+    return { players: newPlayers }
   }
-}
-
-const handleSendInterval = (players) => {
-  let red = 0;
-  let blue = 0;
-  players.forEach((player) => {
-    if (player.team === 'red') {
-      red += 1;
-    } else {
-      blue += 1;
-    }
-  });
-
-  return [red, blue].includes(0) ? 10000 : 60000;
-}
+};
 
 const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, elapsedTime) => {
   let updatedWeapons = deployedWeapons;

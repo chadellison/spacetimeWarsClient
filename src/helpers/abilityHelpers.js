@@ -7,13 +7,15 @@ import { playSound } from '../helpers/audioHelpers.js';
 import { GAME_ANIMATIONS } from '../constants/settings.js';
 import { getItem } from './itemHelpers.js';
 import { round } from './mathHelpers.js';
+import { createEffect } from './effectHelpers.js';
 
 export const handleAbility = (players, deployedWeapons, playerData, elapsedTime, animations, aiShips) => {
-  const ability = ABILITIES[SHIPS[playerData.shipIndex].abilities[playerData.usedAbility]]
+  const ability = ABILITIES[SHIPS[playerData.shipIndex].abilities[playerData.usedAbility]];
+
   let newAnimmations = animations;
 
   if (ability.animationIndex >= 0) {
-    const currentPlayer = players.find((player) => player.userId === playerData.userId);
+    const currentPlayer = players.find(player => player.userId === playerData.userId);
     const location = currentPlayer.location;
     newAnimmations = [...animations, { ...GAME_ANIMATIONS[ability.animationIndex], location, coordinates: { x: 0, y: 0 } }];
   }
@@ -21,7 +23,7 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
   if (ability.type === 'weapon') {
     return addAbilityWeapon(ability.weaponIndex, deployedWeapons, playerData, elapsedTime);
   } else if (ability.type === 'effect') {
-    return addAbilityEffect(ability.effectIndex, [...players], playerData, elapsedTime, newAnimmations, aiShips);
+    return addAbilityEffect(ability.effectIndex, [...players], playerData, newAnimmations, aiShips);
   } else {
     return applyOtherAbility([...players], playerData, newAnimmations);
   }
@@ -36,13 +38,8 @@ const applyOtherAbility = (players, playerData, newAnimmations) => {
   const teleportAnimation = { ...GAME_ANIMATIONS[2], coordinates: { x: 0, y: 0 } };
   const coordinates = findCenterCoordinates(player.location, shipCenter, { width: teleportAnimation.renderWidth, height: teleportAnimation.renderHeight })
   teleportAnimation.location = coordinates;
-  const udpatedPlayers = players.map((p) => {
-    if (p.userId === player.userId) {
-      return player;
-    } else {
-      return p
-    }
-  })
+  const udpatedPlayers = players.map(p => p.userId === player.userId ? player : p);
+  
   return { players: udpatedPlayers, animations: newAnimmations.concat(teleportAnimation) }
 };
 
@@ -51,49 +48,37 @@ const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime)
   if (weapon.id === 4) {
     return handleMeteorShower(deployedWeapons, playerData, weapon, elapsedTime);
   } else {
-    const updatedWeapons = [...deployedWeapons, handleFireWeapon(playerData, weapon, elapsedTime, weapon.damage * playerData.abilityLevel)];
+    const updatedWeapons = [...deployedWeapons, handleFireWeapon(playerData, weapon, weapon.damage * playerData.abilityLevel)];
     return { deployedWeapons: updatedWeapons };
   }
 };
 
-const addAbilityEffect = (effectIndex, players, playerData, elapsedTime, animations, aiShips) => {
+const addAbilityEffect = (effectIndex, players, playerData, animations, aiShips) => {
   let updatedPlayers = [...players]
   let updatedAiShips = [...aiShips]
   let player = updatedPlayers.find((p) => p.userId === playerData.userId);
 
-  const duration = GAME_EFFECTS[effectIndex].duration + (playerData.abilityLevel * 1000) - 1000;
-  let effect = { ...GAME_EFFECTS[effectIndex], duration, durationCount: elapsedTime }
+  const duration = GAME_EFFECTS[effectIndex].duration + (playerData.abilityLevel * 1000) - 500;
+  const effectId = GAME_EFFECTS[effectIndex].id;
+  const effect = createEffect(effectIndex, duration, player.effects[effectId], playerData.userId);
 
   if (effect.id === 11 || (effect.id === 7 && player.shipIndex === 4)) {
-    effect = effect.id === 7 ? { ...effect, duration: 800 + (playerData.abilityLevel * 1000) } : effect
-    updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect)
-    updatedAiShips = applyEffectToTeam(updatedAiShips, player.team, effect)
+    effect.duration = effect.id === 7 ? 800 + (playerData.abilityLevel * 1000) : effect.duration;
+    updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect);
+    updatedAiShips = applyEffectToTeam(updatedAiShips, player.team, effect);
   } else if ([1, 3, 4, 12, 15].includes(effect.id)) {
+    effect.duration *= playerData.abilityLevel;
     const opponentTeam = player.team === 'red' ? 'blue' : 'red';
-    effect = { ...GAME_EFFECTS[effectIndex], duration: effect.duration * playerData.abilityLevel }
     updatedPlayers = applyEffectToTeam(updatedPlayers, opponentTeam, effect);
     updatedAiShips = applyEffectToTeam(updatedAiShips, opponentTeam, effect);
   } else if ([5, 14].includes(effect.id)) {
-    effect = { ...GAME_EFFECTS[effectIndex], duration: effect.duration * playerData.abilityLevel }
-    player.effects = { ...player.effects, [effect.id]: effect };
+    effect.duration *= playerData.abilityLevel;
+    player.effects[effect.id] = effect;
 
-    updatedPlayers = updatedPlayers.map((p) => {
-      if (p.userId === player.userId) {
-        return player;
-      } else {
-        return p;
-      }
-    })
+    updatedPlayers = updatedPlayers.map(p => p.userId === player.userId ? player : p);
   } else {
-    player.effects = { ...player.effects, [effect.id]: effect };
-
-    updatedPlayers = updatedPlayers.map((p) => {
-      if (p.userId === player.userId) {
-        return player;
-      } else {
-        return p;
-      }
-    })
+    player.effects[effect.id] = effect;
+    updatedPlayers = updatedPlayers.map(p => p.userId === player.userId ? player : p);
   }
   return { players: updatedPlayers, aiShips: updatedAiShips, animations };
 };

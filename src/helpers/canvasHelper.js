@@ -23,14 +23,14 @@ const resolveImage = (item) => {
 }
 
 export const IMAGES_ASSETS = SHIPS
-  .concat(SHIPS.map(ship => ({...ship, name: `${ship.name}Blue`, image: ship.blueImage})))
+  .concat(SHIPS.map(ship => ({ ...ship, name: `${ship.name}Blue`, image: ship.blueImage })))
   .concat(BOMBERS)
-  .concat(BOMBERS.map(ship => ({...ship, name: `${ship.name}Blue`, image: ship.blueImage})))
-  .concat(WEAPONS.map(item => ({...item, image: resolveImage(item)})))
-  .concat(ABILITY_WEAPONS.map(item => ({...item, image: resolveImage(item)})))
-  .concat(GAME_EFFECTS.filter((effect) => effect.animation).map(item => ({...item, image: SPRITE_IMAGES[item.animation.spriteIndex]})))
-  .concat(GAME_ANIMATIONS.map(item => ({...item, image: resolveImage(item)})))
-  .concat(MOTHER_SHIPS.map(item => ({...item, image: resolveImage(item)})))
+  .concat(BOMBERS.map(ship => ({ ...ship, name: `${ship.name}Blue`, image: ship.blueImage })))
+  .concat(WEAPONS.map(item => ({ ...item, image: resolveImage(item) })))
+  .concat(ABILITY_WEAPONS.map(item => ({ ...item, image: resolveImage(item) })))
+  .concat(GAME_EFFECTS.filter((effect) => effect.animation).map(item => ({ ...item, image: SPRITE_IMAGES[item.animation.spriteIndex] })))
+  .concat(GAME_ANIMATIONS.map(item => ({ ...item, image: resolveImage(item) })))
+  .concat(MOTHER_SHIPS.map(item => ({ ...item, image: resolveImage(item) })))
   .concat(SUPPLY_SHIP)
   .concat([{ name: 'backgroundImage', image: spaceBackground }]);
 
@@ -44,7 +44,7 @@ export const drawShip = (context, player, ship, thruster) => {
   }
 
   context.restore();
-}
+};
 
 const renderThruster = (context, thruster, player, animation) => {
   const ship = player.type === 'bomber' ? BOMBERS[player.index] : SHIPS[player.shipIndex]
@@ -62,7 +62,7 @@ const renderThruster = (context, thruster, player, animation) => {
     animation.renderWidth,
     animation.renderHeight
   )
-}
+};
 
 export const renderWeapon = (context, weapon, image) => {
   if (weapon.animation) {
@@ -97,9 +97,7 @@ export const handleDirection = (context, image, location, trajectory) => {
   context.drawImage(image, x, y);
 }
 
-export const shouldRenderShip = (player, userId) => {
-  return player.active && (!isInvisable(player.effects) || (player.userId === userId));
-}
+export const shouldRenderShip = (player, userId) => player.active && (!isInvisable(player.effects) || (player.userId === userId));
 
 export const handleInvisibleFilter = (context, player, userId) => {
   if (isInvisable(player.effects) && player.userId === userId) {
@@ -107,7 +105,7 @@ export const handleInvisibleFilter = (context, player, userId) => {
   } else {
     context.filter = 'none';
   }
-}
+};
 
 export const renderAnimation = (context, spriteImage, animation, location) => {
   context.drawImage(
@@ -120,8 +118,8 @@ export const renderAnimation = (context, spriteImage, animation, location) => {
     location.y + animation.yOffset,
     animation.renderWidth,
     animation.renderHeight
-  )
-}
+  );
+};
 
 export const renderPlayerData = (context, player, showShip, isExploading) => {
   if (!isExploading) {

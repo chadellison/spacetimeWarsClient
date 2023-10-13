@@ -190,17 +190,15 @@ export const handleAbilityEvent = (player, abilityData, handleGameEvent, updateS
     if (isCallForBackup(player, pressedKey)) {
       playSound(backupSound);
       const backupShips = createBackupShips(abilityData[pressedKey].level, player.team);
-      payload = { gameEvent: 'bombers', team: player.team, bombers: backupShips }
-    }
-    handleGameEvent(payload)
+      payload = { gameEvent: 'bombers', override: true, team: player.team, bombers: backupShips };
+    };
+    handleGameEvent(payload);
     abilityData[pressedKey].lastUsed = Date.now();
     updateState({ abilityData });
   }
-}
+};
 
-const isCallForBackup = (player, pressedKey) => {
-  return player.shipIndex === 6 && pressedKey === 'q';
-}
+const isCallForBackup = (player, pressedKey) => player.shipIndex === 6 && pressedKey === 'q';
 
 const canUseAbility = (ability, player, pressedKey) => {
   return Date.now() - ability.lastUsed > ABILITIES[SHIPS[player.shipIndex].abilities[pressedKey]].cooldown
