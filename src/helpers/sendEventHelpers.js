@@ -78,7 +78,7 @@ const handlePlayerOrientation = (player, up, left, right) => {
   }
 
   return { ...player, rotate, accelerate: up }
-}
+};
 
 const handleRotateEvent = (gameState, pressedKey, handleGameEvent, updateState, currentPlayer) => {
   const { players, up, left, right } = gameState;
@@ -124,7 +124,7 @@ const queueForPlayerUpdate = (updatedPlayers, updatedPlayer, updateState, handle
   if (soundEffect) {
     soundEffect();
   }
-}
+};
 
 export const queueForWeaponUpdate = (player, updateState, handleGameEvent, soundEffect, updatedWeapons) => {
   handleGameEvent(player);
@@ -132,7 +132,7 @@ export const queueForWeaponUpdate = (player, updateState, handleGameEvent, sound
   if (soundEffect) {
     soundEffect();
   }
-}
+};
 
 export const startEventPayload = (player) => {
   const startData = getStartData(player.team);
@@ -147,7 +147,7 @@ export const startEventPayload = (player) => {
     active: true,
     effects: {},
   };
-}
+};
 
 export const getStartData = (team) => {
   if (team === 'red') {
@@ -163,7 +163,7 @@ export const getStartData = (team) => {
       trajectory: 180
     }
   }
-}
+};
 
 const accelerateEventPayload = (player, pressedKey) => {
   return {
@@ -176,7 +176,7 @@ const accelerateEventPayload = (player, pressedKey) => {
 
 const rotateEventPayload = (player, pressedKey) => {
   return { ...player, gameEvent: pressedKey, rotate: pressedKey };
-}
+};
 
 export const handleAbilityEvent = (player, abilityData, handleGameEvent, updateState, pressedKey) => {
   const levelSum = abilityData.q.level + abilityData.w.level + abilityData.e.level;
@@ -202,7 +202,7 @@ const isCallForBackup = (player, pressedKey) => player.shipIndex === 6 && presse
 
 const canUseAbility = (ability, player, pressedKey) => {
   return Date.now() - ability.lastUsed > ABILITIES[SHIPS[player.shipIndex].abilities[pressedKey]].cooldown
-}
+};
 
 const createBackupShips = (abilityLevel, team) => {
   let i = 0
@@ -212,23 +212,33 @@ const createBackupShips = (abilityLevel, team) => {
     i += 1;
   }
   return backupShips;
-}
+};
 
 export const createBombers = (wave, players) => {
   let bombers = [];
+
+  const teamCounts = { red: 0, blue: 0 };
+  players.forEach(p => { teamCounts[p.team] += 1 });
+
+  Object.keys(teamCounts).forEach(team => { bombers = bombers.concat(bombersByWave(wave, team)) });
   
-  players.forEach(() => {
-    bombers = bombers.concat(bombersByWave(wave));
-  });
+  
+  const diff = teamCounts.red - teamCounts.blue;
+
+  if (diff < 0) {
+    bombers = bombers.concat(bombersByWave(round(wave / 2), 'red'));
+  } else if (diff > 0) {
+    bombers = bombers.concat(bombersByWave(round(wave / 2), 'blue'));
+  }
 
   return bombers;
-}
+};
 
-const bombersByWave = (wave) => {
+const bombersByWave = (wave, team) => {
   const bombers = [];
   let i = wave / 2
   let bomberIndex = 0;
-  
+
   while (i > 0) {
     if (i > 8) {
       bomberIndex = 3;
@@ -242,14 +252,13 @@ const bombersByWave = (wave) => {
     } else {
       bomberIndex = 0;
       i -= 1
-    }
+    };
 
-    bombers.push(createBomber(bomberIndex, 'red'))
-    bombers.push(createBomber(bomberIndex, 'blue'))  
-  }
+    bombers.push(createBomber(bomberIndex, team));
+  };
 
   return bombers;
-}
+};
 
 export const createBomber = (index, team) => {
   const x = team === 'red' ? 100 : BOARD_WIDTH - 100;
@@ -268,4 +277,4 @@ export const createBomber = (index, team) => {
     location,
     shouldFire: false
   }
-}
+};

@@ -23,7 +23,7 @@ export const handleAbility = (players, deployedWeapons, playerData, elapsedTime,
   if (ability.type === 'weapon') {
     return addAbilityWeapon(ability.weaponIndex, deployedWeapons, playerData, elapsedTime);
   } else if (ability.type === 'effect') {
-    return addAbilityEffect(ability.effectIndex, [...players], playerData, newAnimmations, aiShips);
+    return addAbilityEffect(ability.effectIndex, [...players], playerData, newAnimmations, elapsedTime, aiShips);
   } else {
     return applyOtherAbility([...players], playerData, newAnimmations);
   }
@@ -48,17 +48,17 @@ const addAbilityWeapon = (weaponIndex, deployedWeapons, playerData, elapsedTime)
   if (weapon.id === 4) {
     return handleMeteorShower(deployedWeapons, playerData, weapon, elapsedTime);
   } else {
-    const updatedWeapons = [...deployedWeapons, handleFireWeapon(playerData, weapon, weapon.damage * playerData.abilityLevel)];
+    const updatedWeapons = [...deployedWeapons, handleFireWeapon(playerData, weapon, elapsedTime, weapon.damage * playerData.abilityLevel)];
     return { deployedWeapons: updatedWeapons };
   }
 };
 
-const addAbilityEffect = (effectIndex, players, playerData, animations, aiShips) => {
+const addAbilityEffect = (effectIndex, players, playerData, animations, elapsedTime, aiShips) => {
   let updatedPlayers = [...players]
   let updatedAiShips = [...aiShips]
   let player = updatedPlayers.find((p) => p.userId === playerData.userId);
 
-  const duration = GAME_EFFECTS[effectIndex].duration + (playerData.abilityLevel * 1000) - 500;
+  const duration = GAME_EFFECTS[effectIndex].duration + (playerData.abilityLevel * 1000) - elapsedTime;
   const effectId = GAME_EFFECTS[effectIndex].id;
   const effect = createEffect(effectIndex, duration, player.effects[effectId], playerData.userId);
 

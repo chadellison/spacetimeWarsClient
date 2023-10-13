@@ -525,7 +525,7 @@ const updateCollisionData = (player, weapon, attacker) => {
 
     player.hitpoints -= damage;
     if (getItem(player.items, 10)) {
-      const newHitpoints = attacker.hitpoints - round(damage * 0.3)
+      const newHitpoints = attacker.hitpoints - round(damage * 0.3);
       attacker.hitpoints = newHitpoints > 0 ? newHitpoints : 1;
     }
     if (attacker.type === 'human') {
@@ -534,7 +534,6 @@ const updateCollisionData = (player, weapon, attacker) => {
 
       if (player.hitpoints <= 0) {
         player.killedBy = weapon.playerIndex;
-
       };
       if (didLevelUp(attacker.level, attacker.score) && attacker.level < 10) {
         attacker.levelUp = true;
@@ -610,7 +609,7 @@ const calculateDamage = (weapon, player) => {
     // play miss sound
     damage = 0;
   }
-
+  
   return round(damage * (10 - armor) / 10);
 }
 
