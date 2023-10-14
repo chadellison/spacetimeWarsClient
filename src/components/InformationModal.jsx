@@ -27,7 +27,7 @@ const renderHowToPlay = () => {
         Shop menu
       </div>
       <div className="informationText">
-        The shop menu can be used to purchase ships, purchase a weapons, select upgrades, and purchase items.
+        The shop menu can be used to purchase ships, weapons, and items.
       </div>
       <div className="noteText">This menu can be accessed at any time to make purchases / apply upgrades</div>
       <div className="noteText">Information about each is listed below the icon (price, description, etc.).</div>
@@ -67,6 +67,18 @@ const renderHowToPlay = () => {
     </div>
   )
 }
+
+const renderText = (showInstructions) => {
+  if (showInstructions) {
+    return renderHowToPlay();
+  } else {
+    return (
+      <div className="informationTitle">
+        Harness the power of weapons, collect valuable items, and unlock upgrades as you engage in an epic battle to obliterate your rival's mothership while defending yours. 
+      </div>
+    );
+  }
+}
 export const InformationModal = ({ updateState, userId, players, showInstructions, loading, loadPercent }) => {
   return (
     <div className="modal">
@@ -76,7 +88,7 @@ export const InformationModal = ({ updateState, userId, players, showInstruction
       </div>
       <GameButton
         onClick={() => updateState({ showInstructions: !showInstructions })}
-        buttonText={showInstructions ? 'close' : 'Instructions'}
+        buttonText={showInstructions ? 'close' : 'How to play'}
         className={'howToPlayButton'}
       />
       {!loading && <GameButton
@@ -84,16 +96,8 @@ export const InformationModal = ({ updateState, userId, players, showInstruction
         onClick={() => updateState(addPlayer(userId, players))}
         buttonText={'start'}
       />}
-      <div className="informationTitle">
-        The Object of the game:
-      </div>
-      <div className="informationText">
-        Use weapons, items, and upgrades to destroy your opponents’ mothership before yours gets destroyed.
-      </div>
-      <div className="informationText">
-        The Red mothership is located at the top left of the map and the blue mothership is located at the bottom right of the map.
-      </div>
-      {showInstructions && renderHowToPlay()}
+      
+      {renderText(showInstructions)}
       {loading && <ProgressBar percent={loadPercent} />}
     </div>
   );

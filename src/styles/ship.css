@@ -1,11 +1,8 @@
 .selection {
-  width: 10em;
-  height: 12em;
-  margin-top: 2em;
-  margin-left: 1em;
-  margin-right: 1em;
   transition: ease-out .5s;
   display: inline-block;
+  margin-top: 30px;
+  text-align: center;
 }
 
 .dim {
@@ -19,21 +16,19 @@
 .imageWrapper {
   border: 1px solid #2c66b2;
   border-radius: 10%;
-  padding: 0.5em;
-  margin-bottom: 1em;
-  width: 8em;
-  height: 8em;
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15vh;
+  height: 15vh;
+  margin: 15px;
 }
 
 .selectionImage {
-  width: 8em;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  padding: 10px;
+  width: 90%;
 }
 
 .selectionTitle {
@@ -71,6 +66,7 @@
   font-size: 12px;
   height: 0.5em;
   color: #2c66b2;
+  width: 15vh;
 }
 
 .abilityTitle {
@@ -83,13 +79,10 @@
   color: #2c66b2;
 }
 
-.abilityDescription {
-  margin-top: 1em;
-  text-align: left;
-  line-height: 1.5em;
-  display: flex;
-  font-size: 16px;
-  color: #2c66b2;
-  padding-right: 10px;
-  position: absolute;
+.itemInfo {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  height: 15vh;
+  margin: 15px;
 }

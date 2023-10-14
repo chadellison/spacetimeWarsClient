@@ -1,12 +1,12 @@
 import React from 'react';
 import '../styles/ship.css';
-import {notEnoughResources, upgradeSound} from '../constants/settings.js';
-import {handleUpdate} from '../helpers/selectionModalHelpers.js';
+import { notEnoughResources, upgradeSound } from '../constants/settings.js';
+import { handleUpdate } from '../helpers/selectionModalHelpers.js';
 import { handleHover } from '../helpers/selectionModalHelpers.js';
 
 const handleClick = (activePlayer, upgrade, updateState, players, upgrades, experiencePoints) => {
   if (experiencePoints > 0 && upgrades[upgrade.index] < 3) {
-    let player = {...activePlayer};
+    let player = { ...activePlayer };
     let newState;
     let newUpgrades = [...upgrades]
     switch (upgrade.index) {
@@ -52,16 +52,17 @@ const handleClick = (activePlayer, upgrade, updateState, players, upgrades, expe
   }
 };
 
-export const Upgrade = ({imageSrc, activePlayer, upgrade, updateState, players, upgrades, experiencePoints, hover, setHover}) => {
+export const Upgrade = ({ imageSrc, activePlayer, upgrade, updateState, players, upgrades, experiencePoints, hover, setHover }) => {
   if (upgrades[upgrade.index] === 3) {
     return <div></div>
   } else {
     return (
       <div className={`selection ${handleHover(hover, upgrade.index)}`}
         onClick={() => handleClick(activePlayer, upgrade, updateState, players, upgrades, experiencePoints)} onMouseEnter={() => setHover(upgrade.index)} onMouseLeave={() => setHover(null)}>
-          <div className="imageWrapper">
-            <img id={upgrade.index} src={imageSrc} alt="item" className="selectionImage"/>
-          </div>
+        <div className="imageWrapper">
+          <img id={upgrade.index} src={imageSrc} alt="item" className="selectionImage" />
+        </div>
+        <span className="itemInfo">
           <div className="selectionTitle">
             {`${upgrade.name}`}
           </div>
@@ -71,6 +72,7 @@ export const Upgrade = ({imageSrc, activePlayer, upgrade, updateState, players, 
           <div className="selectionDescription">
             {upgrade.description}
           </div>
+        </span>
       </div>
     );
   }

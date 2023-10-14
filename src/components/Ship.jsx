@@ -40,7 +40,7 @@ const handleClick = (activePlayer, updateState, players, shipIndex) => {
   }
 };
 
-export const Ship = ({ imageSrc, activePlayer, ship, players, updateState, updateDescription, setHover, hover }) => {
+export const Ship = ({ imageSrc, activePlayer, ship, players, updateState, setHover, hover }) => {
 
   return (
     <div className={`selection ${activePlayer.shipIndex === ship.index ? 'selected' : ''} ${handleHover(hover, ship.index)}`}
@@ -49,37 +49,38 @@ export const Ship = ({ imageSrc, activePlayer, ship, players, updateState, updat
       <div className="imageWrapper">
         <img id={ship.index} src={imageSrc} alt="ship" className="selectionImage" />
       </div>
-      <div className="selectionTitle">
-        {`${ship.name}`}
-      </div>
-      <div className="selectionPrice">
-        {`Price: ${ship.price}`}
-      </div>
-      <div className="selectionData">
-        {`Hitpoints: ${ship.hitpoints}`}
-      </div>
-      <div className="selectionData">
-        {`Armor: ${ship.armor}`}
-      </div>
-      <div className="selectionData">
-        {`Speed: ${ship.speed}`}
-      </div>
-      <div className="abilityTitle">
-        Abilities
-      </div>
-      {[
-        { abilityImage: ABILITIES[ship.abilities.q].image, value: 'q' },
-        { abilityImage: ABILITIES[ship.abilities.w].image, value: 'w' },
-        { abilityImage: ABILITIES[ship.abilities.e].image, value: 'e' }
-      ].map((abilityData, index) => {
-        return (
-          <AbilityDisplay key={'displayAbility' + index}
-            abilityData={abilityData}
-            onMouseEnter={() => updateDescription(ABILITIES[ship.abilities[abilityData.value]].description)}
-            onMouseLeave={() => updateDescription('')}
-          />
-        )
-      })}
+      <span className="itemInfo">
+        <div className="selectionTitle">
+          {`${ship.name}`}
+        </div>
+        <div className="selectionPrice">
+          {`Price: ${ship.price}`}
+        </div>
+        <div className="selectionData">
+          {`Hitpoints: ${ship.hitpoints}`}
+        </div>
+        <div className="selectionData">
+          {`Armor: ${ship.armor}`}
+        </div>
+        <div className="selectionData">
+          {`Speed: ${ship.speed}`}
+        </div>
+        <div className="abilityTitle">
+          Abilities
+        </div>
+        {[
+          { abilityImage: ABILITIES[ship.abilities.q].image, value: 'q' },
+          { abilityImage: ABILITIES[ship.abilities.w].image, value: 'w' },
+          { abilityImage: ABILITIES[ship.abilities.e].image, value: 'e' }
+        ].map((abilityData, index) => {
+          return (
+            <AbilityDisplay key={'displayAbility' + index}
+              info={ABILITIES[ship.abilities[abilityData.value]].description}
+              abilityData={abilityData}
+            />
+          )
+        })}
+      </span>
     </div>
   );
 };

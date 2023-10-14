@@ -50,7 +50,6 @@ import mineExplosionAnimation from '../images/mineExplosionAnimation.png';
 import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
 import meteorExplosionAnimation from '../images/meteorExplosionAnimation.png';
 
-
 // constants
 export const BOARD_WIDTH = 2700;
 export const BOARD_HEIGHT = 1688;

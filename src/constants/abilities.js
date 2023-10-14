@@ -35,7 +35,7 @@ import invulnerabilityIcon from '../images/invulnerableIcon2.png';
 import massStunIcon from '../images/massStunIcon2.png';
 import meteorShowerIcon from '../images/meteorShowerIcon2.png';
 import mineIcon from '../images/mineIcon2.png';
-import nuclearExplosionIcon from '../images/nuclearExplosionIcon.png';
+import nuclearExplosionIcon from '../images/nuclearExplosionIcon2.png';
 import piercerIcon from '../images/piercerIcon2.png';
 import poisonDartIcon from '../images/poisonDartIcon2.png';
 import poisonIcon from '../images/poisonIcon2.png';

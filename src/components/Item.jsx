@@ -1,10 +1,11 @@
-import React from 'react';
+import { useState } from 'react';
 import '../styles/item.css';
 import { getItem } from '../helpers/itemHelpers.js';
 import { handleUpdate } from '../helpers/selectionModalHelpers.js';
 import { notEnoughResources, goldAudio } from '../constants/settings.js';
 import { ITEMS } from '../constants/items.js';
 import { handleHover } from '../helpers/selectionModalHelpers.js';
+import Tooltip from './Tooltip';
 
 const handleClick = (activePlayer, item, updateState, players) => {
   const gold = activePlayer.gold - ITEMS[item.index].price;
@@ -30,32 +31,26 @@ const handleClick = (activePlayer, item, updateState, players) => {
   }
 };
 
-
-export const Item = ({ imageSrc, activePlayer, item, updateState, players, updateDescription, hover, setHover }) => {
-  const handleItemHover = (item) => {
-    updateDescription(item.description)
-    setHover(item.index)
-  }
-  
-  const handleItemLeave = () => {
-    updateDescription('')
-    setHover(null)
-  }
+export const Item = ({ imageSrc, activePlayer, item, updateState, players, hover }) => {
+  const [hovered, setHovered] = useState(false);
 
   return (
     <div className={`itemSelection ${handleHover(hover, item.index)}`}
       onClick={() => handleClick(activePlayer, item, updateState, players)}
-      onMouseEnter={() => handleItemHover(item)}
-      onMouseLeave={handleItemLeave}>
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}>
       <div className="itemImageWrapper">
         <img id={item.index} src={imageSrc} alt="item" className="itemSelectionImage" />
       </div>
-      <div className="itemSelectionTitle">
-        {`${item.name}`}
-      </div>
-      <div className="itemSelectionPrice">
-        {`Price: ${item.price}`}
-      </div>
+      <span className="itemInfo">
+        {hovered && <Tooltip marginLeft="0" marginTop="0" imageSrc={imageSrc} description={item.description}/>}
+        <div className="itemSelectionTitle">
+          {`${item.name}`}
+        </div>
+        <div className="itemSelectionPrice">
+          {`Price: ${item.price}`}
+        </div>
+      </span>
     </div>
   );
 };

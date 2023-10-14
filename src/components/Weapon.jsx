@@ -30,24 +30,26 @@ export const Weapon = ({ imageSrc, weapon, activePlayer, updateState, players, h
       <div className="imageWrapper">
         <img id={weapon.index} src={imageSrc} alt="ship" className="selectionImage" />
       </div>
-      <div className="selectionTitle">
-        {`${weapon.name}`}
-      </div>
-      <div className="selectionPrice">
-        {`Price: ${weapon.price}`}
-      </div>
-      <div className="selectionData">
-        {`Damage: ${weapon.damage}`}
-      </div>
-      <div className="selectionData">
-        {`Cooldown: ${weapon.cooldown}`}
-      </div>
-      <div className="selectionData">
-        {`Speed: ${weapon.speed}`}
-      </div>
-      <div className="selectionDescription">
-        {`Ability: ${weapon.ability}`}
-      </div>
+      <span className="itemInfo">
+        <div className="selectionTitle">
+          {`${weapon.name}`}
+        </div>
+        <div className="selectionPrice">
+          {`Price: ${weapon.price}`}
+        </div>
+        <div className="selectionData">
+          {`Damage: ${weapon.damage}`}
+        </div>
+        <div className="selectionData">
+          {`Cooldown: ${weapon.cooldown}`}
+        </div>
+        <div className="selectionData">
+          {`Speed: ${weapon.speed}`}
+        </div>
+        <div className="selectionDescription">
+          {`Ability: ${weapon.ability}`}
+        </div>
+      </span>
     </div>
   );
 };

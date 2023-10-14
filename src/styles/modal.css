@@ -1,10 +1,17 @@
+.gameItemsContainer {
+  width: 70%;
+  margin-left: 15%;
+}
+
 .informationTitle {
-  margin-top: 3em;
+  line-height: 35px;
+  margin-top: 60px;
   font-size: 20px;
   height: 30px;
   margin-left: 30%;
   width: 40%;
-  color: #c1cadb
+  color: #c1cadb;
+  font-weight: bold;
 }
 
 .leaderboardTitle {
@@ -287,7 +294,7 @@
 }
 
 .howToPlay {
-  margin-top: 2em;
+  margin-bottom: 70px;
 }
 
 .experiencePoints {
@@ -318,6 +325,20 @@
   font-size: 18px;
   height: 0.5em;
   color: #c1cadb;
+}
+
+.goldContainer {
+  margin-left: 50px;
+  display: flex;
+  align-items: center;
+  font-family: 'Pacifico', Sans, Lato, Droid Sans;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ab8432;
+}
+
+.goldIcon {
+  width: 50px;
 }
 
 @keyframes slideDown {

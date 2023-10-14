@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import '../styles/modal.css';
-import { Ship } from './Ship';
-import { Weapon } from './Weapon';
-import { Upgrade } from './Upgrade';
-import { Item } from './Item';
-import { GameButton } from './GameButton';
-import { PaginateButton } from './PaginateButton';
 import { ITEMS } from '../constants/items.js';
 import { SHIPS } from '../constants/ships.js';
-import { WEAPONS } from '../constants/weapons.js';
 import { UPGRADES } from '../constants/upgrades.js';
+import { WEAPONS } from '../constants/weapons.js';
 import { startEventPayload } from '../helpers/sendEventHelpers.js';
+import goldIcon from '../images/goldIcon2.png';
+import '../styles/modal.css';
+import { GameButton } from './GameButton';
+import { Item } from './Item';
+import { PaginateButton } from './PaginateButton';
+import { Ship } from './Ship';
+import { Upgrade } from './Upgrade';
+import { Weapon } from './Weapon';
 
 const handleClick = (updateState, handleGameEvent, activePlayer) => {
   if (activePlayer.gameEvent === 'waiting') {
@@ -25,68 +26,90 @@ const renderOptions = (activeTab, page, activePlayer, updateState, players, upgr
   switch (activeTab) {
     case 'Ships':
       const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
-      return ships.map((ship) => {
-        return (
-          <Ship
-            key={`ship${ship.index}`}
-            hover={hover}
-            setHover={setHover}
-            imageSrc={activePlayer.team === 'red' ? ship.image : ship.blueImage}
-            activePlayer={activePlayer}
-            ship={ship}
-            players={players}
-            updateState={updateState}
-            updateDescription={updateDescription}
-          />
-        )
-      });
+      return (
+        <div>
+          {
+            ships.map((ship) => {
+              return (
+                <Ship
+                  key={`ship${ship.index}`}
+                  hover={hover}
+                  setHover={setHover}
+                  imageSrc={activePlayer.team === 'red' ? ship.image : ship.blueImage}
+                  activePlayer={activePlayer}
+                  ship={ship}
+                  players={players}
+                  updateState={updateState}
+                />
+              )
+            })
+          }
+        </div>
+      );
     case 'Weapons':
       const weapons = page === 1 ? WEAPONS.slice(0, 4) : WEAPONS.slice(4, 8);
-      return weapons.map(weapon => (
-          <Weapon
-            key={`weapon${weapon.index}`}
-            hover={hover}
-            setHover={setHover}
-            imageSrc={weapon.selectionImage}
-            weapon={weapon}
-            activePlayer={activePlayer}
-            players={players}
-            updateState={updateState}
-          />
-      ));
+      return (
+        <div>
+          {
+            weapons.map(weapon => (
+              <Weapon
+                key={`weapon${weapon.index}`}
+                hover={hover}
+                setHover={setHover}
+                imageSrc={weapon.selectionImage}
+                weapon={weapon}
+                activePlayer={activePlayer}
+                players={players}
+                updateState={updateState}
+              />
+            ))
+          }
+        </div>
+      );
     case 'Upgrades':
-      return UPGRADES.map((upgrade) => {
-        return (
-          <Upgrade
-            hover={hover}
-            setHover={setHover}
-            upgrade={upgrade}
-            players={players}
-            upgrades={upgrades}
-            imageSrc={upgrade.image}
-            updateState={updateState}
-            activePlayer={activePlayer}
-            experiencePoints={experiencePoints}
-            key={`upgrade${upgrade.index}`}
-          />
-        )
-      });
+      return (
+        <div>
+          {
+            UPGRADES.map((upgrade) => {
+              return (
+                <Upgrade
+                  hover={hover}
+                  setHover={setHover}
+                  upgrade={upgrade}
+                  players={players}
+                  upgrades={upgrades}
+                  imageSrc={upgrade.image}
+                  updateState={updateState}
+                  activePlayer={activePlayer}
+                  experiencePoints={experiencePoints}
+                  key={`upgrade${upgrade.index}`}
+                />
+              )
+            })
+          }
+        </div>
+      );
     case 'Items':
-      return ITEMS.map((item) => {
-        return (
-          <Item
-            hover={hover}
-            setHover={setHover}
-            key={`item${item.index}`}
-            imageSrc={item.image}
-            item={item}
-            activePlayer={activePlayer}
-            players={players}
-            updateState={updateState}
-            updateDescription={updateDescription}
-          />
-        )
-      });
+      return (
+        <div className="gameItemsContainer">
+          {
+            ITEMS.map((item) => {
+              return (
+                <Item
+                  hover={hover}
+                  setHover={setHover}
+                  key={`item${item.index}`}
+                  imageSrc={item.image}
+                  item={item}
+                  activePlayer={activePlayer}
+                  players={players}
+                  updateState={updateState}
+                />
+              )
+            })
+          }
+        </div>
+      );
     default:
       return null;
   }
@@ -141,6 +164,13 @@ const renderTabs = (activeTab, updateState, activePlayer) => {
   });
 };
 
+const renderGold = (goldValue) => (
+  <div className="goldContainer">
+    <img src={goldIcon} alt="gold icon" className="goldIcon" />
+    {goldValue}
+  </div>
+);
+
 export const SelectionModal = ({
   page,
   players,
@@ -155,11 +185,14 @@ export const SelectionModal = ({
   const [description, setDesscription] = useState('');
   const [hover, setHover] = useState(null);
 
+  const { gold } = activePlayer;
+
   return (
     <div className="modal">
       <div className="modalTabs">
         {renderTabs(activeTab, updateState, activePlayer)}
       </div>
+      {renderGold(gold)}
       {renderStart(updateState, handleGameEvent, activePlayer, clockDifference)}
       {activeTab === 'Upgrades' && <div className="experiencePoints">{'Experience points ' + experiencePoints}</div>}
       {renderOptions(activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, (description) => setDesscription(description), hover, setHover)}

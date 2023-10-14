@@ -8,7 +8,7 @@ import { WEAPONS } from '../constants/weapons.js';
 import { round } from '../helpers/mathHelpers';
 import { playerCountDown } from '../helpers/playerHelpers';
 import { handleAbilityEvent } from '../helpers/sendEventHelpers';
-import goldIcon from '../images/gold.png';
+import goldIcon from '../images/goldIcon2.png';
 import '../styles/playerData.css';
 import { AbilityIcon } from './AbilityIcon';
 import { Hitpoints } from './Hitpoints';
@@ -175,8 +175,8 @@ const PlayerData = ({
     <div className={`playerData column ${!activePlayer.active ? 'waiting' : ''}`}>
       <div>
         {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown)}
-        <div className="playerLevel">{'level: ' + activePlayer.level}</div>
         <div className="nameInfo">{activePlayer.name}</div>
+        <div className="playerLevel">{'level: ' + activePlayer.level}</div>
         {gold >= 0 && <PlayerStat image={goldIcon} alt={'gold'} value={gold} className="goldInfo" />}
         {renderHitPoints(activePlayer)}
         {renderAbility(activePlayer, abilityData, handleGameEvent, updateState)}
