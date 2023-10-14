@@ -64,19 +64,21 @@ const Layout = () => {
   }
 
   useEffect(() => {
-    syncClocks(REQUEST_COUNT, () => fetchGameData(handleGameDataResponse));
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    const interval = setInterval(renderGame, ANAIMATION_FRAME_RATE);
-    const waveInterval = setInterval(updateWaveData, WAVE_UPDATE_INTERVAL);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-      clearInterval(interval);
-      clearInterval(waveInterval);
+    if (!loading) {
+      syncClocks(REQUEST_COUNT, () => fetchGameData(handleGameDataResponse));
+      window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('keyup', handleKeyUp);
+      const interval = setInterval(renderGame, ANAIMATION_FRAME_RATE);
+      const waveInterval = setInterval(updateWaveData, WAVE_UPDATE_INTERVAL);
+  
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('keyup', handleKeyUp);
+        clearInterval(interval);
+        clearInterval(waveInterval);
+      }
     }
-  }, []);
+  }, [loading]);
 
   const updateWaveData = () => {
     const { waveData, players, userId } = stateRef.current;
@@ -181,7 +183,7 @@ const Layout = () => {
     const elapsedTime = now + clockDifference - playerData.serverTime;
 
     if (elapsedTime > LATENCY_THRESHOLD) {
-      console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime)
+      console.log('SLOW RESPONSE TIME DETECTED: ', elapsedTime);
     }
     const gameState = handleEventPayload(stateRef.current, playerData, elapsedTime);
 
