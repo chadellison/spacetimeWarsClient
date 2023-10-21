@@ -2,7 +2,6 @@ import React from 'react';
 import '../styles/modal.css';
 import { addPlayer } from '../helpers/playerHelpers.js';
 import { GameButton } from './GameButton';
-import { ProgressBar } from './ProgressBar';
 
 const renderHowToPlay = () => {
   return (
@@ -38,10 +37,10 @@ const renderHowToPlay = () => {
         Ships
       </div>
       <div className="informationText">
-        Each ship has three abilities. You can see a description of each ship’s ability by hovering over it in the ship menu.
+        {"Each ship has three abilities. You can see a description of each ship's ability by hovering over it in the ship menu."}
       </div>
       <div className="informationText">
-        Each ship’s respective ability can be selected and used with “q”, “w”, and “e”.
+        {"Each ship's respective ability can be selected and used with \"q\", \"w\", and \"e\""}
       </div>
       <div className="informationTitle">
         Weapons
@@ -79,7 +78,7 @@ const renderText = (showInstructions) => {
     );
   }
 }
-export const InformationModal = ({ updateState, userId, players, showInstructions, loading, loadPercent }) => {
+export const InformationModal = ({ updateState, userId, players, showInstructions, loading }) => {
   return (
     <div className="modal">
       <h2 className="informationTitle">Space Wars</h2>
@@ -98,7 +97,6 @@ export const InformationModal = ({ updateState, userId, players, showInstruction
       />}
       
       {renderText(showInstructions)}
-      {loading && <ProgressBar percent={loadPercent} />}
     </div>
   );
 };

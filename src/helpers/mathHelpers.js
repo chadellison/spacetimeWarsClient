@@ -16,5 +16,3 @@ export const angleFromCoordinates = (start, end) => {
   //if (theta < 0) theta = 360 + theta; // range [0, 360)
   return round(theta);
 }
-
-export const calculatePercent = (num, den) => Math.round((num / den) * 100);

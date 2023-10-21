@@ -9,11 +9,9 @@ import { handleEventPayload } from '../helpers/receiveEventHelpers.js';
 import { createBombers, keyDownEvent, keyUpEventPayload } from '../helpers/sendEventHelpers.js';
 import '../styles/styles.css';
 import Canvas from './Canvas';
-import { ASSET_COUNT } from '../helpers/canvasHelper';
 import Header from './Header';
 import { Modal } from './Modal';
 import PlayerData from './PlayerData';
-import { calculatePercent } from '../helpers/mathHelpers';
 import introMusic from '../audio/introJingle.wav'
 
 const INITIAL_MODAL = window.innerWidth < WINDOW_WIDTH_THRESHOLD ? 'deviceChageNotification' : 'instructions';
@@ -53,9 +51,7 @@ const DEFAULT_STATE = {
 
 const Layout = () => {
   const [state, setState] = useState(DEFAULT_STATE);
-  const [imageLoadCount, setImageLoadCount] = useState(0);
 
-  const loading = imageLoadCount < ASSET_COUNT;
   const stateRef = useRef(state);
   const updateState = (newState) => {
     const updatedState = { ...stateRef.current, ...newState };
@@ -64,7 +60,6 @@ const Layout = () => {
   }
 
   useEffect(() => {
-    if (!loading) {
       syncClocks(REQUEST_COUNT, () => fetchGameData(handleGameDataResponse));
       window.addEventListener('keydown', handleKeyDown);
       window.addEventListener('keyup', handleKeyUp);
@@ -77,8 +72,7 @@ const Layout = () => {
         clearInterval(interval);
         clearInterval(waveInterval);
       }
-    }
-  }, [loading]);
+  }, []);
 
   const updateWaveData = () => {
     const { waveData, players, userId } = stateRef.current;
@@ -251,8 +245,6 @@ const Layout = () => {
           userId={userId}
           scores={scores}
           players={players}
-          loadPercent={calculatePercent(imageLoadCount, ASSET_COUNT)}
-          loading={loading}
           upgrades={upgrades}
           activeTab={activeTab}
           showInstructions={showInstructions}
@@ -284,14 +276,12 @@ const Layout = () => {
         />}
         <Canvas
           userId={userId}
-          loading={loading}
           players={players}
           aiShips={aiShips}
           animations={animations}
           motherships={motherships}
           currentPlayer={existingPlayer}
           deployedWeapons={deployedWeapons}
-          setImageLoadCount={setImageLoadCount}
         />
       </div>
     </div>

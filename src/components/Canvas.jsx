@@ -21,7 +21,9 @@ import '../styles/styles.css';
 
 const CANVAS_REF = createRef();
 
-const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animations, deployedWeapons, loading, setImageLoadCount }) => {
+const LOADED_IMAGES = {};
+
+const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animations, deployedWeapons }) => {
   const [state, setState] = useState({});
   const [images, setImages] = useState({});
 
@@ -31,7 +33,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     IMAGES_ASSETS.forEach((imageData) => {
       const img = new Image();
       img.src = imageData.image;
-      img.onload = handleImageLoad;
+      img.onload = () => handleImageLoad(imageData.name);
       img.onerror = (e) => handleImageError(e, img, imageData.image)
       newImages[imageData.name] = img;
     })
@@ -43,27 +45,26 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     });
   }, []);
 
-  function handleImageLoad() {
-    setImageLoadCount((prevState) => (prevState + 1));
+  function handleImageLoad(imageName) {
+    LOADED_IMAGES[imageName] = true
   }
 
   function handleImageError(e, img, imgSrc) {
     console.error('Image loading error:', e);
-    setTimeout(() => { img.src = imgSrc }, 3000);
-  }
-
-  const handleImage = (player) => {
-    let imageReference = '';
-    if (player.type === 'supplyShip') {
-      imageReference = 'supplyShip';
-    } else if (player.type === 'bomber') {
-      imageReference = player.team === 'blue' ? BOMBERS[player.index].name + 'Blue' : BOMBERS[player.index].name;
-    } else {
-      imageReference = player.team === 'blue' ? SHIPS[player.shipIndex].name + 'Blue' : SHIPS[player.shipIndex].name
-    }
-
-    return images[imageReference];
+    setTimeout(() => { img.src = imgSrc }, 1000);
   };
+
+  const findImageReference = (player) => {
+    if (player.type === 'supplyShip') {
+      return 'supplyShip';
+    } else if (player.type === 'bomber') {
+      return player.team === 'blue' ? BOMBERS[player.index].name + 'Blue' : BOMBERS[player.index].name;
+    } else {
+      return player.team === 'blue' ? SHIPS[player.shipIndex].name + 'Blue' : SHIPS[player.shipIndex].name
+    }
+  };
+
+  const handleImage = (player) => images[findImageReference(player)];
 
   const handleScroll = (currentPlayer) => {
     if (currentPlayer?.location) {
@@ -74,17 +75,16 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     }
   };
 
-  const handleShips = (players, context, userId, currentPlayerIsExploding) => {
-    players.concat(aiShips).forEach((player) => {
+  const renderShips = (players, context, userId, currentPlayerIsExploding) => {
+    players.concat(aiShips).filter(player => LOADED_IMAGES[findImageReference(player)]).forEach((player) => {
       const showShip = shouldRenderShip(player, userId);
       if (player.active) {
         if (showShip) {
-
           handleInvisibleFilter(context, player, userId);
-
           const thruster = player.effects[9] ? images.warpSpeed : images.thruster;
+          const thrusterLoaded = player.effects[9] ? LOADED_IMAGES.warpSpeed : LOADED_IMAGES.thruster;
 
-          drawShip(context, player, handleImage(player), thruster);
+          drawShip({ context, player, ship: handleImage(player), thruster, thrusterLoaded });
 
           renderEffects(context, player)
         }
@@ -94,7 +94,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
       renderPlayerData(context, player, showShip, currentPlayerIsExploding);
     });
 
-    motherships.forEach((ship) => {
+    motherships.filter(ship => LOADED_IMAGES[ship.name]).forEach((ship) => {
       if (ship.active) {
         const mothership = ship.team === 'red' ? images.redMothership : images.blueMothership;
         renderAnimation(context, mothership, ship.animation, ship.location);
@@ -109,7 +109,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
   const renderEffects = (context, ship) => {
     const startCenter = findStartCenter(ship);
 
-    Object.values(ship.effects).forEach((effect) => {
+    Object.values(ship.effects).filter(effect => LOADED_IMAGES[effect.name]).forEach((effect) => {
       if (effect.animation && effect.id !== 9) {
         const effectCoordinates = findCenterCoordinates(ship.location, startCenter, { width: effect.animation?.renderWidth || 0, height: effect.animation?.renderHeight || 0 });
         renderAnimation(context, images[effect.name], effect.animation, effectCoordinates);
@@ -118,8 +118,8 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
   }
 
   const renderBackgroundAnimations = (context) => {
-    animations.forEach((animation) => {
-      if (animation.isBackground) {
+    animations.forEach(animation => {
+      if (animation.isBackground && LOADED_IMAGES[animation.name]) {
         renderAnimation(context, images[animation.name], animation, animation.location);
       }
     });
@@ -127,14 +127,14 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
 
   const renderAnimations = (context) => {
     animations.forEach((animation) => {
-      if (!animation.isBackground) {
+      if (!animation.isBackground && LOADED_IMAGES[animation.name]) {
         renderAnimation(context, images[animation.name], animation, animation.location);
       }
     });
   };
 
   const renderWeapons = (currentPlayer, context) => {
-    deployedWeapons.forEach((weapon) => {
+    deployedWeapons.filter(weapon => LOADED_IMAGES[weapon.name]).forEach((weapon) => {
       if (!weapon.invisible || (currentPlayer && weapon.team === currentPlayer.team)) {
         renderWeapon(context, weapon, images[weapon.name])
       }
@@ -156,13 +156,13 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
       }
 
       renderBackgroundAnimations(context);
-      handleShips(players, context, userId, currentPlayerIsExploding);
+      renderShips(players, context, userId, currentPlayerIsExploding);
       renderWeapons(currentPlayer, context);
       renderAnimations(context);
     }
   };
-
-  currentPlayer && !loading && renderCanvas();
+  
+  renderCanvas();
 
   return (
     <div>

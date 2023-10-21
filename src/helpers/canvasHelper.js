@@ -8,7 +8,6 @@ import { round } from './mathHelpers.js';
 
 import { BOMBERS, MOTHER_SHIPS, SHIPS, SUPPLY_SHIP } from '../constants/ships.js';
 import { ABILITY_WEAPONS, WEAPONS } from '../constants/weapons.js';
-import spaceBackground from '../images/spaceBackground.png';
 
 const RENDER_FONT = '12px Arial';
 
@@ -31,16 +30,13 @@ export const IMAGES_ASSETS = SHIPS
   .concat(GAME_EFFECTS.filter((effect) => effect.animation).map(item => ({ ...item, image: SPRITE_IMAGES[item.animation.spriteIndex] })))
   .concat(GAME_ANIMATIONS.map(item => ({ ...item, image: resolveImage(item) })))
   .concat(MOTHER_SHIPS.map(item => ({ ...item, image: resolveImage(item) })))
-  .concat(SUPPLY_SHIP)
-  .concat([{ name: 'backgroundImage', image: spaceBackground }]);
+  .concat(SUPPLY_SHIP);
 
-export const ASSET_COUNT = IMAGES_ASSETS.length;
-
-export const drawShip = (context, player, ship, thruster) => {
-  handleDirection(context, ship, player.location, player.angle)
+export const drawShip = ({ context, player, ship, thruster, thrusterLoaded }) => {
+  handleDirection(context, ship, player.location, player.angle);
   if (player.accelerate) {
-    const thrusterAnimation = player.effects[9]?.animation || player.thrusterAnimation
-    renderThruster(context, thruster, player, thrusterAnimation);
+    const thrusterAnimation = player.effects[9]?.animation || player.thrusterAnimation;
+    thrusterLoaded && renderThruster(context, thruster, player, thrusterAnimation);
   }
 
   context.restore();
