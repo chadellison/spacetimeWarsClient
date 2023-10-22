@@ -104,6 +104,7 @@ export const handleInvisibleFilter = (context, player, userId) => {
 };
 
 export const renderAnimation = (context, spriteImage, animation, location) => {
+  console.log(animation, '*****')
   context.drawImage(
     spriteImage,
     animation.coordinates.x,

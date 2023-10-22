@@ -36,7 +36,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
       img.onload = () => handleImageLoad(imageData.name);
       img.onerror = (e) => handleImageError(e, img, imageData.image)
       newImages[imageData.name] = img;
-    })
+    });
 
     setImages(newImages);
     setState({
