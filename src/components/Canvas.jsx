@@ -88,7 +88,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
 
           renderEffects(context, player)
         }
-      } else if (!player.explodeAnimation.complete && LOADED_IMAGES[shipExplosion]) {
+      } else if (!player.explodeAnimation.complete && LOADED_IMAGES['shipExplosion']) {
         renderAnimation(context, images.shipExplosion, player.explodeAnimation, player.location);
       };
       renderPlayerData(context, player, showShip, currentPlayerIsExploding);
