@@ -88,8 +88,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
 
           renderEffects(context, player)
         }
-      } else if (!player.explodeAnimation.complete) {
-        console.log('explode animation...')
+      } else if (!player.explodeAnimation.complete && LOADED_IMAGES[shipExplosion]) {
         renderAnimation(context, images.shipExplosion, player.explodeAnimation, player.location);
       };
       renderPlayerData(context, player, showShip, currentPlayerIsExploding);
@@ -113,7 +112,6 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     Object.values(ship.effects).filter(effect => LOADED_IMAGES[effect.name]).forEach((effect) => {
       if (effect.animation && effect.id !== 9) {
         const effectCoordinates = findCenterCoordinates(ship.location, startCenter, { width: effect.animation?.renderWidth || 0, height: effect.animation?.renderHeight || 0 });
-        console.log(effect.name, 'effect******')
         renderAnimation(context, images[effect.name], effect.animation, effectCoordinates);
       }
     });
