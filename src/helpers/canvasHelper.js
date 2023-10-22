@@ -78,6 +78,7 @@ const handleAnimatedWeapon = (context, weapon, spriteImage) => {
   context.translate(cx, cy);
   context.rotate((Math.PI / 180) * weapon.trajectory);
   context.translate(-cx, -cy);
+  console.log(weapon.name, '*******')
   renderAnimation(context, spriteImage, weapon.animation, weapon.location);
 }
 
@@ -104,7 +105,6 @@ export const handleInvisibleFilter = (context, player, userId) => {
 };
 
 export const renderAnimation = (context, spriteImage, animation, location) => {
-  console.log(animation, '*****')
   context.drawImage(
     spriteImage,
     animation.coordinates.x,
