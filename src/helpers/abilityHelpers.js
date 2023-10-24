@@ -9,7 +9,7 @@ import { getItem } from './itemHelpers.js';
 import { round } from './mathHelpers.js';
 import { createEffect } from './effectHelpers.js';
 
-export const handleAbility = (players, deployedWeapons, playerData, elapsedTime, animations, aiShips) => {
+export const handleAbility = ({ players, deployedWeapons, playerData, elapsedTime, animations, aiShips }) => {
   const ability = ABILITIES[SHIPS[playerData.shipIndex].abilities[playerData.usedAbility]];
 
   let newAnimmations = animations;

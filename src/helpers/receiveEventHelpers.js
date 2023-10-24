@@ -17,7 +17,6 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     players,
     aiShips,
     waveData,
-    eventData,
     animations,
     motherships,
     deployedWeapons,
@@ -25,18 +24,18 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   } = gameState;
   switch (playerData.gameEvent) {
     case 'start':
-      return handleStartEvent(players, playerData, userId, eventData, waveData);
+      return handleStartEvent({ players, playerData, userId, waveData });
     case 'explode':
-      return handleExplodeEvent(players, aiShips, playerData, elapsedTime, motherships, userId);
+      return handleExplodeEvent({ players, aiShips, playerData, elapsedTime, motherships });
     case 'supplyShip':
       return { aiShips: [...aiShips, playerData] };
     case 'bombers':
       return { aiShips: aiShips.concat(playerData.bombers) };
     case 'ability':
-      return handleAbility(players, deployedWeapons, playerData, elapsedTime, animations, aiShips);
+      return handleAbility({ players, deployedWeapons, playerData, elapsedTime, animations, aiShips });
     default:
       if (userId !== playerData.userId) {
-        return handleUpdateEvent([...players], playerData, clockDifference, deployedWeapons, elapsedTime);
+        return handleUpdateEvent({ players, playerData, clockDifference, deployedWeapons, elapsedTime });
       }
   };
 };
@@ -49,7 +48,7 @@ const handleBounty = (attacker, explodedPlayer) => {
   return attacker;
 };
 
-const handleExplodeEvent = (players, aiShips, playerData, elapsedTime, motherships) => {
+const handleExplodeEvent = ({ players, aiShips, playerData, elapsedTime, motherships }) => {
   let updatedPlayers = players.map(p => p.userId === playerData.killedBy ? handleBounty(p, playerData) : p);
   
   if (playerData.type === 'human') {
@@ -121,7 +120,7 @@ const handleGameOver = (players, playerData, motherships) => {
   }
 }
 
-const handleStartEvent = (players, playerData, userId, eventData, waveData) => {
+const handleStartEvent = ({ players, playerData, userId, waveData }) => {
   let eventPlayer = players.find((player) => player.userId === playerData.userId);
   let newPlayers;
   if (eventPlayer) {
@@ -151,9 +150,9 @@ const handleStartEvent = (players, playerData, userId, eventData, waveData) => {
   }
 };
 
-const handleUpdateEvent = (players, playerData, clockDifference, deployedWeapons, elapsedTime) => {
+const handleUpdateEvent = ({ players, playerData, clockDifference, deployedWeapons, elapsedTime }) => {
   let updatedWeapons = deployedWeapons;
-  let updatedPlayers = [...players];
+  let updatedPlayers = players;
   let updatedPlayer = updatedPlayers.find((player) => player.userId === playerData.userId);
 
   switch (playerData.gameEvent) {
