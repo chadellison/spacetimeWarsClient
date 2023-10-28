@@ -1,12 +1,6 @@
 export const handleUpdate = (players, player) => {
   if (player.inPlayers) {
-    const updatedPlayers = players.map((p) => {
-      if (p.userId === player.userId) {
-        return player;
-      } else {
-        return p;
-      }
-    })
+    const updatedPlayers = players.map(p => p.userId === player.userId ? player : p)
     return { players: updatedPlayers }
   } else {
     return { startingPlayer: player };

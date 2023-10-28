@@ -248,7 +248,7 @@ const Layout = () => {
           upgrades={upgrades}
           activeTab={activeTab}
           showInstructions={showInstructions}
-          activePlayer={{ ...activePlayer, inPlayers: existingPlayer }}
+          activePlayer={{ ...activePlayer, inPlayers: !!existingPlayer }}
           gameOverStats={gameOverStats}
           updateState={updateState}
           clockDifference={clockDifference}

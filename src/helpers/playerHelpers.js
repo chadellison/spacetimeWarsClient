@@ -53,7 +53,7 @@ const handleStartingLevel = (players) => {
   }
 }
 
-export const findCurrentPlayer = (userId, players) => players.find((player) => player.userId === userId);
+export const findCurrentPlayer = (userId, players) => players.find(player => player.userId === userId);
 
 export const playerCountDown = (activePlayer, clockDifference) => {
   const elapsedSeconds = (Date.now() + clockDifference - activePlayer.explodedAt) / 1000;
