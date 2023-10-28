@@ -76,7 +76,7 @@ const handleBuff = (playerData, players, aiShips, elapsedTime) => {
     const team = killedBy.team;
     const updatedPlayers = applyGameBuff(team, players, gameBuff);
     const updatedAiShips = applyGameBuff(team, aiShips, gameBuff);
-    return { players: updatedPlayers, gameBuff: gameBuff, aiShips: updatedAiShips };
+    return { players: updatedPlayers, gameBuff, aiShips: updatedAiShips };
   } else {
     return {};
   }
