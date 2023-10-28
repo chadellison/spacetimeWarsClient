@@ -162,7 +162,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     }
   };
   
-  renderCanvas();
+  currentPlayer && renderCanvas();
 
   return (
     <div>
