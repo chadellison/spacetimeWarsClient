@@ -125,18 +125,12 @@ const handleGameOver = (players, playerData, motherships) => {
 }
 
 const handleStartEvent = ({ players, playerData, userId, waveData }) => {
-  let eventPlayer = players.find((player) => player.userId === playerData.userId);
+  let eventPlayer = players.find(player => player.userId === playerData.userId);
   let newPlayers;
   if (eventPlayer) {
-    newPlayers = players.map((player) => {
-      if (player.userId === eventPlayer.userId) {
-        return playerData;
-      } else {
-        return player;
-      }
-    })
+    newPlayers = players.map(player => player.userId === eventPlayer.userId ? playerData : player);
   } else {
-    newPlayers = [...players, playerData]
+    newPlayers = [...players, playerData];
   }
 
   if (userId === playerData.userId) {
@@ -157,12 +151,10 @@ const handleStartEvent = ({ players, playerData, userId, waveData }) => {
 const handleUpdateEvent = ({ players, playerData, clockDifference, deployedWeapons, elapsedTime }) => {
   let updatedWeapons = deployedWeapons;
   let updatedPlayer = players.find(player => player.userId === playerData.userId);
-
+  
   switch (playerData.gameEvent) {
     case 'fire':
-      if (updatePlayer) {
-        updatedWeapons = resolveFireEvent(updatedWeapons, playerData, updatedPlayer, elapsedTime)
-      }
+      updatedWeapons = resolveFireEvent(updatedWeapons, playerData, updatedPlayer, elapsedTime)
       break;
     case 'fireStop':
       break;
@@ -176,7 +168,7 @@ const handleUpdateEvent = ({ players, playerData, clockDifference, deployedWeapo
       break;
   }
 
-  const updatedPlayers = players.map(player => player.userId === playerData.userId ? updatePlayer : player)
+  const updatedPlayers = players.map(player => player.userId === playerData.userId ? updatedPlayer : player)
 
   return {
     players: updatedPlayers,

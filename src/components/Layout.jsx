@@ -122,11 +122,7 @@ const Layout = () => {
     const { clockDifference } = stateRef.current;
     const players = gameData.players.map((player) => {
       const elapsedTime = Date.now() + clockDifference - player.updatedAt
-      if (player.active) {
-        return updatePlayer(player, elapsedTime, clockDifference)
-      } else {
-        return player;
-      }
+      return player.active ? updatePlayer(player, elapsedTime, clockDifference) : player;
     });
     const received = (response) => handleReceivedEvent(response.playerData);
     const connected = () => updateState({ connected: true })

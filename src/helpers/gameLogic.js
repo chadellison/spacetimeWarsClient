@@ -37,7 +37,7 @@ export const updateGameState = (gameState, handleGameEvent, currentPlayer) => {
   gameData = handleWeapons(gameData, handleGameEvent);
   const updatedMotherships = updateMotherships(gameData.motherships, userId, handleGameEvent, connected);
 
-  return {
+    return {
     players: gameData.players,
     aiShips: gameData.aiShips,
     deployedWeapons: gameData.weapons,
@@ -171,7 +171,7 @@ const handleAiDirection = (location, angle, target) => {
 const updatePlayers = (gameState, handleGameEvent, connected) => {
   const { players, clockDifference, userId } = gameState;
 
-  return players.map((player) => {
+  return players.map(player => {
     if (player.active) {
       player = handleHitpoints(player, userId, handleGameEvent, connected);
       player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);

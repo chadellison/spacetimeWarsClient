@@ -62,28 +62,26 @@ const addAbilityEffect = (effectIndex, players, playerData, animations, elapsedT
 
   const duration = GAME_EFFECTS[effectIndex].duration + (playerData.abilityLevel * 1000) - elapsedTime;
   const effectId = GAME_EFFECTS[effectIndex].id;
+  const effect = createEffect(effectIndex, duration, player.effects[effectId], playerData.userId);
   
-  if (player) {
-    const effect = createEffect(effectIndex, duration, player.effects[effectId], playerData.userId);
-    if (effect.id === 11 || (effect.id === 7 && player.shipIndex === 4)) {
-      effect.duration = effect.id === 7 ? 800 + (playerData.abilityLevel * 1000) : effect.duration;
-      updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect);
-      updatedAiShips = applyEffectToTeam(updatedAiShips, player.team, effect);
-    } else if ([1, 3, 4, 12, 15].includes(effect.id)) {
-      effect.duration *= playerData.abilityLevel;
-      const opponentTeam = player.team === 'red' ? 'blue' : 'red';
-      updatedPlayers = applyEffectToTeam(updatedPlayers, opponentTeam, effect);
-      updatedAiShips = applyEffectToTeam(updatedAiShips, opponentTeam, effect);
-    } else if ([5, 14].includes(effect.id)) {
-      effect.duration *= playerData.abilityLevel;
-      player.effects[effect.id] = effect;
-  
-      updatedPlayers = updatedPlayers.map(p => p.userId === player.userId ? player : p);
-    } else {
-      player.effects[effect.id] = effect;
-      updatedPlayers = updatedPlayers.map(p => p.userId === player.userId ? player : p);
-    }
-  };
+  if (effect.id === 11 || (effect.id === 7 && player.shipIndex === 4)) {
+    effect.duration = effect.id === 7 ? 800 + (playerData.abilityLevel * 1000) : effect.duration;
+    updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect);
+    updatedAiShips = applyEffectToTeam(updatedAiShips, player.team, effect);
+  } else if ([1, 3, 4, 12, 15].includes(effect.id)) {
+    effect.duration *= playerData.abilityLevel;
+    const opponentTeam = player.team === 'red' ? 'blue' : 'red';
+    updatedPlayers = applyEffectToTeam(updatedPlayers, opponentTeam, effect);
+    updatedAiShips = applyEffectToTeam(updatedAiShips, opponentTeam, effect);
+  } else if ([5, 14].includes(effect.id)) {
+    effect.duration *= playerData.abilityLevel;
+    player.effects[effect.id] = effect;
+
+    updatedPlayers = updatedPlayers.map(p => p.userId === player.userId ? player : p);
+  } else {
+    player.effects[effect.id] = effect;
+    updatedPlayers = updatedPlayers.map(p => p.userId === player.userId ? player : p);
+  }
 
   return { players: updatedPlayers, aiShips: updatedAiShips, animations };
 };
