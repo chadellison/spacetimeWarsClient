@@ -62,9 +62,9 @@ const addAbilityEffect = (effectIndex, players, playerData, animations, elapsedT
 
   const duration = GAME_EFFECTS[effectIndex].duration + (playerData.abilityLevel * 1000) - elapsedTime;
   const effectId = GAME_EFFECTS[effectIndex].id;
-  const effect = createEffect(effectIndex, duration, player.effects[effectId], playerData.userId);
-
+  
   if (player) {
+    const effect = createEffect(effectIndex, duration, player.effects[effectId], playerData.userId);
     if (effect.id === 11 || (effect.id === 7 && player.shipIndex === 4)) {
       effect.duration = effect.id === 7 ? 800 + (playerData.abilityLevel * 1000) : effect.duration;
       updatedPlayers = applyEffectToTeam(updatedPlayers, player.team, effect);
