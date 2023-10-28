@@ -71,11 +71,15 @@ const handleExplodeEvent = ({ players, aiShips, playerData, elapsedTime, mothers
 
 const handleBuff = (playerData, players, aiShips, elapsedTime) => {
   const gameBuff = { ...GAME_EFFECTS[playerData.buffIndex], durationCount: elapsedTime };
-  const killedBy = players.find((p) => p.userId === playerData.killedBy);
-  const team = killedBy.team;
-  const updatedPlayers = applyGameBuff(team, players, gameBuff);
-  const updatedAiShips = applyGameBuff(team, aiShips, gameBuff);
-  return { players: updatedPlayers, gameBuff: gameBuff, aiShips: updatedAiShips };
+  const killedBy = players.find(p => p.userId === playerData.killedBy);
+  if (killedBy) {
+    const team = killedBy.team;
+    const updatedPlayers = applyGameBuff(team, players, gameBuff);
+    const updatedAiShips = applyGameBuff(team, aiShips, gameBuff);
+    return { players: updatedPlayers, gameBuff: gameBuff, aiShips: updatedAiShips };
+  } else {
+    return {};
+  }
 }
 
 export const explodePlayer = (player, playerData) => {
@@ -152,11 +156,13 @@ const handleStartEvent = ({ players, playerData, userId, waveData }) => {
 
 const handleUpdateEvent = ({ players, playerData, clockDifference, deployedWeapons, elapsedTime }) => {
   let updatedWeapons = deployedWeapons;
-  let updatedPlayer = players.find((player) => player.userId === playerData.userId);
+  let updatedPlayer = players.find(player => player.userId === playerData.userId);
 
   switch (playerData.gameEvent) {
     case 'fire':
-      updatedWeapons = resolveFireEvent(updatedWeapons, playerData, updatedPlayer, elapsedTime)
+      if (updatePlayer) {
+        updatedWeapons = resolveFireEvent(updatedWeapons, playerData, updatedPlayer, elapsedTime)
+      }
       break;
     case 'fireStop':
       break;
