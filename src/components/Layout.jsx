@@ -13,7 +13,6 @@ import Header from './Header';
 import { Modal } from './Modal';
 import PlayerData from './PlayerData';
 import introMusic from '../audio/introJingle.wav'
-import particles from '../video/particles.mp4';
 
 const INITIAL_MODAL = window.innerWidth < WINDOW_WIDTH_THRESHOLD ? 'deviceChageNotification' : 'instructions';
 
@@ -228,12 +227,10 @@ const Layout = () => {
     deployedWeapons,
     clockDifference,
     showInstructions
-  } = stateRef.current;  
+  } = stateRef.current;
 
   const existingPlayer = findCurrentPlayer(userId, players);
   const activePlayer = existingPlayer || startingPlayer;
-
-  console.log(modal, '******')
 
   return (
     <div className="layout" onKeyDown={handleKeyDown}>
@@ -253,7 +250,7 @@ const Layout = () => {
           clockDifference={clockDifference}
           handleGameEvent={handleGameEvent}
         />}
-        {modal && modal !== 'gameover' && (
+        {['selection', 'nameForm'].includes(modal) && (
           <audio autoPlay loop>
             <source src={introMusic} type="audio/wav" />
           </audio>
@@ -266,26 +263,14 @@ const Layout = () => {
           handleGameEvent={handleGameEvent}
         />
 
-        {
-          activePlayer.name && <PlayerData
-            activePlayer={activePlayer}
-            clockDifference={clockDifference}
-            handleGameEvent={handleGameEvent}
-            abilityData={abilityData}
-            updateState={updateState}
-          />
-        }
-
-        {
-          ['deviceChageNotification', 'instructions'].includes(modal) && (
-            <video autoPlay loop width={window.innerWidth} height={window.innerHeight}>
-              <source src={particles} type="video/mp4" />
-            </video>
-          )
-        }
-        
+        {activePlayer.name && <PlayerData
+          activePlayer={activePlayer}
+          clockDifference={clockDifference}
+          handleGameEvent={handleGameEvent}
+          abilityData={abilityData}
+          updateState={updateState}
+        />}
         <Canvas
-          modal={modal}
           userId={userId}
           players={players}
           aiShips={aiShips}

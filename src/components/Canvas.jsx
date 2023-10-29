@@ -23,7 +23,7 @@ const CANVAS_REF = createRef();
 
 const LOADED_IMAGES = {};
 
-const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animations, deployedWeapons, modal }) => {
+const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animations, deployedWeapons }) => {
   const [state, setState] = useState({});
   const [images, setImages] = useState({});
 
@@ -164,9 +164,9 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
   currentPlayer && renderCanvas();
 
   return (
-    <div className={['deviceChageNotification', 'instructions'].includes(modal) ? 'hidden' : ''}>
+    <div>
       <canvas
-        className="canvas"
+        className={'canvas column'}
         ref={CANVAS_REF}
         width={BOARD_WIDTH}
         height={BOARD_HEIGHT}

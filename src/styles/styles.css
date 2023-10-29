@@ -17,10 +17,9 @@ body {
 }
 
 .hidden {
-  visibility: hidden;
+  display: none;
 }
 
 .playerWeapon {
   border: 10px solid red;
 }
-
