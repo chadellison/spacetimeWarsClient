@@ -172,7 +172,7 @@ const PlayerData = ({
 
   const { gold } = activePlayer;
   return (
-    <div className={`playerData column ${!activePlayer.active ? 'waiting' : ''}`}>
+    <div className={`playerData ${!activePlayer.active ? 'waiting' : ''}`}>
       <div>
         {activePlayer.updatedAt && handlePlayerIcon(activePlayer, countDown)}
         <div className="nameInfo">{activePlayer.name}</div>
