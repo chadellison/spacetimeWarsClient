@@ -349,7 +349,8 @@ const handleAreaOfEffect = (gameData, weapon, attacker) => {
   });
 
   playSound(weapon.sound);
-  const gameAnimation = { ...GAME_ANIMATIONS[weapon.animationIndex], location: weapon.location, coordinates: { x: 0, y: 0 } };
+  const location = { x: weapon.location.x + (weapon.width / 2), y: weapon.location.y + (weapon.height / 2) };
+  const gameAnimation = { ...GAME_ANIMATIONS[weapon.animationIndex], location, coordinates: { x: 0, y: 0 } };
   gameData.animations.push(gameAnimation);
   return gameData;
 };

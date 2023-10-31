@@ -22,7 +22,7 @@ import displayMissile from '../images/displayMissile4.png';
 import displayPlasmaCannon from '../images/displayPlasmaCannon2.png';
 import displayPoisonCannon from '../images/displayPoisonCannon3.png';
 import displayTrifecta from '../images/displayTrifecta3.png';
-import electricFieldProjectileAnimation from '../images/electricFieldProjectileAnimation2.png';
+import electricFieldProjectileAnimation from '../images/electricFieldProjectileAnimation3.png';
 import fireballAnimation from '../images/fireballAnimation.png';
 import gasBombProjectileAnimation from '../images/gasBombProjectileAnimation.png';
 import immolation from '../images/immolation3.png';
@@ -459,8 +459,8 @@ export const ABILITY_WEAPONS = [
     location: { x: 0, y: 0 },
     trajectory: 0,
     speed: 12,
-    width: 64,
-    height: 32,
+    width: 256,
+    height: 144,
     damage: 0,
     effectIndex: 3,
     animationIndex: 5,
@@ -470,12 +470,12 @@ export const ABILITY_WEAPONS = [
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: electricFieldProjectileAnimation,
-      width: 64,
-      height: 32,
-      renderWidth: 64,
-      renderHeight: 32,
+      width: 256,
+      height: 144,
+      renderWidth: 256,
+      renderHeight: 144,
       rowCount: 1,
-      columnCount: 5,
+      columnCount: 30,
       rate: 0,
       startRate: 0,
       xOffset: 0,
