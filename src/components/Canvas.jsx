@@ -6,8 +6,9 @@ import {
 } from '../constants/settings.js';
 import { BOMBERS, SHIPS } from '../constants/ships.js';
 import {
-  IMAGES_ASSETS,
+  LOADED_IMAGES,
   drawShip,
+  extractAssets,
   handleInvisibleFilter,
   renderAnimation,
   renderMotherShipData,
@@ -21,32 +22,34 @@ import '../styles/styles.css';
 
 const CANVAS_REF = createRef();
 
-const LOADED_IMAGES = {};
-
 const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animations, deployedWeapons }) => {
   const [state, setState] = useState({});
   const [images, setImages] = useState({});
-
+  const imageAssets = extractAssets(players.concat(aiShips).concat(motherships));
+  const assetsToLoad = imageAssets.length > 0;
+  
   useEffect(() => {
     const newImages = {};
-
-    IMAGES_ASSETS.forEach((imageData) => {
+    imageAssets.forEach(imageData => {
       const img = new Image();
       img.src = imageData.image;
       img.onload = () => handleImageLoad(imageData.name);
       img.onerror = (e) => handleImageError(e, img, imageData.image)
       newImages[imageData.name] = img;
-    });
+    })
+    
+    setImages({ ...images, ...newImages });
+  }, [assetsToLoad]);
 
-    setImages(newImages);
+  useEffect(() => {
     setState({
       halfWindowWidth: round(window.innerWidth / 2),
       halfWindowHeight: round(window.innerHeight / 2),
-    });
+    })
   }, []);
 
   function handleImageLoad(imageName) {
-    LOADED_IMAGES[imageName] = true
+    LOADED_IMAGES[imageName] = true;
   }
 
   function handleImageError(e, img, imgSrc) {
@@ -75,7 +78,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     }
   };
 
-  const renderShips = (players, context, userId, currentPlayerIsExploding) => {
+  const renderShips = (context, userId, currentPlayerIsExploding) => {
     players.concat(aiShips).filter(player => LOADED_IMAGES[findImageReference(player)]).forEach(player => {
       const showShip = shouldRenderShip(player, userId);
       if (player.active) {
@@ -155,7 +158,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
       }
 
       renderBackgroundAnimations(context);
-      renderShips(players, context, userId, currentPlayerIsExploding);
+      renderShips(context, userId, currentPlayerIsExploding);
       renderWeapons(currentPlayer, context);
       renderAnimations(context);
     }

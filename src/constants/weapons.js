@@ -194,6 +194,7 @@ export const WEAPONS = [
     price: 800,
     width: 100,
     height: 50,
+    effectIndex: 0,
     damageRadius: 6,
     ability: 'poison damage: drains 17% of opponent\'s total hitpoints over 3 seconds',
     sound: AUDIO[5],
@@ -224,6 +225,7 @@ export const WEAPONS = [
     price: 300,
     width: 80,
     height: 40,
+    effectIndex: 1,
     damageRadius: 5,
     ability: 'cold damage: significanlty slows enemy speed for two seconds',
     sound: AUDIO[6],
@@ -301,6 +303,7 @@ export const ABILITY_WEAPONS = [
     height: 169,
     damage: 230,
     damageRadius: 24,
+    effectIndex: 3,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: stunGunAnimation,
@@ -388,6 +391,7 @@ export const ABILITY_WEAPONS = [
     height: 338,
     damageRadius: 200,
     damage: 1,
+    effectIndex: 1,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: immolation,
@@ -413,6 +417,7 @@ export const ABILITY_WEAPONS = [
     height: 45,
     damageRadius: 15,
     damage: 100,
+    effectIndex: 1,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: redMeteorAnimation,

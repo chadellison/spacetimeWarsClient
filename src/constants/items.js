@@ -22,6 +22,7 @@ export const ITEMS = [
     price: 1200,
     name: 'Health boost',
     image: healthBoost,
+    effectIndex: 6,
     cooldown: 120000,
     durationCount: 120000,
     description: 'Boosts hitpoints to %50 of max hitpoints when hitpoints drop below %25 (120 second cooldown)'
@@ -62,6 +63,7 @@ export const ITEMS = [
     price: 750,
     name: 'Armor Boost',
     image: armorBoost,
+    effectIndex: 7,
     cooldown: 20000,
     durationCount: 15000,
     description: 'Adds 4 armor to player for 15 seconds when hitpoints drop below 33%. 20 second cooldown.'
@@ -72,6 +74,7 @@ export const ITEMS = [
     price: 1100,
     name: 'Stun Attack',
     image: stun,
+    effectIndex: 3,
     cooldown: 0,
     durationCount: 0,
     description: 'Provieds your weapon a 10% chance to stun your opponent for two seconds'
@@ -81,6 +84,7 @@ export const ITEMS = [
     index: 6,
     price: 2000,
     name: 'Damage Boost',
+    effectIndex: 10,
     image: damageIncrease,
     cooldown: 0,
     durationCount: 0,

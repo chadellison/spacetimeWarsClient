@@ -22,7 +22,7 @@ const handleClick = (updateState, handleGameEvent, activePlayer) => {
   updateState({ modal: null, activeTab: 'Ships' });
 };
 
-const renderOptions = (activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, updateDescription, hover, setHover) => {
+const renderOptions = (activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, hover, setHover) => {
   switch (activeTab) {
     case 'Ships':
       const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
@@ -182,7 +182,6 @@ export const SelectionModal = ({
   handleGameEvent
 }) => {
   const experiencePoints = activePlayer.level - upgrades.reduce((accumulator, value) => accumulator + value, 1)
-  const [description, setDesscription] = useState('');
   const [hover, setHover] = useState(null);
 
   const { gold } = activePlayer;
@@ -195,9 +194,8 @@ export const SelectionModal = ({
       {renderGold(gold)}
       {renderStart(updateState, handleGameEvent, activePlayer, clockDifference)}
       {activeTab === 'Upgrades' && <div className="experiencePoints">{'Experience points ' + experiencePoints}</div>}
-      {renderOptions(activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, (description) => setDesscription(description), hover, setHover)}
+      {renderOptions(activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, hover, setHover)}
       <div className="description">
-        {description}
       </div>
       <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />
     </div>

@@ -10,6 +10,7 @@ import {
 } from '../constants/settings.js';
 import { WEAPONS } from '../constants/weapons.js';
 import { round } from '../helpers/mathHelpers';
+import { CACHE } from './cacheHelpers.js';
 
 export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   const {
@@ -22,6 +23,11 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     deployedWeapons,
     clockDifference,
   } = gameState;
+
+  if (['start', 'shop'].includes(playerData.gameEvent)) {
+    setTimeout(() => CACHE[playerData.userId] = false, 100);
+  };
+
   switch (playerData.gameEvent) {
     case 'start':
       return handleStartEvent({ players, playerData, userId, waveData });

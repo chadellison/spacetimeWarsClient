@@ -81,7 +81,8 @@ const Layout = () => {
 
     if (currentPlayer) {
       if (Math.random() > 0.97) {
-        handleGameEvent({ gameEvent: 'supplyShip' });
+        const buffIndex = Math.floor(Math.random() * (8 - 0 + 1) + 0);
+        handleGameEvent({ gameEvent: 'supplyShip', buffIndex });
       }
       if (count > 0) {
         updateState({ waveData: { ...waveData, count: count - 1 } });

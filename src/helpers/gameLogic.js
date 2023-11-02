@@ -81,7 +81,7 @@ const handleMotherShipWeapons = (weapons, motherships, players, aiShips) => {
   motherships.forEach(mothership => {
     const target = nearestTarget(mothership.shipCenter, mothership.team, players.concat(aiShips), minRange);
     if (target) {
-      const weapon = { ...WEAPONS[3] };
+      const weapon = { ...WEAPONS[mothership.weaponIndex] };
       const trajectory = angleFromCoordinates(mothership.location, target.location);
       weapons.push(mothershipWeapon(mothership, trajectory, mothership.team, weapon));
       zapSound.play();
@@ -559,13 +559,13 @@ const handleNegativeBuff = (player, weapon) => {
   const durationDivider = getItem(player.items, 12) ? 2 : 1;
 
   if (weapon.index === 5 || weapon.id === 8) {
-    const effect = createEffect(0, round(3000 / durationDivider), player.effects[1], weapon.playerIndex);
+    const effect = createEffect(weapon.effectIndex, round(3000 / durationDivider), player.effects[1], weapon.playerIndex);
     handleApplyPoison(player, effect);
   } else if (weapon.index === 6 || (weapon.id === 6 && !player.effects[2])) {
-    const effect = createEffect(1, round(2000 / durationDivider), player.effects[2], weapon.playerIndex);
+    const effect = createEffect(weapon.effectIndex, round(2000 / durationDivider), player.effects[2], weapon.playerIndex);
     player.effects[effect.id] = effect;
   } else if (weapon.id === 7) {
-    const slow = createEffect(1, round(9000 / durationDivider), player.effects[2], weapon.playerIndex);
+    const slow = createEffect(weapon.effectIndex, round(9000 / durationDivider), player.effects[2], weapon.playerIndex);
     player.effects[slow.id] = slow;
     const poison = createEffect(0, round(9000 / durationDivider), player.effects[1], weapon.playerIndex);
     handleApplyPoison(player, poison);

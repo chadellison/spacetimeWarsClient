@@ -141,6 +141,7 @@ export const SHIPS = [
 
 export const SUPPLY_SHIP = {
   name: 'supplyShip',
+  type: 'supplyShip',
   shipCenter: { x: 60, y: 34 },
   image: supplyShip,
 };
@@ -153,6 +154,7 @@ export const MOTHER_SHIP = {
   maxHitpoints: 5000,
   shipCenter: { x: 100, y: 54 },
   effects: {},
+  weaponIndex: 3,
   items: {},
   angle: 0,
   width: 200,

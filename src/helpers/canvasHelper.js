@@ -6,10 +6,13 @@ import { findColor } from './colorHelpers.js';
 import { isInvisable } from './gameLogic.js';
 import { round } from './mathHelpers.js';
 
-import { BOMBERS, MOTHER_SHIPS, SHIPS, SUPPLY_SHIP } from '../constants/ships.js';
+import { ABILITIES } from '../constants/abilities.js';
+import { BOMBERS, SHIPS, SUPPLY_SHIP } from '../constants/ships.js';
 import { ABILITY_WEAPONS, WEAPONS } from '../constants/weapons.js';
+import { CACHE } from './cacheHelpers.js';
 
 const RENDER_FONT = '12px Arial';
+export const LOADED_IMAGES = {};
 
 const resolveImage = (item) => {
   if (item.image) {
@@ -19,18 +22,89 @@ const resolveImage = (item) => {
   } else if (item?.animation?.spriteImage) {
     return item.animation.spriteImage;
   }
+};
+
+export const INITIAL_ASSETS = GAME_ANIMATIONS.map(item => ({ name: item.name, image: resolveImage(item) }));
+
+const resolveShip = (ship) => {
+  if (ship.type === 'supplyShip') {
+    return { resolvedShip: ship, asset: { name: SUPPLY_SHIP.name, image: SUPPLY_SHIP.image }};
+  } else if (ship.type === 'bomber') {
+    if ([undefined, null].includes(ship.index)) {
+      return { resolvedShip: ship, asset: { name: ship.name, image: resolveImage(ship) } }
+    } else {
+      return { resolvedShip: BOMBERS[ship.index], asset: ship.team === 'blue' ? { name: `${BOMBERS[ship.index].name}Blue`, image: BOMBERS[ship.index].blueImage } : { name: BOMBERS[ship.index].name, image: BOMBERS[ship.index].image } }
+    }
+  } else {
+    return { resolvedShip: SHIPS[ship.shipIndex], asset: ship.team === 'blue' ? { name: `${SHIPS[ship.shipIndex].name}Blue`, image: SHIPS[ship.shipIndex].blueImage } : { name: SHIPS[ship.shipIndex].name, image: SHIPS[ship.shipIndex].image } };
+  }
+};
+
+const handleAsset = (assets, asset) => {
+  if (!LOADED_IMAGES[asset.name]) {
+    assets.push(asset)
+  }
+  return assets;
+};
+
+const handleEffectAsset = (assets, effectIndex) => {
+  if (![undefined, null].includes(effectIndex)) {
+    const effect = GAME_EFFECTS[effectIndex];
+    if (effect.animation && !LOADED_IMAGES[effect.name]) {
+      assets.push({ name: effect.name, image: SPRITE_IMAGES[effect.animation.spriteIndex] })
+    }
+  }
+  return assets;
 }
 
-export const IMAGES_ASSETS = SHIPS
-  .concat(SHIPS.map(ship => ({ ...ship, name: `${ship.name}Blue`, image: ship.blueImage })))
-  .concat(BOMBERS)
-  .concat(BOMBERS.map(ship => ({ ...ship, name: `${ship.name}Blue`, image: ship.blueImage })))
-  .concat(WEAPONS.map(item => ({ ...item, image: resolveImage(item) })))
-  .concat(ABILITY_WEAPONS.map(item => ({ ...item, image: resolveImage(item) })))
-  .concat(GAME_EFFECTS.filter((effect) => effect.animation).map(item => ({ ...item, image: SPRITE_IMAGES[item.animation.spriteIndex] })))
-  .concat(GAME_ANIMATIONS.map(item => ({ ...item, image: resolveImage(item) })))
-  .concat(MOTHER_SHIPS.map(item => ({ ...item, image: resolveImage(item) })))
-  .concat(SUPPLY_SHIP);
+export const extractAssets = (ships) => {
+  let assets = [];
+  if (!CACHE['initialAssets']) {
+    assets = INITIAL_ASSETS;
+    CACHE['initialAssets'] = true;
+  }
+
+  ships.forEach(ship => {
+    const { resolvedShip, asset } = resolveShip(ship);
+    const cacheKey = ship.userId || asset.name;
+    
+    if (!CACHE[cacheKey]) {
+      ship.userId && console.log('yoyoy', Object.values(ship.items))
+      CACHE[cacheKey] = true;
+
+      assets = handleAsset(assets, asset);
+
+      if (resolvedShip.type === 'supplyShip') {
+        assets = handleEffectAsset(assets, resolvedShip.buffIndex);
+      } else {
+        const weapon = WEAPONS[ship.weaponIndex];
+        assets = handleAsset(assets, { name: weapon.name, image: resolveImage(weapon) });
+        assets = handleEffectAsset(assets, weapon.effectIndex);
+      }
+      
+      Object.values(resolvedShip.abilities || []).forEach(abilityIndex => {
+        const ability = ABILITIES[abilityIndex];
+        
+        if (![undefined, null].includes(ability.weaponIndex)) {
+          const abilityWeapon = ABILITY_WEAPONS[ability.weaponIndex];
+          assets = handleAsset(assets, { name: abilityWeapon.name,  image: resolveImage(abilityWeapon) });
+          assets = handleEffectAsset(assets, abilityWeapon.effectIndex);
+
+        } else if (![undefined, null].includes(ability.effectIndex)) {
+          assets = handleEffectAsset(assets, ability.effectIndex);          
+        }
+      })
+
+      Object.values(ship.items).forEach(item => {
+        if (![undefined, null].includes(item.effectIndex)) {
+          assets = handleEffectAsset(assets, item.effectIndex);
+        }
+      })
+    }
+  })
+
+  return assets;
+};
 
 export const drawShip = ({ context, player, ship, thruster, thrusterLoaded }) => {
   handleDirection(context, ship, player.location, player.angle);
