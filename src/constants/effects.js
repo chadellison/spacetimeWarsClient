@@ -8,6 +8,7 @@ import warpSpeedAnimation from '../images/warpSpeedAnimation2.png';
 import damageBoostIcon from '../images/damageBoostIcon.png';
 import disableAnimation from '../images/disableAnimation.png';
 import armorReductionAnimation from '../images/armorReductionAnimation.png';
+import absorbDamageAnimation from '../images/absorbDamageAnimation.png'
 
 export const NEGATIVE_EFFECT_IDS = [1, 2, 3, 4, 12, 15];
 
@@ -257,6 +258,26 @@ export const GAME_EFFECTS = [
       xOffset: 0,
       yOffset: 0,
     }
+  },
+  {
+    id: 16,
+    name: 'absorbDamage',
+    duration: Infinity,
+    durationCount: 0,
+    animation: {
+      coordinates: { x: 0, y: 0 },
+      spriteIndex: 10,
+      width: 256,
+      height: 144,
+      renderWidth: 256,
+      renderHeight: 144,
+      rowCount: 1,
+      columnCount: 90,
+      rate: 0,
+      startRate: 0,
+      xOffset: 0,
+      yOffset: 0,
+    }
   }
 ];
 
@@ -270,5 +291,6 @@ export const SPRITE_IMAGES = [
   armorBoost,
   warpSpeedAnimation,
   damageBoostIcon,
-  armorReductionAnimation
+  armorReductionAnimation,
+  absorbDamageAnimation
 ];

@@ -43,6 +43,7 @@ export const ITEMS = [
     price: 650,
     name: 'Stealth Mode',
     image: stealthMode,
+    effectIndex: 4,
     cooldown: 120000,
     durationCount: 120000,
     description: 'Renders your ship invisible for six seconds to other players when your hitpoints drop below 25% (120 second cooldown)'
@@ -53,6 +54,7 @@ export const ITEMS = [
     price: 725,
     name: 'Absorb damage',
     image: absorbDamage,
+    effectIndex: 15,
     cooldown: 10000,
     durationCount: 10000,
     description: 'Provieds a shield that completely absorbs one hit -- negating all damage/effects from it-- every 10 seconds.'

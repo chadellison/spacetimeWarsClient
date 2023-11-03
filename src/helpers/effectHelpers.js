@@ -19,7 +19,7 @@ export const handleEffects = (player) => {
         const newHitpoints = player.hitpoints - 25;
         player.hitpoints = newHitpoints > 1 ? newHitpoints : 0;
       } else if (effect.id === 15) {
-        const multiplyer = player.type === 'bomber' && ['redMothership', 'blueMothership'].includes(player.name) ? 0.005 : 0.01;
+        const multiplyer = player.type === 'bomber' && ['redMothership', 'blueMothership'].includes(player.name) ? 0.002 : 0.01;
         const damage = (round(player.maxHitpoints * multiplyer)) || 1;
         player.hitpoints -= damage;
       };

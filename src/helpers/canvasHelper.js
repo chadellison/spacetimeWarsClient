@@ -69,7 +69,6 @@ export const extractAssets = (ships) => {
     const cacheKey = ship.userId || asset.name;
     
     if (!CACHE[cacheKey]) {
-      ship.userId && console.log('yoyoy', Object.values(ship.items))
       CACHE[cacheKey] = true;
 
       assets = handleAsset(assets, asset);
@@ -89,16 +88,13 @@ export const extractAssets = (ships) => {
           const abilityWeapon = ABILITY_WEAPONS[ability.weaponIndex];
           assets = handleAsset(assets, { name: abilityWeapon.name,  image: resolveImage(abilityWeapon) });
           assets = handleEffectAsset(assets, abilityWeapon.effectIndex);
-
-        } else if (![undefined, null].includes(ability.effectIndex)) {
+        } else {
           assets = handleEffectAsset(assets, ability.effectIndex);          
         }
       })
 
       Object.values(ship.items).forEach(item => {
-        if (![undefined, null].includes(item.effectIndex)) {
-          assets = handleEffectAsset(assets, item.effectIndex);
-        }
+        assets = handleEffectAsset(assets, item.effectIndex);
       })
     }
   })

@@ -14,7 +14,7 @@ const handleClick = (activePlayer, item, updateState, players) => {
       ...activePlayer,
       items: {
         ...activePlayer.items,
-        [item.id]: { index: item.index, durationCount: item.cooldown, cooldown: item.cooldown }
+        [item.id]: { index: item.index, durationCount: item.cooldown, cooldown: item.cooldown, effectIndex: item.effectIndex }
       },
       gold: gold
     }
