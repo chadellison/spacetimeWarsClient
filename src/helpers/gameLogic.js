@@ -254,6 +254,7 @@ export const canFire = (lastFired, cooldown, player) => {
     const gravityPullEffect = player.effects[15];
     let updatedCooldown = rapidFireEffect ? (cooldown / 2) : cooldown
     updatedCooldown = gravityPullEffect ? (updatedCooldown * 2) : updatedCooldown;
+    updatedCooldown = player.items[14] ? (updatedCooldown * 0.8) : updatedCooldown;
     return Date.now() - lastFired > updatedCooldown;
   }
 }

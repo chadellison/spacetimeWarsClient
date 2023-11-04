@@ -7,6 +7,7 @@ import absorbDamage from '../images/absorbDamage.png';
 import improvedThrusters from '../images/improvedThrusters.png';
 import resistance from '../images/resistance.png';
 import antidote from '../images/antidote.png';
+import increasedAttackSpeed from '../images/increasedAttackSpeedIcon.png';
 
 const repairBots = `${API_RESOURCE_URL}/repairGears`;
 const stealthMode = `${API_RESOURCE_URL}/stealthMode`;
@@ -146,10 +147,20 @@ export const ITEMS = [
     id: 13,
     index: 12,
     price: 450,
-    name: 'antedote',
+    name: 'Antedote',
     image: antidote,
     cooldown: 0,
     durationCount: 0,
     description: 'Nullifies poison damage',
+  },
+  {
+    id: 14,
+    index: 13,
+    price: 825,
+    name: 'Increased attack speed',
+    image: increasedAttackSpeed,
+    cooldown: 0,
+    durationCount: 0,
+    description: 'Increases your ship\'s attack speed by %20',
   }
 ];

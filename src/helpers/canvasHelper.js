@@ -62,40 +62,41 @@ export const extractAssets = (ships) => {
   if (!CACHE['initialAssets']) {
     assets = INITIAL_ASSETS;
     CACHE['initialAssets'] = true;
-  }
+  };
 
   ships.forEach(ship => {
     const { resolvedShip, asset } = resolveShip(ship);
     const cacheKey = ship.userId || asset.name;
     
     if (!CACHE[cacheKey]) {
-      CACHE[cacheKey] = true;
-
       assets = handleAsset(assets, asset);
 
       if (resolvedShip.type === 'supplyShip') {
+        console.log(Object.values(LOADED_IMAGES).length)
         assets = handleEffectAsset(assets, resolvedShip.buffIndex);
       } else {
+        CACHE[cacheKey] = true;
+
         const weapon = WEAPONS[ship.weaponIndex];
         assets = handleAsset(assets, { name: weapon.name, image: resolveImage(weapon) });
         assets = handleEffectAsset(assets, weapon.effectIndex);
-      }
-      
-      Object.values(resolvedShip.abilities || []).forEach(abilityIndex => {
-        const ability = ABILITIES[abilityIndex];
         
-        if (![undefined, null].includes(ability.weaponIndex)) {
-          const abilityWeapon = ABILITY_WEAPONS[ability.weaponIndex];
-          assets = handleAsset(assets, { name: abilityWeapon.name,  image: resolveImage(abilityWeapon) });
-          assets = handleEffectAsset(assets, abilityWeapon.effectIndex);
-        } else {
-          assets = handleEffectAsset(assets, ability.effectIndex);          
-        }
-      })
-
-      Object.values(ship.items).forEach(item => {
-        assets = handleEffectAsset(assets, item.effectIndex);
-      })
+        Object.values(resolvedShip.abilities || []).forEach(abilityIndex => {
+          const ability = ABILITIES[abilityIndex];
+          
+          if (![undefined, null].includes(ability.weaponIndex)) {
+            const abilityWeapon = ABILITY_WEAPONS[ability.weaponIndex];
+            assets = handleAsset(assets, { name: abilityWeapon.name,  image: resolveImage(abilityWeapon) });
+            assets = handleEffectAsset(assets, abilityWeapon.effectIndex);
+          } else {
+            assets = handleEffectAsset(assets, ability.effectIndex);          
+          }
+        })
+  
+        Object.values(ship.items).forEach(item => {
+          assets = handleEffectAsset(assets, item.effectIndex);
+        })
+      }
     }
   })
 
