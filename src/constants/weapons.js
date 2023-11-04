@@ -34,11 +34,10 @@ import piercerAnimation from '../images/piercerAnimation.png';
 import poisonCannonAnimation from '../images/poisonCannonAnimation.png';
 import poisonDartAnimation from '../images/poisonDartAnimation.png';
 import purpleFireAnimation from '../images/purpleFireAnimation.png';
-import redMeteorAnimation from '../images/redMeteorAnimation.png';
+import meteorAnimation from '../images/meteorAnimation2.png';
 import spaceMine from '../images/spaceMine3.png';
 import stunGunAnimation from '../images/stunBoltAnimation.png';
 import trifecta from '../images/trifecta.png';
-// import blackHoleAnimation from '../images/blackHoleAnimation.png';
 
 const AUDIO = [
   { audio: cannonAudio, volume: 0.2 },
@@ -409,24 +408,24 @@ export const ABILITY_WEAPONS = [
   },
   {
     id: 7,
-    name: 'redMeteor',
+    name: 'meteor',
     location: { x: 0, y: 0 },
     trajectory: 0,
     speed: 20,
-    width: 90,
-    height: 45,
+    width: 192,
+    height: 54,
     damageRadius: 15,
     damage: 100,
     effectIndex: 1,
     animation: {
       coordinates: { x: 0, y: 0 },
-      spriteImage: redMeteorAnimation,
-      width: 128,
-      height: 64,
-      renderWidth: 90,
-      renderHeight: 45,
-      rowCount: 4,
-      columnCount: 2,
+      spriteImage: meteorAnimation,
+      width: 192,
+      height: 54,
+      renderWidth: 192,
+      renderHeight: 54,
+      rowCount: 1,
+      columnCount: 77,
       rate: 0,
       startRate: 0,
       xOffset: 0,
