@@ -72,7 +72,6 @@ export const extractAssets = (ships) => {
       assets = handleAsset(assets, asset);
 
       if (resolvedShip.type === 'supplyShip') {
-        console.log(Object.values(LOADED_IMAGES).length)
         assets = handleEffectAsset(assets, resolvedShip.buffIndex);
       } else {
         CACHE[cacheKey] = true;

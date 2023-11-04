@@ -429,9 +429,6 @@ const handleAbilityWeapons = (gameData, weapon, attacker) => {
   } else if (weapon.id === 3 && weapon.removed) {
     const mineExplosionAnimation = { ...GAME_ANIMATIONS[9], location: weapon.location, coordinates: { x: 0, y: 0 } }
     gameData.animations.push(mineExplosionAnimation);
-  } else if (weapon.id === 7 && weapon.removed) {
-    const meteorExplosion = { ...GAME_ANIMATIONS[11], location: weapon.location, coordinates: { x: 0, y: 0 } }
-    gameData.animations.push(meteorExplosion);
   } else if ([1, 9, 10, 11].includes(weapon.id)) {
     if (Date.now() - weapon.deployedAt > weapon.countDown) {
       gameData = handleAreaOfEffect(gameData, weapon, attacker);
@@ -486,7 +483,7 @@ const findShipBoundingBoxes = (player) => {
 };
 
 const handleCollision = (players, weapon, attacker, animations) => {
-  players.forEach((player) => {
+  players.forEach(player => {
     if (player.team !== weapon.team && player.active) {
       const shipBoundingBoxes = findShipBoundingBoxes(player);
       const weaponCenter = { x: weapon.location.x + (weapon.width / 2), y: weapon.location.y + (weapon.height / 2) }
@@ -562,14 +559,12 @@ const handleNegativeBuff = (player, weapon) => {
   if (weapon.index === 5 || weapon.id === 8) {
     const effect = createEffect(weapon.effectIndex, round(3000 / durationDivider), player.effects[1], weapon.playerIndex);
     handleApplyPoison(player, effect);
-  } else if (weapon.index === 6 || (weapon.id === 6 && !player.effects[2])) {
+  } else if (weapon.id === 6 && !player.effects[2]) {
     const effect = createEffect(weapon.effectIndex, round(2000 / durationDivider), player.effects[2], weapon.playerIndex);
     player.effects[effect.id] = effect;
   } else if (weapon.id === 7) {
-    const slow = createEffect(weapon.effectIndex, round(9000 / durationDivider), player.effects[2], weapon.playerIndex);
-    player.effects[slow.id] = slow;
-    const poison = createEffect(0, round(9000 / durationDivider), player.effects[1], weapon.playerIndex);
-    handleApplyPoison(player, poison);
+    const effect = createEffect(weapon.effectIndex, round(10000 / durationDivider), player.effects[13], weapon.playerIndex);
+    player.effects[effect.id] = effect;
   }
 
   if ((weapon.canStun && Math.random() <= 0.1) || weapon.id === 2) {

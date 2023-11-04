@@ -416,7 +416,7 @@ export const ABILITY_WEAPONS = [
     height: 54,
     damageRadius: 15,
     damage: 100,
-    effectIndex: 1,
+    effectIndex: 12,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: meteorAnimation,

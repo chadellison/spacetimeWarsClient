@@ -48,7 +48,6 @@ import blackHoleAnimation from '../images/blackHoleAnimation2.png';
 import nuclearExplosionAnimation from '../images/nuclearExplosionAnimation.png';
 import mineExplosionAnimation from '../images/mineExplosionAnimation.png';
 import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
-import meteorExplosionAnimation from '../images/meteorExplosionAnimation.png';
 
 // constants
 export const BOARD_WIDTH = 2700;
@@ -279,21 +278,5 @@ export const GAME_ANIMATIONS = [
     yOffset: -50,
     renderWidth: 256,
     renderHeight: 256,
-  },
-  {
-    name: 'meteorExplosion',
-    location: { x: 0, y: 0 },
-    coordinates: { x: 0, y: 0 },
-    spriteImage: meteorExplosionAnimation,
-    width: 256,
-    height: 256,
-    rowCount: 4,
-    columnCount: 6,
-    rate: 0,
-    startRate: 0,
-    xOffset: -100,
-    yOffset: -100,
-    renderWidth: 200,
-    renderHeight: 200,
   }
 ];

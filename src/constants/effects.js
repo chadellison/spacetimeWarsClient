@@ -9,6 +9,7 @@ import damageBoostIcon from '../images/damageBoostIcon.png';
 import disableAnimation from '../images/disableAnimation.png';
 import armorReductionAnimation from '../images/armorReductionAnimation.png';
 import absorbDamageAnimation from '../images/absorbDamageAnimation.png'
+import fireAnimation from '../images/fireAnimation4.png'
 
 export const NEGATIVE_EFFECT_IDS = [1, 2, 3, 4, 12, 15];
 
@@ -227,11 +228,24 @@ export const GAME_EFFECTS = [
     }
   },
   {
-    // not being used
     id: 13,
-    name: 'zapped',
-    duration: 0,
+    name: 'burning',
+    duration: 10000,
     durationCount: 0,
+    animation: {
+      coordinates: { x: 0, y: 0 },
+      spriteIndex: 11,
+      width: 192,
+      height: 108,
+      renderWidth: 192,
+      renderHeight: 108,
+      rowCount: 1,
+      columnCount: 88,
+      rate: 0,
+      startRate: 0,
+      xOffset: 15,
+      yOffset: -40,
+    }
   },
   {
     id: 14,
@@ -292,5 +306,6 @@ export const SPRITE_IMAGES = [
   warpSpeedAnimation,
   damageBoostIcon,
   armorReductionAnimation,
-  absorbDamageAnimation
+  absorbDamageAnimation,
+  fireAnimation
 ];

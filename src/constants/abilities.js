@@ -205,7 +205,7 @@ export const ABILITIES = [
     index: 17,
     type: 'weapon',
     weaponIndex: 6,
-    description: 'Fires a meteor dealing (100, 200, 300) damage, slowing and poison your opponent',
+    description: 'Fires a meteor dealing (100, 200, 300) damage, setting your opponent\'s ship ablaze dealing 100 damage per second',
     cooldown: 30000,
     image: redMeteorIcon,
     sound: meteorConeSound,
