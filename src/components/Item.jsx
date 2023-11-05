@@ -42,15 +42,7 @@ export const Item = ({ imageSrc, activePlayer, item, updateState, players, hover
       <div className="itemImageWrapper">
         <img id={item.index} src={imageSrc} alt="item" className="itemSelectionImage" />
       </div>
-      <span className="itemInfo">
-        {hovered && <Tooltip marginLeft="0" marginTop="0" imageSrc={imageSrc} description={item.description}/>}
-        <div className="itemSelectionTitle">
-          {`${item.name}`}
-        </div>
-        <div className="itemSelectionPrice">
-          {`Price: ${item.price}`}
-        </div>
-      </span>
+        {hovered && <Tooltip marginLeft="-150" marginTop="10" title={item.name} price={item.price} imageSrc={imageSrc} description={item.description}/>}
     </div>
   );
 };

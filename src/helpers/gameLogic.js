@@ -36,8 +36,8 @@ export const updateGameState = (gameState, handleGameEvent, currentPlayer) => {
 
   gameData = handleWeapons(gameData, handleGameEvent);
   const updatedMotherships = updateMotherships(gameData.motherships, userId, handleGameEvent, connected);
-
-    return {
+  
+  return {
     players: gameData.players,
     aiShips: gameData.aiShips,
     deployedWeapons: gameData.weapons,

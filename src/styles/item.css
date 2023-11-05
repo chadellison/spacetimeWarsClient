@@ -8,6 +8,10 @@
   display: inline-block;
 }
 
+.itemSelection:hover {
+  cursor: pointer;
+}
+
 .itemImageWrapper {
   border: 1px solid #2c66b2;
   border-radius: 10%;
@@ -28,18 +32,3 @@
   margin: auto;
 }
 
-.itemSelectionTitle {
-  text-align: left;
-  line-height: 16px;
-  display: flex;
-  font-size: 16px;
-  margin-bottom: .5em;
-}
-
-.itemSelectionPrice {
-  text-align: left;
-  line-height: 16px;
-  display: flex;
-  font-size: 14px;
-  color: #ab8432;
-}

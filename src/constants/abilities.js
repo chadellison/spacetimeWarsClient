@@ -49,6 +49,7 @@ import warpSpeedIcon from '../images/warpSpeedIcon2.png';
 export const ABILITIES = [
   {
     index: 0,
+    name: 'energy bolt',
     type: 'weapon',
     description: 'Stuns an enemy ship for 3 seconds and deals (230, 460, 690) damage ("Q" key to use; 40s cooldown).',
     cooldown: 40000,
@@ -58,6 +59,7 @@ export const ABILITIES = [
   },
   {
     index: 1,
+    name: 'invulnerability',
     type: 'effect',
     description: 'Renders the ship impervious to attacks for (five, six, seven) seconds ("Q" key to use; 60s cooldown).',
     cooldown: 60000,
@@ -67,6 +69,7 @@ export const ABILITIES = [
   },
   {
     index: 2,
+    name: 'space mines',
     type: 'weapon',
     description: 'Drops invisible mines dealing (400, 800, 1200) damage when an enemy ship travels over the mine ("Q" key to use; 50s cooldown).',
     cooldown: 50000,
@@ -76,6 +79,7 @@ export const ABILITIES = [
   },
   {
     index: 3,
+    name: 'warp speed',
     type: 'effect',
     description: 'Allows the ship to travel at warp speed (+4) for (eight, nine, ten) seconds ("Q" key to use; 45s cooldown).',
     cooldown: 45000,
@@ -85,6 +89,7 @@ export const ABILITIES = [
   },
   {
     index: 4,
+    name: 'nuclear bomb',
     type: 'weapon',
     description: 'Deploys a nuclear blast dealing (700, 1400, 2100) damage to every opponent within range 700 ("Q" key to use; 60s cooldown).',
     cooldown: 50000,
@@ -94,6 +99,7 @@ export const ABILITIES = [
   },
   {
     index: 5,
+    name: 'invisibility',
     type: 'effect',
     description: 'Renders the ship invisible for (10, 11, 12) seconds ("Q" key to use; 60s cooldown).',
     cooldown: 60000,
@@ -104,6 +110,7 @@ export const ABILITIES = [
   },
   {
     index: 6,
+    name: 'meteor shower',
     type: 'weapon',
     description: 'Fires a cone of meteors each dealing (200, 400, 600) damage ("W" key to use; 30s cooldown).',
     cooldown: 30000,
@@ -113,6 +120,7 @@ export const ABILITIES = [
   },
   {
     index: 7,
+    name: 'healing',
     type: 'effect',
     description: 'Boosts hitpoints to %50 of max hitpoints ("E" key to use; 90 second cooldown)',
     cooldown: 90000,
@@ -122,6 +130,7 @@ export const ABILITIES = [
   },
   {
     index: 8,
+    name: 'piercing bolt',
     type: 'weapon',
     description: 'Fires a projectile that travels through enemy ships dealing catastrophic damage ("W" key to use; 30s cooldown).',
     cooldown: 30000,
@@ -131,6 +140,7 @@ export const ABILITIES = [
   },
   {
     index: 9,
+    name: 'rapid fire',
     type: 'effect',
     description: 'Enables the ship to fire at rapid speed (twice as fast) for (10, 11, 12) seconds ("W" key to use; 40s cooldown).',
     cooldown: 40000,
@@ -140,6 +150,7 @@ export const ABILITIES = [
   },
   {
     index: 10,
+    name: 'damage boost',
     type: 'effect',
     description: 'Provides a 25% damage boost to all friendly ships for (12, 13, 14) seconds ("W" key to use; 45s cooldown).',
     cooldown: 45000,
@@ -149,6 +160,7 @@ export const ABILITIES = [
   },
   {
     index: 11,
+    name: 'armor boost',
     type: 'effect',
     description: 'Surrounds the ship with a shield boosting its armor by 4 for (15, 16, 17) seconds',
     cooldown: 55000,
@@ -158,6 +170,7 @@ export const ABILITIES = [
   },
   {
     index: 12,
+    name: 'burning energy',
     type: 'weapon',
     description: 'Surrounds the ship with hot energy inflicting grevious damage on nearby ships (25, 50, 75) damage per second and slowing enemy units ("W" key to use; 45s cooldown)',
     cooldown: 45000,
@@ -167,6 +180,7 @@ export const ABILITIES = [
   },
   {
     index: 13,
+    name: 'disablement',
     type: 'effect',
     description: 'Disables your opponent\'s weapons systems for (3, 6, 9) seconds ("E" key to use; 50s cooldown)',
     cooldown: 50000,
@@ -176,6 +190,7 @@ export const ABILITIES = [
   },
   {
     index: 14,
+    name: 'armor reduction',
     type: 'effect',
     description: 'Reduces the armor of all enemy ships by 3 for (8, 16, 24) seconds respectively ("E" key to use; 50s cooldown)',
     cooldown: 45000,
@@ -185,6 +200,7 @@ export const ABILITIES = [
   },
   {
     index: 15,
+    name: 'teleportation',
     type: 'other',
     description: 'Teleports the ship a short distance (300, 600, 800) ("E" key to use; 35s cooldown)',
     cooldown: 35000,
@@ -194,6 +210,7 @@ export const ABILITIES = [
   },
   {
     index: 16,
+    name: 'group heal',
     type: 'effect',
     description: 'Heals ally units for (%12, %25, %40) of total hitpoints ("E" key to use; 50s cooldown)',
     cooldown: 50000,
@@ -203,6 +220,7 @@ export const ABILITIES = [
   },
   {
     index: 17,
+    name: 'meteor blast',
     type: 'weapon',
     weaponIndex: 6,
     description: 'Fires a meteor dealing (100, 200, 300) damage, setting your opponent\'s ship ablaze dealing 100 damage per second',
@@ -212,6 +230,7 @@ export const ABILITIES = [
   },
   {
     index: 18,
+    name: 'reinforcements',
     type: 'other',
     description: 'Calls for reinforcements adding (1, 2, 3) ally ship(s) respectively',
     cooldown: 45000,
@@ -220,6 +239,7 @@ export const ABILITIES = [
   },
   {
     index: 19,
+    name: 'homing attack',
     type: 'effect',
     description: 'Homing attack that allows the weapons to always find their targets for (8, 16, 24) seconds respectively',
     cooldown: 30000,
@@ -229,6 +249,7 @@ export const ABILITIES = [
   },
   {
     index: 20,
+    name: 'gravity field',
     type: 'weapon',
     description: 'Creates a powerful gravity field pulling opponent ships into its center dealing massive damage for (3, 6, 9) seconds respectively',
     cooldown: 50000,
@@ -237,6 +258,7 @@ export const ABILITIES = [
   },
   {
     index: 21,
+    name: 'poison dart',
     type: 'weapon',
     description: 'Fires a poison projectile that poisons the nearest target (initial damage of 800, 1600, 2400 respectively + poison damage).',
     cooldown: 30000,
@@ -246,6 +268,7 @@ export const ABILITIES = [
   },
   {
     index: 22,
+    name: 'electric field',
     type: 'weapon',
     weaponIndex: 8,
     description: 'Stuns all enemy ships within 400 radius for (3, 6, 9) seconds respectively',
@@ -256,6 +279,7 @@ export const ABILITIES = [
   },
   {
     index: 23,
+    name: 'poison bomb',
     type: 'weapon',
     weaponIndex: 9,
     description: 'poisons all enemy ships within a 400 radius for (3, 6, 9) seconds respectively',
