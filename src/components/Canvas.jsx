@@ -86,7 +86,8 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
           handleInvisibleFilter(context, player, userId);
           const thruster = player.effects[9] ? images.warpSpeed : images.thruster;
           const thrusterLoaded = player.effects[9] ? LOADED_IMAGES.warpSpeed : LOADED_IMAGES.thruster;
-          drawShip({ context, player, ship: handleImage(player), thruster, thrusterLoaded });
+          const shipImage = handleImage(player);
+          shipImage && drawShip({ context, player, shipImage, thruster, thrusterLoaded });
 
           renderEffects(context, player)
         }

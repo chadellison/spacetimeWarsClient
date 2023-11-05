@@ -102,8 +102,8 @@ export const extractAssets = (ships) => {
   return assets;
 };
 
-export const drawShip = ({ context, player, ship, thruster, thrusterLoaded }) => {
-  handleDirection(context, ship, player.location, player.angle);
+export const drawShip = ({ context, player, shipImage, thruster, thrusterLoaded }) => {
+  handleDirection(context, shipImage, player.location, player.angle);
   if (player.accelerate) {
     const thrusterAnimation = player.effects[9]?.animation || player.thrusterAnimation;
     thrusterLoaded && renderThruster(context, thruster, player, thrusterAnimation);
