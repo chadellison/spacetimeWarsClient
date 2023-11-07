@@ -51,7 +51,6 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
   }, []);
 
   useEffect(() => {
-    console.log('yo')
     if (!backgroundLoaded) {
       const img = new Image();
       img.src = background;

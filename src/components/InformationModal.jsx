@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/modal.css';
-import { addPlayer } from '../helpers/playerHelpers.js';
+import { initializeGame } from '../helpers/playerHelpers.js';
 import { GameButton } from './GameButton';
 
 const renderHowToPlay = () => {
@@ -78,24 +78,34 @@ const renderText = (showInstructions) => {
     );
   }
 }
-export const InformationModal = ({ updateState, userId, players, showInstructions, loading }) => {
+export const InformationModal = ({ updateState, userId, players, showInstructions }) => {
   return (
     <div className="modal">
       <h2 className="informationTitle">Space Wars</h2>
       <div className="introduction">
         Destroy your opponent's mothership while protecting your own.
       </div>
-      <GameButton
-        onClick={() => updateState({ showInstructions: !showInstructions })}
-        buttonText={showInstructions ? 'close' : 'How to play'}
-        className={'howToPlayButton'}
-      />
-      {!loading && <GameButton
-        className="startGameButton"
-        onClick={() => updateState(addPlayer(userId, players))}
-        buttonText={'start'}
-      />}
-      
+      <div>
+        <GameButton
+          className="modeGameButton"
+          onClick={() => updateState(initializeGame(userId, 'survival'))}
+          buttonText={'Survival Mode'}
+        />
+      </div>
+      <div>
+        <GameButton
+          className="modeGameButton"
+          onClick={() => updateState(initializeGame(userId, 'multiplayer'))}
+          buttonText={'Multiplayer Mode'}
+        />
+      </div>
+      <div>
+        <GameButton
+          onClick={() => updateState({ showInstructions: !showInstructions })}
+          buttonText={showInstructions ? 'close' : 'How to play'}
+          className={'howToPlayButton'}
+        />
+      </div>
       {renderText(showInstructions)}
     </div>
   );

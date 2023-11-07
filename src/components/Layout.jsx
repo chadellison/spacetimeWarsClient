@@ -47,6 +47,7 @@ const DEFAULT_STATE = {
   waveData: { wave: 1, count: 5, active: false },
   motherships: MOTHER_SHIPS,
   connected: false,
+  gameMode: ''
 };
 
 const Layout = () => {
@@ -75,7 +76,7 @@ const Layout = () => {
   }, []);
 
   const updateWaveData = () => {
-    const { waveData, players, userId } = stateRef.current;
+    const { waveData, players, userId, gameMode } = stateRef.current;
     const { wave, count } = waveData;
     const currentPlayer = findCurrentPlayer(userId, players);
 
@@ -87,7 +88,7 @@ const Layout = () => {
       if (count > 0) {
         updateState({ waveData: { ...waveData, count: count - 1 } });
       } else {
-        const bombers = createBombers(wave, players);
+        const bombers = createBombers(wave, players, gameMode);
 
         if (bombers.length > 0) {
           handleGameEvent({

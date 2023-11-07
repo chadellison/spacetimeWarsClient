@@ -1,18 +1,19 @@
 import { round } from '../helpers/mathHelpers.js';
 
-export const addPlayer = (userId, players) => {
+export const initializeGame = (userId, gameMode) => {
   return {
     modal: 'nameForm',
-    startingPlayer: newPlayer(userId, players)
+    startingPlayer: newPlayer(userId),
+    gameMode
   };
 }
 
-export const newPlayer = (userId, players) => {
+export const newPlayer = (userId) => {
   return {
     userId: userId,
     team: 'red',
-    level: handleStartingLevel(players),
-    gold: handleStartingGold(players),
+    level: 1,
+    gold: 1000,
     gameEvent: 'waiting',
     score: 0,
     damage: 0,
@@ -26,30 +27,6 @@ export const newPlayer = (userId, players) => {
     rotate: 'none',
     ability: {},
     explodeAnimation: { complete: true }
-  }
-}
-
-const handleStartingGold = (players) => {
-  if (players.length > 0) {
-    const scoreSums = players.filter((player) => player.type === 'human')
-      .reduce((accumulator, player) => {
-        return accumulator + player.score
-      }, 0);
-    return round((scoreSums / players.length) + 1000);
-  } else {
-    return 1000;
-  }
-}
-
-const handleStartingLevel = (players) => {
-  if (players.length > 0) {
-    const levelSums = players.filter((player) => player.type === 'human')
-      .reduce((accumulator, player) => {
-        return accumulator + player.level
-      }, 0);
-    return round((levelSums / players.length) + 1);
-  } else {
-    return 1;
   }
 }
 
