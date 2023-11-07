@@ -19,12 +19,14 @@ import {
 import { findCenterCoordinates, findStartCenter } from '../helpers/gameLogic';
 import { round } from '../helpers/mathHelpers.js';
 import '../styles/styles.css';
+import background from '../images/spaceBackground.png';
 
 const CANVAS_REF = createRef();
 
 const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animations, deployedWeapons }) => {
   const [state, setState] = useState({});
   const [images, setImages] = useState({});
+  const [backgroundLoaded, setBackgroundLoaded] = useState(false);
   const imageAssets = extractAssets(players.concat(aiShips).concat(motherships));
   const assetsToLoad = imageAssets.length > 0;
   
@@ -38,7 +40,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
       newImages[imageData.name] = img;
     })
     
-    setImages({ ...images, ...newImages });
+    setImages(prevImages => ({ ...prevImages, ...newImages }));
   }, [assetsToLoad]);
 
   useEffect(() => {
@@ -48,9 +50,21 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     })
   }, []);
 
+  useEffect(() => {
+    console.log('yo')
+    if (!backgroundLoaded) {
+      const img = new Image();
+      img.src = background;
+      img.onload = () => setBackgroundLoaded(true);
+      img.onerror = (e) => handleImageError(e, img, background);
+    } else {
+      CANVAS_REF.current.style.backgroundImage = `url(${background})`;
+    }
+  }, [backgroundLoaded])
+
   function handleImageLoad(imageName) {
     LOADED_IMAGES[imageName] = true;
-  }
+  };
 
   function handleImageError(e, img, imgSrc) {
     console.error('Image loading error:', e);
@@ -87,6 +101,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
           const thruster = player.effects[9] ? images.warpSpeed : images.thruster;
           const thrusterLoaded = player.effects[9] ? LOADED_IMAGES.warpSpeed : LOADED_IMAGES.thruster;
           const shipImage = handleImage(player);
+          !shipImage && console.log(player, 'no ship image');
           shipImage && drawShip({ context, player, shipImage, thruster, thrusterLoaded });
 
           renderEffects(context, player)
