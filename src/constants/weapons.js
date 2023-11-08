@@ -389,8 +389,8 @@ export const ABILITY_WEAPONS = [
     width: 600,
     height: 338,
     damageRadius: 200,
-    damage: 1,
-    effectIndex: 1,
+    damage: 0,
+    effectIndex: 12,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: immolation,

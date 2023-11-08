@@ -559,10 +559,10 @@ const handleNegativeBuff = (player, weapon) => {
   if (weapon.index === 5 || weapon.id === 8) {
     const effect = createEffect(weapon.effectIndex, round(3000 / durationDivider), player.effects[1], weapon.playerIndex);
     handleApplyPoison(player, effect);
-  } else if ((weapon.index === 6 || weapon.id === 6) && !player.effects[2]) {
+  } else if (weapon.index === 6 && !player.effects[2]) {
     const effect = createEffect(weapon.effectIndex, round(2000 / durationDivider), player.effects[2], weapon.playerIndex);
     player.effects[effect.id] = effect;
-  } else if (weapon.id === 7) {
+  } else if ([6, 7].includes(weapon.id)) {
     const effect = createEffect(weapon.effectIndex, round(10000 / durationDivider), player.effects[13], weapon.playerIndex);
     player.effects[effect.id] = effect;
   }
