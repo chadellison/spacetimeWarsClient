@@ -1,5 +1,4 @@
 import React from 'react';
-import { API_RESOURCE_URL } from '../api/apiHelpers.js';
 import { ABILITIES } from '../constants/abilities.js';
 import { PILOTS } from '../constants/pilots';
 import { SHIPS } from '../constants/ships';
@@ -103,7 +102,7 @@ const handlePlayerIcon = (activePlayer, countDown) => {
       <>
         <img
           className={activePlayer.active ? 'playerImage' : 'playerImage inactive'}
-          src={`${API_RESOURCE_URL}/${PILOTS[activePlayer.shipIndex]}`}
+          src={PILOTS[activePlayer.shipIndex]}
           alt="player"
         />
         {countDown > 0 && <span className="waitCountDown">{countDown}</span>}

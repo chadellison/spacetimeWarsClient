@@ -4,7 +4,7 @@ import { KEY_MAP } from '../constants/keyMap.js';
 import { ANAIMATION_FRAME_RATE, REQUEST_COUNT, WAVE_UPDATE_INTERVAL, LATENCY_THRESHOLD, WINDOW_WIDTH_THRESHOLD } from '../constants/settings.js';
 import { MOTHER_SHIPS } from '../constants/ships.js';
 import { updateGameState, updatePlayer } from '../helpers/gameLogic.js';
-import { findCurrentPlayer } from '../helpers/playerHelpers';
+import { findCurrentPlayer, newPlayer } from '../helpers/playerHelpers';
 import { handleEventPayload } from '../helpers/receiveEventHelpers.js';
 import { createBombers, keyDownEvent, keyUpEventPayload } from '../helpers/sendEventHelpers.js';
 import '../styles/styles.css';
@@ -46,8 +46,7 @@ const DEFAULT_STATE = {
   scores: [],
   waveData: { wave: 1, count: 5, active: false },
   motherships: MOTHER_SHIPS,
-  connected: false,
-  gameMode: ''
+  connected: false
 };
 
 const Layout = () => {
@@ -61,22 +60,22 @@ const Layout = () => {
   }
 
   useEffect(() => {
-      syncClocks(REQUEST_COUNT, () => fetchGameData(handleGameDataResponse));
-      window.addEventListener('keydown', handleKeyDown);
-      window.addEventListener('keyup', handleKeyUp);
-      const interval = setInterval(renderGame, ANAIMATION_FRAME_RATE);
-      const waveInterval = setInterval(updateWaveData, WAVE_UPDATE_INTERVAL);
-  
-      return () => {
-        window.removeEventListener('keydown', handleKeyDown);
-        window.removeEventListener('keyup', handleKeyUp);
-        clearInterval(interval);
-        clearInterval(waveInterval);
-      }
+    syncClocks(REQUEST_COUNT);
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    const interval = setInterval(renderGame, ANAIMATION_FRAME_RATE);
+    const waveInterval = setInterval(updateWaveData, WAVE_UPDATE_INTERVAL);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      clearInterval(interval);
+      clearInterval(waveInterval);
+    }
   }, []);
 
   const updateWaveData = () => {
-    const { waveData, players, userId, gameMode } = stateRef.current;
+    const { waveData, players, userId } = stateRef.current;
     const { wave, count } = waveData;
     const currentPlayer = findCurrentPlayer(userId, players);
 
@@ -88,7 +87,7 @@ const Layout = () => {
       if (count > 0) {
         updateState({ waveData: { ...waveData, count: count - 1 } });
       } else {
-        const bombers = createBombers(wave, players, gameMode);
+        const bombers = createBombers(wave, players);
 
         if (bombers.length > 0) {
           handleGameEvent({
@@ -102,36 +101,21 @@ const Layout = () => {
     }
   }
 
-  const syncClocks = (iteration, callback) => {
+  const syncClocks = (iteration) => {
     const sentTime = Date.now();
-    getClockData(sentTime, (timeData) => handleTimeResponse(sentTime, timeData, iteration, callback))
+    getClockData(sentTime, (timeData) => handleTimeResponse(sentTime, timeData, iteration));
   }
 
-  const handleTimeResponse = (sentTime, timeData, iteration, callback) => {
+  const handleTimeResponse = (sentTime, timeData, iteration) => {
     const responseTime = Date.now();
     const roundTripTime = responseTime - sentTime;
     handleClockUpdate(roundTripTime, timeData.difference);
 
     if (iteration > 0) {
       iteration -= 1
-      syncClocks(iteration, callback);
-    } else {
-      callback();
-    };
+      syncClocks(iteration);
+    }
   };
-
-  const handleGameDataResponse = (gameData) => {
-    const { clockDifference } = stateRef.current;
-    const players = gameData.players.map((player) => {
-      const elapsedTime = Date.now() + clockDifference - player.updatedAt
-      return player.active ? updatePlayer(player, elapsedTime, clockDifference) : player;
-    });
-    const received = (response) => handleReceivedEvent(response.playerData);
-    const connected = () => updateState({ connected: true })
-    const disconnected = () => updateState({ connected: false })
-    const gameSocket = createGameSocket(stateRef.current.userId, connected, disconnected, received);
-    updateState({ players, gameSocket });
-  }
 
   const handleLeaderBoard = () => {
     fetchScoreData((scoreData) => updateState({ scores: scoreData, modal: 'leaderboard' }))
@@ -231,6 +215,30 @@ const Layout = () => {
     showInstructions
   } = stateRef.current;
 
+  const handleSocket = (gamePlayers) => {
+    const received = (response) => handleReceivedEvent(response.playerData);
+    const connected = () => updateState({ connected: true })
+    const disconnected = () => updateState({ connected: false })
+
+    const gameSocket = createGameSocket({ userId, connected, disconnected, received });
+    
+    updateState({ players: gamePlayers, gameSocket });
+  };
+
+  const initializeGame = () => {
+    const handleGameDataResponse = (gameData) => {
+      const { clockDifference } = stateRef.current;
+      const gamePlayers = gameData.players.map((player) => {
+        const elapsedTime = Date.now() + clockDifference - player.updatedAt
+        return player.active ? updatePlayer(player, elapsedTime, clockDifference) : player;
+      });
+      handleSocket(gamePlayers)
+    }
+    
+    fetchGameData(handleGameDataResponse);
+    updateState({ startingPlayer: newPlayer(userId), modal: 'nameForm' });
+  };
+
   const existingPlayer = findCurrentPlayer(userId, players);
   const activePlayer = existingPlayer || startingPlayer;
 
@@ -240,17 +248,17 @@ const Layout = () => {
         {modal && <Modal
           page={page}
           modal={modal}
-          userId={userId}
           scores={scores}
           players={players}
           upgrades={upgrades}
           activeTab={activeTab}
+          initializeGame={initializeGame}
           showInstructions={showInstructions}
-          activePlayer={{ ...activePlayer, inPlayers: !!existingPlayer }}
           gameOverStats={gameOverStats}
           updateState={updateState}
           clockDifference={clockDifference}
           handleGameEvent={handleGameEvent}
+          activePlayer={{ ...activePlayer, inPlayers: !!existingPlayer }}
         />}
         {['selection', 'nameForm'].includes(modal) && (
           <audio autoPlay loop>

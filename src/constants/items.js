@@ -1,4 +1,3 @@
-import { API_RESOURCE_URL } from '../api/apiHelpers.js';
 // items
 import armorBoost from '../images/armorBoost2.png';
 import healthBoost from '../images/healthBoost2.png';
@@ -8,13 +7,12 @@ import improvedThrusters from '../images/improvedThrusters.png';
 import resistance from '../images/resistance.png';
 import antidote from '../images/antidote.png';
 import increasedAttackSpeed from '../images/increasedAttackSpeedIcon.png';
-
-const repairBots = `${API_RESOURCE_URL}/repairGears`;
-const stealthMode = `${API_RESOURCE_URL}/stealthMode`;
-const damageIncrease = `${API_RESOURCE_URL}/damageIncrease`;
-const healthIncrease = `${API_RESOURCE_URL}/healthIncrease`;
-const evasion = `${API_RESOURCE_URL}/evasion`;
-const returnDamage = `${API_RESOURCE_URL}/returnDamage`;
+import repairBots from '../images/repairGears.png';
+import stealthMode from '../images/stealthMode.png';
+import damageIncrease from '../images/damageIncrease.png';
+import healthIncrease from '../images/healthIncrease.png';
+import evasion from '../images/evasion.png';
+import returnDamage from '../images/returnDamage.png';
 
 export const ITEMS = [
   {

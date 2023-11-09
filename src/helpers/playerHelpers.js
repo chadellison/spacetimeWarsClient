@@ -1,16 +1,8 @@
 import { round } from '../helpers/mathHelpers.js';
 
-export const initializeGame = (userId, gameMode) => {
-  return {
-    modal: 'nameForm',
-    startingPlayer: newPlayer(userId),
-    gameMode
-  };
-}
-
 export const newPlayer = (userId) => {
   return {
-    userId: userId,
+    userId,
     team: 'red',
     level: 1,
     gold: 1000,

@@ -9,7 +9,7 @@ export const getClockData = (sentTime, callback) => {
   getData(`${API_HOST}/api/v1/time?sent_time=${sentTime}`, callback)
 }
 
-export const createGameSocket = (userId, connected, disconnected, received) => {
+export const createGameSocket = ({ userId, connected, disconnected, received }) => {
   let cable = Cable.createConsumer(WEBSOCKET_HOST);
 
   return cable.subscriptions.create({

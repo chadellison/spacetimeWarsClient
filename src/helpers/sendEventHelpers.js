@@ -214,28 +214,28 @@ const createBackupShips = (abilityLevel, team) => {
   return backupShips;
 };
 
-export const createBombers = (wave, players, gameMode) => {
+export const createBombers = (wave, players) => {
   let bombers = [];
 
-  if (gameMode === 'survival') {
-    players.forEach(player => {
-      const bomberTeam = player.team === 'red' ? 'blue' : 'red';
-      bombers = bombers.concat(bombersByWave(wave, bomberTeam))
-    });
-  } else {
-    ['red', 'blue'].forEach(team => { 
-      bombers.push(createBomber(0, team));
-      bombers.push(createBomber(0, team));
-      bombers.push(createBomber(1, team));
-    });
+  const teamCounts = { red: 0, blue: 0 };
+  players.forEach(p => { teamCounts[p.team] += 1 });
+
+  Object.keys(teamCounts).forEach(team => { bombers = bombers.concat(bombersByWave(wave, team)) });
+
+  const diff = teamCounts.red - teamCounts.blue;
+
+  if (diff < 0) {
+    bombers = bombers.concat(bombersByWave(round(wave / 2), 'red'));
+  } else if (diff > 0) {
+    bombers = bombers.concat(bombersByWave(round(wave / 2), 'blue'));
   }
-  
+
   return bombers;
 };
 
 const bombersByWave = (wave, team) => {
   const bombers = [];
-  let i = wave;
+  let i = wave / 2;
   let bomberIndex = 0;
 
   while (i > 0) {

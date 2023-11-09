@@ -10,18 +10,17 @@ import { SelectionModal } from './SelectionModal';
 export const Modal = ({
   page,
   modal,
-  userId,
   scores,
   players,
   upgrades,
   activeTab,
   updateState,
-  loadPercent,
   activePlayer,
   gameOverStats,
   clockDifference,
   handleGameEvent,
-  showInstructions
+  showInstructions,
+  initializeGame
 }) => {
   switch (modal) {
     case 'selection':
@@ -42,9 +41,7 @@ export const Modal = ({
         <InformationModal
           updateState={updateState}
           showInstructions={showInstructions}
-          userId={userId}
-          players={players}
-          loadPercent={loadPercent}
+          initializeGame={initializeGame}
       />
       );
     case 'credits':

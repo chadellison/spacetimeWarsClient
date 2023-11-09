@@ -1,6 +1,5 @@
 import React from 'react';
 import '../styles/modal.css';
-import { initializeGame } from '../helpers/playerHelpers.js';
 import { GameButton } from './GameButton';
 
 const renderHowToPlay = () => {
@@ -78,7 +77,7 @@ const renderText = (showInstructions) => {
     );
   }
 }
-export const InformationModal = ({ updateState, userId, players, showInstructions }) => {
+export const InformationModal = ({ updateState, showInstructions, initializeGame }) => {
   return (
     <div className="modal">
       <h2 className="informationTitle">Space Wars</h2>
@@ -88,15 +87,8 @@ export const InformationModal = ({ updateState, userId, players, showInstruction
       <div>
         <GameButton
           className="modeGameButton"
-          onClick={() => updateState(initializeGame(userId, 'survival'))}
-          buttonText={'Survival Mode'}
-        />
-      </div>
-      <div>
-        <GameButton
-          className="modeGameButton"
-          onClick={() => updateState(initializeGame(userId, 'multiplayer'))}
-          buttonText={'Multiplayer Mode'}
+          onClick={initializeGame}
+          buttonText={'Play'}
         />
       </div>
       <div>
