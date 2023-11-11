@@ -10,4 +10,4 @@ export const getData = async (url, callback) => {
   } catch (error) {
     console.error(error);
   }
-}
+};

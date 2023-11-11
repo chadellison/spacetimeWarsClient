@@ -25,7 +25,7 @@ const renderWeapon = (weaponIndex) => {
       />
     )
   }
-}
+};
 
 const renderArmor = (player) => {
   if (player.armor >= 0) {
@@ -48,7 +48,8 @@ const renderArmor = (player) => {
       />
     )
   }
-}
+};
+
 const renderSpeed = (player) => {
   if (player.velocity) {
     let modifier = 0;
@@ -72,7 +73,7 @@ const renderSpeed = (player) => {
       />
     )
   }
-}
+};
 
 const renderDamage = (player) => {
   if (player.weaponIndex || player.weaponIndex === 0) {
@@ -95,7 +96,7 @@ const renderDamage = (player) => {
       />
     )
   }
-}
+};
 
 const handlePlayerIcon = (activePlayer, countDown) => {
     return (
@@ -188,6 +189,6 @@ const PlayerData = ({
       </div>
     </div>
   );
-}
+};
 
 export default PlayerData;

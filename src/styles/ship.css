@@ -19,8 +19,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 15vh;
-  height: 15vh;
+  width: 140px;
+  height: 140px;
   margin: 15px;
 }
 
@@ -64,18 +64,18 @@
   line-height: 1.3em;
   display: flex;
   font-size: 12px;
-  height: 0.5em;
+  padding: 10px;
   color: #2c66b2;
-  width: 15vh;
+  width: 140px;
 }
 
 .abilityTitle {
-  padding: .5em;
+  padding: 10px;
   text-align: left;
   line-height: 4px;
   display: flex;
   font-size: 14px;
-  margin-top: 0.5em;
+  margin-top: 8px;
   color: #2c66b2;
 }
 
@@ -83,6 +83,5 @@
   display: block;
   justify-content: center;
   align-items: center;
-  height: 15vh;
   margin: 15px;
 }

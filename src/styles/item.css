@@ -1,9 +1,8 @@
 .itemSelection {
-  width: 8%;
-  height: 6em;
-  margin-top: 2em;
-  margin-left: 1em;
-  margin-right: 1em;
+  height: 80px;
+  margin-top: 40px;
+  margin-left: 12px;
+  margin-right: 12px;
   transition: ease-out .5s;
   display: inline-block;
 }
@@ -15,8 +14,8 @@
 .itemImageWrapper {
   border: 1px solid #2c66b2;
   border-radius: 10%;
-  padding: 0.5em;
-  margin-bottom: 0.5em;
+  padding: 10px;
+  margin-bottom: 10px;
   width: 4em;
   height: 4em;
   position: relative;
