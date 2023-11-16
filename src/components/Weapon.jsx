@@ -28,7 +28,7 @@ export const Weapon = ({ imageSrc, weapon, activePlayer, updateState, players, h
     <div className={`selection ${activePlayer.weaponIndex === weapon.index ? 'selected' : ''} ${handleHover(hover, weapon.index)}`}
       onClick={() => handleClick(weapon.index, activePlayer, updateState, players)} onMouseEnter={() => setHover(weapon.index)} onMouseLeave={() => setHover(null)}>
       <div className="imageWrapper">
-        <img id={weapon.index} src={imageSrc} alt="ship" className="selectionImage" />
+        <img id={weapon.index} src={imageSrc} alt="weapon" className="selectionImage" />
       </div>
       <span className="itemInfo">
         <div className="selectionTitle">

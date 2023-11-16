@@ -12,7 +12,6 @@ import trifectaAudio from '../audio/trifecta.wav';
 import { explosionSound } from './settings';
 // weapons
 import blackHoleProjectileAnimation from '../images/blackHoleProjectileAnimation2.png';
-import bomb from '../images/bomb.png';
 import coldShotAnimation from '../images/coldShotAnimation.png';
 import displayBlueFire from '../images/displayBlueFire3.png';
 import displayBomb from '../images/displayBomb3.png';
@@ -38,6 +37,7 @@ import meteorAnimation from '../images/meteorAnimation2.png';
 import spaceMine from '../images/spaceMine3.png';
 import stunGunAnimation from '../images/stunBoltAnimation.png';
 import trifecta from '../images/trifecta.png';
+import nuclearProjectileAnimation from '../images/nuclearProjectileAnimation2.png';
 
 const AUDIO = [
   { audio: cannonAudio, volume: 0.2 },
@@ -283,14 +283,28 @@ export const ABILITY_WEAPONS = [
     location: { x: 0, y: 0 },
     trajectory: 0,
     speed: 7,
-    width: 50,
-    height: 29,
+    width: 128,
+    height: 72,
     damage: 700,
     range: 700,
     countDown: 2000,
     animationIndex: 8,
     sound: explosionSound,
-    image: bomb,
+    animation : {
+      coordinates: { x: 0, y: 0 },
+      spriteImage: nuclearProjectileAnimation,
+      width: 128,
+      height: 72,
+      rowCount: 1,
+      columnCount: 24,
+      rate: 1,
+      renderWidth: 128,
+      renderHeight: 72,
+      startRate: 1,
+      xOffset: 0,
+      yOffset: 0,
+    }
+    // image: bomb,
   },
   {
     id: 2,
