@@ -1,4 +1,5 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { createGame, fetchAllGames, fetchGame } from '../api/gameData';
 import '../styles/modal.css';
 import { GameButton } from './GameButton';
 
@@ -72,25 +73,54 @@ const renderText = (showInstructions) => {
   } else {
     return (
       <div className="informationTitle">
-        Harness the power of weapons, collect valuable items, and unlock upgrades as you engage in an epic battle to obliterate your rival's mothership while defending yours. 
+        Harness the power of weapons, collect valuable items, and unlock upgrades as you engage in an epic battle to obliterate your rival's mothership while defending yours.
       </div>
     );
   }
 }
-export const InformationModal = ({ updateState, showInstructions, initializeGame }) => {
+export const InformationModal = ({ updateState, showInstructions, userId, handleSocket }) => {
+  const [games, setGames] = useState([]);
+
+  useEffect(() => {
+    fetchAllGames(gameData => {
+      const availableGames = gameData.games.filter(game => game.available);
+      setGames(availableGames);
+    })
+  }, [])
+
+  const handleClick = (gameId) => {
+    if (gameId) {
+      fetchGame(gameId, handleSocket);
+    } else {
+      createGame(userId, handleSocket);
+    }
+    updateState({ modal: 'nameForm' });
+  };
+
   return (
     <div className="modal">
       <h2 className="informationTitle">Space Wars</h2>
       <div className="introduction">
         Destroy your opponent's mothership while protecting your own.
       </div>
-      <div>
-        <GameButton
-          className="modeGameButton"
-          onClick={initializeGame}
-          buttonText={'Play'}
-        />
-      </div>
+      {
+        games.length > 0 && <div>
+          <GameButton
+            className="modeGameButton"
+            onClick={() => handleClick(games[0].id)}
+            buttonText={'Join Game'}
+          />
+        </div>
+      }
+      {
+        <div>
+          <GameButton
+            className="modeGameButton"
+            onClick={() => handleClick()}
+            buttonText={games.length > 0 ? 'Create Game' : 'Play'}
+          />
+        </div>
+      }
       <div>
         <GameButton
           onClick={() => updateState({ showInstructions: !showInstructions })}
@@ -100,5 +130,5 @@ export const InformationModal = ({ updateState, showInstructions, initializeGame
       </div>
       {renderText(showInstructions)}
     </div>
-  );
-};
+  )
+}

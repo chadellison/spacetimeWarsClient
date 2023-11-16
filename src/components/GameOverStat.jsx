@@ -10,10 +10,12 @@ export const GameOverStat = ({ player, index }) => {
   return (
     <div className="gameOverStat">
       <ShipIcon shipIndex={player.shipIndex} className={'playerShip'} team={player.team} />
-      <img className="playerInfoWeapon"
-        src={WEAPONS[player.weaponIndex].selectionImage}
-        alt="weapon"
-      />
+      {WEAPONS[player.shipIndex] &&
+        <img className="playerInfoWeapon"
+          src={WEAPONS[player.weaponIndex].selectionImage}
+          alt="weapon"
+        />
+      }
       <div className="playerInfo">{`${player.name}`}</div>
       <div className="playerInfo">{`level: ${player.level}`}</div>
       <PlayerStat image={UPGRADES[3].image} alt={'target'} value={player.damage} className="statInfo" />

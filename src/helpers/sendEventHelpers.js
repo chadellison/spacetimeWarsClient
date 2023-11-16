@@ -144,8 +144,8 @@ export const startEventPayload = (player) => {
     trajectory: startData.trajectory,
     hitpoints: player.maxHitpoints,
     team: player.team,
-    active: true,
     effects: {},
+    active: true,
   };
 };
 

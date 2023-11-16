@@ -1,3 +1,4 @@
+import faker from 'faker';
 import { handleFireWeapon, updatePlayer, handlePlayerDamage } from '../helpers/gameLogic.js';
 import { applyGameBuff } from '../helpers/effectHelpers.js';
 import { GAME_EFFECTS } from '../constants/effects.js';
@@ -17,6 +18,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     userId,
     players,
     aiShips,
+    started,
     waveData,
     animations,
     motherships,
@@ -29,6 +31,8 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
   };
 
   switch (playerData.gameEvent) {
+    case 'waiting':
+      return handleSetupEvent(players, playerData, started)
     case 'start':
       return handleStartEvent({ players, playerData, userId, waveData });
     case 'explode':
@@ -154,6 +158,31 @@ const handleStartEvent = ({ players, playerData, userId, waveData }) => {
   }
 };
 
+const handleSetupEvent = (players, playerData, started) => {
+  let hasPlayer = false;
+
+  const updatedPlayers = players.map(player => {
+    if (player.userId === playerData.userId) {
+      hasPlayer = true;
+      return playerData;
+    } else {
+      return player;
+    }
+  })
+
+  const allPlayers = hasPlayer ? updatedPlayers : [...updatedPlayers, playerData]
+
+  if (playerData.initiateGame && !started) {
+    return {
+      players: allPlayers.map(player => ({ ...player, name: player.name || faker.name.findName() })),
+      modal: 'selection',
+      started: true
+    }
+  } else {
+    return { players: allPlayers };
+  }
+}
+
 const handleUpdateEvent = ({ players, playerData, clockDifference, deployedWeapons, elapsedTime }) => {
   let updatedWeapons = deployedWeapons;
   let updatedPlayer = players.find(player => player.userId === playerData.userId);
@@ -180,7 +209,7 @@ const handleUpdateEvent = ({ players, playerData, clockDifference, deployedWeapo
     players: updatedPlayers,
     deployedWeapons: updatedWeapons,
   };
-}
+};
 
 const resolveFireEvent = (updatedWeapons, playerData, updatedPlayer, elapsedTime) => {
   const damage = handlePlayerDamage(updatedPlayer);

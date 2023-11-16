@@ -35,6 +35,8 @@ const resolveShip = (ship) => {
     } else {
       return { resolvedShip: BOMBERS[ship.index], asset: ship.team === 'blue' ? { name: `${BOMBERS[ship.index].name}Blue`, image: BOMBERS[ship.index].blueImage } : { name: BOMBERS[ship.index].name, image: BOMBERS[ship.index].image } }
     }
+  } else if ([undefined, null].includes(ship.shipIndex)) {
+    return {}
   } else {
     return { resolvedShip: SHIPS[ship.shipIndex], asset: ship.team === 'blue' ? { name: `${SHIPS[ship.shipIndex].name}Blue`, image: SHIPS[ship.shipIndex].blueImage } : { name: SHIPS[ship.shipIndex].name, image: SHIPS[ship.shipIndex].image } };
   }
@@ -66,36 +68,40 @@ export const extractAssets = (ships) => {
 
   ships.forEach(ship => {
     const { resolvedShip, asset } = resolveShip(ship);
-    const cacheKey = ship.userId || asset.name;
-    
-    if (!CACHE[cacheKey]) {
-      assets = handleAsset(assets, asset);
-
-      if (resolvedShip.type === 'supplyShip') {
-        assets = handleEffectAsset(assets, resolvedShip.buffIndex);
-      } else {
-        CACHE[cacheKey] = true;
-
-        const weapon = WEAPONS[ship.weaponIndex];
-        assets = handleAsset(assets, { name: weapon.name, image: resolveImage(weapon) });
-        assets = handleEffectAsset(assets, weapon.effectIndex);
-        
-        Object.values(resolvedShip.abilities || []).forEach(abilityIndex => {
-          const ability = ABILITIES[abilityIndex];
-          
-          if (![undefined, null].includes(ability.weaponIndex)) {
-            const abilityWeapon = ABILITY_WEAPONS[ability.weaponIndex];
-            assets = handleAsset(assets, { name: abilityWeapon.name,  image: resolveImage(abilityWeapon) });
-            assets = handleEffectAsset(assets, abilityWeapon.effectIndex);
-          } else {
-            assets = handleEffectAsset(assets, ability.effectIndex);          
-          }
-        })
+    if (resolveShip && asset) {
+      const cacheKey = ship.userId || asset.name;
+      
+      if (!CACHE[cacheKey]) {
+        assets = handleAsset(assets, asset);
   
-        Object.values(ship.items).forEach(item => {
-          assets = handleEffectAsset(assets, item.effectIndex);
-        })
-      }
+        if (resolvedShip.type === 'supplyShip') {
+          assets = handleEffectAsset(assets, resolvedShip.buffIndex);
+        } else {
+          CACHE[cacheKey] = true;
+  
+          if (![undefined, null].includes(ship.weaponIndex)) {
+            const weapon = WEAPONS[ship.weaponIndex];
+            assets = handleAsset(assets, { name: weapon.name, image: resolveImage(weapon) });
+            assets = handleEffectAsset(assets, weapon.effectIndex);
+          }
+          
+          Object.values(resolvedShip.abilities || []).forEach(abilityIndex => {
+            const ability = ABILITIES[abilityIndex];
+            
+            if (![undefined, null].includes(ability.weaponIndex)) {
+              const abilityWeapon = ABILITY_WEAPONS[ability.weaponIndex];
+              assets = handleAsset(assets, { name: abilityWeapon.name,  image: resolveImage(abilityWeapon) });
+              assets = handleEffectAsset(assets, abilityWeapon.effectIndex);
+            } else {
+              assets = handleEffectAsset(assets, ability.effectIndex);          
+            }
+          })
+    
+          Object.values(ship.items).forEach(item => {
+            assets = handleEffectAsset(assets, item.effectIndex);
+          })
+        }
+      }  
     }
   })
 

@@ -9,24 +9,29 @@ import { SelectionModal } from './SelectionModal';
 
 export const Modal = ({
   page,
+  game,
   modal,
   scores,
+  userId,
   players,
   upgrades,
+  connected,
   activeTab,
   updateState,
+  handleSocket,
   activePlayer,
   gameOverStats,
   clockDifference,
   handleGameEvent,
   showInstructions,
-  initializeGame
 }) => {
   switch (modal) {
     case 'selection':
       return (
         <SelectionModal
           page={page}
+          game={game}
+          userId={userId}
           players={players}
           upgrades={upgrades}
           activeTab={activeTab}
@@ -39,15 +44,26 @@ export const Modal = ({
     case 'instructions':
       return (
         <InformationModal
+          handleSocket={handleSocket}
           updateState={updateState}
           showInstructions={showInstructions}
-          initializeGame={initializeGame}
+          userId={userId}
       />
       );
     case 'credits':
       return <CreditsModal updateState={updateState} />
     case 'nameForm':
-      return <NameFormModal updateState={updateState} activePlayer={activePlayer} />
+      return (
+        <NameFormModal 
+          updateState={updateState} 
+          activePlayer={activePlayer}
+          players={players}
+          game={game}
+          userId={userId}
+          connected={connected}
+          handleGameEvent={handleGameEvent}
+        />
+      )
     case 'gameOver':
       return <GameOverModal gameOverStats={gameOverStats} />
     case 'leaderboard':

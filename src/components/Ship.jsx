@@ -22,18 +22,8 @@ const handleClick = (activePlayer, updateState, players, shipIndex) => {
       thrusterAnimation: generateThrusterAnimation(SHIPS[shipIndex].thrusterOffset.x, SHIPS[shipIndex].thrusterOffset.y)
     }
 
-    if (activePlayer.inPlayers) {
-      const updatedPlayers = players.map((p) => {
-        if (p.userId === activePlayer.userId) {
-          return player;
-        } else {
-          return p;
-        }
-      })
-      updateState({ players: updatedPlayers })
-    } else {
-      updateState({ startingPlayer: player, activeTab: 'Weapons', page: 1 });
-    }
+    const updatedPlayers = players.map(p => p.userId === activePlayer.userId ? player : p);
+    updateState({ players: updatedPlayers, activeTab: 'Weapons', page: 1 });
   } else {
     notEnoughResources.play();
     console.log('Not enough gold');
@@ -44,7 +34,9 @@ export const Ship = ({ imageSrc, activePlayer, ship, players, updateState, setHo
 
   return (
     <div className={`selection ${activePlayer.shipIndex === ship.index ? 'selected' : ''} ${handleHover(hover, ship.index)}`}
-      onClick={() => handleClick(activePlayer, updateState, players, ship.index)} onMouseEnter={() => setHover(ship.index)} onMouseLeave={() => setHover(null)}>
+      onClick={() => handleClick(activePlayer, updateState, players, ship.index)} 
+      onMouseEnter={() => setHover(ship.index)} 
+      onMouseLeave={() => setHover(null)}>
 
       <div className="imageWrapper">
         <img id={ship.index} src={imageSrc} alt="ship" className="selectionImage" />

@@ -23,7 +23,7 @@ import background from '../images/spaceBackground.png';
 
 const CANVAS_REF = createRef();
 
-const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animations, deployedWeapons }) => {
+const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animations, deployedWeapons, started }) => {
   const [state, setState] = useState({});
   const [images, setImages] = useState({});
   const [backgroundLoaded, setBackgroundLoaded] = useState(false);
@@ -76,7 +76,11 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     } else if (player.type === 'bomber') {
       return player.team === 'blue' ? BOMBERS[player.index].name + 'Blue' : BOMBERS[player.index].name;
     } else {
-      return player.team === 'blue' ? SHIPS[player.shipIndex].name + 'Blue' : SHIPS[player.shipIndex].name
+      if ([null, undefined].includes(player.shipIndex)) {
+        return null;
+      } else {
+        return player.team === 'blue' ? SHIPS[player.shipIndex].name + 'Blue' : SHIPS[player.shipIndex].name
+      }
     }
   };
 
@@ -178,7 +182,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
     }
   };
   
-  currentPlayer && renderCanvas();
+  started && renderCanvas();
 
   return (
     <div>

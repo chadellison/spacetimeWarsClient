@@ -64,7 +64,7 @@ const updateMotherships = (motherships, userId, handleGameEvent, connected) => {
 }
 
 const handleAiWeapons = (weapons, motherships, players, aiShips) => {
-  aiShips.forEach((ship) => {
+  aiShips.forEach(ship => {
     const { active, type, shouldFire, lastFired, weaponIndex } = ship;
     if (active && type === 'bomber' && shouldFire && canFire(lastFired, WEAPONS[weaponIndex].cooldown * 2, ship)) {
       const weapon = { ...WEAPONS[ship.weaponIndex] }
@@ -140,12 +140,14 @@ const nearestTarget = (location, team, players, minRange) => {
   const opponentColor = team === 'red' ? 'blue' : 'red';
   let target = null;
 
-  players.forEach((player) => {
-    const distance = Math.abs(location.x - player.location.x) + Math.abs(location.y - player.location.y);
-
-    if (distance < minRange && player.team === opponentColor && player?.active && !isInvisable(player.effects)) {
-      minRange = distance;
-      target = player;
+  players.forEach(player => {
+    if (player.active) {
+      const distance = Math.abs(location.x - player.location.x) + Math.abs(location.y - player.location.y);
+  
+      if (distance < minRange && player.team === opponentColor && player?.active && !isInvisable(player.effects)) {
+        minRange = distance;
+        target = player;
+      }
     }
   });
 
@@ -191,7 +193,7 @@ const handleRepeatedFire = (player, space, lastFired, deployedWeapons, handleGam
   if (player && player.active) {
     if (space && canFire(lastFired, WEAPONS[player.weaponIndex].cooldown, player)) {
       player.gameEvent = 'fire';
-      handleGameEvent(player)
+      handleGameEvent(player);
       const damage = handlePlayerDamage(player);
       const weapon = { ...WEAPONS[player.weaponIndex] };
       const updatedWeapons = [
@@ -202,7 +204,7 @@ const handleRepeatedFire = (player, space, lastFired, deployedWeapons, handleGam
       playSound(WEAPONS[player.weaponIndex].sound);
       return { newLastFired: Date.now(), updatedWeapons };
     }
-  }
+  };
 
   return { newLastFired: lastFired, updatedWeapons: deployedWeapons };
 }

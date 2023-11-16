@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { createGameSocket, fetchGameData, fetchScoreData, getClockData } from '../api/gameData';
+import React, { useEffect, useRef, useState } from 'react';
+import { createGameSocket, fetchScoreData, getClockData, fetchGame } from '../api/gameData';
+import introMusic from '../audio/introJingle.wav';
 import { KEY_MAP } from '../constants/keyMap.js';
-import { ANAIMATION_FRAME_RATE, REQUEST_COUNT, WAVE_UPDATE_INTERVAL, LATENCY_THRESHOLD, WINDOW_WIDTH_THRESHOLD } from '../constants/settings.js';
+import { ANAIMATION_FRAME_RATE, LATENCY_THRESHOLD, REQUEST_COUNT, WAVE_UPDATE_INTERVAL, WINDOW_WIDTH_THRESHOLD, WAVE_INTERVAL } from '../constants/settings.js';
 import { MOTHER_SHIPS } from '../constants/ships.js';
-import { updateGameState, updatePlayer } from '../helpers/gameLogic.js';
-import { findCurrentPlayer, newPlayer } from '../helpers/playerHelpers';
+import { updateGameState } from '../helpers/gameLogic.js';
+import { findCurrentPlayer } from '../helpers/playerHelpers';
 import { handleEventPayload } from '../helpers/receiveEventHelpers.js';
 import { createBombers, keyDownEvent, keyUpEventPayload } from '../helpers/sendEventHelpers.js';
 import '../styles/styles.css';
@@ -12,13 +13,11 @@ import Canvas from './Canvas';
 import Header from './Header';
 import { Modal } from './Modal';
 import PlayerData from './PlayerData';
-import introMusic from '../audio/introJingle.wav'
 
 const INITIAL_MODAL = window.innerWidth < WINDOW_WIDTH_THRESHOLD ? 'deviceChageNotification' : 'instructions';
 
 const DEFAULT_STATE = {
   userId: Date.now(),
-  startingPlayer: {},
   gameSocket: {},
   players: [],
   clockDifference: 0,
@@ -44,9 +43,11 @@ const DEFAULT_STATE = {
   animations: [],
   showInstructions: false,
   scores: [],
-  waveData: { wave: 1, count: 5, active: false },
+  waveData: { wave: 1, count: WAVE_INTERVAL, active: false },
   motherships: MOTHER_SHIPS,
-  connected: false
+  connected: false,
+  game: null,
+  started: false,
 };
 
 const Layout = () => {
@@ -66,6 +67,7 @@ const Layout = () => {
     const interval = setInterval(renderGame, ANAIMATION_FRAME_RATE);
     const waveInterval = setInterval(updateWaveData, WAVE_UPDATE_INTERVAL);
 
+    findAvailableGame()
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
@@ -74,12 +76,31 @@ const Layout = () => {
     }
   }, []);
 
-  const updateWaveData = () => {
-    const { waveData, players, userId } = stateRef.current;
-    const { wave, count } = waveData;
-    const currentPlayer = findCurrentPlayer(userId, players);
+  const findAvailableGame = () => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const gameId = urlParams.get('game')
+    
+    if (gameId) {
+      const handleGameResponse = (gameData => {
+        if (gameData?.game) {
+          handleSocket(gameData?.game)
+          updateState({ modal: 'nameForm' });
+        } else {
+          alert('the game your are looking for is no longer available!')
+        }
+      });
+  
+      fetchGame(gameId, handleGameResponse);
+    }
+  };
 
-    if (currentPlayer) {
+  const currentPlayer = findCurrentPlayer(stateRef.current.userId, stateRef.current.players) || {};
+
+  const updateWaveData = () => {
+    const { waveData, players, started } = stateRef.current;
+    const { wave, count } = waveData;
+
+    if (started) {
       if (Math.random() > 0.97) {
         const buffIndex = Math.floor(Math.random() * (8 - 0 + 1) + 0);
         handleGameEvent({ gameEvent: 'supplyShip', buffIndex });
@@ -96,7 +117,7 @@ const Layout = () => {
             wave
           });
         }
-        updateState({ waveData: { ...waveData, wave: wave + 1, count: 17 } });
+        updateState({ waveData: { ...waveData, wave: wave + 1, count: WAVE_INTERVAL } });
       }
     }
   }
@@ -118,24 +139,24 @@ const Layout = () => {
   };
 
   const handleLeaderBoard = () => {
-    fetchScoreData((scoreData) => updateState({ scores: scoreData, modal: 'leaderboard' }))
+    fetchScoreData(scoreData => updateState({ scores: scoreData, modal: 'leaderboard' }))
   }
 
   const handleGameEvent = (eventPayload) => {
     stateRef.current.gameSocket.create({
       ...eventPayload,
+      gameId: stateRef.current.game.id,
       serverTime: Date.now() + stateRef.current.clockDifference,
       sentAt: Date.now()
     });
   };
 
   const handleKeyDown = (event) => {
-    const { modal, userId, players, startingPlayer } = stateRef.current;
+    const { modal, userId, players } = stateRef.current;
     if (!modal) {
       const pressedKey = KEY_MAP[event.keyCode];
-      const existingPlayer = findCurrentPlayer(userId, players)
-      const currentPlayer = existingPlayer || startingPlayer;
-      if (currentPlayer && currentPlayer.active && !stateRef.current[pressedKey]) {
+      const currentPlayer = findCurrentPlayer(userId, players);
+      if (currentPlayer?.active && !stateRef.current[pressedKey]) {
         updateState({ [pressedKey]: true })
         keyDownEvent(pressedKey, stateRef.current, handleGameEvent, updateState, currentPlayer);
       }
@@ -143,11 +164,10 @@ const Layout = () => {
   };
 
   const handleKeyUp = (event) => {
-    const { userId, players, startingPlayer } = stateRef.current;
-    const existingPlayer = findCurrentPlayer(userId, players)
-    const currentPlayer = existingPlayer || startingPlayer;
+    const { userId, players } = stateRef.current;
+    const currentPlayer = findCurrentPlayer(userId, players)
     const pressedKey = KEY_MAP[event.keyCode];
-    if (currentPlayer && currentPlayer.active && !stateRef.current.modal && stateRef.current[pressedKey]) {
+    if (currentPlayer?.active && !stateRef.current.modal && stateRef.current[pressedKey]) {
       updateState({ [pressedKey]: false });
       keyUpEventPayload(pressedKey, stateRef.current, handleGameEvent, updateState, currentPlayer)
     };
@@ -184,8 +204,8 @@ const Layout = () => {
   };
 
   const renderGame = () => {
-    const currentPlayer = findCurrentPlayer(stateRef.current.userId, stateRef.current.players);
-    if (currentPlayer) {
+    if (stateRef.current.started) {
+      const currentPlayer = findCurrentPlayer(stateRef.current.userId, stateRef.current.players);
 
       const updatedGameState = updateGameState(
         stateRef.current,
@@ -200,72 +220,62 @@ const Layout = () => {
     page,
     modal,
     userId,
+    game,
     scores,
     aiShips,
+    started,
     players,
     upgrades,
     activeTab,
+    connected,
     animations,
     abilityData,
     motherships,
     gameOverStats,
-    startingPlayer,
     deployedWeapons,
     clockDifference,
     showInstructions
   } = stateRef.current;
 
-  const handleSocket = (gamePlayers) => {
+  const handleSocket = (game) => {
     const received = (response) => handleReceivedEvent(response.playerData);
     const connected = () => updateState({ connected: true })
     const disconnected = () => updateState({ connected: false })
-
-    const gameSocket = createGameSocket({ userId, connected, disconnected, received });
-    
-    updateState({ players: gamePlayers, gameSocket });
+    const gameSocket = createGameSocket({ userId, connected, disconnected, received, gameId: game.id });
+    updateState({ gameSocket, game });
   };
-
-  const initializeGame = () => {
-    const handleGameDataResponse = (gameData) => {
-      const { clockDifference } = stateRef.current;
-      const gamePlayers = gameData.players.map((player) => {
-        const elapsedTime = Date.now() + clockDifference - player.updatedAt
-        return player.active ? updatePlayer(player, elapsedTime, clockDifference) : player;
-      });
-      handleSocket(gamePlayers)
-    }
-    
-    fetchGameData(handleGameDataResponse);
-    updateState({ startingPlayer: newPlayer(userId), modal: 'nameForm' });
-  };
-
-  const existingPlayer = findCurrentPlayer(userId, players);
-  const activePlayer = existingPlayer || startingPlayer;
 
   return (
     <div className="layout" onKeyDown={handleKeyDown}>
       <div>
-        {modal && <Modal
-          page={page}
-          modal={modal}
-          scores={scores}
-          players={players}
-          upgrades={upgrades}
-          activeTab={activeTab}
-          initializeGame={initializeGame}
-          showInstructions={showInstructions}
-          gameOverStats={gameOverStats}
-          updateState={updateState}
-          clockDifference={clockDifference}
-          handleGameEvent={handleGameEvent}
-          activePlayer={{ ...activePlayer, inPlayers: !!existingPlayer }}
-        />}
-        {['selection', 'nameForm'].includes(modal) && (
-          <audio autoPlay loop>
-            <source src={introMusic} type="audio/wav" />
-          </audio>
-        )}
-        <Header activePlayer={activePlayer}
+        {
+          modal && <Modal
+            page={page}
+            modal={modal}
+            game={game}
+            userId={userId}
+            scores={scores}
+            players={players}
+            upgrades={upgrades}
+            connected={connected}
+            activeTab={activeTab}
+            handleSocket={(gameData) => handleSocket(gameData.game)}
+            showInstructions={showInstructions}
+            gameOverStats={gameOverStats}
+            updateState={updateState}
+            clockDifference={clockDifference}
+            handleGameEvent={handleGameEvent}
+            activePlayer={currentPlayer}
+          />
+        }
+        {
+          ['selection', 'nameForm'].includes(modal) && (
+            <audio autoPlay loop>
+              <source src={introMusic} type="audio/wav" />
+            </audio>
+          )
+        }
+        <Header activePlayer={currentPlayer}
           modal={modal}
           clockDifference={clockDifference}
           updateState={updateState}
@@ -273,20 +283,23 @@ const Layout = () => {
           handleGameEvent={handleGameEvent}
         />
 
-        {activePlayer.name && <PlayerData
-          activePlayer={activePlayer}
-          clockDifference={clockDifference}
-          handleGameEvent={handleGameEvent}
-          abilityData={abilityData}
-          updateState={updateState}
-        />}
+        {
+          currentPlayer.name && <PlayerData
+            activePlayer={currentPlayer}
+            clockDifference={clockDifference}
+            handleGameEvent={handleGameEvent}
+            abilityData={abilityData}
+            updateState={updateState}
+          />
+        }
         <Canvas
           userId={userId}
           players={players}
           aiShips={aiShips}
           animations={animations}
           motherships={motherships}
-          currentPlayer={existingPlayer}
+          started={started}
+          currentPlayer={currentPlayer}
           deployedWeapons={deployedWeapons}
         />
       </div>
