@@ -136,7 +136,7 @@ export const NameFormModal = ({ updateState, activePlayer, players, game, connec
       <div className="waitingTextWrapper">
         <div className="inviteLink" onClick={() => copyLinkToClipBoard(game.id)}>Invite link</div>
       </div>
-      {handleStartGame({ hostId: game?.hostId, userId, onClick: () => submitForm(players, updateState, handleGameEvent, userId) })}
+      {connected && handleStartGame({ hostId: game?.hostId, userId, onClick: () => submitForm(players, updateState, handleGameEvent, userId) })}
     </div>
   );
 };

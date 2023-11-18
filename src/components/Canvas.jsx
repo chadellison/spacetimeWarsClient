@@ -185,9 +185,9 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
   started && renderCanvas();
 
   return (
-    <div>
+    <div className="placeholderBackground">
       <canvas
-        className={'canvas column'}
+        className={`canvas column hidden ${backgroundLoaded && 'visible'}`}
         ref={CANVAS_REF}
         width={BOARD_WIDTH}
         height={BOARD_HEIGHT}
