@@ -2,7 +2,7 @@ import { ANAIMATION_FRAME_RATE } from '../constants/settings.js';
 import { GAME_EFFECTS } from '../constants/effects.js';
 
 export const handleItems = (player) => {
-  Object.values(player.items).forEach((item) => {
+  Object.values(player.items).forEach(item => {
     switch (item.index) {
       case 0:
         if (item.durationCount >= item.cooldown && player.hitpoints < player.maxHitpoints / 4) {

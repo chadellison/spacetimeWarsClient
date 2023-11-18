@@ -93,7 +93,7 @@ const renderOptions = (activeTab, page, activePlayer, updateState, players, upgr
       return (
         <div className="gameItemsContainer">
           {
-            ITEMS.map((item) => {
+            ITEMS.map(item => {
               return (
                 <Item
                   hover={hover}

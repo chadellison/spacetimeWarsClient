@@ -27,6 +27,7 @@ import blueSpiderShip from '../images/blueSpiderShip.png';
 import supplyShip from '../images/supplyShip.png';
 import redMothershipAnimation from '../images/mothershipAnimationRed.png';
 import blueMothershipAnimation from '../images/mothershipAnimationBlue.png';
+import { ITEMS } from './items.js';
 
 export const generateThrusterAnimation = (x, y) => {
   return { ...GAME_ANIMATIONS[3], location: { x: 0, y: 0 }, coordinates: { x: 0, y: 0 }, xOffset: x, yOffset: y }
@@ -164,12 +165,12 @@ export const MOTHER_SHIP = {
 };
 
 export const mothershipItems = {
-  1: { index: 0, cooldown: 120000, durationCount: 5000 },
-  2: { index: 1, durationCount: 1000, cooldown: 3000 },
-  5: { index: 4, durationCount: 0, cooldown: 0 },
-  10: { index: 9, durationCount: 0, cooldown: 0 },
-  12: { index: 11, durationCount: 0, cooldown: 0 },
-  13: { index: 12, durationCount: 0, cooldown: 0 }
+  1: { ...ITEMS[0], durationCount: 5000 },
+  2: { ...ITEMS[1], durationCount: 1000, cooldown: 3000 },
+  5: { ...ITEMS[4], durationCount: 0, cooldown: 0 },
+  10: { ...ITEMS[9], durationCount: 0, cooldown: 0 },
+  12: { ...ITEMS[11], durationCount: 0, cooldown: 0 },
+  13: { ...ITEMS[12], durationCount: 0, cooldown: 0 }
 };
 
 const mothershipAnimation = {

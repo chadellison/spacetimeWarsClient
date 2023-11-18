@@ -22,6 +22,7 @@ import '../styles/styles.css';
 import background from '../images/spaceBackground.png';
 
 const CANVAS_REF = createRef();
+const WRAPPER_REF = createRef();
 
 const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animations, deployedWeapons, started }) => {
   const [state, setState] = useState({});
@@ -58,6 +59,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
       img.onerror = (e) => handleImageError(e, img, background);
     } else {
       CANVAS_REF.current.style.backgroundImage = `url(${background})`;
+      WRAPPER_REF.current.style.backgroundImage = 'none';
     }
   }, [backgroundLoaded])
 
@@ -185,7 +187,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
   started && renderCanvas();
 
   return (
-    <div className="placeholderBackground">
+    <div className="placeholderBackground" ref={WRAPPER_REF}>
       <canvas
         className={`canvas column hidden ${backgroundLoaded && 'visible'}`}
         ref={CANVAS_REF}

@@ -49,7 +49,7 @@ export const updateGameState = (gameState, handleGameEvent, currentPlayer) => {
 };
 
 const updateMotherships = (motherships, userId, handleGameEvent, connected) => {
-  return motherships.map((ship) => {
+  return motherships.map(ship => {
     if (ship.active) {
       updateFrame(ship.animation);
       handleHitpoints(ship, userId, handleGameEvent, connected);
