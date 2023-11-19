@@ -1,4 +1,4 @@
-import { ANAIMATION_FRAME_RATE } from '../constants/settings.js';
+import { ANIMATION_FRAME_RATE } from '../constants/settings.js';
 import { updateFrame } from '../helpers/animationHelpers.js';
 import { round } from '../helpers/mathHelpers.js';
 import { GAME_EFFECTS } from '../constants/effects.js';
@@ -12,7 +12,7 @@ export const handleEffects = (player) => {
         const damage = (round(player.maxHitpoints * 0.002)) || 1;
         player.hitpoints -= damage;
       } else if (effect.id === 7) {
-        const health = round((player.maxHitpoints * 0.5) / (effect.duration / ANAIMATION_FRAME_RATE))
+        const health = round((player.maxHitpoints * 0.5) / (effect.duration / ANIMATION_FRAME_RATE))
         const newHitpoints = player.hitpoints + health;
         player.hitpoints = newHitpoints > player.maxHitpoints ? player.maxHitpoints : newHitpoints;
       } else if (effect.id === 13) {
@@ -27,7 +27,7 @@ export const handleEffects = (player) => {
       if (effect.animation) {
         updateFrame(effect.animation);
       }
-      effect.durationCount += ANAIMATION_FRAME_RATE
+      effect.durationCount += ANIMATION_FRAME_RATE
     }
   });
 };
@@ -83,6 +83,6 @@ export const updateGameBuff = (gameBuff) => {
   if (gameBuff.durationCount > gameBuff.duration) {
     return {};
   } else {
-    return { ...gameBuff, durationCount: gameBuff.durationCount + ANAIMATION_FRAME_RATE };
+    return { ...gameBuff, durationCount: gameBuff.durationCount + ANIMATION_FRAME_RATE };
   }
 };

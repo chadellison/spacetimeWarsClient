@@ -52,7 +52,7 @@ import shipExplosionAnimation from '../images/shipExplosionAnimation.png';
 // constants
 export const BOARD_WIDTH = 2700;
 export const BOARD_HEIGHT = 1688;
-export const ANAIMATION_FRAME_RATE = 40;
+export const ANIMATION_FRAME_RATE = 40;
 export const WAVE_UPDATE_INTERVAL = 1000;
 export const LATENCY_THRESHOLD = 2000;
 export const WINDOW_WIDTH_THRESHOLD = 800;

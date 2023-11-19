@@ -1,5 +1,5 @@
 import {
-  ANAIMATION_FRAME_RATE,
+  ANIMATION_FRAME_RATE,
   BOARD_HEIGHT,
   BOARD_WIDTH,
   DRIFT,
@@ -128,7 +128,7 @@ const updateAiShips = (aiShips, userId, handleGameEvent, clockDifference, player
           ship.shouldFire = false;
         }
       }
-      updatePlayer(ship, ANAIMATION_FRAME_RATE, clockDifference);
+      updatePlayer(ship, ANIMATION_FRAME_RATE, clockDifference);
       updatedAiShips.push(ship);
     }
   });
@@ -176,12 +176,12 @@ const updatePlayers = (gameState, handleGameEvent, connected) => {
   return players.map(player => {
     if (player.active) {
       player = handleHitpoints(player, userId, handleGameEvent, connected);
-      player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
+      player = updatePlayer(player, ANIMATION_FRAME_RATE, clockDifference);
 
       handleWall(player);
       handleEffects(player);
     } else if (!player.explodeAnimation.complete) {
-      player = updatePlayer(player, ANAIMATION_FRAME_RATE, clockDifference);
+      player = updatePlayer(player, ANIMATION_FRAME_RATE, clockDifference);
       player.explodeAnimation = updateAnimation(player.explodeAnimation);
     }
 
@@ -288,7 +288,7 @@ export const distanceTraveled = (player, elapsedTime, clockDifference) => {
     }
   }
 
-  const gameTime = elapsedTime / ANAIMATION_FRAME_RATE;
+  const gameTime = elapsedTime / ANIMATION_FRAME_RATE;
   return round(currentVelocity * gameTime);
 };
 
@@ -310,7 +310,6 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
     player.angle = handleAngle(player.rotate, player.angle, elapsedTime);
     const distance = distanceTraveled(player, elapsedTime, clockDifference);
     const trajectory = handleTrajectory(player);
-
     player.location = handleLocation(trajectory, player.location, distance);
   }
 
@@ -367,7 +366,7 @@ const weaponFromPlayer = (gameData, weapon, newWeapons, allShips) => {
     const minRange = 3000;
     const target = nearestTarget(weapon.location, player.team, allShips, minRange);
     const direction = target ? handleAiDirection(weapon.location, weapon.trajectory, target) : 0;
-    weapon.trajectory = handleAngle(direction, weapon.trajectory, ANAIMATION_FRAME_RATE);
+    weapon.trajectory = handleAngle(direction, weapon.trajectory, ANIMATION_FRAME_RATE);
   }
 
   weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
@@ -653,10 +652,10 @@ export const handleLocation = (trajectory, location, distance) => {
 export const handleAngle = (direction, angle, elapsedTime) => {
   switch (direction) {
     case 'left':
-      angle = (angle - 3 * (elapsedTime / ANAIMATION_FRAME_RATE)) % 360;
+      angle = (angle - 3 * (elapsedTime / ANIMATION_FRAME_RATE)) % 360;
       return angle < 0 ? 360 + angle : angle;
     case 'right':
-      return (angle + 3 * (elapsedTime / ANAIMATION_FRAME_RATE)) % 360
+      return (angle + 3 * (elapsedTime / ANIMATION_FRAME_RATE)) % 360
     default:
       return angle;
   };

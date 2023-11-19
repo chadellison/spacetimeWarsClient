@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createGameSocket, fetchScoreData, getClockData, fetchGame } from '../api/gameData';
 import introMusic from '../audio/introJingle.wav';
 import { KEY_MAP } from '../constants/keyMap.js';
-import { ANAIMATION_FRAME_RATE, LATENCY_THRESHOLD, REQUEST_COUNT, WAVE_UPDATE_INTERVAL, WINDOW_WIDTH_THRESHOLD, WAVE_INTERVAL } from '../constants/settings.js';
+import { ANIMATION_FRAME_RATE, LATENCY_THRESHOLD, REQUEST_COUNT, WAVE_UPDATE_INTERVAL, WINDOW_WIDTH_THRESHOLD, WAVE_INTERVAL } from '../constants/settings.js';
 import { MOTHER_SHIPS } from '../constants/ships.js';
 import { updateGameState } from '../helpers/gameLogic.js';
 import { findCurrentPlayer } from '../helpers/playerHelpers';
@@ -64,7 +64,7 @@ const Layout = () => {
     syncClocks(REQUEST_COUNT);
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
-    const interval = setInterval(renderGame, ANAIMATION_FRAME_RATE);
+    const interval = setInterval(renderGame, ANIMATION_FRAME_RATE);
     const waveInterval = setInterval(updateWaveData, WAVE_UPDATE_INTERVAL);
 
     findAvailableGame()

@@ -1,4 +1,4 @@
-import { ANAIMATION_FRAME_RATE } from '../constants/settings.js';
+import { ANIMATION_FRAME_RATE } from '../constants/settings.js';
 import { GAME_EFFECTS } from '../constants/effects.js';
 
 export const handleItems = (player) => {
@@ -41,7 +41,7 @@ export const handleItems = (player) => {
       default:
         break;
     }
-    item.durationCount += ANAIMATION_FRAME_RATE;
+    item.durationCount += ANIMATION_FRAME_RATE;
   });
 };
 
