@@ -3,7 +3,7 @@ import {
   GAME_ANIMATIONS
 } from '../constants/settings.js';
 import { findColor } from './colorHelpers.js';
-import { isInvisable } from './gameLogic.js';
+import { isInvisable, computeBounty } from './gameLogic.js';
 import { round } from './mathHelpers.js';
 
 import { ABILITIES } from '../constants/abilities.js';
@@ -193,7 +193,7 @@ export const renderAnimation = (context, spriteImage, animation, location) => {
   );
 };
 
-export const renderPlayerData = (context, player, showShip, isExploading) => {
+export const renderPlayerData = (context, player, showShip, isExploading, userId) => {
   if (!isExploading) {
     if (showShip) {
       context.font = RENDER_FONT;
@@ -203,7 +203,8 @@ export const renderPlayerData = (context, player, showShip, isExploading) => {
     } else if (!player.active && !player.explodeAnimation.complete) {
       context.fillStyle = '#ab8432';
       context.font = RENDER_FONT;
-      context.fillText(`+ ${round(player.maxHitpoints * 0.1)}`, player.location.x + 75, player.location.y)
+      
+      userId === player.killedBy && context.fillText(`+ ${computeBounty(player.maxHitpoints)}`, player.location.x + 75, player.location.y)
     }
   }
 };

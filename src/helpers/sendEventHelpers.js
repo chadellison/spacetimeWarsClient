@@ -217,17 +217,18 @@ const createBackupShips = (abilityLevel, team) => {
 export const createBombers = (wave, players) => {
   let bombers = [];
 
+  const waveValue = wave > 29 && players.length > 1 ? 30 : wave;
   const teamCounts = { red: 0, blue: 0 };
   players.forEach(p => { teamCounts[p.team] += 1 });
 
-  Object.keys(teamCounts).forEach(team => { bombers = bombers.concat(bombersByWave(wave, team)) });
+  Object.keys(teamCounts).forEach(team => { bombers = bombers.concat(bombersByWave(waveValue, team)) });
 
   const diff = teamCounts.red - teamCounts.blue;
 
   if (diff < 0) {
-    bombers = bombers.concat(bombersByWave(round(wave / 2), 'red'));
+    bombers = bombers.concat(bombersByWave(round(waveValue / 2), 'red'));
   } else if (diff > 0) {
-    bombers = bombers.concat(bombersByWave(round(wave / 2), 'blue'));
+    bombers = bombers.concat(bombersByWave(round(waveValue / 2), 'blue'));
   }
 
   return bombers;

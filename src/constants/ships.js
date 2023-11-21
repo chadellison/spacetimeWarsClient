@@ -89,7 +89,7 @@ export const SHIPS = [
   {
     index: 4,
     name: 'carrier',
-    price: 1100,
+    price: 1300,
     armor: 3,
     hitpoints: 2900,
     speed: 3,
@@ -102,7 +102,7 @@ export const SHIPS = [
   {
     index: 5,
     name: 'stealth',
-    price: 800,
+    price: 1050,
     armor: 1,
     hitpoints: 1900,
     speed: 3,
@@ -115,7 +115,7 @@ export const SHIPS = [
   {
     index: 6,
     name: 'commander',
-    price: 1250,
+    price: 1650,
     armor: 3,
     hitpoints: 2400,
     speed: 3,
@@ -128,7 +128,7 @@ export const SHIPS = [
   {
     index: 7,
     name: 'spider',
-    price: 1900,
+    price: 2200,
     armor: 4,
     hitpoints: 3400,
     speed: 4,

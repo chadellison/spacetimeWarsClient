@@ -1,16 +1,15 @@
 import faker from 'faker';
-import { handleFireWeapon, updatePlayer, handlePlayerDamage } from '../helpers/gameLogic.js';
-import { applyGameBuff } from '../helpers/effectHelpers.js';
 import { GAME_EFFECTS } from '../constants/effects.js';
-import { playSound, stopSound } from '../helpers/audioHelpers.js';
-import { handleAbility } from '../helpers/abilityHelpers.js';
 import {
-  thruster,
+  GAME_ANIMATIONS,
   shipExplosionSound,
-  GAME_ANIMATIONS
+  thruster
 } from '../constants/settings.js';
 import { WEAPONS } from '../constants/weapons.js';
-import { round } from '../helpers/mathHelpers';
+import { handleAbility } from '../helpers/abilityHelpers.js';
+import { playSound, stopSound } from '../helpers/audioHelpers.js';
+import { applyGameBuff } from '../helpers/effectHelpers.js';
+import { computeBounty, handleFireWeapon, handlePlayerDamage, updatePlayer } from '../helpers/gameLogic.js';
 import { CACHE } from './cacheHelpers.js';
 
 export const handleEventPayload = (gameState, playerData, elapsedTime) => {
@@ -51,7 +50,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
 };
 
 const handleBounty = (attacker, explodedPlayer) => {
-  const bounty = round(explodedPlayer.maxHitpoints * 0.1);
+  const bounty = computeBounty(explodedPlayer.maxHitpoints);
   attacker.kills += 1
   attacker.gold += bounty;
   attacker.score += bounty;

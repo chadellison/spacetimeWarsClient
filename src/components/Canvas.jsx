@@ -113,7 +113,7 @@ const Canvas = ({ userId, currentPlayer, players, aiShips, motherships, animatio
       } else if (!player.explodeAnimation.complete && LOADED_IMAGES['shipExplosion']) {
         renderAnimation(context, images.shipExplosion, player.explodeAnimation, player.location);
       };
-      renderPlayerData(context, player, showShip, currentPlayerIsExploding);
+      renderPlayerData(context, player, showShip, currentPlayerIsExploding, userId);
     });
 
     motherships.filter(ship => LOADED_IMAGES[ship.name]).forEach((ship) => {

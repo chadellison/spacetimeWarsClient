@@ -285,7 +285,7 @@ export const ABILITY_WEAPONS = [
     speed: 7,
     width: 128,
     height: 72,
-    damage: 700,
+    damage: 500,
     range: 700,
     countDown: 2000,
     animationIndex: 8,
@@ -304,7 +304,6 @@ export const ABILITY_WEAPONS = [
       xOffset: 0,
       yOffset: 0,
     }
-    // image: bomb,
   },
   {
     id: 2,

@@ -301,23 +301,27 @@ const handleTrajectory = (player) => {
 
     return (angleInRadians * 180) / Math.PI;
   } else {
-    return player.accelerate ? player.angle : player.trajectory;
+    return player.accelerate || player.effects[4] ? player.angle : player.trajectory;
   }
 }
 
 export const updatePlayer = (player, elapsedTime, clockDifference) => {
-  if (!player.effects[4]) {
+  if (player.effects[4]) {
+    player.accelerate = false;
+  } else {
+    player.accelerate = player.type === 'bomber' || player.accelerate;
     player.angle = handleAngle(player.rotate, player.angle, elapsedTime);
-    const distance = distanceTraveled(player, elapsedTime, clockDifference);
-    const trajectory = handleTrajectory(player);
-    player.location = handleLocation(trajectory, player.location, distance);
-  }
+  };
+  
+  const distance = distanceTraveled(player, elapsedTime, clockDifference);
+  const trajectory = handleTrajectory(player);
+  player.location = handleLocation(trajectory, player.location, distance);
 
   if (player.type === 'human') {
     handleItems(player);
   }
 
-  if (player.thrusterAnimation) {
+  if (player.accelerate && player.thrusterAnimation) {
     updateFrame(player.thrusterAnimation);
   }
   return player
@@ -535,18 +539,14 @@ const updateCollisionData = (player, weapon, attacker) => {
       if (player.hitpoints <= 0) {
         player.killedBy = weapon.playerIndex;
       };
-      if (didLevelUp(attacker.level, attacker.score) && attacker.level < 10) {
+      if (leveledUp(attacker.level, attacker.score) && attacker.level < 10) {
         attacker.levelUp = true;
       }
     }
   }
 };
 
-const didLevelUp = (level, score) => {
-  if (score > 500) {
-    return round(score / 500) > level;
-  }
-};
+const leveledUp = (level, score) => score > round(400 * level * level);
 
 const handleApplyPoison = (player, poison) => {
   if (!getItem(player.items, 13)) {
@@ -678,3 +678,5 @@ export const handleWall = (player) => {
     player.location.y = BOARD_HEIGHT;
   }
 };
+
+export const computeBounty = (maxHitpoints) => round(maxHitpoints * 0.04);
