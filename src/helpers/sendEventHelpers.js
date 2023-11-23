@@ -114,7 +114,7 @@ const queueForPlayerUpdate = (updatedPlayers, updatedPlayer, updateState, handle
 
   const newPlayersState = updatedPlayers.map((player) => {
     if (player.userId === updatedPlayer.userId) {
-      return updatePlayer(updatedPlayer, 0, 0);
+      return updatePlayer(updatedPlayer, 0);
     } else {
       return player
     }

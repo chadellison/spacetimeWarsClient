@@ -19,7 +19,7 @@ import { angleFromCoordinates, round } from '../helpers/mathHelpers.js';
 import { explodePlayer } from '../helpers/receiveEventHelpers.js';
 
 export const updateGameState = (gameState, handleGameEvent, currentPlayer) => {
-  const { clockDifference, gameBuff, userId, aiShips, space, lastFired, motherships, connected } = gameState;
+  const { gameBuff, userId, aiShips, space, lastFired, motherships, connected } = gameState;
   let updatedPlayers = updatePlayers(gameState, handleGameEvent, connected);
 
   let { newLastFired, updatedWeapons } = handleRepeatedFire(currentPlayer, space, lastFired, [...gameState.deployedWeapons], handleGameEvent);
@@ -29,7 +29,7 @@ export const updateGameState = (gameState, handleGameEvent, currentPlayer) => {
     userId,
     players: updatedPlayers,
     weapons: removeOutOfBoundsShots(deployedWeapons),
-    aiShips: updateAiShips(aiShips, userId, handleGameEvent, clockDifference, updatedPlayers, motherships, connected),
+    aiShips: updateAiShips(aiShips, userId, handleGameEvent, updatedPlayers, motherships, connected),
     animations: [...gameState.animations],
     motherships: [...motherships],
   }
@@ -102,7 +102,7 @@ const handleAnimations = (animations) => {
   return updatedAnimations;
 }
 
-const updateAiShips = (aiShips, userId, handleGameEvent, clockDifference, players, motherships, connected) => {
+const updateAiShips = (aiShips, userId, handleGameEvent, players, motherships, connected) => {
   const updatedAiShips = [];
   aiShips.forEach((ship) => {
     if (!ship.explodeAnimation.complete) {
@@ -128,7 +128,7 @@ const updateAiShips = (aiShips, userId, handleGameEvent, clockDifference, player
           ship.shouldFire = false;
         }
       }
-      updatePlayer(ship, ANIMATION_FRAME_RATE, clockDifference);
+      updatePlayer(ship, ANIMATION_FRAME_RATE);
       updatedAiShips.push(ship);
     }
   });
@@ -171,17 +171,17 @@ const handleAiDirection = (location, angle, target) => {
 };
 
 const updatePlayers = (gameState, handleGameEvent, connected) => {
-  const { players, clockDifference, userId } = gameState;
+  const { players, userId } = gameState;
 
   return players.map(player => {
     if (player.active) {
       player = handleHitpoints(player, userId, handleGameEvent, connected);
-      player = updatePlayer(player, ANIMATION_FRAME_RATE, clockDifference);
+      player = updatePlayer(player, ANIMATION_FRAME_RATE);
 
       handleWall(player);
       handleEffects(player);
     } else if (!player.explodeAnimation.complete) {
-      player = updatePlayer(player, ANIMATION_FRAME_RATE, clockDifference);
+      player = updatePlayer(player, ANIMATION_FRAME_RATE);
       player.explodeAnimation = updateAnimation(player.explodeAnimation);
     }
 
@@ -261,35 +261,9 @@ export const canFire = (lastFired, cooldown, player) => {
   }
 }
 
-export const distanceTraveled = (player, elapsedTime, clockDifference) => {
-  let currentVelocity = DRIFT;
-
-  if (player.effects[15]) {
-    currentVelocity += 1;
-  } else {
-    if (player.accelerate) {
-      currentVelocity += player.velocity;
-
-      if (player.effects[9]) {
-        currentVelocity += 4;
-      }
-      if (player.items[11]) {
-        currentVelocity += 3;
-      }
-    } else {
-      const timeSinceLastAcceleration = Date.now() + clockDifference - player.lastAccelerationTime;
-      const momentum = ((player.velocity) * 1000) - timeSinceLastAcceleration;
-      if (momentum > 0) {
-        currentVelocity += (momentum / 1000);
-      }
-    };
-    if (player.effects[2] || player.effects[15]) {
-      currentVelocity /= 2;
-    }
-  }
-
+export const distanceTraveled = (player, elapsedTime) => {
   const gameTime = elapsedTime / ANIMATION_FRAME_RATE;
-  return round(currentVelocity * gameTime);
+  return player.speed * gameTime;
 };
 
 const handleTrajectory = (player) => {
@@ -305,7 +279,21 @@ const handleTrajectory = (player) => {
   }
 }
 
-export const updatePlayer = (player, elapsedTime, clockDifference) => {
+const handleSpeed = (player) => {
+  if (player.accelerate) {
+    let adjustedMaxSpeed = player.maxSpeed
+    adjustedMaxSpeed += (player.effects[9] ? 4 : 0)
+    adjustedMaxSpeed += player.items[11] ? 3 : 0;
+    adjustedMaxSpeed /= (player.effects[2] || player.effects[15]) ? 2 : 1;
+    adjustedMaxSpeed = player.effects[15] ? 3 : adjustedMaxSpeed;
+
+    return player.speed + 0.5 >= adjustedMaxSpeed ? adjustedMaxSpeed : player.speed + 0.5
+  } else {
+    return player.speed - 0.05 <= DRIFT ? DRIFT : player.speed - 0.05
+  }
+}
+
+export const updatePlayer = (player, elapsedTime) => {
   if (player.effects[4]) {
     player.accelerate = false;
   } else {
@@ -313,7 +301,8 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
     player.angle = handleAngle(player.rotate, player.angle, elapsedTime);
   };
   
-  const distance = distanceTraveled(player, elapsedTime, clockDifference);
+  player.speed = handleSpeed(player);
+  const distance = distanceTraveled(player, elapsedTime);
   const trajectory = handleTrajectory(player);
   player.location = handleLocation(trajectory, player.location, distance);
 
@@ -321,10 +310,10 @@ export const updatePlayer = (player, elapsedTime, clockDifference) => {
     handleItems(player);
   }
 
-  if (player.accelerate && player.thrusterAnimation) {
+  if (player.thrusterAnimation) {
     updateFrame(player.thrusterAnimation);
   }
-  return player
+  return player;
 };
 
 const handleAreaOfEffect = (gameData, weapon, attacker) => {
@@ -456,11 +445,12 @@ const weaponFromAi = (gameData, weapon, newWeapons, allShips) => {
 };
 
 const removeOutOfBoundsShots = (weapons) => {
-  return weapons.filter((weapon) => {
+  return weapons.filter(weapon => {
     return weapon.location.x > -50 &&
       weapon.location.x < BOARD_WIDTH + 50 &&
       weapon.location.y > -50 &&
-      weapon.location.y < BOARD_HEIGHT + 50
+      weapon.location.y < BOARD_HEIGHT + 50 &&
+      new Date() - weapon.firedAt < weapon.projectileRange
   });
 };
 
@@ -546,7 +536,7 @@ const updateCollisionData = (player, weapon, attacker) => {
   }
 };
 
-const leveledUp = (level, score) => score > round(400 * level * level);
+const leveledUp = (level, score) => score > round(400 * level ** 2);
 
 const handleApplyPoison = (player, poison) => {
   if (!getItem(player.items, 13)) {
@@ -617,6 +607,7 @@ const mothershipWeapon = (mothership, trajectory, team, weapon) => {
   weapon.team = team;
   weapon.playerIndex = `mothership${team}`;
   weapon.location = mothership.shipCenter;
+  weapon.firedAt = new Date();
   return weapon;
 };
 
@@ -634,6 +625,7 @@ export const handleFireWeapon = (player, weapon, elapsedTime, damage) => {
   weapon.canStun = player.items[6];
   weapon.invisible = weapon.id === 3;
   weapon.from = player.type;
+  weapon.firedAt = new Date();
 
   return weapon;
 };

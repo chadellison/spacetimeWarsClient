@@ -18,7 +18,7 @@ const handleClick = (activePlayer, updateState, players, shipIndex) => {
       armor: SHIPS[shipIndex].armor,
       hitpoints: SHIPS[shipIndex].hitpoints,
       maxHitpoints: SHIPS[shipIndex].hitpoints,
-      velocity: SHIPS[shipIndex].speed,
+      maxSpeed: SHIPS[shipIndex].maxSpeed,
       thrusterAnimation: generateThrusterAnimation(SHIPS[shipIndex].thrusterOffset.x, SHIPS[shipIndex].thrusterOffset.y)
     }
 
@@ -55,7 +55,7 @@ export const Ship = ({ imageSrc, activePlayer, ship, players, updateState, setHo
           {`Armor: ${ship.armor}`}
         </div>
         <div className="selectionData">
-          {`Speed: ${ship.speed}`}
+          {`Speed: ${ship.maxSpeed}`}
         </div>
         <div className="abilityTitle">
           Abilities

@@ -2,18 +2,13 @@ const endX = (animation) => animation.coordinates.x >= animation.width * (animat
 const endY = (animation) => animation.coordinates.y >= animation.height * (animation.columnCount - 1);
 
 export const updateFrame = (animation) => {
-  if (animation.rate === 0) {
-    if (endX(animation) && endY(animation)) {
-      animation.coordinates = {x: 0, y: 0}
-    } else if (endX(animation)) {
-      animation.coordinates.x = 0;
-      animation.coordinates.y += animation.height
-    } else {
-      animation.coordinates.x += animation.width
-    }
-    animation.rate = animation.startRate;
+  if (endX(animation) && endY(animation)) {
+    animation.coordinates = { x: 0, y: 0 }
+  } else if (endX(animation)) {
+    animation.coordinates.x = 0;
+    animation.coordinates.y += animation.height
   } else {
-    animation.rate -= 1;
+    animation.coordinates.x += animation.width
   }
 };
 

@@ -28,8 +28,6 @@ export const GAME_EFFECTS = [
       renderHeight: 225,
       rowCount: 91,
       columnCount: 1,
-      rate: 1,
-      startRate: 1,
       xOffset: 0,
       yOffset: 0,
     }
@@ -48,8 +46,6 @@ export const GAME_EFFECTS = [
       renderHeight: 225,
       rowCount: 91,
       columnCount: 1,
-      rate: 0,
-      startRate: 0,
       xOffset: 0,
       yOffset: 0,
     }
@@ -68,8 +64,6 @@ export const GAME_EFFECTS = [
       renderHeight: 72,
       rowCount: 1,
       columnCount: 64,
-      rate: 0,
-      startRate: 0,
       xOffset: 0,
       yOffset: 0,
     }
@@ -88,8 +82,6 @@ export const GAME_EFFECTS = [
       renderHeight: 225,
       rowCount: 40,
       columnCount: 1,
-      rate: 0,
-      startRate: 1,
       xOffset: 0,
       yOffset: -50,
     }
@@ -114,8 +106,6 @@ export const GAME_EFFECTS = [
       renderHeight: 225,
       rowCount: 1,
       columnCount: 105,
-      rate: 0,
-      startRate: 0,
       xOffset: 0,
       yOffset: 0,
     }
@@ -134,8 +124,6 @@ export const GAME_EFFECTS = [
       renderHeight: 100,
       rowCount: 4,
       columnCount: 6,
-      rate: 1,
-      startRate: 1,
       xOffset: 0,
       yOffset: 0,
     }
@@ -154,8 +142,6 @@ export const GAME_EFFECTS = [
       renderHeight: 225,
       rowCount: 150,
       columnCount: 1,
-      rate: 0,
-      startRate: 0,
       xOffset: 0,
       yOffset: 0,
     }
@@ -174,8 +160,6 @@ export const GAME_EFFECTS = [
       renderHeight: 113,
       rowCount: 24,
       columnCount: 1,
-      rate: 0,
-      startRate: 0,
       xOffset: 24,
       yOffset: 0,
     }
@@ -200,8 +184,6 @@ export const GAME_EFFECTS = [
       renderHeight: 30,
       rowCount: 1,
       columnCount: 1,
-      rate: 1,
-      startRate: 1,
       xOffset: 25,
       yOffset: -25,
     }
@@ -221,8 +203,6 @@ export const GAME_EFFECTS = [
       renderHeight: 256,
       rowCount: 141,
       columnCount: 1,
-      rate: 0,
-      startRate: 0,
       xOffset: 0,
       yOffset: 0
     }
@@ -241,8 +221,6 @@ export const GAME_EFFECTS = [
       renderHeight: 108,
       rowCount: 1,
       columnCount: 88,
-      rate: 0,
-      startRate: 0,
       xOffset: 15,
       yOffset: -40,
     }
@@ -267,8 +245,6 @@ export const GAME_EFFECTS = [
       renderHeight: 72,
       rowCount: 1,
       columnCount: 64,
-      rate: 0,
-      startRate: 0,
       xOffset: 0,
       yOffset: 0,
     }
@@ -287,8 +263,6 @@ export const GAME_EFFECTS = [
       renderHeight: 144,
       rowCount: 1,
       columnCount: 90,
-      rate: 0,
-      startRate: 0,
       xOffset: 0,
       yOffset: 0,
     }

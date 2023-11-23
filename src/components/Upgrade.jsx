@@ -29,7 +29,7 @@ const handleClick = (activePlayer, upgrade, updateState, players, upgrades, expe
         break;
       case 2:
         upgradeSound.play();
-        player.velocity += 1
+        player.maxSpeed += 1
         newState = handleUpdate(players, player);
         newUpgrades[2] += 1;
         newState['upgrades'] = newUpgrades;

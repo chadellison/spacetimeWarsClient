@@ -1,3 +1,4 @@
+import { DRIFT } from '../constants/settings.js';
 import { round } from '../helpers/mathHelpers.js';
 
 export const newPlayer = (userId) => {
@@ -16,6 +17,8 @@ export const newPlayer = (userId) => {
     explodedAt: 0,
     kills: 0,
     rotate: 'none',
+    speed: DRIFT,
+    maxSpeed: DRIFT,
     ability: {},
     location: { x: 0, y: 0 },
     explodeAnimation: { complete: true }

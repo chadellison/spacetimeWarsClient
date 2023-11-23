@@ -51,7 +51,7 @@ const renderArmor = (player) => {
 };
 
 const renderSpeed = (player) => {
-  if (player.velocity) {
+  if (player.maxSpeed) {
     let modifier = 0;
     
     if (player.effects[9]) {
@@ -61,13 +61,13 @@ const renderSpeed = (player) => {
       modifier += 3;
     }
     if (player.effects[2]) {
-      modifier -= ((player.velocity + modifier) / 2);
+      modifier -= ((player.maxSpeed + modifier) / 2);
     }
     return (
       <PlayerStat
         image={UPGRADES[2].image}
         alt={'speedometer'}
-        value={player.velocity}
+        value={player.maxSpeed}
         className="statInfo"
         modifier={modifier}
       />

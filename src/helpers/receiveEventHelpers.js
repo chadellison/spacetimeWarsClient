@@ -22,7 +22,6 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
     animations,
     motherships,
     deployedWeapons,
-    clockDifference,
   } = gameState;
 
   if (['start', 'shop'].includes(playerData.gameEvent)) {
@@ -44,7 +43,7 @@ export const handleEventPayload = (gameState, playerData, elapsedTime) => {
       return handleAbility({ players, deployedWeapons, playerData, elapsedTime, animations, aiShips });
     default:
       if (userId !== playerData.userId) {
-        return handleUpdateEvent({ players, playerData, clockDifference, deployedWeapons, elapsedTime });
+        return handleUpdateEvent({ players, playerData, deployedWeapons, elapsedTime });
       }
   };
 };
@@ -182,7 +181,7 @@ const handleSetupEvent = (players, playerData, started) => {
   }
 }
 
-const handleUpdateEvent = ({ players, playerData, clockDifference, deployedWeapons, elapsedTime }) => {
+const handleUpdateEvent = ({ players, playerData, deployedWeapons, elapsedTime }) => {
   let updatedWeapons = deployedWeapons;
   let updatedPlayer = players.find(player => player.userId === playerData.userId);
   
@@ -198,7 +197,7 @@ const handleUpdateEvent = ({ players, playerData, clockDifference, deployedWeapo
       } else if (playerData.gameEvent === 'upStop') {
         stopSound(thruster);
       }
-      updatedPlayer = updatePlayer(playerData, elapsedTime, clockDifference);
+      updatedPlayer = updatePlayer(playerData, elapsedTime);
       break;
   }
 
