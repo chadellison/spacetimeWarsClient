@@ -605,7 +605,6 @@ const mothershipWeapon = (mothership, trajectory, team, weapon) => {
   weapon.team = team;
   weapon.playerIndex = `mothership${team}`;
   weapon.location = mothership.shipCenter;
-  weapon.firedAt = Date.now();
   return weapon;
 };
 
@@ -623,7 +622,6 @@ export const handleFireWeapon = (player, weapon, elapsedTime, damage) => {
   weapon.canStun = player.items[6];
   weapon.invisible = weapon.id === 3;
   weapon.from = player.type;
-  weapon.firedAt = Date.now();
 
   return weapon;
 };

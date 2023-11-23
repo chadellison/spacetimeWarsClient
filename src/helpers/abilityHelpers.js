@@ -126,7 +126,6 @@ const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime) => {
       team: player.team,
       damage: 200 * player.abilityLevel,
       from: player.type,
-      firedAt: new Date()
     }
   });
 
