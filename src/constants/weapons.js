@@ -73,7 +73,6 @@ export const WEAPONS = [
     ability: 'none',
     sound: AUDIO[0],
     selectionImage: displayFireball,
-    projectileRange: 1300,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: fireballAnimation,
@@ -102,7 +101,6 @@ export const WEAPONS = [
     ability: 'none',
     sound: AUDIO[1],
     image: missile,
-    projectileRange: 1800,
     selectionImage: displayMissile
   },
   {
@@ -120,7 +118,6 @@ export const WEAPONS = [
     ability: 'none',
     sound: AUDIO[2],
     selectionImage: displayBomb,
-    projectileRange: 1600,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: nuclearBlastAnimation,
@@ -149,7 +146,6 @@ export const WEAPONS = [
     ability: 'energy steal: 15% of damage dealt will be added to your hitpoints',
     sound: AUDIO[3],
     selectionImage: displayLaser,
-    projectileRange: 1700,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: laserAnimation,
@@ -176,7 +172,6 @@ export const WEAPONS = [
     height: 32,
     damageRadius: 2,
     ability: 'critical damage: 20% chance to do double damage',
-    projectileRange: 2500,
     image: trifecta,
     sound: AUDIO[4],
     selectionImage: displayTrifecta
@@ -196,7 +191,6 @@ export const WEAPONS = [
     damageRadius: 6,
     ability: 'poison damage: drains 17% of opponent\'s total hitpoints over 3 seconds',
     sound: AUDIO[5],
-    projectileRange: 1900,
     selectionImage: displayPoisonCannon,
     animation: {
       coordinates: { x: 0, y: 0 },
@@ -226,7 +220,6 @@ export const WEAPONS = [
     damageRadius: 5,
     ability: 'cold damage: significanlty slows enemy speed for two seconds',
     sound: AUDIO[6],
-    projectileRange: 1800,
     selectionImage: displayBlueFire,
     animation: {
       coordinates: { x: 0, y: 0 },
@@ -255,7 +248,6 @@ export const WEAPONS = [
     damageRadius: 6,
     ability: 'armor piercing damage: disregards all armor on enemy ship',
     sound: AUDIO[7],
-    projectileRange: 2300,
     selectionImage: displayPlasmaCannon,
     animation: {
       coordinates: { x: 0, y: 0 },
@@ -310,7 +302,6 @@ export const ABILITY_WEAPONS = [
     damage: 230,
     damageRadius: 24,
     effectIndex: 3,
-    projectileRange: Infinity,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: stunGunAnimation,
@@ -335,7 +326,6 @@ export const ABILITY_WEAPONS = [
     damageRadius: 30,
     damage: 800,
     image: spaceMine,
-    projectileRange: Infinity,
   },
   {
     id: 4,
@@ -347,7 +337,6 @@ export const ABILITY_WEAPONS = [
     height: 30,
     damageRadius: 5,
     damage: 200,
-    projectileRange: Infinity,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: meteorShowerAnimation,
@@ -371,7 +360,6 @@ export const ABILITY_WEAPONS = [
     height: 72,
     damage: 130,
     damageRadius: 6,
-    projectileRange: Infinity,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: purpleFireAnimation,
@@ -396,7 +384,6 @@ export const ABILITY_WEAPONS = [
     damageRadius: 200,
     damage: 0,
     effectIndex: 12,
-    projectileRange: Infinity,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: immolation,
@@ -421,7 +408,6 @@ export const ABILITY_WEAPONS = [
     damageRadius: 15,
     damage: 100,
     effectIndex: 12,
-    projectileRange: Infinity,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: meteorAnimation,
@@ -445,7 +431,6 @@ export const ABILITY_WEAPONS = [
     height: 83,
     damageRadius: 15,
     damage: 800,
-    projectileRange: Infinity,
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: poisonDartAnimation,

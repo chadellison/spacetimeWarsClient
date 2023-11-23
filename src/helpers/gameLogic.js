@@ -388,6 +388,7 @@ const weaponFromPlayer = (gameData, weapon, newWeapons, allShips) => {
   }
 
   gameData.weapons = newWeapons;
+  
   return gameData;
 };
 
@@ -424,11 +425,10 @@ const handleAbilityWeapons = (gameData, weapon, attacker) => {
   } else if (weapon.id === 3 && weapon.removed) {
     const mineExplosionAnimation = { ...GAME_ANIMATIONS[9], location: weapon.location, coordinates: { x: 0, y: 0 } }
     gameData.animations.push(mineExplosionAnimation);
-  } else if ([1, 9, 10, 11].includes(weapon.id)) {
-    if (Date.now() - weapon.deployedAt > weapon.projectileRange - 100) {
-      gameData = handleAreaOfEffect(gameData, weapon, attacker);
-      weapon.removed = true
-    }
+  } else if ([1, 9, 10, 11].includes(weapon.id) && Date.now() - weapon.deployedAt > weapon.projectileRange - 100) {
+  
+    gameData = handleAreaOfEffect(gameData, weapon, attacker);
+    weapon.removed = true
   }
 };
 
@@ -448,8 +448,7 @@ const removeOutOfBoundsShots = (weapons) => {
     return weapon.location.x > -50 &&
       weapon.location.x < BOARD_WIDTH + 50 &&
       weapon.location.y > -50 &&
-      weapon.location.y < BOARD_HEIGHT + 50 &&
-      Date.now() - weapon.firedAt < weapon.projectileRange
+      weapon.location.y < BOARD_HEIGHT + 50
   });
 };
 
