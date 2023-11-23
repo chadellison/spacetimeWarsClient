@@ -287,11 +287,12 @@ const handleSpeed = (player) => {
     adjustedMaxSpeed /= (player.effects[2] || player.effects[15]) ? 2 : 1;
     adjustedMaxSpeed = player.effects[15] ? 3 : adjustedMaxSpeed;
 
-    return player.speed + 0.5 >= adjustedMaxSpeed ? adjustedMaxSpeed : player.speed + 0.5
+    const adjustedSpeed = player.speed + 0.5;
+    return adjustedSpeed >= adjustedMaxSpeed ? adjustedMaxSpeed : adjustedSpeed;
   } else {
-    return player.speed - 0.05 <= DRIFT ? DRIFT : player.speed - 0.05
+    return player.speed - 0.05 <= DRIFT ? DRIFT : player.speed - 0.05;
   }
-}
+};
 
 export const updatePlayer = (player, elapsedTime) => {
   if (player.effects[4]) {
@@ -424,13 +425,11 @@ const handleAbilityWeapons = (gameData, weapon, attacker) => {
     const mineExplosionAnimation = { ...GAME_ANIMATIONS[9], location: weapon.location, coordinates: { x: 0, y: 0 } }
     gameData.animations.push(mineExplosionAnimation);
   } else if ([1, 9, 10, 11].includes(weapon.id)) {
-    if (Date.now() - weapon.deployedAt > weapon.countDown) {
+    if (Date.now() - weapon.deployedAt > weapon.projectileRange - 100) {
       gameData = handleAreaOfEffect(gameData, weapon, attacker);
       weapon.removed = true
     }
   }
-
-  return gameData;
 };
 
 const weaponFromAi = (gameData, weapon, newWeapons, allShips) => {
@@ -450,7 +449,7 @@ const removeOutOfBoundsShots = (weapons) => {
       weapon.location.x < BOARD_WIDTH + 50 &&
       weapon.location.y > -50 &&
       weapon.location.y < BOARD_HEIGHT + 50 &&
-      new Date() - weapon.firedAt < weapon.projectileRange
+      Date.now() - weapon.firedAt < weapon.projectileRange
   });
 };
 
@@ -607,7 +606,7 @@ const mothershipWeapon = (mothership, trajectory, team, weapon) => {
   weapon.team = team;
   weapon.playerIndex = `mothership${team}`;
   weapon.location = mothership.shipCenter;
-  weapon.firedAt = new Date();
+  weapon.firedAt = Date.now();
   return weapon;
 };
 
@@ -625,7 +624,7 @@ export const handleFireWeapon = (player, weapon, elapsedTime, damage) => {
   weapon.canStun = player.items[6];
   weapon.invisible = weapon.id === 3;
   weapon.from = player.type;
-  weapon.firedAt = new Date();
+  weapon.firedAt = Date.now();
 
   return weapon;
 };
