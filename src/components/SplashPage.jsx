@@ -6,6 +6,8 @@ const PROMO_LINK = 'https://www.youtube.com/embed/iAvjV5dI0Vo?si=JPTIsxhqxkmUlgW
 const SplashPage = ({ updateState }) => {
   
   useEffect(() => {
+    sessionStorage.setItem('playedPromoVideo', true);
+
     const handleKeyDown = (event) => {
       if (['Space', 'Enter'].includes(event.code)) {
         updateState({ showPromo: false })

@@ -49,7 +49,7 @@ const DEFAULT_STATE = {
   connected: false,
   game: null,
   started: false,
-  showPromo: true
+  showPromo: !sessionStorage.getItem('playedPromoVideo')
 };
 
 const Layout = () => {
@@ -69,7 +69,7 @@ const Layout = () => {
     const interval = setInterval(renderGame, ANIMATION_FRAME_RATE);
     const waveInterval = setInterval(updateWaveData, WAVE_UPDATE_INTERVAL);
 
-    findAvailableGame()
+    findAvailableGame();
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
