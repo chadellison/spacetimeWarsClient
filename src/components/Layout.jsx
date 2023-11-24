@@ -23,7 +23,7 @@ const shouldShowPromo = () => {
   return !sessionStorage.getItem('playedPromoVideo') && !hidePromo;
 }
 
-const DEFAULT_STATE = {
+export const DEFAULT_STATE = {
   userId: Date.now(),
   gameSocket: {},
   players: [],
@@ -40,7 +40,7 @@ const DEFAULT_STATE = {
   upgrades: [0, 0, 0, 0],
   page: 1,
   gameBuff: {},
-  gameOverStats: {},
+  winningTeam: '',
   abilityData: {
     q: { lastUsed: 0, level: 0 },
     w: { lastUsed: 0, level: 0 },
@@ -89,6 +89,8 @@ const Layout = () => {
     const gameId = urlParams.get('game')
 
     if (gameId) {
+      sessionStorage.setItem('playedPromoVideo', true);
+      
       const handleGameResponse = (gameData => {
         if (gameData?.game) {
           handleSocket(gameData?.game)
@@ -148,7 +150,7 @@ const Layout = () => {
 
   const handleLeaderBoard = () => {
     fetchScoreData(scoreData => updateState({ scores: scoreData, modal: 'leaderboard' }))
-  }
+  };
 
   const handleGameEvent = (eventPayload) => {
     stateRef.current.gameSocket.create({
@@ -238,9 +240,10 @@ const Layout = () => {
     showPromo,
     connected,
     animations,
+    gameSocket,
+    winningTeam,
     abilityData,
     motherships,
-    gameOverStats,
     deployedWeapons,
     clockDifference,
     showInstructions
@@ -268,9 +271,10 @@ const Layout = () => {
             upgrades={upgrades}
             connected={connected}
             activeTab={activeTab}
+            gameSocket={gameSocket}
             handleSocket={(gameData) => handleSocket(gameData.game)}
             showInstructions={showInstructions}
-            gameOverStats={gameOverStats}
+            winningTeam={winningTeam}
             updateState={updateState}
             clockDifference={clockDifference}
             handleGameEvent={handleGameEvent}

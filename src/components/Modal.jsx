@@ -17,10 +17,11 @@ export const Modal = ({
   upgrades,
   connected,
   activeTab,
+  gameSocket,
   updateState,
   handleSocket,
   activePlayer,
-  gameOverStats,
+  winningTeam,
   clockDifference,
   handleGameEvent,
   showInstructions,
@@ -65,7 +66,7 @@ export const Modal = ({
         />
       )
     case 'gameOver':
-      return <GameOverModal gameOverStats={gameOverStats} />
+      return <GameOverModal winningTeam={winningTeam} players={players} updateState={updateState} gameSocket={gameSocket} />
     case 'leaderboard':
       return <LeaderboardModal scores={scores} updateState={updateState} />
     case 'deviceChageNotification':

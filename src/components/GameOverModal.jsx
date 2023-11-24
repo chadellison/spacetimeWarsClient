@@ -2,12 +2,18 @@ import React from 'react';
 import '../styles/modal.css';
 import { GameOverStat } from './GameOverStat';
 import { GameButton } from './GameButton';
+import { DEFAULT_STATE } from './Layout';
 
-export const GameOverModal = ({ gameOverStats }) => {
+export const GameOverModal = ({ winningTeam, players, updateState, gameSocket }) => {
+  const handleGameOver = () => {
+    gameSocket.unsubscribe();
+    updateState(DEFAULT_STATE);
+  };
+
   return (
     <div className='modal'>
-      <div className={`gameOverText ${gameOverStats.winningTeam}`}>{`${gameOverStats.winningTeam} Team Wins!`}</div>
-      {gameOverStats.playerStats.sort((playerOne, playerTwo) => {
+      <div className={`gameOverText ${winningTeam}`}>{`${winningTeam} Team Wins!`}</div>
+      {players.sort((playerOne, playerTwo) => {
         if (playerOne.score > playerTwo.score) {
           return -1
         }
@@ -18,7 +24,7 @@ export const GameOverModal = ({ gameOverStats }) => {
       }).map((player, index) => <GameOverStat player={player} key={`gameOver${index}`} index={index} />)}
       <GameButton
         className={'exitButton'}
-        onClick={() => window.location.reload()}
+        onClick={handleGameOver}
         buttonText={'Exit'}
       />
     </div>

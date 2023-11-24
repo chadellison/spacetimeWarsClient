@@ -3,7 +3,9 @@ import { GAME_EFFECTS } from '../constants/effects.js';
 import {
   GAME_ANIMATIONS,
   shipExplosionSound,
-  thruster
+  thruster,
+  WAVE_INTERVAL,
+  DRIFT
 } from '../constants/settings.js';
 import { WEAPONS } from '../constants/weapons.js';
 import { handleAbility } from '../helpers/abilityHelpers.js';
@@ -64,6 +66,7 @@ const handleExplodeEvent = ({ players, aiShips, playerData, elapsedTime, mothers
     return { players: updatedPlayers }
   } else {
     if (['redMothership', 'blueMothership'].includes(playerData.name)) {
+      // sendWating event to update the score...?
       return handleGameOver(players, playerData, motherships);
     } else {
       const updatedAiShips = aiShips.map(ship => playerData.id === ship.id && ship.active ? explodePlayer(ship, playerData) : ship);
@@ -102,6 +105,7 @@ export const explodePlayer = (player, playerData) => {
     accelerate: false,
     angle: 0,
     trajectory: 0,
+    speed: DRIFT,
     rotate: 'none',
     effects: {},
     active: false,
@@ -127,8 +131,8 @@ const handleGameOver = (players, playerData, motherships) => {
     aiShips: players.map(ship => explodePlayer(ship, playerData)),
     motherships: motherships.map(ship => exploadMothership(ship)),
     modal: 'gameOver',
-    gameOverStats: { playerStats: players, winningTeam: playerData.team === 'red' ? 'Blue' : 'Red' },
-    waveData: { wave: 1, count: 5, active: false }
+    winningTeam: playerData.team === 'red' ? 'Blue' : 'Red',
+    waveData: { wave: 1, count: WAVE_INTERVAL, active: false }
   }
 }
 
