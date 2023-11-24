@@ -89,8 +89,6 @@ const Layout = () => {
     const gameId = urlParams.get('game')
 
     if (gameId) {
-      sessionStorage.setItem('playedPromoVideo', true);
-      
       const handleGameResponse = (gameData => {
         if (gameData?.game) {
           handleSocket(gameData?.game)

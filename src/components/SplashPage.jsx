@@ -6,8 +6,6 @@ const PROMO_LINK = 'https://www.youtube.com/embed/iAvjV5dI0Vo?si=JPTIsxhqxkmUlgW
 const SplashPage = ({ updateState }) => {
   
   useEffect(() => {
-    sessionStorage.setItem('playedPromoVideo', true);
-
     const handleKeyDown = (event) => {
       if (['Space', 'Enter'].includes(event.code)) {
         updateState({ showPromo: false })
@@ -21,7 +19,7 @@ const SplashPage = ({ updateState }) => {
   }, [])
 
   return (
-    <div className="splashPageContainer" style={{ width: '100%', height: '100%', zIndex: 1, position: 'absolute' }}>
+    <div className="splashPageContainer" style={{ width: '100%', height: '100%', zIndex: 1, position: 'absolute', background: 'black' }}>
       <iframe
         width="100%"
         height="60%"
