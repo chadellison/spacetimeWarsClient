@@ -1,8 +1,7 @@
 import { GameButton } from './GameButton';
 import { useEffect } from 'react';
-
-const PROMO_LINK = 'https://www.youtube.com/embed/iAvjV5dI0Vo?autoplay=1&autohide=0&controls=0&modestbranding=1&rel=0&showinfo=0&disablekb=1&loop=1';
-
+                   
+const PROMO_LINK = 'https://www.youtube.com/embed/iAvjV5dI0Vo?si=JPTIsxhqxkmUlgWT&amp;controls=0';
 const SplashPage = ({ updateState }) => {
   
   useEffect(() => {
@@ -25,8 +24,8 @@ const SplashPage = ({ updateState }) => {
         height="60%"
         src={PROMO_LINK}
         allowFullScreen
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        title="Embedded youtube"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        title="Space wars"
         style={{border: '0px'}}
       />
       <GameButton
