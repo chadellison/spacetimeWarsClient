@@ -1,7 +1,8 @@
 import { GameButton } from './GameButton';
 import { useEffect } from 'react';
+
+const PROMO_LINK = 'https://www.youtube.com/embed/iAvjV5dI0Vo?si=JPTIsxhqxkmUlgWT&autoplay=1&autohide=0&controls=0&modestbranding=1&rel=0&showinfo=0&disablekb=1&loop=1';
                    
-const PROMO_LINK = 'https://www.youtube.com/embed/iAvjV5dI0Vo?si=JPTIsxhqxkmUlgWT&amp;controls=0';
 const SplashPage = ({ updateState }) => {
   
   useEffect(() => {
