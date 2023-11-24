@@ -37,7 +37,7 @@ import electricFieldProjectileAudio from '../audio/electricFieldProjectileSound.
 import crippleAudio from '../audio/crippleSound.wav';
 
 // images
-import blinkAnimation from '../images/invisibleAnimation.png';
+import invisibleAnimation from '../images/invisibleAnimation2.png';
 import levelUpAnimation from '../images/levelUpAnimation.png';
 import mothershipHitAnimation from '../images/mothershipHitAnimation2.png';
 import teleportAnimation from '../images/teleportAnimation.png';
@@ -118,18 +118,18 @@ export const GAME_ANIMATIONS = [
     renderHeight: 150
   },
   {
-    name: 'blink',
+    name: 'invisible',
     location: { x: 0, y: 0 },
     coordinates: { x: 0, y: 0 },
-    spriteImage: blinkAnimation,
-    width: 115,
-    height: 114,
-    rowCount: 4,
-    columnCount: 5,
+    spriteImage: invisibleAnimation,
+    width: 256,
+    height: 144,
+    rowCount: 1,
+    columnCount: 151,
     xOffset: 0,
     yOffset: 0,
-    renderWidth: 150,
-    renderHeight: 150
+    renderWidth: 256,
+    renderHeight: 144
   },
   {
     name: 'teleport',

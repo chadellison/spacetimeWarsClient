@@ -9,18 +9,21 @@ import { getItem } from './itemHelpers.js';
 import { round } from './mathHelpers.js';
 import { createEffect } from './effectHelpers.js';
 
+const handleAbilityAnimation = (animationIndex, players, playerData, animations) => {
+  if (animationIndex >= 0) {
+    const currentPlayer = players.find(player => player.userId === playerData.userId);
+    const animation = { ...GAME_ANIMATIONS[animationIndex] }
+    const location = { x: currentPlayer.location.x - round(SHIPS[currentPlayer.shipIndex].shipCenter.x), y: currentPlayer.location.y - round(SHIPS[currentPlayer.shipIndex].shipCenter.y) }
+    return [...animations, { ...animation, location }];
+  } else {
+    return animations;
+  }
+}
+
 export const handleAbility = ({ players, deployedWeapons, playerData, elapsedTime, animations, aiShips }) => {
   const ability = ABILITIES[SHIPS[playerData.shipIndex].abilities[playerData.usedAbility]];
 
-  let newAnimmations = animations;
-
-  if (ability.animationIndex >= 0) {
-    const currentPlayer = players.find(player => player.userId === playerData.userId);
-    if (currentPlayer) {
-      const location = currentPlayer.location;
-      newAnimmations = [...animations, { ...GAME_ANIMATIONS[ability.animationIndex], location, coordinates: { x: 0, y: 0 } }];
-    }
-  };
+  const newAnimmations = handleAbilityAnimation(ability.animationIndex, players, playerData, animations);
   ability.sound && playSound(ability.sound);
   if (ability.type === 'weapon') {
     return addAbilityWeapon(ability.weaponIndex, deployedWeapons, playerData, elapsedTime);

@@ -17,6 +17,12 @@ import SplashPage from './SplashPage.jsx';
 
 const INITIAL_MODAL = window.innerWidth < WINDOW_WIDTH_THRESHOLD ? 'deviceChageNotification' : 'instructions';
 
+const shouldShowPromo = () => {
+  const urlParams = new URLSearchParams(window.location.search)
+  const hidePromo = urlParams.get('hidePromo')
+  return !sessionStorage.getItem('playedPromoVideo') && !hidePromo;
+}
+
 const DEFAULT_STATE = {
   userId: Date.now(),
   gameSocket: {},
@@ -49,7 +55,7 @@ const DEFAULT_STATE = {
   connected: false,
   game: null,
   started: false,
-  showPromo: !sessionStorage.getItem('playedPromoVideo')
+  showPromo: shouldShowPromo()
 };
 
 const Layout = () => {
