@@ -13,6 +13,7 @@ import Canvas from './Canvas';
 import Header from './Header';
 import { Modal } from './Modal';
 import PlayerData from './PlayerData';
+import SplashPage from './SplashPage.jsx';
 
 const INITIAL_MODAL = window.innerWidth < WINDOW_WIDTH_THRESHOLD ? 'deviceChageNotification' : 'instructions';
 
@@ -48,6 +49,7 @@ const DEFAULT_STATE = {
   connected: false,
   game: null,
   started: false,
+  showPromo: true
 };
 
 const Layout = () => {
@@ -79,17 +81,17 @@ const Layout = () => {
   const findAvailableGame = () => {
     const urlParams = new URLSearchParams(window.location.search)
     const gameId = urlParams.get('game')
-    
+
     if (gameId) {
       const handleGameResponse = (gameData => {
         if (gameData?.game) {
           handleSocket(gameData?.game)
-          updateState({ modal: 'nameForm' });
+          updateState({ modal: 'nameForm', showPromo: false });
         } else {
           alert('the game your are looking for is no longer available!')
         }
       });
-  
+
       fetchGame(gameId, handleGameResponse);
     }
   };
@@ -227,6 +229,7 @@ const Layout = () => {
     players,
     upgrades,
     activeTab,
+    showPromo,
     connected,
     animations,
     abilityData,
@@ -292,6 +295,7 @@ const Layout = () => {
             updateState={updateState}
           />
         }
+        {showPromo && <SplashPage updateState={updateState} />}
         <Canvas
           userId={userId}
           players={players}

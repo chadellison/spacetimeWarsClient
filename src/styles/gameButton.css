@@ -11,7 +11,7 @@
   position: fixed;
 }
 
-.gameButton:hover {
+.gameButton:hover, .skipPromo:hover {
   cursor: pointer;
   opacity: 0.8;
   transition: ease-in .3s;
@@ -32,4 +32,19 @@
 
 .reEnterButton:hover {
   cursor: pointer;
+}
+
+.skipPromo {
+  position: absolute;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  font-size: 20px;
+  color: #2c66b2;
+  border: 1px solid #2c66b2;
+  border-radius: 5px;
+  transition: ease-out .3s;
+  width: 4em;
+  margin-top: 20px;
+  margin-left: 2em;
 }
