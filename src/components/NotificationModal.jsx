@@ -4,7 +4,7 @@ export const NotificationModal = ({ title, content }) => {
   return (
     <div className="modal">
       <h2 className="informationTitle">{title}</h2>
-      <p className="informationText">{content}</p>
+      <p className="notificationText">{content}</p>
     </div>
   );
 }

@@ -57,6 +57,16 @@
   color: #2c66b2;
 }
 
+.notificationText {
+  line-height: 25px;
+  word-wrap: break-word;
+  font-size: 17px;
+  color: #2c66b2;
+  margin-top: 60px;
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
 .noteText {
   height: 1.25em;
   font-size: 14px;
