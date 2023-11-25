@@ -66,7 +66,6 @@ const handleExplodeEvent = ({ players, aiShips, playerData, elapsedTime, mothers
     return { players: updatedPlayers }
   } else {
     if (['redMothership', 'blueMothership'].includes(playerData.name)) {
-      // sendWating event to update the score...?
       return handleGameOver(players, playerData, motherships);
     } else {
       const updatedAiShips = aiShips.map(ship => playerData.id === ship.id && ship.active ? explodePlayer(ship, playerData) : ship);

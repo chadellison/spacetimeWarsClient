@@ -5,6 +5,7 @@ import { SHIPS, generateThrusterAnimation } from '../constants/ships.js';
 import { ABILITIES } from '../constants/abilities.js';
 import { AbilityDisplay } from './AbilityDisplay';
 import { handleHover } from '../helpers/selectionModalHelpers';
+import lockIcon from '../images/lockedIcon.png';
 
 const handleClick = (activePlayer, updateState, players, shipIndex) => {
   const gold = activePlayer.gold - SHIPS[shipIndex].price;
@@ -13,8 +14,8 @@ const handleClick = (activePlayer, updateState, players, shipIndex) => {
     gong.play();
     const player = {
       ...activePlayer,
-      shipIndex: shipIndex,
-      gold: gold,
+      shipIndex,
+      gold,
       armor: SHIPS[shipIndex].armor,
       hitpoints: SHIPS[shipIndex].hitpoints,
       maxHitpoints: SHIPS[shipIndex].hitpoints,
@@ -31,6 +32,7 @@ const handleClick = (activePlayer, updateState, players, shipIndex) => {
 };
 
 export const Ship = ({ imageSrc, activePlayer, ship, players, updateState, setHover, hover }) => {
+  const canAffordShip = activePlayer.gold >= SHIPS[ship.index].price
 
   return (
     <div className={`selection ${activePlayer.shipIndex === ship.index ? 'selected' : ''} ${handleHover(hover, ship.index)}`}
@@ -39,7 +41,7 @@ export const Ship = ({ imageSrc, activePlayer, ship, players, updateState, setHo
       onMouseLeave={() => setHover(null)}>
 
       <div className="imageWrapper">
-        <img id={ship.index} src={imageSrc} alt="ship" className="selectionImage" />
+        <img id={ship.index} src={canAffordShip ? imageSrc : lockIcon} alt="ship" className="selectionImage" />
       </div>
       <span className="itemInfo">
         <div className="selectionTitle">

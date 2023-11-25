@@ -14,11 +14,11 @@ const handleAbilityAnimation = (animationIndex, players, playerData, animations)
     const currentPlayer = players.find(player => player.userId === playerData.userId);
     const animation = { ...GAME_ANIMATIONS[animationIndex] }
     const location = { x: currentPlayer.location.x - round(SHIPS[currentPlayer.shipIndex].shipCenter.x), y: currentPlayer.location.y - round(SHIPS[currentPlayer.shipIndex].shipCenter.y) }
-    return [...animations, { ...animation, location }];
+    return [...animations, { ...animation, location, coordinates: { x: 0, y: 0 } }];
   } else {
     return animations;
   }
-}
+};
 
 export const handleAbility = ({ players, deployedWeapons, playerData, elapsedTime, animations, aiShips }) => {
   const ability = ABILITIES[SHIPS[playerData.shipIndex].abilities[playerData.usedAbility]];
