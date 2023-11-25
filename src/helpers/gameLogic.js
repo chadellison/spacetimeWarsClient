@@ -283,7 +283,7 @@ const handleSpeed = (player) => {
   if (player.accelerate) {
     let adjustedMaxSpeed = player.maxSpeed
     adjustedMaxSpeed += (player.effects[9] ? 4 : 0)
-    adjustedMaxSpeed += player.items[11] ? 3 : 0;
+    adjustedMaxSpeed += player.items[11] ? 2 : 0;
     adjustedMaxSpeed /= (player.effects[2] || player.effects[15]) ? 2 : 1;
     adjustedMaxSpeed = player.effects[15] ? 3 : adjustedMaxSpeed;
 
@@ -576,7 +576,7 @@ const handlePositiveBuff = (player, weapon) => {
 }
 
 const calculateDamage = (weapon, player) => {
-  let armor = player.armor;
+  let armor = getItem(player.items, 15) ? player.armor + 2 : player.armor;
 
   if (player.effects[8]) {
     armor += 4;
@@ -595,8 +595,8 @@ const calculateDamage = (weapon, player) => {
     // play miss sound
     damage = 0;
   }
-  
-  return round(damage * (10 - armor) / 10);
+  const armorMultiplyer = 10 - armor > 0 ? 10 - armor : 1; 
+  return round(damage * armorMultiplyer / 10);
 }
 
 const mothershipWeapon = (mothership, trajectory, team, weapon) => {

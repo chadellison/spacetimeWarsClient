@@ -13,6 +13,7 @@ import damageIncrease from '../images/damageIncrease.png';
 import healthIncrease from '../images/healthIncrease.png';
 import evasion from '../images/evasion.png';
 import returnDamage from '../images/returnDamage.png';
+import reinforcedArmor from '../images/reinforcedArmor2.png';
 
 export const ITEMS = [
   {
@@ -124,12 +125,12 @@ export const ITEMS = [
   {
     id: 11,
     index: 10,
-    price: 800,
+    price: 600,
     name: 'Improved Thrusters',
     image: improvedThrusters,
     cooldown: 0,
     durationCount: 0,
-    description: 'Increases ship\'s speed by 3',
+    description: 'Increases ship\'s speed by 2',
   },
   {
     id: 12,
@@ -160,5 +161,15 @@ export const ITEMS = [
     cooldown: 0,
     durationCount: 0,
     description: 'Increases your ship\'s attack speed by %20',
+  },
+  {
+    id: 15,
+    index: 14,
+    price: 625,
+    name: 'Reinforced armor',
+    image: reinforcedArmor,
+    cooldown: 0,
+    durationCount: 0,
+    description: 'Increases your ship\'s armor by 2',
   }
 ];

@@ -38,6 +38,10 @@ const renderArmor = (player) => {
       modifier -= 3;
     }
 
+    if (player.items[15]) {
+      modifier += 2;
+    }
+
     return (
       <PlayerStat
         image={UPGRADES[0].image}
@@ -53,12 +57,12 @@ const renderArmor = (player) => {
 const renderSpeed = (player) => {
   if (player.maxSpeed) {
     let modifier = 0;
-    
+
     if (player.effects[9]) {
       modifier += 4;
     }
     if (player.items[11]) {
-      modifier += 3;
+      modifier += 2;
     }
     if (player.effects[2]) {
       modifier -= ((player.maxSpeed + modifier) / 2);
@@ -99,7 +103,8 @@ const renderDamage = (player) => {
 };
 
 const handlePlayerIcon = (activePlayer, countDown) => {
-    return (
+  return activePlayer.shipIndex >= 0 &&
+    (
       <>
         <img
           className={activePlayer.active ? 'playerImage' : 'playerImage inactive'}
@@ -109,7 +114,7 @@ const handlePlayerIcon = (activePlayer, countDown) => {
         {countDown > 0 && <span className="waitCountDown">{countDown}</span>}
       </>
     );
-}
+};
 
 const renderHitPoints = (activePlayer) => {
   if (activePlayer.hitpoints > 0) {
