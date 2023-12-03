@@ -10,7 +10,7 @@ import lockIcon from '../images/lockedIcon.png';
 const handleClick = (activePlayer, updateState, players, shipIndex) => {
   const gold = activePlayer.gold - SHIPS[shipIndex].price;
 
-  if (gold >= 0) {
+  if (gold >= 0 && activePlayer.shipIndex !== shipIndex) {
     gong.play();
     const player = {
       ...activePlayer,
@@ -32,16 +32,17 @@ const handleClick = (activePlayer, updateState, players, shipIndex) => {
 };
 
 export const Ship = ({ imageSrc, activePlayer, ship, players, updateState, setHover, hover }) => {
-  const canAffordShip = activePlayer.gold >= SHIPS[ship.index].price
+  const canAffordShip = activePlayer.gold >= SHIPS[ship.index].price;
+  const ownsShip = activePlayer.shipIndex === ship.index;
 
   return (
-    <div className={`selection ${activePlayer.shipIndex === ship.index ? 'selected' : ''} ${handleHover(hover, ship.index)}`}
-      onClick={() => handleClick(activePlayer, updateState, players, ship.index)} 
-      onMouseEnter={() => setHover(ship.index)} 
+    <div className={`selection ${ownsShip ? 'selected' : ''} ${handleHover(hover, ship.index)}`}
+      onClick={() => handleClick(activePlayer, updateState, players, ship.index)}
+      onMouseEnter={() => setHover(ship.index)}
       onMouseLeave={() => setHover(null)}>
 
       <div className="imageWrapper">
-        <img id={ship.index} src={canAffordShip ? imageSrc : lockIcon} alt="ship" className="selectionImage" />
+        <img id={ship.index} src={canAffordShip || ownsShip ? imageSrc : lockIcon} alt="ship" className={`selectionImage ${ownsShip && 'owned'}`} />
       </div>
       <span className="itemInfo">
         <div className="selectionTitle">

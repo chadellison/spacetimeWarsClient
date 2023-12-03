@@ -34,8 +34,8 @@ const handleClick = (activePlayer, item, updateState, players) => {
 
 export const Item = ({ imageSrc, activePlayer, item, updateState, players, hover }) => {
   const [hovered, setHovered] = useState(false);
-
   const canAffordItem = activePlayer.gold >= ITEMS[item.index].price;
+  const ownsItem = getItem(activePlayer.items, item.id);
 
   return (
     <div className={`itemSelection ${handleHover(hover, item.index)}`}
@@ -43,7 +43,7 @@ export const Item = ({ imageSrc, activePlayer, item, updateState, players, hover
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}>
       <div className="itemImageWrapper">
-        <img id={item.index} src={canAffordItem ? imageSrc : lockIcon} alt="item" className="itemSelectionImage" />
+        <img id={item.index} src={canAffordItem ? imageSrc : lockIcon} alt="item" className={`itemSelectionImage ${ownsItem && 'owned'}`} />
       </div>
         {hovered && <Tooltip marginLeft="-150" marginTop="10" title={item.name} price={item.price} imageSrc={imageSrc} description={item.description}/>}
     </div>

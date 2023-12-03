@@ -8,7 +8,7 @@ import lockIcon from '../images/lockedIcon.png';
 
 const handleClick = (weaponIndex, activePlayer, updateState, players) => {
   const gold = activePlayer.gold - WEAPONS[weaponIndex].price;
-  if (gold >= 0) {
+  if (gold >= 0 && activePlayer.weaponIndex !== weaponIndex) {
     loadWeapon.play();
     const player = {
       ...activePlayer,
@@ -26,12 +26,13 @@ const handleClick = (weaponIndex, activePlayer, updateState, players) => {
 
 export const Weapon = ({ imageSrc, weapon, activePlayer, updateState, players, hover, setHover }) => {
   const canAffordWeapon = activePlayer.gold >= WEAPONS[weapon.index].price;
+  const ownsWeapon = activePlayer.weaponIndex === weapon.index;
 
   return (
-    <div className={`selection ${activePlayer.weaponIndex === weapon.index ? 'selected' : ''} ${handleHover(hover, weapon.index)}`}
+    <div className={`selection ${ownsWeapon ? 'selected' : ''} ${handleHover(hover, weapon.index)}`}
       onClick={() => handleClick(weapon.index, activePlayer, updateState, players)} onMouseEnter={() => setHover(weapon.index)} onMouseLeave={() => setHover(null)}>
       <div className="imageWrapper">
-        <img id={weapon.index} src={canAffordWeapon ? imageSrc : lockIcon} alt="weapon" className="selectionImage" />
+        <img id={weapon.index} src={canAffordWeapon || ownsWeapon ? imageSrc : lockIcon} alt="weapon" className={`selectionImage ${ownsWeapon && 'owned'}`} />
       </div>
       <span className="itemInfo">
         <div className="selectionTitle">

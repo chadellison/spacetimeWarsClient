@@ -24,6 +24,10 @@
   margin: 15px;
 }
 
+.owned {
+  filter: grayscale(100%)
+}
+
 .selectionImage {
   max-width: 100%;
   max-height: 100%;
