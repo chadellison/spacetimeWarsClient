@@ -1,11 +1,10 @@
 import React from 'react';
-import '../styles/ship.css';
-import { gong, notEnoughResources } from '../constants/settings.js';
-import { SHIPS, generateThrusterAnimation } from '../constants/ships.js';
 import { ABILITIES } from '../constants/abilities.js';
-import { AbilityDisplay } from './AbilityDisplay';
+import { gong, notEnoughResources, DEFAULT_ABILITY_DATA } from '../constants/settings.js';
+import { SHIPS, generateThrusterAnimation } from '../constants/ships.js';
 import { handleHover } from '../helpers/selectionModalHelpers';
-import lockIcon from '../images/lockedIcon.png';
+import '../styles/ship.css';
+import { AbilityDisplay } from './AbilityDisplay';
 
 const handleClick = (activePlayer, updateState, players, shipIndex) => {
   const gold = activePlayer.gold - SHIPS[shipIndex].price;
@@ -24,7 +23,7 @@ const handleClick = (activePlayer, updateState, players, shipIndex) => {
     }
 
     const updatedPlayers = players.map(p => p.userId === activePlayer.userId ? player : p);
-    updateState({ players: updatedPlayers, activeTab: 'Weapons', page: 1 });
+    updateState({ players: updatedPlayers, activeTab: 'Weapons', page: 1, abilityData: DEFAULT_ABILITY_DATA, upgrades: [0, 0, 0, 0] });
   } else {
     notEnoughResources.play();
     console.log('Not enough gold');
@@ -32,7 +31,6 @@ const handleClick = (activePlayer, updateState, players, shipIndex) => {
 };
 
 export const Ship = ({ imageSrc, activePlayer, ship, players, updateState, setHover, hover }) => {
-  const canAffordShip = activePlayer.gold >= SHIPS[ship.index].price;
   const ownsShip = activePlayer.shipIndex === ship.index;
 
   return (
@@ -42,7 +40,7 @@ export const Ship = ({ imageSrc, activePlayer, ship, players, updateState, setHo
       onMouseLeave={() => setHover(null)}>
 
       <div className="imageWrapper">
-        <img id={ship.index} src={canAffordShip || ownsShip ? imageSrc : lockIcon} alt="ship" className={`selectionImage ${ownsShip && 'owned'}`} />
+        <img id={ship.index} src={imageSrc} alt="ship" className={`selectionImage ${ownsShip && 'owned'}`} />
       </div>
       <span className="itemInfo">
         <div className="selectionTitle">

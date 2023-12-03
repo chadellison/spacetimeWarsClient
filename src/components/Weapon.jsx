@@ -1,10 +1,8 @@
 import React from 'react';
-import '../styles/ship.css';
 import { loadWeapon, notEnoughResources } from '../constants/settings.js';
 import { WEAPONS } from '../constants/weapons.js';
-import { handleUpdate } from '../helpers/selectionModalHelpers.js';
-import { handleHover } from '../helpers/selectionModalHelpers.js';
-import lockIcon from '../images/lockedIcon.png';
+import { handleHover, handleUpdate } from '../helpers/selectionModalHelpers.js';
+import '../styles/ship.css';
 
 const handleClick = (weaponIndex, activePlayer, updateState, players) => {
   const gold = activePlayer.gold - WEAPONS[weaponIndex].price;
@@ -25,14 +23,13 @@ const handleClick = (weaponIndex, activePlayer, updateState, players) => {
 };
 
 export const Weapon = ({ imageSrc, weapon, activePlayer, updateState, players, hover, setHover }) => {
-  const canAffordWeapon = activePlayer.gold >= WEAPONS[weapon.index].price;
   const ownsWeapon = activePlayer.weaponIndex === weapon.index;
 
   return (
     <div className={`selection ${ownsWeapon ? 'selected' : ''} ${handleHover(hover, weapon.index)}`}
       onClick={() => handleClick(weapon.index, activePlayer, updateState, players)} onMouseEnter={() => setHover(weapon.index)} onMouseLeave={() => setHover(null)}>
       <div className="imageWrapper">
-        <img id={weapon.index} src={canAffordWeapon || ownsWeapon ? imageSrc : lockIcon} alt="weapon" className={`selectionImage ${ownsWeapon && 'owned'}`} />
+        <img id={weapon.index} src={imageSrc} alt="weapon" className={`selectionImage ${ownsWeapon && 'owned'}`} />
       </div>
       <span className="itemInfo">
         <div className="selectionTitle">

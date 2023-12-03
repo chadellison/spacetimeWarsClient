@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createGameSocket, fetchScoreData, getClockData, fetchGame } from '../api/gameData';
 import introMusic from '../audio/introJingle.wav';
 import { KEY_MAP } from '../constants/keyMap.js';
-import { ANIMATION_FRAME_RATE, LATENCY_THRESHOLD, REQUEST_COUNT, WAVE_UPDATE_INTERVAL, WINDOW_WIDTH_THRESHOLD, WAVE_INTERVAL } from '../constants/settings.js';
+import { ANIMATION_FRAME_RATE, LATENCY_THRESHOLD, REQUEST_COUNT, WAVE_UPDATE_INTERVAL, WINDOW_WIDTH_THRESHOLD, WAVE_INTERVAL, DEFAULT_ABILITY_DATA } from '../constants/settings.js';
 import { MOTHER_SHIPS } from '../constants/ships.js';
 import { updateGameState } from '../helpers/gameLogic.js';
 import { findCurrentPlayer } from '../helpers/playerHelpers';
@@ -41,11 +41,7 @@ export const DEFAULT_STATE = {
   page: 1,
   gameBuff: {},
   winningTeam: '',
-  abilityData: {
-    q: { lastUsed: 0, level: 0 },
-    w: { lastUsed: 0, level: 0 },
-    e: { lastUsed: 0, level: 0 },
-  },
+  abilityData: DEFAULT_ABILITY_DATA,
   aiShips: [],
   animations: [],
   showInstructions: false,
