@@ -275,7 +275,7 @@ const handleTrajectory = (player) => {
 
     return (angleInRadians * 180) / Math.PI;
   } else {
-    return player.accelerate || player.effects[4] ? player.angle : player.trajectory;
+    return player.accelerate && !player.effects[4] ? player.angle : player.trajectory;
   }
 }
 
@@ -288,9 +288,9 @@ const handleSpeed = (player) => {
     adjustedMaxSpeed = player.effects[15] ? 3 : adjustedMaxSpeed;
 
     const adjustedSpeed = player.speed + 0.5;
-    return adjustedSpeed >= adjustedMaxSpeed ? adjustedMaxSpeed : adjustedSpeed;
+    return Math.min(adjustedSpeed, adjustedMaxSpeed);
   } else {
-    return player.speed - 0.05 <= DRIFT ? DRIFT : player.speed - 0.05;
+    return Math.max(player.speed - 0.05, DRIFT);
   }
 };
 
