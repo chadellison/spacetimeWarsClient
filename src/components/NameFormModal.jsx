@@ -95,7 +95,7 @@ const renderTeamButton = (players, team, activePlayer, onChange) => {
   )
 }
 
-export const NameFormModal = ({ updateState, activePlayer, players, game, connected, userId, handleGameEvent }) => {
+export const NameFormModal = ({ updateState, activePlayer, players, game, connected, userId, handleGameEvent, gameMode }) => {
   useEffect(() => {
     if (game && connected) {
       const handlePlayerDataResponse = (playerData) => {
@@ -109,6 +109,19 @@ export const NameFormModal = ({ updateState, activePlayer, players, game, connec
 
   const redPlayers = players.filter(player => player.team === 'red');
   const bluePlayers = players.filter(player => player.team === 'blue');
+
+  const renderPlayerList = () => {
+    return (
+      <div className="playerList">
+        <div className="redPlayersList">
+          {ROWS.map(i => renderPlayerRow(redPlayers, 'red', i))}
+        </div>
+        <div className="bluePlayersList">
+          {ROWS.map(i => renderPlayerRow(bluePlayers, 'blue', i))}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className='modal'>
@@ -125,16 +138,9 @@ export const NameFormModal = ({ updateState, activePlayer, players, game, connec
       </label>
       {renderTeamButton(redPlayers, 'red', activePlayer, () => updateTeam(updateState, players, 'red', userId, handleGameEvent))}
       {renderTeamButton(bluePlayers, 'blue', activePlayer, () => updateTeam(updateState, players, 'blue', userId, handleGameEvent))}
-      <div className="playerList">
-        <div className="redPlayersList">
-          {ROWS.map(i => renderPlayerRow(redPlayers, 'red', i))}
-        </div>
-        <div className="bluePlayersList">
-          {ROWS.map(i => renderPlayerRow(bluePlayers, 'blue', i))}
-        </div>
-      </div>
+      {gameMode === 'multiplayer' && renderPlayerList()}
       <div className="waitingTextWrapper">
-        <div className="inviteLink" onClick={() => copyLinkToClipBoard(game.id)}>Invite link</div>
+        <div className="inviteLink" onClick={() => copyLinkToClipBoard(game.id)}>Invite others to play</div>
       </div>
       {connected && handleStartGame({ hostId: game?.hostId, userId, onClick: () => submitForm(players, updateState, handleGameEvent, userId) })}
     </div>

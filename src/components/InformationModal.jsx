@@ -88,13 +88,18 @@ export const InformationModal = ({ updateState, showInstructions, userId, handle
     })
   }, [])
 
-  const handleClick = (gameId) => {
-    if (gameId) {
-      fetchGame(gameId, handleSocket);
+  const handleClick = (gameId, gameMode) => {
+    if (gameMode === 'multiplayer') {
+      if (gameId) {
+        fetchGame(gameId, handleSocket);
+      } else {
+        createGame(userId, handleSocket);
+      }
     } else {
       createGame(userId, handleSocket);
     }
-    updateState({ modal: 'nameForm' });
+    
+    updateState({ modal: 'nameForm', gameMode });
   };
 
   return (
@@ -102,25 +107,21 @@ export const InformationModal = ({ updateState, showInstructions, userId, handle
       <h2 className="informationTitle">Space Wars</h2>
       <div className="introduction">
         Destroy your opponent's mothership while protecting your own.
+      </div>    
+      <div>
+        <GameButton
+          className="modeGameButton"
+          onClick={() => handleClick(null, 'single player')}
+          buttonText="Single Player"
+        />
       </div>
-      {
-        games.length > 0 && <div>
-          <GameButton
-            className="modeGameButton"
-            onClick={() => handleClick(games[0].id)}
-            buttonText={'Join Game'}
-          />
-        </div>
-      }
-      {
-        <div>
-          <GameButton
-            className="modeGameButton"
-            onClick={() => handleClick()}
-            buttonText={games.length > 0 ? 'Create Game' : 'Play'}
-          />
-        </div>
-      }
+      <div>
+        <GameButton
+          className="modeGameButton"
+          onClick={() => handleClick(games[0]?.id, 'multiplayer')}
+          buttonText="Multiplayer"
+        />
+      </div>
       <div>
         <GameButton
           onClick={() => updateState({ showInstructions: !showInstructions })}

@@ -14,6 +14,7 @@ export const Modal = ({
   scores,
   userId,
   players,
+  gameMode,
   upgrades,
   connected,
   activeTab,
@@ -59,6 +60,7 @@ export const Modal = ({
           updateState={updateState} 
           activePlayer={activePlayer}
           players={players}
+          gameMode={gameMode}
           game={game}
           userId={userId}
           connected={connected}
