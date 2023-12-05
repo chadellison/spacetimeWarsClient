@@ -128,6 +128,13 @@ export const InformationModal = ({ updateState, showInstructions, userId, handle
           className={'howToPlayButton'}
         />
       </div>
+      <div>
+        <GameButton
+          onClick={() => updateState({ showPromo: true })}
+          buttonText="Watch Trailer"
+          className={'cinematicButton'}
+        />
+      </div>
       {renderText(showInstructions)}
     </div>
   )

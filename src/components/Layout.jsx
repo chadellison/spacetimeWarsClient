@@ -13,14 +13,14 @@ import Canvas from './Canvas';
 import Header from './Header';
 import { Modal } from './Modal';
 import PlayerData from './PlayerData';
-import SplashPage from './SplashPage.jsx';
+import Trailer from './Trailer';
 
 const INITIAL_MODAL = window.innerWidth < WINDOW_WIDTH_THRESHOLD ? 'deviceChageNotification' : 'instructions';
 
 const shouldShowPromo = () => {
   const urlParams = new URLSearchParams(window.location.search)
   const hidePromo = urlParams.get('hidePromo')
-  return !sessionStorage.getItem('playedPromoVideo') && !hidePromo;
+  return !localStorage.getItem('playedPromoVideo') && !hidePromo;
 }
 
 export const DEFAULT_STATE = {
@@ -70,6 +70,7 @@ const Layout = () => {
     window.addEventListener('keyup', handleKeyUp);
     const interval = setInterval(renderGame, ANIMATION_FRAME_RATE);
     const waveInterval = setInterval(updateWaveData, WAVE_UPDATE_INTERVAL);
+    localStorage.setItem('playedPromoVideo', true);
 
     findAvailableGame();
     return () => {
@@ -299,7 +300,7 @@ const Layout = () => {
             updateState={updateState}
           />
         }
-        {showPromo && <SplashPage updateState={updateState} />}
+        {showPromo && <Trailer updateState={updateState} />}
         <Canvas
           userId={userId}
           players={players}

@@ -1,9 +1,10 @@
 import { GameButton } from './GameButton';
 import { useEffect } from 'react';
+import '../styles/trailer.css';
 
 const PROMO_LINK = 'https://www.youtube.com/embed/iAvjV5dI0Vo?si=JPTIsxhqxkmUlgWT&autoplay=1&autohide=0&controls=0&modestbranding=1&rel=0&showinfo=0&disablekb=1&loop=1';
                    
-const SplashPage = ({ updateState }) => {
+const Trailer = ({ updateState }) => {
   
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -19,7 +20,7 @@ const SplashPage = ({ updateState }) => {
   }, [])
 
   return (
-    <div className="splashPageContainer" style={{ width: '100%', height: '100%', zIndex: 1, position: 'absolute', background: 'black' }}>
+    <div className="trailerContainer" style={{ width: '100%', height: '100%', zIndex: 1, position: 'absolute', background: 'black' }}>
       <iframe
         width="100%"
         height="60%"
@@ -37,4 +38,4 @@ const SplashPage = ({ updateState }) => {
     </div>
   )
 };
-export default SplashPage;
+export default Trailer;

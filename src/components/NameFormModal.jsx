@@ -98,7 +98,6 @@ const renderTeamButton = (players, team, activePlayer, onChange) => {
 export const NameFormModal = ({ updateState, activePlayer, players, game, connected, userId, handleGameEvent }) => {
   useEffect(() => {
     if (game && connected) {
-      sessionStorage.setItem('playedPromoVideo', true);
       const handlePlayerDataResponse = (playerData) => {
         updateState({ players: playerData.players });
       }

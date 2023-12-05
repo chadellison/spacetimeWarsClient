@@ -104,7 +104,7 @@ const handleAnimations = (animations) => {
 
 const updateAiShips = (aiShips, userId, handleGameEvent, players, motherships, connected) => {
   const updatedAiShips = [];
-  aiShips.forEach((ship) => {
+  aiShips.forEach(ship => {
     if (!ship.explodeAnimation.complete) {
       if (ship.active) {
         ship = handleHitpoints(ship, userId, handleGameEvent, connected)

@@ -258,7 +258,7 @@
   margin-right: 1em;
 }
 
-.howToPlayButton {
+.howToPlayButton, .cinematicButton {
   padding: 6px 8px 6px 8px;
   font-size: 20px;
   color: white;
@@ -300,7 +300,7 @@
   margin-right: 1em;
 }
 
-.howToPlayButton:hover {
+.howToPlayButton:hover, .cinematicButton:hover {
   background: #2c66b2;
   color: white;
   cursor: pointer;
