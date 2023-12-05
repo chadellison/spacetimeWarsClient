@@ -7,6 +7,7 @@ import {
   mineTriggerSound,
   upgradeSound,
   zapSound,
+  ROTATIONAL_UNIT
 } from '../constants/settings.js';
 import { BOMBERS, MOTHER_SHIP, SHIPS } from '../constants/ships.js';
 import { WEAPONS } from '../constants/weapons.js';
@@ -299,7 +300,8 @@ export const updatePlayer = (player, elapsedTime) => {
     player.accelerate = false;
   } else {
     player.accelerate = player.type === 'bomber' || player.accelerate;
-    player.angle = handleAngle(player.rotate, player.angle, elapsedTime);
+    const agilityOffset = getItem(player.items, 16) ? 1 : 0
+    player.angle = handleAngle(player.rotate, player.angle, elapsedTime, agilityOffset);
   };
   
   player.speed = handleSpeed(player);
@@ -360,7 +362,7 @@ const weaponFromPlayer = (gameData, weapon, newWeapons, allShips) => {
     const minRange = 3000;
     const target = nearestTarget(weapon.location, player.team, allShips, minRange);
     const direction = target ? handleAiDirection(weapon.location, weapon.trajectory, target) : 0;
-    weapon.trajectory = handleAngle(direction, weapon.trajectory, ANIMATION_FRAME_RATE);
+    weapon.trajectory = handleAngle(direction, weapon.trajectory, ANIMATION_FRAME_RATE, 0);
   }
 
   weapon.location = handleLocation(weapon.trajectory, weapon.location, weapon.speed);
@@ -609,7 +611,7 @@ const mothershipWeapon = (mothership, trajectory, team, weapon) => {
 };
 
 export const handleFireWeapon = (player, weapon, elapsedTime, damage) => {
-  const angle = handleAngle(player.rotate, player.angle, elapsedTime);
+  const angle = handleAngle(player.rotate, player.angle, elapsedTime, 0);
   const location = player.location;
   const shipCenter = player.type === 'human' ? SHIPS[player.shipIndex].shipCenter : BOMBERS[player.index].shipCenter;
   const coordinates = findCenterCoordinates(location, shipCenter, weapon);
@@ -635,19 +637,19 @@ export const handleLocation = (trajectory, location, distance) => {
   const x = round(location.x + Math.cos(radians) * distance)
   const y = round(location.y + Math.sin(radians) * distance)
   return { x, y };
-}
+};
 
-export const handleAngle = (direction, angle, elapsedTime) => {
+export const handleAngle = (direction, angle, elapsedTime, agilityOffset) => {
   switch (direction) {
     case 'left':
-      angle = (angle - 3 * (elapsedTime / ANIMATION_FRAME_RATE)) % 360;
+      angle = (angle - (ROTATIONAL_UNIT + agilityOffset) * (elapsedTime / ANIMATION_FRAME_RATE)) % 360;
       return angle < 0 ? 360 + angle : angle;
     case 'right':
-      return (angle + 3 * (elapsedTime / ANIMATION_FRAME_RATE)) % 360
+      return (angle + (ROTATIONAL_UNIT + agilityOffset) * (elapsedTime / ANIMATION_FRAME_RATE)) % 360
     default:
       return angle;
   };
-}
+};
 
 export const handleWall = (player) => {
   if (player.location.x - 100 > BOARD_WIDTH) {

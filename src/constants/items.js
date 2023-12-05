@@ -14,6 +14,7 @@ import healthIncrease from '../images/healthIncrease.png';
 import evasion from '../images/evasion.png';
 import returnDamage from '../images/returnDamage.png';
 import reinforcedArmor from '../images/reinforcedArmor2.png';
+import agilityIcon from '../images/agilityIcon.png'
 
 export const ITEMS = [
   {
@@ -171,5 +172,15 @@ export const ITEMS = [
     cooldown: 0,
     durationCount: 0,
     description: 'Increases your ship\'s armor by 2',
+  },
+  {
+    id: 16,
+    index: 15,
+    price: 715,
+    name: 'Agility',
+    image: agilityIcon,
+    cooldown: 0,
+    durationCount: 0,
+    description: 'Increases your ship\'s agility by 25%',
   }
 ];

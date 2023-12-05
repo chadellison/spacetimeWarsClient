@@ -55,9 +55,4 @@ export const handleAbsorbDamage = (player) => {
 };
 
 export const canAbsorbDamage = (player) => player.effects[6] || player.effects[16];
-
-export const getItem = (items, id) => {
-  if (items) {
-    return items[id];
-  }
-};
+export const getItem = (items, id) => items && items[id];

@@ -108,7 +108,8 @@ const applyEffectToTeam = (players, team, effect) => {
 };
 
 const handleMeteorShower = (deployedWeapons, player, weapon, elapsedTime) => {
-  const angle = handleAngle(player.rotate, player.angle, elapsedTime);
+  const agilityOffset = getItem(player.items, 16) ? 1 : 0;
+  const angle = handleAngle(player.rotate, player.angle, elapsedTime, agilityOffset);
   const meteors = [-40, -20, 0, 20, 40].map((degree) => {
     let weaponAngle = angle + degree
     if (weaponAngle < 0) {
