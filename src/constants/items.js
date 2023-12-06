@@ -15,6 +15,7 @@ import evasion from '../images/evasion.png';
 import returnDamage from '../images/returnDamage.png';
 import reinforcedArmor from '../images/reinforcedArmor2.png';
 import agilityIcon from '../images/agilityIcon.png'
+import enhancedHitpoints from '../images/enhancedHitpoints.png'
 
 export const ITEMS = [
   {
@@ -182,5 +183,15 @@ export const ITEMS = [
     cooldown: 0,
     durationCount: 0,
     description: 'Increases your ship\'s agility by 25%',
+  },
+  {
+    id: 17,
+    index: 16,
+    price: 670,
+    name: 'Enhanced hitpoints',
+    image: enhancedHitpoints,
+    cooldown: 0,
+    durationCount: 0,
+    description: 'Increases your ship\'s hitpoints by 500',
   }
 ];
