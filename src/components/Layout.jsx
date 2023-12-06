@@ -51,8 +51,7 @@ export const DEFAULT_STATE = {
   connected: false,
   game: null,
   started: false,
-  showPromo: shouldShowPromo(),
-  gameMode: ''
+  showPromo: shouldShowPromo()
 };
 
 const Layout = () => {
@@ -90,7 +89,7 @@ const Layout = () => {
       const handleGameResponse = (gameData => {
         if (gameData?.game) {
           handleSocket(gameData?.game)
-          updateState({ modal: 'nameForm', showPromo: false, gameMode: 'multiplayer' });
+          updateState({ modal: 'nameForm', showPromo: false });
         } else {
           alert('the game your are looking for is no longer available!')
         }
@@ -231,7 +230,6 @@ const Layout = () => {
     aiShips,
     started,
     players,
-    gameMode,
     upgrades,
     activeTab,
     showPromo,
@@ -265,7 +263,6 @@ const Layout = () => {
             userId={userId}
             scores={scores}
             players={players}
-            gameMode={gameMode}
             upgrades={upgrades}
             connected={connected}
             activeTab={activeTab}
