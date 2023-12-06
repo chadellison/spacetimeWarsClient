@@ -125,8 +125,17 @@ const exploadMothership = (ship) => {
 }
 
 const handleGameOver = (players, playerData, motherships) => {
+  const updatedPlayers = players.map(ship => {
+    const items = {};
+    Object.keys(ship.items).forEach(id => {
+      items[id] = { ...ship.items[id], cooldown: 0, durationCount: 0 }
+    });
+
+    return { ...explodePlayer(ship, playerData), items }
+  });
+
   return {
-    players: players.map(ship => explodePlayer(ship, playerData)),
+    players: updatedPlayers,
     aiShips: players.map(ship => explodePlayer(ship, playerData)),
     motherships: motherships.map(ship => exploadMothership(ship)),
     modal: 'gameOver',
