@@ -21,14 +21,19 @@ import displayMissile from '../images/displayMissile4.png';
 import displayPlasmaCannon from '../images/displayPlasmaCannon2.png';
 import displayPoisonCannon from '../images/displayPoisonCannon3.png';
 import displayTrifecta from '../images/displayTrifecta3.png';
-import electricFieldProjectileAnimation from '../images/electricFieldProjectileAnimation3.png';
+import displayArmorReductionCanon from '../images/displayArmorReductionCanon.png';
+import displayElectricCannon from '../images/displayElectricCannon.png';
+import electricBoltProjectileAnimation from '../images/electricBoltProjectileAnimation.png';
+import displayPulsingCannon from '../images/displayPulsingCannon.png';
+
+import electricFieldProjectileAnimation from '../images/electricFieldProjectileAnimation7.png';
 import fireballAnimation from '../images/fireballAnimation.png';
 import gasBombProjectileAnimation from '../images/gasBombProjectileAnimation.png';
 import immolation from '../images/immolation3.png';
 import laserAnimation from '../images/laserAnimation.png';
 import meteorShowerAnimation from '../images/meteorShowerAnimation.png';
 import missile from '../images/missile.png';
-import nuclearBlastAnimation from '../images/nuclearBlastAnimation.png';
+import plasmaProjectileAnimation from '../images/plasmaProjectileAnimation.png';
 import piercerAnimation from '../images/piercerAnimation.png';
 import poisonCannonAnimation from '../images/poisonCannonAnimation.png';
 import poisonDartAnimation from '../images/poisonDartAnimation.png';
@@ -38,6 +43,8 @@ import spaceMine from '../images/spaceMine3.png';
 import stunGunAnimation from '../images/stunBoltAnimation.png';
 import trifecta from '../images/trifecta.png';
 import nuclearProjectileAnimation from '../images/nuclearProjectileAnimation2.png';
+import armorReductionProjectileAnimation from '../images/armorReductionProjectileAnimation.png';
+import nuclearBombProjectile from '../images/nuclearBombProjectile.png';
 
 const AUDIO = [
   { audio: cannonAudio, volume: 0.2 },
@@ -63,9 +70,9 @@ export const WEAPONS = [
     name: 'fireball',
     location: { x: 0, y: 0 },
     trajectory: 0,
-    cooldown: 300,
+    cooldown: 350,
     speed: 18,
-    damage: 60,
+    damage: 65,
     price: 60,
     width: 80,
     height: 40,
@@ -120,7 +127,7 @@ export const WEAPONS = [
     selectionImage: displayBomb,
     animation: {
       coordinates: { x: 0, y: 0 },
-      spriteImage: nuclearBlastAnimation,
+      spriteImage: plasmaProjectileAnimation,
       width: 128,
       height: 64,
       rowCount: 4,
@@ -246,7 +253,7 @@ export const WEAPONS = [
     width: 128,
     height: 64,
     damageRadius: 6,
-    ability: 'armor piercing damage: disregards all armor on enemy ship',
+    ability: 'armor piercing rounds: disregards all armor on enemy ship',
     sound: AUDIO[7],
     selectionImage: displayPlasmaCannon,
     animation: {
@@ -261,6 +268,91 @@ export const WEAPONS = [
       xOffset: 0,
       yOffset: 0,
     }
+  },
+  {
+    index: 8,
+    name: 'armor reduction cannon',
+    location: { x: 0, y: 0 },
+    trajectory: 0,
+    cooldown: 550,
+    speed: 22,
+    damage: 190,
+    price: 1380,
+    width: 96,
+    height: 48,
+    damageRadius: 6,
+    ability: 'reduces the armor of targets for 2 seconds',
+    sound: AUDIO[7],
+    effectIndex: 11,
+    selectionImage: displayArmorReductionCanon,
+    animation: {
+      coordinates: { x: 0, y: 0 },
+      spriteImage: armorReductionProjectileAnimation,
+      width: 96,
+      height: 48,
+      rowCount: 4,
+      columnCount: 2,
+      renderWidth: 96,
+      renderHeight: 48,
+      xOffset: 0,
+      yOffset: 0,
+    }
+  },
+  {
+    index: 9,
+    name: 'electric cannon',
+    location: { x: 0, y: 0 },
+    trajectory: 0,
+    cooldown: 450,
+    speed: 18,
+    damage: 250,
+    price: 1850,
+    width: 192,
+    height: 108,
+    damageRadius: 6,
+    ability: 'provides a 25% chance to stun opponents',
+    sound: AUDIO[7],
+    selectionImage: displayElectricCannon,
+    animation: {
+      coordinates: { x: 0, y: 0 },
+      spriteImage: electricBoltProjectileAnimation,
+      width: 192,
+      height: 108,
+      rowCount: 1,
+      columnCount: 30,
+      renderWidth: 192,
+      renderHeight: 108,
+      xOffset: 0,
+      yOffset: 0,
+    }
+  },
+  {
+    index: 10,
+    name: 'pulsing cannon',
+    location: { x: 0, y: 0 },
+    trajectory: 0,
+    cooldown: 700,
+    speed: 22,
+    damage: 500,
+    price: 3300,
+    width: 128,
+    height: 72,
+    damageRadius: 6,
+    ability: 'none',
+    sound: AUDIO[7],
+    selectionImage: displayPulsingCannon,
+    animation: {
+      coordinates: { x: 0, y: 0 },
+      spriteImage: nuclearProjectileAnimation,
+      width: 128,
+      height: 72,
+      rowCount: 1,
+      columnCount: 24,
+      renderWidth: 128,
+      renderHeight: 72,
+      xOffset: 0,
+      yOffset: 0,
+    }
   }
 ];
 
@@ -271,8 +363,8 @@ export const ABILITY_WEAPONS = [
     location: { x: 0, y: 0 },
     trajectory: 0,
     speed: 7,
-    width: 128,
-    height: 72,
+    width: 48,
+    height: 18,
     damage: 500,
     range: 700,
     animationIndex: 8,
@@ -280,13 +372,13 @@ export const ABILITY_WEAPONS = [
     projectileRange: 2100,
     animation : {
       coordinates: { x: 0, y: 0 },
-      spriteImage: nuclearProjectileAnimation,
-      width: 128,
-      height: 72,
+      spriteImage: nuclearBombProjectile,
+      width: 48,
+      height: 18,
       rowCount: 1,
-      columnCount: 24,
-      renderWidth: 128,
-      renderHeight: 72,
+      columnCount: 1,
+      renderWidth: 48,
+      renderHeight: 18,
       xOffset: 0,
       yOffset: 0,
     }
@@ -449,9 +541,9 @@ export const ABILITY_WEAPONS = [
     name: 'electricFieldProjectile',
     location: { x: 0, y: 0 },
     trajectory: 0,
-    speed: 12,
-    width: 256,
-    height: 144,
+    speed: 10,
+    width: 64,
+    height: 36,
     damage: 0,
     effectIndex: 3,
     animationIndex: 5,
@@ -461,12 +553,12 @@ export const ABILITY_WEAPONS = [
     animation: {
       coordinates: { x: 0, y: 0 },
       spriteImage: electricFieldProjectileAnimation,
-      width: 256,
-      height: 144,
-      renderWidth: 256,
-      renderHeight: 144,
+      width: 64,
+      height: 36,
+      renderWidth: 64,
+      renderHeight: 36,
       rowCount: 1,
-      columnCount: 30,
+      columnCount: 90,
       xOffset: 0,
       yOffset: 0,
     }
@@ -476,7 +568,7 @@ export const ABILITY_WEAPONS = [
     name: 'gasBombProjectile',
     location: { x: 0, y: 0 },
     trajectory: 0,
-    speed: 10,
+    speed: 12,
     width: 32,
     height: 32,
     damage: 0,

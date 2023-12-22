@@ -81,7 +81,7 @@ export const ITEMS = [
     effectIndex: 3,
     cooldown: 0,
     durationCount: 0,
-    description: 'Provieds your weapon a 10% chance to stun your opponent for two seconds'
+    description: 'Provieds your weapon a 15% chance to stun your opponent for three seconds'
   },
   {
     id: 7,

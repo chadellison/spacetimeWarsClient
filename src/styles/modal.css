@@ -179,14 +179,14 @@
 }
 
 .formLabel {
-  margin-top: 4em;
+  margin-top: 50px;
   display: block;
-  font-size: 30px;
+  font-size: 24px;
   color: #2c66b2;
 }
 
 .formInput {
-  margin-top: 4em;
+  margin-top: 20px;
   font-size: 20px;
   padding: .15em;
 }
@@ -216,9 +216,9 @@
 }
 
 .teamLabel {
-  margin-top: 2em;
+  margin-top: 30px;
   display: block;
-  font-size: 24px;
+  font-size: 20px;
   color: #2c66b2;
 }
 
@@ -239,7 +239,7 @@
   transition: ease-out .3s;
   display: inline-block;
   width: 3em;
-  margin-top: 3em;
+  margin-top: 15px;
   margin-left: 1em;
   margin-right: 1em;
 }
@@ -253,7 +253,7 @@
   transition: ease-out .3s;
   display: inline-block;
   width: 3em;
-  margin-top: 3em;
+  margin-top: 15px;
   margin-left: 1em;
   margin-right: 1em;
 }
@@ -281,7 +281,7 @@
   transition: ease-out .3s;
   display: inline-block;
   width: 6em;
-  margin-top: 1em;
+  margin-top: 10px;
   margin-left: 1em;
   margin-right: 1em;
 }
@@ -413,7 +413,7 @@
 }
 
 .inviteLink {
-  margin-top: 20px;
+  margin-top: 15px;
   margin-bottom: 15px;
   font-size: 20px;
   padding: 5px;

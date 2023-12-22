@@ -1,16 +1,39 @@
 .paginateButton {
-  font-size: 20px;
-  height: 30px;
+  width: 25px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding: 5px;
+  border: 1px solid #2c66b2;
+  font-weight: 700;
+  transition: ease-in 0.3s;
   color: #2c66b2;
-  margin-left: 40%;
-  width: 20%;
-  bottom: 0;
-  position: absolute;
-  margin-bottom: 2em;
-  transition: ease-in 1.5s;
 }
 
 .paginateButton:hover {
   cursor: pointer;
-  box-shadow: 0 0 8px 0 rgba(0,0,0, 0.3);
+  color: white;
+  background-color: #2c66b2;
+}
+
+.disabledButton:hover {
+  cursor: not-allowed;
+  background-color: none;
+}
+
+.disabledButton {
+  border: 1px solid gray;
+  width: 25px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding: 5px;
+  font-weight: 700;
+  opacity: 0.75;
+}
+
+.page {
+  color: #2c66b2;
 }

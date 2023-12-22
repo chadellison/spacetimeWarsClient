@@ -399,7 +399,7 @@ export const handleWeapons = (gameData) => {
   const { players, aiShips, motherships } = gameData;
   const allShips = players.concat(aiShips, motherships);
 
-  gameData.weapons.forEach((weapon) => {
+  gameData.weapons.forEach(weapon => {
     if (weapon.from === 'human') {
       gameData = weaponFromPlayer(gameData, weapon, newWeapons, allShips);
     } else {
@@ -485,16 +485,15 @@ const handleCollision = (players, weapon, attacker, animations) => {
 
       shipBoundingBoxes.forEach((center, index) => {
         const distance = findHypotenuse(center, weaponCenter);
-
         if ((index < 3 && distance < (18 + weapon.damageRadius)) || (index > 2 && distance < 23 + weapon.damageRadius)) {
-          applyHit(player, weapon, attacker, animations);
+          applyHit(player, weapon, attacker, animations, center);
         }
       });
     };
   });
 };
 
-const applyHit = (player, weapon, attacker, animations) => {
+const applyHit = (player, weapon, attacker, animations, hitLocation = null) => {
   if (weapon.id === 3) {
     playSound(mineTriggerSound);
   }
@@ -502,8 +501,8 @@ const applyHit = (player, weapon, attacker, animations) => {
   if (canAbsorbDamage(player)) {
     handleAbsorbDamage(player);
   } else {
-    if (!weapon.id) {
-      animations.push({ ...GAME_ANIMATIONS[4], location: weapon.location, yOffset: -32, coordinates: { x: 0, y: 0 } });
+    if (!weapon.id && hitLocation) {
+      animations.push({ ...GAME_ANIMATIONS[4], location: hitLocation, yOffset: -32, coordinates: { x: 0, y: 0 } });
     }
     updateCollisionData(player, weapon, attacker);
   }
@@ -542,6 +541,21 @@ const handleApplyPoison = (player, poison) => {
   if (!getItem(player.items, 13)) {
     player.effects[poison.id] = poison;
   }
+};
+
+const stun = (weapon) => {
+  if (weapon.id === 2) {
+    return true;
+  } else {
+    let stunChance = 0;
+    if (weapon.index === 9) {
+      stunChance += 0.25
+    } 
+    if (weapon.canStun) {
+      stunChance += 0.15
+    }
+    return Math.random() <= stunChance;
+  }
 }
 
 const handleNegativeBuff = (player, weapon) => {
@@ -550,7 +564,7 @@ const handleNegativeBuff = (player, weapon) => {
   if (weapon.index === 5 || weapon.id === 8) {
     const effect = createEffect(weapon.effectIndex, round(3000 / durationDivider), player.effects[1], weapon.playerIndex);
     handleApplyPoison(player, effect);
-  } else if (weapon.index === 6 && !player.effects[2]) {
+  } else if ([6, 8].includes(weapon.index) && !player.effects[2]) {
     const effect = createEffect(weapon.effectIndex, round(2000 / durationDivider), player.effects[2], weapon.playerIndex);
     player.effects[effect.id] = effect;
   } else if ([6, 7].includes(weapon.id)) {
@@ -558,13 +572,13 @@ const handleNegativeBuff = (player, weapon) => {
     player.effects[effect.id] = effect;
   }
 
-  if ((weapon.canStun && Math.random() <= 0.1) || weapon.id === 2) {
+  if (stun(weapon)) {
     const effect = createEffect(3, round(3000 / durationDivider), player.effects[4], weapon.playerIndex);
     player.effects[effect.id] = effect;
   };
 
   return player;
-}
+};
 
 const handlePositiveBuff = (player, weapon) => {
   if (weapon.index === 3) {
@@ -575,7 +589,7 @@ const handlePositiveBuff = (player, weapon) => {
     player.hitpoints = newHitpoints;
   }
   return player
-}
+};
 
 const calculateDamage = (weapon, player) => {
   let armor = getItem(player.items, 15) ? player.armor + 2 : player.armor;

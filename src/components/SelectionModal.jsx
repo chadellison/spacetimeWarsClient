@@ -22,14 +22,17 @@ const handleClick = (updateState, handleGameEvent, activePlayer) => {
   updateState({ modal: null, activeTab: 'Ships' });
 };
 
+const PAGE_SIZE = 4;
+
 const renderOptions = (activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, hover, setHover) => {
+  const end = page * PAGE_SIZE;
+  const start = end - PAGE_SIZE;
   switch (activeTab) {
     case 'Ships':
-      const ships = page === 1 ? SHIPS.slice(0, 4) : SHIPS.slice(4, 8);
       return (
         <div>
           {
-            ships.map((ship) => {
+            SHIPS.slice(start, end).map(ship => {
               return (
                 <Ship
                   key={`ship${ship.index}`}
@@ -47,11 +50,10 @@ const renderOptions = (activeTab, page, activePlayer, updateState, players, upgr
         </div>
       );
     case 'Weapons':
-      const weapons = page === 1 ? WEAPONS.slice(0, 4) : WEAPONS.slice(4, 8);
       return (
         <div>
           {
-            weapons.map(weapon => (
+            WEAPONS.slice(start, end).map(weapon => (
               <Weapon
                 key={`weapon${weapon.index}`}
                 hover={hover}
@@ -197,7 +199,7 @@ export const SelectionModal = ({
       {renderOptions(activeTab, page, activePlayer, updateState, players, upgrades, experiencePoints, hover, setHover)}
       <div className="description">
       </div>
-      <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />
+      {['Ships', 'Weapons'].includes(activeTab) && <PaginateButton updateState={updateState} page={page} activeTab={activeTab} />}
     </div>
   );
 }

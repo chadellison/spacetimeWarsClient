@@ -223,7 +223,8 @@ const handleUpdateEvent = ({ players, playerData, deployedWeapons, elapsedTime }
 
 const resolveFireEvent = (updatedWeapons, playerData, updatedPlayer, elapsedTime) => {
   const damage = handlePlayerDamage(updatedPlayer);
-  playSound(WEAPONS[updatedPlayer.weaponIndex].sound);  
+  playSound(WEAPONS[updatedPlayer.weaponIndex].sound);
+
   return [
     ...updatedWeapons,
     handleFireWeapon(
@@ -233,4 +234,4 @@ const resolveFireEvent = (updatedWeapons, playerData, updatedPlayer, elapsedTime
       damage
     )
   ];
-}
+};
