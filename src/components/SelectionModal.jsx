@@ -19,7 +19,7 @@ const handleClick = (updateState, handleGameEvent, activePlayer) => {
   } else {
     handleGameEvent({ ...activePlayer, gameEvent: 'shop' });
   }
-  updateState({ modal: null, activeTab: 'Ships' });
+  updateState({ modal: null, activeTab: 'Ships', page: 1 });
 };
 
 const PAGE_SIZE = 4;

@@ -33,7 +33,7 @@ export const handleEffects = (player) => {
 };
 
 export const applyGameBuff = (team, players, gameBuff) => {
-  return players.map((player) => {
+  return players.map(player => {
     if (gameBuff.id < 5 && team !== player.team) {
       player.effects = updateEffects(player.effects, gameBuff);
     } else if (gameBuff.id > 4 && team === player.team) {

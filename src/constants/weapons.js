@@ -72,7 +72,7 @@ export const WEAPONS = [
     trajectory: 0,
     cooldown: 350,
     speed: 18,
-    damage: 65,
+    damage: 60,
     price: 60,
     width: 80,
     height: 40,

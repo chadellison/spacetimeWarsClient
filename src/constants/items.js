@@ -162,7 +162,7 @@ export const ITEMS = [
     image: increasedAttackSpeed,
     cooldown: 0,
     durationCount: 0,
-    description: 'Increases your ship\'s attack speed by %20',
+    description: 'Increases your ship\'s attack speed by 20%',
   },
   {
     id: 15,
